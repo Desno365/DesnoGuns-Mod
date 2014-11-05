@@ -111,9 +111,24 @@ const BARRETT = { name:"Barrett", id:305, fireRate:12, recoil:22, bulletSpeed:9,
 	"iri",
 	"   "] };
 
+const BIZON = { name:"Bizon", id:306, fireRate:2, recoil:3, bulletSpeed:6.8, accuracy:3, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"diamond_horse_armor", ammo:53, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const DESERT_EAGLE = { name:"Desert Eagle", id:307, fireRate:1, recoil:3, bulletSpeed:6, accuracy:6, zoomLevel:60, sound:"DesertEagleShoot.ogg", texture:"door_iron", ammo:7, smoke:0, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const DESERT_EAGLE_GOLD = { name:"Desert Eagle Gold", id:308, fireRate:1, recoil:3, bulletSpeed:6, accuracy:6, zoomLevel:60, sound:"DesertEagleShoot.ogg", texture:"empty_armor_slot_boots", ammo:7, smoke:0, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE];
 
 // add guns
@@ -157,6 +172,10 @@ function entityRemovedHook(entity)
 
 function changeCarriedItem(currentItem, previousItem)
 {
+	// prevent infinite shooting
+	currentShotTicks = 0;
+	shooting = false;
+
 	if(currentItem >= 300 && currentItem <= 345)
 	{
 		if(!(previousItem >= 300 && previousItem <= 345))
@@ -185,7 +204,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}));
 
 		// assault rifles
-		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id)
+		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id)
 		{
 			// load current gun
 			var currentGun;
@@ -194,6 +213,7 @@ function changeCarriedItem(currentItem, previousItem)
 				case AK47.id: currentGun = AK47; break;
 				case AK74.id: currentGun = AK74; break;
 				case AUG.id: currentGun = AUG; break;
+				case BIZON.id: currentGun = BIZON; break;
 
 				default: currentGun = AK47;
 			}
@@ -240,46 +260,20 @@ function changeCarriedItem(currentItem, previousItem)
 			}));
 		}
 
-		// sniper rifles
-		if(currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id)
-		{
-			// load current gun
-			var currentGun;
-			switch(currentItem)
-			{
-				case BARRETT.id: currentGun = BARRETT; break;
-				case BARRETT_EXPLOSIVE.id: currentGun = BARRETT_EXPLOSIVE; break;
-
-				default: currentGun = BARRETT;
-			}		
-
-			// load click events
-			currentActivity.runOnUiThread(new java.lang.Runnable(
-			{
-				run: function()
-				{
-					shotImage.setOnClickListener(new android.view.View.OnClickListener()
-					{
-						onClick: function(v)
-						{
-							sniperRifleShoot(currentGun);
-							return false;
-						}
-					});
-				}
-			}));
-		}
-
-		// bazooka and things explosive
-		if(currentItem == AT4.id)
+		// single shot weapons
+		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id)
 		{
 			// load current gun
 			var currentGun;
 			switch(currentItem)
 			{
 				case AT4.id: currentGun = AT4; break;
+				case BARRETT.id: currentGun = BARRETT; break;
+				case BARRETT_EXPLOSIVE.id: currentGun = BARRETT_EXPLOSIVE; break;
+				case DESERT_EAGLE.id: currentGun = DESERT_EAGLE; break;
+				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
 
-				default: currentGun = AT4;
+				default: currentGun = BARRETT;
 			}		
 
 			// load click events
