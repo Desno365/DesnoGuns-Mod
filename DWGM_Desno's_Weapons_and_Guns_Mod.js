@@ -67,7 +67,7 @@ for(var i = 0; i < gunSoundsArrayLength; i++)
 	gunSounds[i] = new android.media.MediaPlayer(); /* 20 MediaPlayer (if sound 1 second and a sound every 1 Tick) */
 
 // general value for the weapons accuracy, more this value is less accuracy weapons have
-const randomness = 0.5;
+const randomness = 0.55;
 
 // fire button variables
 var shotImage;
@@ -80,18 +80,24 @@ var shootingRunnable;
 // for sniper rifles
 var latestShotTime;
 
+// bullet speed
+const sniperBulletSpeed = 9;
+const assaultBulletSpeed = 6.8;
+const bazookaBilletSpeed = 5.1;
+const pistolBulletSpeed = 6;
+
 // weapons
-const AK47 = { name:"AK47", id:300, fireRate:3, recoil:2, bulletSpeed:6.8, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
+const AK47 = { name:"AK47", id:300, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const AK74 = { name:"AK74", id:301, fireRate:3, recoil:3, bulletSpeed:6.8, accuracy:4, zoomLevel:60, sound:"AK74Shoot.ogg",texture:"carrot_on_a_stick", ammo:30, smoke:1, recipe:[
+const AK74 = { name:"AK74", id:301, fireRate:3, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"AK74Shoot.ogg",texture:"carrot_on_a_stick", ammo:30, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const AT4 = { name:"AT4", id:302, fireRate:10, recoil:3, bulletSpeed:6, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
+const AT4 = { name:"AT4", id:302, fireRate:10, recoil:3, bulletSpeed:bazookaBilletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -101,34 +107,63 @@ const AUG = { name:"AUG", id:303, fireRate:3, recoil:3, bulletSpeed:6.8, accurac
 	"iri",
 	"   "] };
 
-const BARRETT_EXPLOSIVE = { name:"Barrett Explosive", id:304, fireRate:12, recoil:22, bulletSpeed:9, hasExplosiveBullets:true, bulletsExplosionRadius:2, bulletsArray:[], accuracy:3, zoomLevel:60, sound:"BarrettShoot.ogg", texture:"comparator", ammo:10, smoke:2, recipe:[
+const BARRETT_EXPLOSIVE = { name:"Barrett Explosive", id:304, fireRate:12, recoil:22, bulletSpeed:sniperBulletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:2, bulletsArray:[], accuracy:3, zoomLevel:60, sound:"BarrettShoot.ogg", texture:"comparator", ammo:10, smoke:2, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const BARRETT = { name:"Barrett", id:305, fireRate:12, recoil:22, bulletSpeed:9, zoomLevel:60, accuracy:2, sound:"BarrettShoot.ogg", texture:"cookie", ammo:10, smoke:2, recipe:[
+const BARRETT = { name:"Barrett", id:305, fireRate:12, recoil:22, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"BarrettShoot.ogg", texture:"cookie", ammo:10, smoke:2, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const BIZON = { name:"Bizon", id:306, fireRate:2, recoil:3, bulletSpeed:6.8, accuracy:3, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"diamond_horse_armor", ammo:53, smoke:1, recipe:[
+const BIZON = { name:"Bizon", id:306, fireRate:2, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:3, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"diamond_horse_armor", ammo:53, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const DESERT_EAGLE = { name:"Desert Eagle", id:307, fireRate:1, recoil:3, bulletSpeed:6, accuracy:6, zoomLevel:60, sound:"DesertEagleShoot.ogg", texture:"door_iron", ammo:7, smoke:0, recipe:[
+const DESERT_EAGLE = { name:"Desert Eagle", id:307, fireRate:1, recoil:3, bulletSpeed:pistolBulletSpeed, accuracy:6, zoomLevel:60, sound:"DesertEagleShoot.ogg", texture:"door_iron", ammo:7, smoke:0, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const DESERT_EAGLE_GOLD = { name:"Desert Eagle Gold", id:308, fireRate:1, recoil:3, bulletSpeed:6, accuracy:6, zoomLevel:60, sound:"DesertEagleShoot.ogg", texture:"empty_armor_slot_boots", ammo:7, smoke:0, recipe:[
+const DESERT_EAGLE_GOLD = { name:"Desert Eagle Gold", id:308, fireRate:1, recoil:3, bulletSpeed:pistolBulletSpeed, accuracy:5, zoomLevel:60, sound:"DesertEagleShoot.ogg", texture:"empty_armor_slot_boots", ammo:7, smoke:0, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const DRAGUNOV = { name:"Dragunov", id:309, fireRate:8, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"DragunovShoot.ogg", texture:"empty_armor_slot_chestplate", ammo:10, smoke:2, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const FNSCAR = { name:"FNSCAR", id:310, fireRate:3, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:3, zoomLevel:60, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", texture:"empty_armor_slot_helmet", ammo:20, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const G3 = { name:"G3", id:311, fireRate:2, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"empty_armor_slot_leggings", ammo:20, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const G36 = { name:"G36", id:312, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"ender_eye", ammo:30, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const GL1 = "missing"; // also in the code!!!
+
+const GL6 = "missing"; // also in the code!!!
+
+const GLOCK = { name:"Glock", id:315, fireRate:3, recoil:2, bulletSpeed:pistolBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"GlockShoot.ogg", texture:"fireball", ammo:31, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE];
 
 // add guns
@@ -162,6 +197,11 @@ function leaveGame()
 
 	currentShotTicks = 0;
 	shooting = false;
+}
+
+function attackHook(attacker, victim)
+{
+
 }
 
 function entityRemovedHook(entity)
@@ -204,7 +244,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}));
 
 		// assault rifles
-		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id)
+		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id || currentItem == FNSCAR.id || currentItem == G3.id || currentItem == G36.id || currentItem == GLOCK.id)
 		{
 			// load current gun
 			var currentGun;
@@ -214,6 +254,10 @@ function changeCarriedItem(currentItem, previousItem)
 				case AK74.id: currentGun = AK74; break;
 				case AUG.id: currentGun = AUG; break;
 				case BIZON.id: currentGun = BIZON; break;
+				case FNSCAR.id: currentGun = FNSCAR; break;
+				case G3.id: currentGun = G3; break;
+				case G36.id: currentGun = G36; break;
+				case GLOCK.id: currentGun = GLOCK; break;
 
 				default: currentGun = AK47;
 			}
@@ -261,7 +305,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id)
+		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id)
 		{
 			// load current gun
 			var currentGun;
@@ -272,6 +316,7 @@ function changeCarriedItem(currentItem, previousItem)
 				case BARRETT_EXPLOSIVE.id: currentGun = BARRETT_EXPLOSIVE; break;
 				case DESERT_EAGLE.id: currentGun = DESERT_EAGLE; break;
 				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
+				case DRAGUNOV.id: currentGun = DRAGUNOV; break;
 
 				default: currentGun = BARRETT;
 			}		
