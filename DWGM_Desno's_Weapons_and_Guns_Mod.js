@@ -20,7 +20,7 @@ var latestVersion;
 
 //activity and other Android variables
 var currentActivity = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
-var sdcard = new android.os.Environment.getExternalStorageDirectory()
+var sdcard = new android.os.Environment.getExternalStorageDirectory();
 
 //display size and density variables
 var metrics = new android.util.DisplayMetrics();
@@ -61,10 +61,8 @@ var sound3 = new android.media.MediaPlayer();
 var sound4 = new android.media.MediaPlayer();
 
 // gun sounds
-const gunSoundsArrayLength = 20;
-var gunSounds = [];
-for(var i = 0; i < gunSoundsArrayLength; i++)
-	gunSounds[i] = new android.media.MediaPlayer(); /* 20 MediaPlayer (if sound 1 second and a sound every 1 Tick) */
+var soundPool;
+var soundID;
 
 // general value for the weapons accuracy, more this value is less accuracy weapons have
 const randomness = 0.55;
@@ -76,14 +74,19 @@ var currentShotTicks = 0;
 // for assault rifles
 var shooting = false;
 var shootingRunnable;
+const assaultRiflesVolume = 0.80;
 
 // for sniper rifles
 var latestShotTime;
 
+// for minigun
+var minigunTouchingFireButton = false;
+const minigunVolume = 0.55;
+
 // bullet speed
 const sniperBulletSpeed = 9;
 const assaultBulletSpeed = 6.8;
-const bazookaBilletSpeed = 5.1;
+const bazookaBulletSpeed = 5.1;
 const pistolBulletSpeed = 6;
 
 // weapons
@@ -97,7 +100,7 @@ const AK74 = { name:"AK74", id:301, fireRate:3, recoil:3, bulletSpeed:assaultBul
 	"iri",
 	"   "] };
 
-const AT4 = { name:"AT4", id:302, fireRate:10, recoil:3, bulletSpeed:bazookaBilletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
+const AT4 = { name:"AT4", id:302, fireRate:10, recoil:3, bulletSpeed:bazookaBulletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -117,7 +120,7 @@ const BARRETT = { name:"Barrett", id:305, fireRate:12, recoil:22, bulletSpeed:sn
 	"iri",
 	"   "] };
 
-const BIZON = { name:"Bizon", id:306, fireRate:2, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:3, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"diamond_horse_armor", ammo:53, smoke:1, recipe:[
+const BIZON = { name:"Bizon", id:306, fireRate:2, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:3, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"diamond_horse_armor", ammo:53, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -142,12 +145,12 @@ const FNSCAR = { name:"FNSCAR", id:310, fireRate:3, recoil:3, bulletSpeed:assaul
 	"iri",
 	"   "] };
 
-const G3 = { name:"G3", id:311, fireRate:2, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"empty_armor_slot_leggings", ammo:20, smoke:1, recipe:[
+const G3 = { name:"G3", id:311, fireRate:2, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"empty_armor_slot_leggings", ammo:20, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const G36 = { name:"G36", id:312, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot.ogg", texture:"ender_eye", ammo:30, smoke:1, recipe:[
+const G36 = { name:"G36", id:312, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"G36Shoot.ogg", texture:"ender_eye", ammo:30, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -161,14 +164,27 @@ const GLOCK = { name:"Glock", id:315, fireRate:3, recoil:2, bulletSpeed:pistolBu
 	"iri",
 	"   "] };
 
+// id must be changed!
+const MINIGUN = { name:"Minigun", id:320, fireRate:1, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"lead", ammo:500, smoke:3, recipe:[
+	"   ",
+	"iri",
+	"   "] };
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, MINIGUN];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE];
 
 // add guns
 for(var i in guns)
 	addNewGun(guns[i]);
+
+// load minigun sounds
+var minigunWarmup = new android.media.MediaPlayer();
+var minigunSpin = new android.media.MediaPlayer();
+minigunSpin.reset();
+minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+minigunSpin.setLooping(true);
+minigunSpin.prepareAsync();
 
 
 function selectLevelHook()
@@ -195,13 +211,28 @@ function leaveGame()
 
 	previousCarriedItem = 0;
 
+	// release the resources for sounds
+	try{
+		soundPool.release();
+		soundPool = null;
+		soundID = null;
+	} catch(e){/* soundPool was already released */}
+
+	// fire button variables
 	currentShotTicks = 0;
+
+	// for assault rifles
 	shooting = false;
+	shootingRunnable = null;
+
+	// for minigun
+	minigunTouchingFireButton = false;
 }
 
 function attackHook(attacker, victim)
 {
-
+	// knife here
+	//
 }
 
 function entityRemovedHook(entity)
@@ -216,6 +247,14 @@ function changeCarriedItem(currentItem, previousItem)
 	currentShotTicks = 0;
 	shooting = false;
 
+	// release the resources for sounds
+	try{
+		soundPool.release();
+		soundPool = null;
+		soundID = null;
+	} catch(e){/* soundPool was already released */}
+
+	// the current item is a gun
 	if(currentItem >= 300 && currentItem <= 345)
 	{
 		if(!(previousItem >= 300 && previousItem <= 345))
@@ -263,19 +302,7 @@ function changeCarriedItem(currentItem, previousItem)
 			}
 
 			// load sounds for the gun
-			try
-			{
-				for(var i = 0; i < gunSoundsArrayLength; i++)
-				{
-					gunSounds[i].reset();
-					gunSounds[i].setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);
-					gunSounds[i].prepareAsync(); //using the prepareAsync() instead of the prepare(), maybe it will be less laggy 
-				}
-			} catch(e)
-			{
-				ModPE.showTipMessage("Sounds not installed correctly.");
-			}
-			
+			ModPE.loadSoundPool(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);	
 
 			// load touch events
 			currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -338,11 +365,46 @@ function changeCarriedItem(currentItem, previousItem)
 			}));
 		}
 
+		// minigun
+		if(currentItem == MINIGUN.id)
+		{
+			currentGun = MINIGUN;
+
+			// load sounds for the gun
+			ModPE.loadSoundPool(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);
+
+			// load touch events
+			currentActivity.runOnUiThread(new java.lang.Runnable(
+			{
+				run: function()
+				{
+					if(Level.getGameMode() == 1)
+						shotImage.setOnTouchListener(new android.view.View.OnTouchListener()
+						{
+							onTouch: function(v, event)
+							{
+								minigunShootCreative(event, currentGun);
+								return false;
+							}
+						});
+					if(Level.getGameMode() == 0)
+						shotImage.setOnTouchListener(new android.view.View.OnTouchListener()
+						{
+							onTouch: function(v, event)
+							{
+								minigunShootSurvival(event, currentGun);
+								return false;
+							}
+						});
+				}
+			}));
+		}
+
 	} else
 	{
 		if(previousItem >= 300 && previousItem <= 345)
 		{
-			//the item before was weapon, now not.
+			//the item before was weapon, now not
 			removeShootAndSettingsButtons();
 		}
 	}
@@ -436,7 +498,7 @@ function assaultRiflesShootSurvival(event, gun)
 						else
 						{
 							currentShotTicks = 0;
-							playLoadedAssaultRifleSound();
+							ModPE.playLoadedSoundPool(assaultRiflesVolume);
 							shootArrow(gun);
 							Item.damageCarriedGun(gun);
 						}
@@ -469,7 +531,7 @@ function assaultRiflesShootCreative(event, gun)
 					if(currentShotTicks == gun.fireRate)
 					{
 						currentShotTicks = 0;
-						playLoadedAssaultRifleSound();
+						ModPE.playLoadedSoundPool(assaultRiflesVolume);
 						shootArrow(gun);
 					}
 					currentShotTicks++;
@@ -507,18 +569,134 @@ function sniperRifleShoot(gun)
 	}
 }
 
-function playLoadedAssaultRifleSound()
+function minigunShootSurvival(event)
 {
-	try
+	var action = event.getActionMasked();
+	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
 	{
-		for(var i = 0; i < gunSoundsArrayLength; i++)
-		{
-			if(gunSounds[i].isPlaying())
-				continue;
-			gunSounds[i].start();
-			return;
+		minigunTouchingFireButton = false;
+		if(minigunWarmup.isPlaying())
+			minigunWarmup.stop();
+		if(shooting)
+			showCloudParticle(MINIGUN.smoke);
+		shooting = false;
+		try{
+			minigunSpin.stop();
+			minigunSpin.prepareAsync();
+		} catch(e){
+			clientMessage(e);
+			ModPE.log(e);
+			minigunSpin.reset();
+			minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+			minigunSpin.setLooping(true);
+			minigunSpin.prepareAsync();
 		}
-	} catch(e){/*sounds not installed*/}
+		ModPE.playSoundFromFile("MinigunCooldown.ogg");
+	}
+	else
+	{
+		if(!shooting && !minigunTouchingFireButton)
+		{
+			minigunTouchingFireButton = true;
+			minigunWarmup.reset();
+			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunWarmup.ogg");
+			minigunWarmup.prepare();
+			minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			{
+				onCompletion: function(mp)
+				{
+					if(minigunTouchingFireButton)
+					{
+						shooting = true;
+						minigunSpin.start();
+						currentShotTicks = MINIGUN.fireRate;
+						shootingRunnable = (new java.lang.Runnable(
+						{
+							run: function()
+							{
+								if(currentShotTicks == MINIGUN.fireRate)
+								{
+									if(Player.getCarriedItemData() >= MINIGUN.ammo)
+										ModPE.showTipMessage("Refill your ammo.");
+									else
+									{
+										currentShotTicks = 0;
+										ModPE.playLoadedSoundPool(minigunVolume);
+										shootArrow(MINIGUN);
+										Item.damageCarriedGun(MINIGUN);
+									}
+								}
+								currentShotTicks++;
+							}
+						}));
+					}
+				}
+			});
+			minigunWarmup.start();
+		}
+	}
+}
+
+function minigunShootCreative(event)
+{
+	var action = event.getActionMasked();
+	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
+	{
+		minigunTouchingFireButton = false;
+		if(minigunWarmup.isPlaying())
+			minigunWarmup.stop();
+		if(shooting)
+			showCloudParticle(MINIGUN.smoke);
+		shooting = false;
+		try{
+			minigunSpin.stop();
+			minigunSpin.prepareAsync();
+		} catch(e){
+			clientMessage(e);
+			ModPE.log(e);
+			minigunSpin.reset();
+			minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+			minigunSpin.setLooping(true);
+			minigunSpin.prepareAsync();
+		}
+		ModPE.playSoundFromFile("MinigunCooldown.ogg");
+	}
+	else
+	{
+		if(!shooting && !minigunTouchingFireButton)
+		{
+			minigunTouchingFireButton = true;
+			minigunWarmup.reset();
+			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunWarmup.ogg");
+			minigunWarmup.prepare();
+			minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			{
+				onCompletion: function(mp)
+				{
+					if(minigunTouchingFireButton)
+					{
+						shooting = true;
+						minigunSpin.start();
+						currentShotTicks = MINIGUN.fireRate;
+						shootingRunnable = (new java.lang.Runnable(
+						{
+							run: function()
+							{
+								if(currentShotTicks == MINIGUN.fireRate)
+								{
+									currentShotTicks = 0;
+									ModPE.playLoadedSoundPool(minigunVolume);
+									shootArrow(MINIGUN);
+								}
+								currentShotTicks++;
+							}
+						}));
+					}
+				}
+			});
+			minigunWarmup.start();
+		}
+	}
 }
 
 function shootArrow(gun)
@@ -591,6 +769,27 @@ ModPE.playSoundFromFile = function(fileName)
 			ModPE.log("DWGM: Error: " + err);
 		}
 	}
+}
+
+ModPE.loadSoundPool = function(path)
+{
+	try
+	{
+		soundPool = new android.media.SoundPool(10, android.media.AudioManager.STREAM_MUSIC, 0);
+		soundID = soundPool.load(path, 1);
+	} catch(e)
+	{
+		ModPE.showTipMessage("DWGM: Sounds not installed!");
+		ModPE.log("DWGM: Error: " + err);
+	}
+}
+
+ModPE.playLoadedSoundPool = function(volume)
+{
+	try
+	{
+		soundPool.play(soundID, volume, volume, 1, 0, 1.0);
+	} catch(e){ /* probably sounds not installed error */ }
 }
 //########## sounds functions - END ##########
 
