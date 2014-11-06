@@ -254,6 +254,21 @@ function changeCarriedItem(currentItem, previousItem)
 		soundID = null;
 	} catch(e){/* soundPool was already released */}
 
+	if(previousItem == MINIGUN.id)
+	{
+		try{
+			minigunSpin.stop();
+			minigunSpin.prepareAsync();
+		} catch(e){
+			clientMessage(e);
+			ModPE.log(e);
+			minigunSpin.reset();
+			minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+			minigunSpin.setLooping(true);
+			minigunSpin.prepareAsync();
+		}
+	}
+
 	// the current item is a gun
 	if(currentItem >= 300 && currentItem <= 345)
 	{
