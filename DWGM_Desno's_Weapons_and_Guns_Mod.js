@@ -55,10 +55,9 @@ var sightPngDecoded = android.graphics.BitmapFactory.decodeByteArray(android.uti
 var sightPngScaled;
 
 // general sounds
-var sound1 = new android.media.MediaPlayer();
-var sound2 = new android.media.MediaPlayer();
-var sound3 = new android.media.MediaPlayer();
-var sound4 = new android.media.MediaPlayer();
+var sound1;
+var sound2;
+var sound3;
 
 // gun sounds
 var soundPool;
@@ -74,14 +73,14 @@ var currentShotTicks = 0;
 // for assault rifles
 var shooting = false;
 var shootingRunnable;
-const assaultRiflesVolume = 0.80;
+const assaultRiflesVolume = 0.70;
 
 // for sniper rifles
 var latestShotTime;
 
 // for minigun
 var minigunTouchingFireButton = false;
-const minigunVolume = 0.55;
+const minigunVolume = 0.50;
 
 // bullet speed
 const sniperBulletSpeed = 9;
@@ -745,35 +744,57 @@ ModPE.playSoundFromFile = function(fileName)
 {
 	try
 	{
-		if(!sound1.isPlaying())
+		if(sound1 == null || !sound1.isPlaying())
 		{
+			if(sound1 == null)
+				sound1 = new android.media.MediaPlayer();
 			sound1.reset();
 			sound1.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
 			sound1.prepare();
+			sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			{
+				onCompletion: function(mp)
+				{
+					sound1.release();
+					sound1 = null;
+				}
+			});
 			sound1.start();
 			return;
 		}
-		if(!sound2.isPlaying())
+		if(sound2 == null || !sound2.isPlaying())
 		{
+			if(sound2 == null)
+				sound2 = new android.media.MediaPlayer();
 			sound2.reset();
 			sound2.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
 			sound2.prepare();
+			sound2.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			{
+				onCompletion: function(mp)
+				{
+					sound2.release();
+					sound2 = null;
+				}
+			});
 			sound2.start();
-			return;
-		}
-		if(!sound3.isPlaying())
-		{
-			sound3.reset();
-			sound3.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
-			sound3.prepare();
-			sound3.start();
 			return;
 		}else
 		{
-			sound4.reset();
-			sound4.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
-			sound4.prepare();
-			sound4.start();
+			if(sound3 == null)
+				sound3 = new android.media.MediaPlayer();
+			sound3.reset();
+			sound3.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
+			sound3.prepare();
+			sound3.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			{
+				onCompletion: function(mp)
+				{
+					sound3.release();
+					sound3 = null;
+				}
+			});
+			sound3.start();
 		}
 	}catch(err)
 	{
