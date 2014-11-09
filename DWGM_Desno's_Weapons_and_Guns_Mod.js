@@ -245,6 +245,15 @@ function leaveGame()
 
 	// for minigun
 	minigunTouchingFireButton = false;
+
+	// remove explosive bullets
+	for(var i in explosiveWeapons)
+	{
+		for(var j in explosiveWeapons[i].bulletsArray)
+		{
+			explosiveWeapons[i].bulletsArray.splice(j, 1);
+		}
+	}
 }
 
 function attackHook(attacker, victim)
@@ -265,8 +274,15 @@ function attackHook(attacker, victim)
 
 function entityRemovedHook(entity)
 {
-	// entity removed
-	//
+	// remove explosive bullets
+	for(var i in explosiveWeapons)
+	{
+		for(var j in explosiveWeapons[i].bulletsArray)
+		{
+			if(entity == explosiveWeapons[i].bulletsArray[j].entity)
+				explosiveWeapons[i].bulletsArray.splice(j, 1);
+		}
+	}
 }
 
 function changeCarriedItem(currentItem, previousItem)
@@ -473,7 +489,7 @@ function modTick()
 	{
 		for(var j in explosiveWeapons[i].bulletsArray)
 		{
-			var arrow = explosiveWeapons[i].bulletsArray[j]
+			var arrow = explosiveWeapons[i].bulletsArray[j];
 			var xArrow = Entity.getX(arrow.entity);
 			var yArrow = Entity.getY(arrow.entity);
 			var zArrow = Entity.getZ(arrow.entity);
