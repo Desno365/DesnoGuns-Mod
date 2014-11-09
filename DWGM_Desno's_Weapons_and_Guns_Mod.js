@@ -87,6 +87,7 @@ const sniperBulletSpeed = 9;
 const assaultBulletSpeed = 6.8;
 const bazookaBulletSpeed = 5.1;
 const pistolBulletSpeed = 6;
+const shotgunBulletSpeed = 4.8;
 
 // weapons
 const AK47 = { name:"AK47", id:300, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
@@ -169,8 +170,15 @@ const MINIGUN = { name:"Minigun", id:320, fireRate:1, recoil:2, bulletSpeed:assa
 	"iri",
 	"   "] };
 
+// id must be changed!
+const SHOTGUN_TEST = { name:"Shotgun", id:331, fireRate:8, recoil:2, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:4, shotgunBulletsPerShot:9, accuracy:5, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"lead", ammo:10, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, MINIGUN];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, MINIGUN, SHOTGUN_TEST];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE];
 
 // add guns
@@ -346,7 +354,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id)
+		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == SHOTGUN_TEST.id)
 		{
 			// load current gun
 			var currentGun;
@@ -358,6 +366,7 @@ function changeCarriedItem(currentItem, previousItem)
 				case DESERT_EAGLE.id: currentGun = DESERT_EAGLE; break;
 				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
 				case DRAGUNOV.id: currentGun = DRAGUNOV; break;
+				case SHOTGUN_TEST.id: currentGun = SHOTGUN_TEST; break;
 
 				default: currentGun = BARRETT;
 			}		
@@ -566,7 +575,10 @@ function sniperRifleShoot(gun)
 			else
 			{
 				ModPE.playSoundFromFile(gun.sound);
-				shootArrow(gun);
+				if(gun.isShotgun)
+					shootArrowShotgun(gun);
+				else
+					shootArrow(gun);
 				Item.damageCarriedGun(gun);
 				latestShotTime = java.lang.System.currentTimeMillis();
 				showCloudParticle(gun.smoke);
@@ -576,7 +588,10 @@ function sniperRifleShoot(gun)
 		if(Level.getGameMode() == 1)
 		{
 			ModPE.playSoundFromFile(gun.sound);
-			shootArrow(gun);
+			if(gun.isShotgun)
+				shootArrowShotgun(gun);
+			else
+				shootArrow(gun);
 			latestShotTime = java.lang.System.currentTimeMillis();
 			showCloudParticle(gun.smoke);
 		}
@@ -709,6 +724,29 @@ function minigunShootCreative(event)
 				}
 			});
 			minigunWarmup.start();
+		}
+	}
+}
+
+function shootArrowShotgun(gun)
+{
+	var playerDir = lookDir(getYaw(), getPitch());
+	var bulletsPerShotForXY = gun.shotgunWidth / Math.sqrt(gun.shotgunBulletsPerShot) * 2;
+	for(var i = -gun.shotgunWidth; i < gun.shotgunWidth; i += bulletsPerShotForXY)
+	{
+		for(var j = -gun.shotgunWidth; j < gun.shotgunWidth; j += bulletsPerShotForXY)
+		{
+			var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
+			var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
+			var gunShootDir = lookDir(getYaw() + yawAccuracyValue + i, getPitch() + pitchAccuracyValue + j);
+
+			var arrow = Level.spawnMob(getPlayerX() + (playerDir.x * 2), getPlayerY() + (playerDir.y * 2.5), getPlayerZ() + (playerDir.z * 2), 80);
+			setVelX(arrow, gunShootDir.x * gun.bulletSpeed);
+			setVelY(arrow, gunShootDir.y * gun.bulletSpeed);
+			setVelZ(arrow, gunShootDir.z * gun.bulletSpeed);
+
+			if(gun.hasExplosiveBullets)
+				gun.bulletsArray.push(new arrowObject(arrow));
 		}
 	}
 }
