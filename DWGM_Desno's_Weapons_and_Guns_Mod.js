@@ -87,7 +87,7 @@ const sniperBulletSpeed = 9;
 const assaultBulletSpeed = 6.8;
 const bazookaBulletSpeed = 5.1;
 const pistolBulletSpeed = 6;
-const shotgunBulletSpeed = 4.8;
+const shotgunBulletSpeed = 4.2;
 
 // weapons
 const AK47 = { name:"AK47", id:300, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
@@ -171,7 +171,7 @@ const MINIGUN = { name:"Minigun", id:320, fireRate:1, recoil:2, bulletSpeed:assa
 	"   "] };
 
 // id must be changed!
-const SHOTGUN_TEST = { name:"Shotgun", id:331, fireRate:8, recoil:2, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:4, shotgunBulletsPerShot:9, accuracy:5, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"lead", ammo:10, smoke:1, recipe:[
+const SHOTGUN_TEST = { name:"Shotgun", id:331, fireRate:8, recoil:2, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:5, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"lead", ammo:10, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -731,10 +731,10 @@ function minigunShootCreative(event)
 function shootArrowShotgun(gun)
 {
 	var playerDir = lookDir(getYaw(), getPitch());
-	var bulletsPerShotForXY = gun.shotgunWidth / Math.sqrt(gun.shotgunBulletsPerShot) * 2;
-	for(var i = -gun.shotgunWidth; i < gun.shotgunWidth; i += bulletsPerShotForXY)
+	var bulletsPerShotForXY = gun.shotgunWidth / (gun.shotgunBulletsPerLineShot - 1) * 2;
+	for(var i = -gun.shotgunWidth; i <= gun.shotgunWidth; i += bulletsPerShotForXY)
 	{
-		for(var j = -gun.shotgunWidth; j < gun.shotgunWidth; j += bulletsPerShotForXY)
+		for(var j = -gun.shotgunWidth; j <= gun.shotgunWidth; j += bulletsPerShotForXY)
 		{
 			var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
 			var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
@@ -1211,3 +1211,4 @@ function informationsForWeaponsModUI()
 {
 	clientMessage("WIP");
 }
+
