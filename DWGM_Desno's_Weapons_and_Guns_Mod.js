@@ -164,6 +164,32 @@ const GLOCK = { name:"Glock", id:473, fireRate:3, recoil:2, bulletSpeed:pistolBu
 	"iri",
 	"   "] };
 
+const L86 = { name:"L86", id:474, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"M249_and_L86Shoot.ogg",texture:"fireworks", ammo:100, smoke:2, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const L96 = { name:"L96", id:475, fireRate:26, recoil:15, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"L96Shoot.ogg", texture:"fireworks_charge", ammo:10, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M9 = { name:"M9", id:476, fireRate:1, recoil:1, bulletSpeed:pistolBulletSpeed, accuracy:8, zoomLevel:60, sound:"M9Shoot.ogg", texture:"fireworks_charge_overlay", ammo:15, smoke:0, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M14 = { name:"M14", id:477, fireRate:1, recoil:4, bulletSpeed:assaultBulletSpeed, zoomLevel:60, accuracy:2, sound:"M14_and_M16A4Shoot.ogg", texture:"fishing_rod_cast", ammo:20, smoke:0, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M16A4 = { name:"M16A4", id:478, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"M14_and_M16A4Shoot.ogg",texture:"fishing_rod_uncast", ammo:30, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+
 // id must be changed!
 const MINIGUN = { name:"Minigun", id:485, fireRate:1, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"lead", ammo:500, smoke:3, recipe:[
 	"   ",
@@ -178,7 +204,7 @@ const SHOTGUN_TEST = { name:"Shotgun", id:486, fireRate:8, recoil:2, bulletSpeed
 
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, MINIGUN, SHOTGUN_TEST];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, L86, L96, M9, M14, M16A4, MINIGUN, SHOTGUN_TEST];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE];
 
 // add guns
@@ -254,6 +280,7 @@ function leaveGame()
 			explosiveWeapons[i].bulletsArray.splice(j, 1);
 		}
 	}
+
 }
 
 function attackHook(attacker, victim)
@@ -341,8 +368,8 @@ function changeCarriedItem(currentItem, previousItem)
 			}
 		}));
 
-		// assault rifles
-		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id || currentItem == FNSCAR.id || currentItem == G3.id || currentItem == G36.id || currentItem == GLOCK.id)
+		// assault rifles, light machine guns and sub machine guns
+		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id || currentItem == FNSCAR.id || currentItem == G3.id || currentItem == G36.id || currentItem == GLOCK.id || currentItem == L86.id || currentItem == M16A4.id)
 		{
 			// load current gun
 			var currentGun;
@@ -356,6 +383,8 @@ function changeCarriedItem(currentItem, previousItem)
 				case G3.id: currentGun = G3; break;
 				case G36.id: currentGun = G36; break;
 				case GLOCK.id: currentGun = GLOCK; break;
+				case L86.id: currentGun = L86; break;
+				case M16A4.id: currentGun = M16A4; break;
 
 				default: currentGun = AK47;
 			}
@@ -391,7 +420,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == SHOTGUN_TEST.id)
+		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == L96.id || currentItem == M9.id || currentItem == M14.id || currentItem == SHOTGUN_TEST.id)
 		{
 			// load current gun
 			var currentGun;
@@ -404,6 +433,9 @@ function changeCarriedItem(currentItem, previousItem)
 				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
 				case DRAGUNOV.id: currentGun = DRAGUNOV; break;
 				case SHOTGUN_TEST.id: currentGun = SHOTGUN_TEST; break;
+				case L96.id: currentGun = L96; break;
+				case M9.id: currentGun = M9; break;
+				case M14.id: currentGun = M14; break;
 
 				default: currentGun = BARRETT;
 			}		
