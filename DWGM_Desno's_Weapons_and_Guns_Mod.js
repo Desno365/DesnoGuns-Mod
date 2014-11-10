@@ -73,6 +73,7 @@ var currentShotTicks = 0;
 // for assault rifles
 var shooting = false;
 var shootingRunnable;
+var onClickRunnable;
 const assaultRiflesVolume = 0.70;
 
 // for sniper rifles
@@ -95,7 +96,7 @@ const AK47 = { name:"AK47", id:460, fireRate:3, recoil:2, bulletSpeed:assaultBul
 	"iri",
 	"   "] };
 
-const AK74 = { name:"AK74", id:461, fireRate:3, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"AK74Shoot.ogg",texture:"carrot_on_a_stick", ammo:30, smoke:1, recipe:[
+const AK74 = { name:"AK74", id:461, fireRate:3, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"AK74Shoot.ogg", texture:"carrot_on_a_stick", ammo:30, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -164,7 +165,7 @@ const GLOCK = { name:"Glock", id:473, fireRate:3, recoil:2, bulletSpeed:pistolBu
 	"iri",
 	"   "] };
 
-const L86 = { name:"L86", id:474, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"M249_and_L86Shoot.ogg",texture:"fireworks", ammo:100, smoke:2, recipe:[
+const L86 = { name:"L86", id:474, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"M249_and_L86Shoot.ogg", texture:"fireworks", ammo:100, smoke:2, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -184,7 +185,37 @@ const M14 = { name:"M14", id:477, fireRate:1, recoil:4, bulletSpeed:assaultBulle
 	"iri",
 	"   "] };
 
-const M16A4 = { name:"M16A4", id:478, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"M14_and_M16A4Shoot.ogg",texture:"fishing_rod_uncast", ammo:30, smoke:1, recipe:[
+const M16A4 = { name:"M16A4", id:478, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"M14_and_M16A4Shoot.ogg", texture:"fishing_rod_uncast", ammo:30, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M21 = { name:"M21", id:479, fireRate:10, recoil:15, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"M21Shoot.ogg", texture:"fish_cooked", ammo:10, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M40A3_ICE = { name:"M40A3 Ice", id:480, fireRate:10, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"fish_raw", ammo:5, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M40A3 = { name:"M40A3", id:481, fireRate:10, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"flower_pot", ammo:5, smoke:1, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M60E4 = { name:"M60E4", id:482, fireRate:3, recoil:7, bulletSpeed:assaultBulletSpeed, accuracy:3.5, zoomLevel:60, sound:"RPD_and_M60E4_and_RPKShoot.ogg", texture:"ghast_tear", ammo:100, smoke:2, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M72LAW = { name:"M72LAW", id:483, fireRate:8, recoil:6, bulletSpeed:bazookaBulletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M249 = { name:"M249", id:484, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:3.5, zoomLevel:60, sound:"M249Shoot.ogg", texture:"helmet", textureNumber:1, ammo:100, smoke:2, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -204,8 +235,8 @@ const SHOTGUN_TEST = { name:"Shotgun", id:486, fireRate:8, recoil:2, bulletSpeed
 
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, L86, L96, M9, M14, M16A4, MINIGUN, SHOTGUN_TEST];
-var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, MINIGUN, SHOTGUN_TEST];
+var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW];
 
 // add guns
 for(var i in guns)
@@ -320,10 +351,11 @@ function changeCarriedItem(currentItem, previousItem)
 
 	// release the resources for sounds
 	try{
-		soundPool.release();
+		if(SoundPool != null)
+			soundPool.release();
 		soundPool = null;
 		soundID = null;
-	} catch(e){/* soundPool was already released */}
+	} catch(e){ ModPE.log("DWGM: something wrong: " + e); }
 
 	if(previousItem == MINIGUN.id)
 	{
@@ -343,10 +375,11 @@ function changeCarriedItem(currentItem, previousItem)
 	// the current item is a gun
 	if(currentItem >= 460 && currentItem <= 505)
 	{
-		if(!(previousItem >= 300 && previousItem <= 345))
+		if(!(previousItem >= 460 && previousItem <= 505))
 			shootAndSettingsButtons();
 
 		// reset clicks and long clicks
+		resetRunnables();
 		currentActivity.runOnUiThread(new java.lang.Runnable(
 		{
 			run: function()
@@ -358,18 +391,11 @@ function changeCarriedItem(currentItem, previousItem)
 						return false;
 					}
 				});
-				shotImage.setOnClickListener(new android.view.View.OnClickListener()
-				{
-					onClick: function(v)
-					{
-						return false;
-					}
-				});
 			}
 		}));
 
 		// assault rifles, light machine guns and sub machine guns
-		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id || currentItem == FNSCAR.id || currentItem == G3.id || currentItem == G36.id || currentItem == GLOCK.id || currentItem == L86.id || currentItem == M16A4.id)
+		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id || currentItem == FNSCAR.id || currentItem == G3.id || currentItem == G36.id || currentItem == GLOCK.id || currentItem == L86.id || currentItem == M16A4.id || currentItem == M60E4.id || currentItem == M249.id)
 		{
 			// load current gun
 			var currentGun;
@@ -385,6 +411,8 @@ function changeCarriedItem(currentItem, previousItem)
 				case GLOCK.id: currentGun = GLOCK; break;
 				case L86.id: currentGun = L86; break;
 				case M16A4.id: currentGun = M16A4; break;
+				case M60E4.id: currentGun = M60E4; break;
+				case M249.id: currentGun = M249; break;
 
 				default: currentGun = AK47;
 			}
@@ -420,7 +448,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == L96.id || currentItem == M9.id || currentItem == M14.id || currentItem == SHOTGUN_TEST.id)
+		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == L96.id || currentItem == M9.id || currentItem == M14.id || currentItem == SHOTGUN_TEST.id || currentItem == M21.id || currentItem == M40A3_ICE.id || currentItem == M40A3.id || currentItem == M72LAW.id)
 		{
 			// load current gun
 			var currentGun;
@@ -432,27 +460,25 @@ function changeCarriedItem(currentItem, previousItem)
 				case DESERT_EAGLE.id: currentGun = DESERT_EAGLE; break;
 				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
 				case DRAGUNOV.id: currentGun = DRAGUNOV; break;
-				case SHOTGUN_TEST.id: currentGun = SHOTGUN_TEST; break;
 				case L96.id: currentGun = L96; break;
 				case M9.id: currentGun = M9; break;
 				case M14.id: currentGun = M14; break;
+				case M21.id: currentGun = M21; break;
+				case M40A3_ICE.id: currentGun = M40A3_ICE; break;
+				case M40A3.id: currentGun = M40A3; break;
+				case M72LAW.id: currentGun = M72LAW; break;
+
+				case SHOTGUN_TEST.id: currentGun = SHOTGUN_TEST; break;
 
 				default: currentGun = BARRETT;
 			}		
 
-			// load click events
-			currentActivity.runOnUiThread(new java.lang.Runnable(
+			// load click event
+			onClickRunnable = (new java.lang.Runnable(
 			{
 				run: function()
 				{
-					shotImage.setOnClickListener(new android.view.View.OnClickListener()
-					{
-						onClick: function(v)
-						{
-							sniperRifleShoot(currentGun);
-							return false;
-						}
-					});
+					sniperRifleShoot(currentGun);
 				}
 			}));
 		}
@@ -494,7 +520,7 @@ function changeCarriedItem(currentItem, previousItem)
 
 	} else
 	{
-		if(previousItem >= 300 && previousItem <= 345)
+		if(previousItem >= 460 && previousItem <= 505)
 		{
 			//the item before was weapon, now not
 			removeShootAndSettingsButtons();
@@ -1006,6 +1032,15 @@ function shootAndSettingsButtons()
 
 				shotImage = new android.widget.ImageView(currentActivity);
 				shotImage.setImageBitmap(firePngScaled);
+				shotImage.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function(v)
+					{
+						if(onClickRunnable != null)
+							onClickRunnable.run();
+						return false;
+					}
+				});
 				shotImage.setOnGenericMotionListener(new android.view.View.OnGenericMotionListener()
 				{
 					onGenericMotion: function(v, event)
@@ -1061,6 +1096,17 @@ function removeShootAndSettingsButtons()
 		}
 	}));
 	currentShotTicks = 0;
+}
+
+function resetRunnables()
+{
+	if(shootingRunnable != null)
+	{
+		shooting = false;
+		shootingRunnable = null;
+	}
+	if(onClickRunnable != null)
+		onClickRunnable = null;
 }
 //########## shoot functions - END ##########
 
