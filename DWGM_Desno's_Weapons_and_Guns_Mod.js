@@ -89,6 +89,7 @@ const assaultBulletSpeed = 6.8;
 const bazookaBulletSpeed = 5.1;
 const pistolBulletSpeed = 6;
 const shotgunBulletSpeed = 4.2;
+const grenadeLauncherBulletSpeed = 3.3;
 
 // weapons
 const AK47 = { name:"AK47", id:460, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
@@ -156,86 +157,93 @@ const G36 = { name:"G36", id:472, fireRate:3, recoil:2, bulletSpeed:assaultBulle
 	"iri",
 	"   "] };
 
-const GL1 = "missing"; // also in the code!!!
-
-const GL6 = "missing"; // also in the code!!!
-
-const GLOCK = { name:"Glock", id:473, fireRate:3, recoil:2, bulletSpeed:pistolBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"GlockShoot.ogg", texture:"fireball", ammo:31, smoke:1, recipe:[
+// specs must be changed
+const GL1 = { name:"GL1", id:473, fireRate:10, recoil:3, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const L86 = { name:"L86", id:474, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"M249_and_L86Shoot.ogg", texture:"fireworks", ammo:100, smoke:2, recipe:[
+const GL6 = { name:"GL6", id:474, fireRate:10, recoil:3, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const L96 = { name:"L96", id:475, fireRate:26, recoil:15, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"L96Shoot.ogg", texture:"fireworks_charge", ammo:10, smoke:1, recipe:[
+const GLOCK = { name:"Glock", id:475, fireRate:3, recoil:2, bulletSpeed:pistolBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"GlockShoot.ogg", texture:"fireball", ammo:31, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M9 = { name:"M9", id:476, fireRate:1, recoil:1, bulletSpeed:pistolBulletSpeed, accuracy:8, zoomLevel:60, sound:"M9Shoot.ogg", texture:"fireworks_charge_overlay", ammo:15, smoke:0, recipe:[
+const L86 = { name:"L86", id:476, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"M249_and_L86Shoot.ogg", texture:"fireworks", ammo:100, smoke:2, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M14 = { name:"M14", id:477, fireRate:1, recoil:4, bulletSpeed:assaultBulletSpeed, zoomLevel:60, accuracy:2, sound:"M14_and_M16A4Shoot.ogg", texture:"fishing_rod_cast", ammo:20, smoke:0, recipe:[
+const L96 = { name:"L96", id:477, fireRate:26, recoil:15, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"L96Shoot.ogg", texture:"fireworks_charge", ammo:10, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M16A4 = { name:"M16A4", id:478, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"M14_and_M16A4Shoot.ogg", texture:"fishing_rod_uncast", ammo:30, smoke:1, recipe:[
+const M9 = { name:"M9", id:478, fireRate:1, recoil:1, bulletSpeed:pistolBulletSpeed, accuracy:8, zoomLevel:60, sound:"M9Shoot.ogg", texture:"fireworks_charge_overlay", ammo:15, smoke:0, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M21 = { name:"M21", id:479, fireRate:10, recoil:15, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"M21Shoot.ogg", texture:"fish_cooked", ammo:10, smoke:1, recipe:[
+const M14 = { name:"M14", id:479, fireRate:1, recoil:4, bulletSpeed:assaultBulletSpeed, zoomLevel:60, accuracy:2, sound:"M14_and_M16A4Shoot.ogg", texture:"fishing_rod_cast", ammo:20, smoke:0, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M40A3_ICE = { name:"M40A3 Ice", id:480, fireRate:10, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"fish_raw", ammo:5, smoke:1, recipe:[
+const M16A4 = { name:"M16A4", id:480, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"M14_and_M16A4Shoot.ogg", texture:"fishing_rod_uncast", ammo:30, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M40A3 = { name:"M40A3", id:481, fireRate:10, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"flower_pot", ammo:5, smoke:1, recipe:[
+const M21 = { name:"M21", id:481, fireRate:10, recoil:15, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"M21Shoot.ogg", texture:"fish_cooked", ammo:10, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M60E4 = { name:"M60E4", id:482, fireRate:3, recoil:7, bulletSpeed:assaultBulletSpeed, accuracy:3.5, zoomLevel:60, sound:"RPD_and_M60E4_and_RPKShoot.ogg", texture:"ghast_tear", ammo:100, smoke:2, recipe:[
+const M40A3_ICE = { name:"M40A3 Ice", id:482, fireRate:10, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"fish_raw", ammo:5, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M72LAW = { name:"M72LAW", id:483, fireRate:8, recoil:6, bulletSpeed:bazookaBulletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:[
+const M40A3 = { name:"M40A3", id:483, fireRate:10, recoil:20, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"flower_pot", ammo:5, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
-const M249 = { name:"M249", id:484, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:3.5, zoomLevel:60, sound:"M249Shoot.ogg", texture:"helmet", textureNumber:1, ammo:100, smoke:2, recipe:[
+const M60E4 = { name:"M60E4", id:484, fireRate:3, recoil:7, bulletSpeed:assaultBulletSpeed, accuracy:3.5, zoomLevel:60, sound:"RPD_and_M60E4_and_RPKShoot.ogg", texture:"ghast_tear", ammo:100, smoke:2, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M72LAW = { name:"M72LAW", id:485, fireRate:8, recoil:6, bulletSpeed:bazookaBulletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:[
+	"   ",
+	"iri",
+	"   "] };
+
+const M249 = { name:"M249", id:486, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:3.5, zoomLevel:60, sound:"M249Shoot.ogg", texture:"helmet", textureNumber:1, ammo:100, smoke:2, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
 
 // id must be changed!
-const MINIGUN = { name:"Minigun", id:485, fireRate:1, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"lead", ammo:500, smoke:3, recipe:[
+const MINIGUN = { name:"Minigun", id:487, fireRate:1, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"lead", ammo:500, smoke:3, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
 // id must be changed!
-const SHOTGUN_TEST = { name:"Shotgun", id:486, fireRate:8, recoil:2, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:5, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"lead", ammo:10, smoke:1, recipe:[
+const SHOTGUN_TEST = { name:"Shotgun", id:488, fireRate:8, recoil:2, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:5, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"lead", ammo:10, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
 
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, MINIGUN, SHOTGUN_TEST];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, MINIGUN, SHOTGUN_TEST];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW];
 
 // add guns
@@ -478,7 +486,7 @@ function changeCarriedItem(currentItem, previousItem)
 			{
 				run: function()
 				{
-					sniperRifleShoot(currentGun);
+					onClickWeaponShoot(currentGun);
 				}
 			}));
 		}
@@ -659,7 +667,7 @@ function assaultRiflesShootCreative(event, gun)
 	}
 }
 
-function sniperRifleShoot(gun)
+function onClickWeaponShoot(gun)
 {
 	if(latestShotTime == null || java.lang.System.currentTimeMillis() > (latestShotTime + (gun.fireRate * 50)))
 	{
@@ -673,7 +681,12 @@ function sniperRifleShoot(gun)
 				if(gun.isShotgun)
 					shootArrowShotgun(gun);
 				else
-					shootArrow(gun);
+				{
+					if(gun.isGrenadeLauncher)
+						shootGrenade(gun);
+					else
+						shootArrow(gun);
+				}
 				Item.damageCarriedGun(gun);
 				latestShotTime = java.lang.System.currentTimeMillis();
 				showCloudParticle(gun.smoke);
@@ -844,6 +857,18 @@ function shootArrowShotgun(gun)
 				gun.bulletsArray.push(new arrowObject(arrow));
 		}
 	}
+}
+
+function shootGrenade(gun)
+{
+	var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
+	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
+	var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+	var grenade = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 65);
+	setVelX(grenade, gunShootDir.x * gun.bulletSpeed);
+	setVelY(grenade, gunShootDir.y * gun.bulletSpeed);
+	setVelZ(grenade, gunShootDir.z * gun.bulletSpeed);
 }
 
 function shootArrow(gun)
