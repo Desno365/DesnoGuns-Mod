@@ -456,7 +456,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == L96.id || currentItem == M9.id || currentItem == M14.id || currentItem == SHOTGUN_TEST.id || currentItem == M21.id || currentItem == M40A3_ICE.id || currentItem == M40A3.id || currentItem == M72LAW.id)
+		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == GL1.id || currentItem == GL6.id || currentItem == L96.id || currentItem == M9.id || currentItem == M14.id || currentItem == SHOTGUN_TEST.id || currentItem == M21.id || currentItem == M40A3_ICE.id || currentItem == M40A3.id || currentItem == M72LAW.id)
 		{
 			// load current gun
 			var currentGun;
@@ -468,6 +468,8 @@ function changeCarriedItem(currentItem, previousItem)
 				case DESERT_EAGLE.id: currentGun = DESERT_EAGLE; break;
 				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
 				case DRAGUNOV.id: currentGun = DRAGUNOV; break;
+				case GL1.id: currentGun = GL1; break;
+				case GL6.id: currentGun = GL6; break;
 				case L96.id: currentGun = L96; break;
 				case M9.id: currentGun = M9; break;
 				case M14.id: currentGun = M14; break;
@@ -699,7 +701,12 @@ function onClickWeaponShoot(gun)
 			if(gun.isShotgun)
 				shootArrowShotgun(gun);
 			else
-				shootArrow(gun);
+			{
+				if(gun.isGrenadeLauncher)
+					shootGrenade(gun);
+				else
+					shootArrow(gun);
+			}
 			latestShotTime = java.lang.System.currentTimeMillis();
 			showCloudParticle(gun.smoke);
 		}
