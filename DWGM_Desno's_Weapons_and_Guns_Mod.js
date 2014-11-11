@@ -91,8 +91,19 @@ const pistolBulletSpeed = 6;
 const shotgunBulletSpeed = 4.2;
 const grenadeLauncherBulletSpeed = 3.3;
 
+// guns type
+const GUN_TYPE_ASSAULT_RIFLE = 1;
+const GUN_TYPE_SUB_MACHINE = 2;
+const GUN_TYPE_LIGHT_MACHINE = 3;
+const GUN_TYPE_SNIPER_RIFLE = 4;
+const GUN_TYPE_SHOTGUN = 5;
+const GUN_TYPE_MACHINE_PISTOL = 6;
+const GUN_TYPE_HANDGUN = 7;
+const GUN_TYPE_LAUNCHER = 8;
+const GUN_TYPE_MINIGUN = 9;
+
 // weapons
-const AK47 = { name:"AK47", id:460, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
+const AK47 = { type:GUN_TYPE_ASSAULT_RIFLE, name:"AK47", id:460, fireRate:3, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5, zoomLevel:60, sound:"AK47Shoot.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:[
 	"   ",
 	"iri",
 	"   "] };
@@ -402,29 +413,26 @@ function changeCarriedItem(currentItem, previousItem)
 			}
 		}));
 
-		// assault rifles, light machine guns and sub machine guns
-		if(currentItem == AK47.id || currentItem == AK74.id || currentItem == AUG.id || currentItem == BIZON.id || currentItem == FNSCAR.id || currentItem == G3.id || currentItem == G36.id || currentItem == GLOCK.id || currentItem == L86.id || currentItem == M16A4.id || currentItem == M60E4.id || currentItem == M249.id)
+		// load current gun
+		var currentGun = 0;
+		findTheGun:
+		for(var i in guns)
 		{
-			// load current gun
-			var currentGun;
-			switch(currentItem)
+			if(currentItem == guns[i].id)
 			{
-				case AK47.id: currentGun = AK47; break;
-				case AK74.id: currentGun = AK74; break;
-				case AUG.id: currentGun = AUG; break;
-				case BIZON.id: currentGun = BIZON; break;
-				case FNSCAR.id: currentGun = FNSCAR; break;
-				case G3.id: currentGun = G3; break;
-				case G36.id: currentGun = G36; break;
-				case GLOCK.id: currentGun = GLOCK; break;
-				case L86.id: currentGun = L86; break;
-				case M16A4.id: currentGun = M16A4; break;
-				case M60E4.id: currentGun = M60E4; break;
-				case M249.id: currentGun = M249; break;
-
-				default: currentGun = AK47;
+				currentGun = guns[i];
+				break findTheGun;
 			}
+		}
+		if(currentGun == 0)
+		{
+			clientMessage("Error: no such gun");
+			currentGun = AK47;
+		}
 
+		// assault rifles, sub machine guns and light machine guns
+		if(currentGun.type == GUN_TYPE_ASSAULT_RIFLE || currentGun.type == GUN_TYPE_SUB_MACHINE || currentGun.type == GUN_TYPE_LIGHT_MACHINE || currentGun.type == GUN_TYPE_MACHINE_PISTOL)
+		{
 			// load sounds for the gun
 			ModPE.loadSoundPool(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);	
 
@@ -438,7 +446,7 @@ function changeCarriedItem(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
-								assaultRiflesShootCreative(event, currentGun);
+								onTouchWeaponShootCreative(event, currentGun);
 								return false;
 							}
 						});
@@ -447,7 +455,7 @@ function changeCarriedItem(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
-								assaultRiflesShootSurvival(event, currentGun);
+								onTouchWeaponShootSurvival(event, currentGun);
 								return false;
 							}
 						});
@@ -456,33 +464,8 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentItem == AT4.id || currentItem == BARRETT.id || currentItem == BARRETT_EXPLOSIVE.id || currentItem == DESERT_EAGLE.id || currentItem == DESERT_EAGLE_GOLD.id || currentItem == DRAGUNOV.id || currentItem == GL1.id || currentItem == GL6.id || currentItem == L96.id || currentItem == M9.id || currentItem == M14.id || currentItem == SHOTGUN_TEST.id || currentItem == M21.id || currentItem == M40A3_ICE.id || currentItem == M40A3.id || currentItem == M72LAW.id)
-		{
-			// load current gun
-			var currentGun;
-			switch(currentItem)
-			{
-				case AT4.id: currentGun = AT4; break;
-				case BARRETT.id: currentGun = BARRETT; break;
-				case BARRETT_EXPLOSIVE.id: currentGun = BARRETT_EXPLOSIVE; break;
-				case DESERT_EAGLE.id: currentGun = DESERT_EAGLE; break;
-				case DESERT_EAGLE_GOLD.id: currentGun = DESERT_EAGLE_GOLD; break;
-				case DRAGUNOV.id: currentGun = DRAGUNOV; break;
-				case GL1.id: currentGun = GL1; break;
-				case GL6.id: currentGun = GL6; break;
-				case L96.id: currentGun = L96; break;
-				case M9.id: currentGun = M9; break;
-				case M14.id: currentGun = M14; break;
-				case M21.id: currentGun = M21; break;
-				case M40A3_ICE.id: currentGun = M40A3_ICE; break;
-				case M40A3.id: currentGun = M40A3; break;
-				case M72LAW.id: currentGun = M72LAW; break;
-
-				case SHOTGUN_TEST.id: currentGun = SHOTGUN_TEST; break;
-
-				default: currentGun = BARRETT;
-			}		
-
+		if(currentGun.type == GUN_TYPE_SNIPER_RIFLE || currentGun.type == GUN_TYPE_SHOTGUN || currentGun.type == GUN_TYPE_HANDGUN || currentGun.type == GUN_TYPE_LAUNCHER)
+		{	
 			// load click event
 			onClickRunnable = (new java.lang.Runnable(
 			{
@@ -494,10 +477,8 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 
 		// minigun
-		if(currentItem == MINIGUN.id)
+		if(currentGun.type == GUN_TYPE_MINIGUN)
 		{
-			currentGun = MINIGUN;
-
 			// load sounds for the gun
 			ModPE.loadSoundPool(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);
 
@@ -601,7 +582,7 @@ function addNewGun(gun)
 	Item.setMaxDamage(gun.id, gun.ammo);
 }
 
-function assaultRiflesShootSurvival(event, gun)
+function onTouchWeaponShootSurvival(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -638,7 +619,7 @@ function assaultRiflesShootSurvival(event, gun)
 	}
 }
 
-function assaultRiflesShootCreative(event, gun)
+function onTouchWeaponShootCreative(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
