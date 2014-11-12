@@ -372,6 +372,18 @@ Item.addShapedRecipe(knifeId, 1, 0, [
 	"r r",
 	"iri"], ["i", 265, 0, "r", 331, 0]);
 
+const parachuteId = 433;
+const parachuteMaxDamage = 10;
+ModPE.setItem(parachuteId, "boat", 0, "Parachute");
+Item.setMaxDamage(parachuteId, parachuteMaxDamage);
+Item.addShapedRecipe(parachuteId, 1, 0, [
+	"iri",
+	"r r",
+	"iri"], ["i", 265, 0, "r", 331, 0]);
+var isParachuting = false;
+var countdownHealth = 0;
+var previousHealth;
+
 
 function selectLevelHook()
 {
@@ -386,6 +398,7 @@ function newLevel()
 		for(var i = 0; i < guns.length; i++)
 			Player.addItemCreativeInv(guns[i].id, 1);
 		Player.addItemCreativeInv(knifeId, 1);
+		Player.addItemCreativeInv(parachuteId, 1);
 		initCreativeItems = false;
 	}
 }
@@ -424,6 +437,10 @@ function leaveGame()
 		}
 	}
 
+	// parachute
+	isParachuting = false;
+	countdownHealth = 0;
+	previousHealth;
 }
 
 function attackHook(attacker, victim)
@@ -648,6 +665,48 @@ function modTick()
 				arrow.previousZ = zArrow;
 			}
 		}
+	}
+
+	// parachute
+	if(Player.getCarriedItem() == parachuteId)
+	{
+		if(Player.getCarriedItemData() < parachuteMaxDamage)
+		{
+			// player will hit the ground soon
+			if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())))
+			{
+				countdownHealth++;
+				if(countdownHealth == 5)
+				{
+					Player.setHealth(20);
+					countdownHealth = 0;
+					Player.setHealth(previousHealth);
+					isParachuting = false;
+					if(Level.getGameMode() == 0)
+						Item.damageCarriedItem();
+				}
+			}
+
+			// player is falling, oh no! We have to help him.
+			if(Entity.getVelY(Player.getEntity()) <= -0.5)
+			{
+				isParachuting = true;
+				previousHealth = Entity.getHealth(Player.getEntity());
+				if(previousHealth > 20)
+				{
+					previousHealth = 20;
+				}
+				Player.setHealth(9999);
+			}
+		}
+	} else
+	{
+		isParachuting = false;
+	}
+	if(isParachuting)
+	{
+		// thanks to Anti for this line of code, it works better than making the player riding a chicken (that was my idea)
+		Entity.setVelY(Player.getEntity(), -0.10);
 	}
 }
 
@@ -1254,6 +1313,9 @@ Item.damageCarriedItem = function()
 		var maxDamage;
 		if(Player.getCarriedItem() == knifeId)
 			maxDamage = knifeMaxDamage;
+		if(Player.getCarriedItem() == parachuteId)
+			maxDamage = parachuteMaxDamage;
+
 		if(Player.getCarriedItemData() < maxDamage)
 			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
 		else
