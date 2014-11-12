@@ -32,6 +32,7 @@ metrics = null;
 
 //tip messages displayed variables
 var displayedMessageNoSound = false;
+var displayedMessageMedicalKit = false;
 
 //initialize variables
 var initCreativeItems = true;
@@ -384,6 +385,9 @@ var isParachuting = false;
 var countdownHealth = 0;
 var previousHealth;
 
+const medicalKitId = 434;
+ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
+
 
 function selectLevelHook()
 {
@@ -618,13 +622,22 @@ function changeCarriedItem(currentItem, previousItem)
 				}
 			}));
 		}
-
 	} else
 	{
 		if(previousItem >= 460 && previousItem <= 505)
 		{
 			//the item before was weapon, now not
 			removeShootAndSettingsButtons();
+		}
+	}
+
+	// medical kit explanation
+	if(currentItem == medicalKitId)
+	{
+		if(!displayedMessageMedicalKit)
+		{
+			clientMessage("In the magic world of MCPE you can eat Medical Kits!");
+			displayedMessageMedicalKit = true;
 		}
 	}
 }
