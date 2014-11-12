@@ -86,7 +86,7 @@ const minigunVolume = 0.50;
 // bullet speed
 const sniperBulletSpeed = 9;
 const assaultBulletSpeed = 6.8;
-const bazookaBulletSpeed = 5.1;
+const bazookaBulletSpeed = 4.8;
 const pistolBulletSpeed = 6;
 const shotgunBulletSpeed = 4.2;
 const grenadeLauncherBulletSpeed = 3.3;
@@ -215,7 +215,7 @@ const G36 = {
 // specs must be changed
 const GL1 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"GL1", id:473, fireRate:10, recoil:3, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
+	name:"GL1", id:473, fireRate:15, recoil:14, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:10, zoomLevel:60, sound:"GrenadeLauncherShoot.ogg", texture:"ender_pearl", ammo:1, smoke:0, recipe:[
 		"   ",
 		"iri",
 		"   "]
@@ -224,7 +224,7 @@ const GL1 = {
 // specs must be changed
 const GL6 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"GL6", id:474, fireRate:10, recoil:3, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:3.5, zoomLevel:60, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
+	name:"GL6", id:474, fireRate:1, recoil:10, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:15, zoomLevel:60, sound:"GrenadeLauncherShoot.ogg", texture:"experience_bottle", ammo:6, smoke:0, recipe:[
 		"   ",
 		"iri",
 		"   "]
