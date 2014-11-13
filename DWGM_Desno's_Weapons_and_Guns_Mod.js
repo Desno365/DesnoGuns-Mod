@@ -388,6 +388,18 @@ var previousHealth;
 const medicalKitId = 434;
 ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
 
+// grenades
+const molotovId = 455;
+const MOLOTOV = {
+	grenadeSpeed:1.8, isWithFire:true, grenadesExplosionDiameter:4, grenadesArray:[], accuracy:3.5
+};
+ModPE.setItem(molotovId, "book_writable", 0, "Molotov");
+Item.addShapedRecipe(molotovId, 1, 0, [
+	"   ",
+	" w ",
+	"   "], ["w", 17, 0]);
+
+// info item
 const uiId = 456;
 ModPE.setItem(uiId, "apple_golden", 0, "DWGM Info");
 Item.addShapedRecipe(uiId, 1, 0, [
@@ -442,11 +454,12 @@ function leaveGame()
 	// remove explosive bullets
 	for(var i in explosiveWeapons)
 	{
-		for(var j in explosiveWeapons[i].bulletsArray)
-		{
-			explosiveWeapons[i].bulletsArray.splice(j, 1);
-		}
+		explosiveWeapons[i].bulletsArray = [];
 	}
+
+	// remove molotovs
+	for(var i in MOLOTOV.grenadesArray)
+		MOLOTOV.grenadesArray = [];
 
 	// parachute
 	isParachuting = false;
@@ -521,6 +534,12 @@ function changeCarriedItem(currentItem, previousItem)
 			minigunSpin.setLooping(true);
 			minigunSpin.prepareAsync();
 		}
+	}
+
+	// removing shooting ui of grenades and molotov
+	if(previousItem == molotovId)
+	{
+		removeShootAndSettingsButtons();
 	}
 
 	// the current item is a gun
@@ -659,6 +678,23 @@ function changeCarriedItem(currentItem, previousItem)
 			displayedMessageMedicalKit = true;
 		}
 	}
+
+	// molotov
+	if(currentItem == molotovId)
+	{
+		shootAndSettingsButtons();
+
+		// load click event
+		onClickRunnable = (new java.lang.Runnable(
+		{
+			run: function()
+			{
+				shootGrenadeHand(MOLOTOV);
+				if(Level.getGameMode() == 0)
+					Item.removeOneCarriedItem();
+			}
+		}));
+	}
 }
 
 function modTick()
@@ -684,7 +720,7 @@ function modTick()
 			var xArrow = Entity.getX(arrow.entity);
 			var yArrow = Entity.getY(arrow.entity);
 			var zArrow = Entity.getZ(arrow.entity);
-			if(arrow.previousX == arrow.previousX && arrow.previousY == yArrow && arrow.previousZ == zArrow)
+			if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow)
 			{
 				Level.explode(xArrow, yArrow, zArrow, explosiveWeapons[i].bulletsExplosionRadius);
 				
@@ -698,6 +734,57 @@ function modTick()
 			}
 		}
 	}
+
+	// molotov
+	for(var i in MOLOTOV.grenadesArray)
+	{
+		var grenade = MOLOTOV.grenadesArray[i];
+		var xGrenade = Entity.getX(grenade.entity);
+		var yGrenade = Entity.getY(grenade.entity);
+		var zGrenade = Entity.getZ(grenade.entity);
+		//ModPE.showTipMessage("x: " + Math.floor(xGrenade) + "y: " + Math.floor(yGrenade) + "z: " + Math.floor(zGrenade));
+
+		if(xGrenade == 0 && yGrenade == 0 && zGrenade == 0)
+		{
+			// the entity has been removed
+
+			// fire!!!!
+			var xStarting = Math.floor(grenade.previousX) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
+			var yStarting = Math.floor(grenade.previousY) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
+			var zStarting = Math.floor(grenade.previousZ) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
+			for(var xExplosion = xStarting; xExplosion <= xStarting + MOLOTOV.grenadesExplosionDiameter; xExplosion++)
+			{
+				for(var yExplosion = yStarting; yExplosion <= yStarting + MOLOTOV.grenadesExplosionDiameter; yExplosion++)
+				{
+					for(var zExplosion = zStarting; zExplosion <= zStarting + MOLOTOV.grenadesExplosionDiameter; zExplosion++)
+					{
+						var setFire = true;
+						if(xExplosion == xStarting || xExplosion == xStarting + MOLOTOV.grenadesExplosionDiameter || zExplosion == zStarting || zExplosion == zStarting + MOLOTOV.grenadesExplosionDiameter)
+						{
+							setFire = java.util.Random().nextBoolean();
+						}
+						if(setFire && Level.getTile(xExplosion, yExplosion, zExplosion) == 0)
+						{
+							Level.setTile(xExplosion, yExplosion, zExplosion, 51);
+						}
+					}
+				}
+			}
+
+			ModPE.playSoundFromFile("MolotovExplosion.ogg");
+
+			//clientMessage("x: " + Math.floor(grenade.previousX ) + "y: " + Math.floor(grenade.previousY) + "z: " + Math.floor(grenade.previousZ));
+			Entity.remove(grenade.entity);
+			MOLOTOV.grenadesArray.splice(i, 1);
+		}else
+		{
+			Level.addParticle(5, xGrenade, yGrenade, zGrenade, 0, 0, 0, 1);
+			grenade.previousX = xGrenade;
+			grenade.previousY = yGrenade;
+			grenade.previousZ = zGrenade;
+		}
+	}
+
 
 	// parachute
 	if(Player.getCarriedItem() == parachuteId)
@@ -733,7 +820,13 @@ function modTick()
 		}
 	} else
 	{
-		isParachuting = false;
+		if(isParachuting)
+		{
+			Player.setHealth(20);
+			countdownHealth = 0;
+			Player.setHealth(previousHealth);
+			isParachuting = false;
+		}
 	}
 	if(isParachuting)
 	{
@@ -850,7 +943,7 @@ function onClickWeaponShoot(gun)
 				else
 				{
 					if(gun.isGrenadeLauncher)
-						shootGrenade(gun);
+						shootGrenadeWeapon(gun);
 					else
 						shootArrow(gun);
 				}
@@ -868,7 +961,7 @@ function onClickWeaponShoot(gun)
 			else
 			{
 				if(gun.isGrenadeLauncher)
-					shootGrenade(gun);
+					shootGrenadeWeapon(gun);
 				else
 					shootArrow(gun);
 			}
@@ -1026,12 +1119,12 @@ function shootArrowShotgun(gun)
 			setVelZ(arrow, gunShootDir.z * gun.bulletSpeed);
 
 			if(gun.hasExplosiveBullets)
-				gun.bulletsArray.push(new arrowObject(arrow));
+				gun.bulletsArray.push(new entityClass(arrow));
 		}
 	}
 }
 
-function shootGrenade(gun)
+function shootGrenadeWeapon(gun)
 {
 	var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
 	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gun.accuracy;
@@ -1041,6 +1134,25 @@ function shootGrenade(gun)
 	setVelX(grenade, gunShootDir.x * gun.bulletSpeed);
 	setVelY(grenade, gunShootDir.y * gun.bulletSpeed);
 	setVelZ(grenade, gunShootDir.z * gun.bulletSpeed);
+}
+
+function shootGrenadeHand(grenadeObject)
+{
+	var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * grenadeObject.accuracy;
+	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * grenadeObject.accuracy;
+	var playerShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+	var handShootDir = lookDir(getYaw() + 30, getPitch());
+
+	var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 81);
+	setVelX(grenade, playerShootDir.x * grenadeObject.grenadeSpeed);
+	setVelY(grenade, playerShootDir.y * grenadeObject.grenadeSpeed);
+	setVelZ(grenade, playerShootDir.z * grenadeObject.grenadeSpeed);
+
+	if(grenadeObject.isWithFire)
+		Entity.setFireTicks(grenade, 1000);
+
+	grenadeObject.grenadesArray.push(new entityClass(grenade));
 }
 
 function shootArrow(gun)
@@ -1055,7 +1167,7 @@ function shootArrow(gun)
 	setVelZ(arrow, gunShootDir.z * gun.bulletSpeed);
 
 	if(gun.hasExplosiveBullets)
-		gun.bulletsArray.push(new arrowObject(arrow));
+		gun.bulletsArray.push(new entityClass(arrow));
 }
 
 function showCloudParticle(amount)
@@ -1324,7 +1436,7 @@ function lookDir(yaw, pitch)
 	return direction;
 }
 
-function arrowObject(entity)
+function entityClass(entity)
 {
 	this.entity = entity;
 	this.previousX = 0;
@@ -1359,6 +1471,14 @@ Item.damageCarriedItem = function()
 				Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
 		}
 	}
+}
+
+Item.removeOneCarriedItem = function()
+{
+	if(Player.getCarriedItemCount() == 1)
+		Player.clearInventorySlot(Player.getSelectedSlotId());
+	else
+		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
 }
 
 function dismissAllUIs()
