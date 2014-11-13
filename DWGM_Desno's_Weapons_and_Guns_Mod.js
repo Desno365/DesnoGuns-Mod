@@ -388,6 +388,13 @@ var previousHealth;
 const medicalKitId = 434;
 ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
 
+const uiId = 456;
+ModPE.setItem(uiId, "apple_golden", 0, "DWGM Info");
+Item.addShapedRecipe(uiId, 1, 0, [
+	"   ",
+	" w ",
+	"   "], ["w", 17, 0]);
+
 
 function selectLevelHook()
 {
@@ -445,6 +452,17 @@ function leaveGame()
 	isParachuting = false;
 	countdownHealth = 0;
 	previousHealth;
+}
+
+function useItem(x, y, z, itemId, blockId, side, itemDamage)
+{
+	// DWGM infos
+	if(itemId == uiId)
+	{
+		informationsForWeaponsModUI();
+		preventDefault();
+		return;
+	}
 }
 
 function attackHook(attacker, victim)
@@ -637,6 +655,7 @@ function changeCarriedItem(currentItem, previousItem)
 		if(!displayedMessageMedicalKit)
 		{
 			clientMessage("In the magic world of MCPE you can eat Medical Kits!");
+			clientMessage("Actually a better way of using Medical Kits is currently in development.");
 			displayedMessageMedicalKit = true;
 		}
 	}
