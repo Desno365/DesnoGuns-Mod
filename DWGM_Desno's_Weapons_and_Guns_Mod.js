@@ -115,7 +115,7 @@ const AK47 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const AK74 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
@@ -123,7 +123,7 @@ const AK74 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const AT4 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
@@ -131,7 +131,7 @@ const AT4 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const AUG = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
@@ -139,7 +139,7 @@ const AUG = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const BARRETT_EXPLOSIVE = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -147,7 +147,7 @@ const BARRETT_EXPLOSIVE = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const BARRETT = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -155,7 +155,7 @@ const BARRETT = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const BIZON = {
 	gunType:GUN_TYPE_SUB_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
@@ -163,7 +163,7 @@ const BIZON = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const DESERT_EAGLE = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
@@ -171,7 +171,7 @@ const DESERT_EAGLE = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const DESERT_EAGLE_GOLD = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
@@ -179,7 +179,7 @@ const DESERT_EAGLE_GOLD = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const DRAGUNOV = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -187,7 +187,7 @@ const DRAGUNOV = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const FNSCAR = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
@@ -195,7 +195,7 @@ const FNSCAR = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const G3 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
@@ -203,7 +203,7 @@ const G3 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const G36 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
@@ -211,25 +211,23 @@ const G36 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
-// specs must be changed
 const GL1 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
 	name:"GL1", id:473, fireRate:15, recoil:14, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:10, zoomLevel:60, sound:"GrenadeLauncherShoot.ogg", texture:"ender_pearl", ammo:1, smoke:0, recipe:[
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
-// specs must be changed
 const GL6 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
 	name:"GL6", id:474, fireRate:1, recoil:10, bulletSpeed:grenadeLauncherBulletSpeed, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:15, zoomLevel:60, sound:"GrenadeLauncherShoot.ogg", texture:"experience_bottle", ammo:6, smoke:0, recipe:[
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const GLOCK = {
 	gunType:GUN_TYPE_MACHINE_PISTOL, type:BUTTON_TYPE_ON_TOUCH,
@@ -237,7 +235,7 @@ const GLOCK = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const L86 = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
@@ -245,7 +243,7 @@ const L86 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const L96 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -253,7 +251,7 @@ const L96 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M9 = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
@@ -261,7 +259,7 @@ const M9 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M14 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -269,7 +267,7 @@ const M14 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M16A4 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
@@ -277,7 +275,7 @@ const M16A4 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M21 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -285,7 +283,7 @@ const M21 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M40A3_ICE = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -293,7 +291,7 @@ const M40A3_ICE = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M40A3 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
@@ -301,7 +299,7 @@ const M40A3 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M60E4 = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
@@ -309,7 +307,7 @@ const M60E4 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M72LAW = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
@@ -317,7 +315,7 @@ const M72LAW = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
 const M249 = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
@@ -325,30 +323,75 @@ const M249 = {
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
+const M1014 = {
+	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"M1014", id:487, fireRate:18, recoil:8, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:2, shotgunBulletsPerLineShot:3, accuracy:10, zoomLevel:60, sound:"M1014Shoot.ogg", texture:"hopper", ammo:4, smoke:0, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
 
-// id must be changed!
+const M1887 = {
+	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"Model 1887", id:488, fireRate:20, recoil:10, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:10, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"iron_horse_armor", ammo:5, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const MAKAROV = {
+	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"Makarov", id:490, fireRate:1, recoil:1, bulletSpeed:pistolBulletSpeed, accuracy:8, zoomLevel:60, sound:"MakarovShoot.ogg", texture:"item_frame", ammo:8, smoke:0, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
 const MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Minigun", id:487, fireRate:1, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"lead", ammo:500, smoke:3, recipe:[
+	name:"Minigun", id:491, fireRate:1, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:5.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"lead", ammo:500, smoke:3, recipe:[
 		"   ",
 		"iri",
 		"   "]
-	};
+};
 
-// id must be changed!
-const SHOTGUN_TEST = {
-	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Shotgun", id:488, fireRate:8, recoil:2, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:5, zoomLevel:60, sound:"M1887Shoot.ogg", texture:"lead", ammo:10, smoke:1, recipe:[
+const MINI_UZI = {
+	gunType:GUN_TYPE_MACHINE_PISTOL, type:BUTTON_TYPE_ON_TOUCH,
+	name:"Mini-Uzi", id:492, fireRate:2, recoil:3, bulletSpeed:pistolBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"MiniUziShoot.ogg", texture:"leggings", textureNumber:1, ammo:32, smoke:1, recipe:[
 		"   ",
 		"iri",
 		"   "]
-	};
+};
+
+const MP5 = {
+	gunType:GUN_TYPE_SUB_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
+	name:"MP5", id:493, fireRate:3, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"MP5Shoot.ogg", texture:"magma_cream", ammo:30, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const MTAR = {
+	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
+	name:"MTAR", id:494, fireRate:3, recoil:3, bulletSpeed:assaultBulletSpeed, accuracy:3, zoomLevel:60, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", texture:"map_empty", ammo:30, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const P90 = {
+	gunType:GUN_TYPE_SUB_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
+	name:"P90", id:495, fireRate:2, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", texture:"map_filled", ammo:50, smoke:2, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
 
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, MINIGUN, SHOTGUN_TEST];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW];
 
 // add guns
@@ -422,6 +465,9 @@ function newLevel()
 			Player.addItemCreativeInv(guns[i].id, 1);
 		Player.addItemCreativeInv(knifeId, 1);
 		Player.addItemCreativeInv(parachuteId, 1);
+
+		Player.addItemCreativeInv(molotovId, 1);
+		Player.addItemCreativeInv(uiId, 1);
 		initCreativeItems = false;
 	}
 }
@@ -705,7 +751,7 @@ function modTick()
 	previousCarriedItem = Player.getCarriedItem();
 
 	// assault rifles shooting system
-	if(shooting)
+	if(shooting && shootingRunnable != null)
 		shootingRunnable.run();
 	else
 		if(currentShotTicks != 0)
