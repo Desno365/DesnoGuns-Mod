@@ -561,7 +561,7 @@ function changeCarriedItem(currentItem, previousItem)
 
 	// release the resources for sounds
 	try{
-		if(SoundPool != null)
+		if(soundPool != null)
 			soundPool.release();
 		soundPool = null;
 		soundID = null;
@@ -1267,7 +1267,8 @@ ModPE.playSoundFromFile = function(fileName)
 			});
 			sound2.start();
 			return;
-		}else
+		}
+		if(sound3 == null || !sound3.isPlaying())
 		{
 			if(sound3 == null)
 				sound3 = new android.media.MediaPlayer();
@@ -1283,6 +1284,24 @@ ModPE.playSoundFromFile = function(fileName)
 				}
 			});
 			sound3.start();
+			return;
+		}else
+		{
+			if(sound1 == null)
+				sound1 = new android.media.MediaPlayer();
+			sound1.reset();
+			sound1.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
+			sound1.prepare();
+			sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			{
+				onCompletion: function(mp)
+				{
+					sound1.release();
+					sound1 = null;
+				}
+			});
+			sound1.start();
+			return;
 		}
 	}catch(err)
 	{
@@ -1290,7 +1309,7 @@ ModPE.playSoundFromFile = function(fileName)
 		{
 			ModPE.showTipMessage("DWGM: Sounds not installed!");
 			displayedMessageNoSound = true;
-			ModPE.log("DWGM: Error: " + err);
+			ModPE.log("DWGM: Error in playSoundFromFile: " + err);
 		}
 	}
 }
@@ -1304,7 +1323,7 @@ ModPE.loadSoundPool = function(path)
 	} catch(e)
 	{
 		ModPE.showTipMessage("DWGM: Sounds not installed!");
-		ModPE.log("DWGM: Error: " + err);
+		ModPE.log("DWGM: Error in loadSoundPool: " + err);
 	}
 }
 
