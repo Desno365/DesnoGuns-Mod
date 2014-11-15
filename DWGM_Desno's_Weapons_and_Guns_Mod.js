@@ -389,9 +389,97 @@ const P90 = {
 		"   "]
 };
 
+const R700 = {
+	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
+	name:"R700", id:496, fireRate:20, recoil:25, bulletSpeed:sniperBulletSpeed, zoomLevel:60, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", texture:"melon_speckled", ammo:4, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const R870 = {
+	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"Remington 870", id:497, fireRate:15, recoil:10, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:60, sound:"M870Shoot.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const RPD = {
+	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
+	name:"RPD", id:498, fireRate:3, recoil:6, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"RPD_and_M60E4_and_RPKShoot.ogg", texture:"minecart_furnace", ammo:100, smoke:2, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const RPG = {
+	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
+	name:"RPG", id:499, fireRate:40, recoil:25, bulletSpeed:bazookaBulletSpeed, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:20, zoomLevel:60, sound:"RPGShoot.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const RPK = {
+	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
+	name:"RPK", id:500, fireRate:3, recoil:5, bulletSpeed:assaultBulletSpeed, accuracy:4, zoomLevel:60, sound:"RPD_and_M60E4_and_RPKShoot.ogg", texture:"quiver", ammo:40, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const SG550 = {
+	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_CLICK,
+	name:"SG550", id:501, fireRate:5, recoil:2, bulletSpeed:assaultBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"SG550Shoot.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const SIGP226 = {
+	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"SIGP226", id:502, fireRate:1, recoil:3, bulletSpeed:pistolBulletSpeed, accuracy:6, zoomLevel:60, sound:"SIGP226Shoot.ogg", texture:"name_tag", ammo:10, smoke:0, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const SKORPION = {
+	gunType:GUN_TYPE_MACHINE_PISTOL, type:BUTTON_TYPE_ON_TOUCH,
+	name:"Skorpion", id:503, fireRate:3, recoil:2, bulletSpeed:pistolBulletSpeed, accuracy:2.5, zoomLevel:60, sound:"SkorpionShoot.ogg", texture:"nether_star", ammo:20, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const SPAS = {
+	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"SPAS-12", id:504, fireRate:15, recoil:20, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:60, sound:"W1200_and_SPASShoot.ogg", texture:"nether_wart", ammo:6, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const USP = {
+	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"USP", id:505, fireRate:1, recoil:1, bulletSpeed:pistolBulletSpeed, accuracy:8, zoomLevel:60, sound:"USPShoot.ogg", texture:"potion_bottle_drinkable", ammo:10, smoke:0, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const W1200 = {
+	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
+	name:"W1200", id:506, fireRate:15, recoil:10, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:60, sound:"W1200_and_SPASShoot.ogg", texture:"potion_bottle_empty", ammo:7, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW];
 
 // add guns
@@ -434,7 +522,7 @@ ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
 // grenades
 const molotovId = 455;
 const MOLOTOV = {
-	grenadeSpeed:1.8, isWithFire:true, grenadesExplosionDiameter:4, grenadesArray:[], accuracy:3.5
+	grenadeSpeed:1.5, isWithFire:true, grenadesExplosionDiameter:4, grenadesArray:[], accuracy:3.5
 };
 ModPE.setItem(molotovId, "book_writable", 0, "Molotov");
 Item.addShapedRecipe(molotovId, 1, 0, [
@@ -589,9 +677,9 @@ function changeCarriedItem(currentItem, previousItem)
 	}
 
 	// the current item is a gun
-	if(currentItem >= 460 && currentItem <= 505)
+	if(currentItem >= 460 && currentItem <= 506)
 	{
-		if(!(previousItem >= 460 && previousItem <= 505))
+		if(!(previousItem >= 460 && previousItem <= 506))
 			shootAndSettingsButtons();
 
 		// reset clicks and long clicks
@@ -707,7 +795,7 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 	} else
 	{
-		if(previousItem >= 460 && previousItem <= 505)
+		if(previousItem >= 460 && previousItem <= 506)
 		{
 			//the item before was weapon, now not
 			removeShootAndSettingsButtons();
