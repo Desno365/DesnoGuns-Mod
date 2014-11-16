@@ -1384,13 +1384,13 @@ function shootGrenadeHand(grenadeObject)
 
 					new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 					{
-						/*var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
+						var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
 						var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
 						var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
 						Entity.remove(FRAGMENT.fragmentArray[0].entity);
 						FRAGMENT.fragmentArray.splice(0, 1);
 
-						Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);*/
+						Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);
 
 					}}), FRAGMENT.fragmentDelay);
 				}
