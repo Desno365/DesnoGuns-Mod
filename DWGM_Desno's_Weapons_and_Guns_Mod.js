@@ -520,9 +520,29 @@ const medicalKitId = 434;
 ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
 
 // grenades
+const grenadeId = 453;
+const GRENADE = {
+	id:1, grenadeSpeed:1.5, grenadesExplosionRadius:4, grenadesArray:[], accuracy:4, delay:4000
+};
+ModPE.setItem(grenadeId, "potion_overlay", 0, "Grenade");
+Item.addShapedRecipe(grenadeId, 1, 0, [
+	"   ",
+	" w ",
+	"   "], ["w", 17, 0]);
+
+const fragmentId = 454;
+const FRAGMENT = {
+	id:2, grenadeSpeed:1.8, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:5, fragmentDelay:3000, accuracy:4, delay:4000
+};
+ModPE.setItem(fragmentId, "potion_bottle_splash", 0, "Fragment Grenade");
+Item.addShapedRecipe(fragmentId, 1, 0, [
+	"   ",
+	" w ",
+	"   "], ["w", 17, 0]);
+
 const molotovId = 455;
 const MOLOTOV = {
-	grenadeSpeed:1.5, isWithFire:true, grenadesExplosionDiameter:4, grenadesArray:[], accuracy:3.5
+	grenadeSpeed:1.8, grenadesExplosionDiameter:4, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
 };
 ModPE.setItem(molotovId, "book_writable", 0, "Molotov");
 Item.addShapedRecipe(molotovId, 1, 0, [
@@ -549,11 +569,13 @@ function newLevel()
 {
 	if(initCreativeItems)
 	{
-		for(var i = 0; i < guns.length; i++)
+		for(var i in guns)
 			Player.addItemCreativeInv(guns[i].id, 1);
 		Player.addItemCreativeInv(knifeId, 1);
 		Player.addItemCreativeInv(parachuteId, 1);
 
+		Player.addItemCreativeInv(grenadeId, 1);
+		Player.addItemCreativeInv(fragmentId, 1);
 		Player.addItemCreativeInv(molotovId, 1);
 		Player.addItemCreativeInv(uiId, 1);
 		initCreativeItems = false;
@@ -591,9 +613,14 @@ function leaveGame()
 		explosiveWeapons[i].bulletsArray = [];
 	}
 
+	// remove grenades
+	GRENADE.grenadesArray = [];
+
+	// remove fragment grenades
+	FRAGMENT.grenadesArray = [];
+
 	// remove molotovs
-	for(var i in MOLOTOV.grenadesArray)
-		MOLOTOV.grenadesArray = [];
+	MOLOTOV.grenadesArray = [];
 
 	// parachute
 	isParachuting = false;
@@ -671,7 +698,7 @@ function changeCarriedItem(currentItem, previousItem)
 	}
 
 	// removing shooting ui of grenades and molotov
-	if(previousItem == molotovId)
+	if(previousItem == molotovId || previousItem == grenadeId || previousItem == fragmentId)
 	{
 		removeShootAndSettingsButtons();
 	}
@@ -813,6 +840,40 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 	}
 
+	// grenade
+	if(currentItem == grenadeId)
+	{
+		shootAndSettingsButtons();
+
+		// load click event
+		onClickRunnable = (new java.lang.Runnable(
+		{
+			run: function()
+			{
+				shootGrenadeHand(GRENADE);
+				if(Level.getGameMode() == 0)
+					Item.removeOneCarriedItem();
+			}
+		}));
+	}
+
+	// fragment
+	if(currentItem == fragmentId)
+	{
+		shootAndSettingsButtons();
+
+		// load click event
+		onClickRunnable = (new java.lang.Runnable(
+		{
+			run: function()
+			{
+				shootGrenadeHand(FRAGMENT);
+				if(Level.getGameMode() == 0)
+					Item.removeOneCarriedItem();
+			}
+		}));
+	}
+
 	// molotov
 	if(currentItem == molotovId)
 	{
@@ -862,9 +923,18 @@ function modTick()
 				explosiveWeapons[i].bulletsArray.splice(j, 1);
 			}else
 			{
-				arrow.previousX = xArrow;
-				arrow.previousY = yArrow;
-				arrow.previousZ = zArrow;
+				if(xArrow == 0 && yArrow == 0 && zArrow == 0)
+				{
+					// the arrow hit an entity
+					Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, explosiveWeapons[i].bulletsExplosionRadius);
+				
+					explosiveWeapons[i].bulletsArray.splice(j, 1);
+				} else
+				{
+					arrow.previousX = xArrow;
+					arrow.previousY = yArrow;
+					arrow.previousZ = zArrow;
+				}
 			}
 		}
 	}
@@ -918,7 +988,6 @@ function modTick()
 			grenade.previousZ = zGrenade;
 		}
 	}
-
 
 	// parachute
 	if(Player.getCarriedItem() == parachuteId)
@@ -1278,7 +1347,13 @@ function shootGrenadeHand(grenadeObject)
 
 	var handShootDir = lookDir(getYaw() + 30, getPitch());
 
-	var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 81);
+	if(grenadeObject.explodeOnTouch)
+		var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 81);
+	else
+	{
+		var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 11);
+		Entity.setHealth(grenade, 99999);
+	}
 	setVelX(grenade, playerShootDir.x * grenadeObject.grenadeSpeed);
 	setVelY(grenade, playerShootDir.y * grenadeObject.grenadeSpeed);
 	setVelZ(grenade, playerShootDir.z * grenadeObject.grenadeSpeed);
@@ -1287,6 +1362,65 @@ function shootGrenadeHand(grenadeObject)
 		Entity.setFireTicks(grenade, 1000);
 
 	grenadeObject.grenadesArray.push(new entityClass(grenade));
+
+	if(!grenadeObject.explodeOnTouch)
+	{
+		if(grenadeObject.id == FRAGMENT.id)
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				// push() put the object at the end so the first object ( [0] ) is the object that will explode
+				var explosionX = Entity.getX(FRAGMENT.grenadesArray[0].entity);
+				var explosionY = Entity.getY(FRAGMENT.grenadesArray[0].entity);
+				var explosionZ = Entity.getZ(FRAGMENT.grenadesArray[0].entity);
+				Entity.remove(FRAGMENT.grenadesArray[0].entity);
+				FRAGMENT.grenadesArray.splice(0, 1);
+
+				for(var i = 0; i < FRAGMENT.howManyFragments; i++)
+				{
+					var fragment = Level.spawnMob(explosionX, explosionY, explosionZ, 11);
+					Entity.setHealth(fragment, 99999);
+					FRAGMENT.fragmentArray.push(new entityClass(fragment));
+
+					new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+					{
+						/*var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
+						var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
+						var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
+						Entity.remove(FRAGMENT.fragmentArray[0].entity);
+						FRAGMENT.fragmentArray.splice(0, 1);
+
+						Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);*/
+
+					}}), FRAGMENT.fragmentDelay);
+				}
+
+				Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
+
+			}}), grenadeObject.delay);
+		}
+
+		if(grenadeObject.id == GRENADE.id)
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				// push() put the object at the end so the first object ( [0] ) is the object that will explode
+				var explosionX = Entity.getX(GRENADE.grenadesArray[0].entity);
+				var explosionY = Entity.getY(GRENADE.grenadesArray[0].entity);
+				var explosionZ = Entity.getZ(GRENADE.grenadesArray[0].entity);
+				Entity.remove(GRENADE.grenadesArray[0].entity);
+				GRENADE.grenadesArray.splice(0, 1);
+
+				Level.explode(explosionX, explosionY, explosionZ, GRENADE.grenadesExplosionRadius);
+
+			}}), grenadeObject.delay);
+		}
+	}
+}
+
+function fragment()
+{
+
 }
 
 function shootArrow(gun)
