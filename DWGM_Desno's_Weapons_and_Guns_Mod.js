@@ -399,7 +399,7 @@ const R700 = {
 
 const R870 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Remington 870", id:497, fireRate:15, recoil:10, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:60, sound:"M870Shoot.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:[
+	name:"Remington 870", id:497, fireRate:15, recoil:10, bulletSpeed:shotgunBulletSpeed, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:60, sound:"R870Shoot.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:[
 		"   ",
 		"iri",
 		"   "]
@@ -480,7 +480,7 @@ const W1200 = {
 
 // all the guns in a single array
 var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
-var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW];
+var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, RPG];
 
 // add guns
 for(var i in guns)
