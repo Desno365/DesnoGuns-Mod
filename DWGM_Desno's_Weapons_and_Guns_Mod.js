@@ -532,7 +532,7 @@ Item.addShapedRecipe(grenadeId, 1, 0, [
 
 const fragmentId = 454;
 const FRAGMENT = {
-	id:2, grenadeSpeed:1.8, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:5, fragmentDelay:3000, accuracy:4, delay:4000
+	id:2, grenadeSpeed:1.8, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:4, fragmentDelay:1000, accuracy:4, delay:4000
 };
 ModPE.setItem(fragmentId, "potion_bottle_splash", 0, "Fragment Grenade");
 Item.addShapedRecipe(fragmentId, 1, 0, [
@@ -1378,12 +1378,14 @@ function shootGrenadeHand(grenadeObject)
 
 				for(var i = 0; i < FRAGMENT.howManyFragments; i++)
 				{
-					var fragment = Level.spawnMob(explosionX, explosionY, explosionZ, 11);
+					var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
 					Entity.setHealth(fragment, 99999);
 					FRAGMENT.fragmentArray.push(new entityClass(fragment));
 
 					new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 					{
+						//this was just for fun, to enable it comment all the code inside the Handler and uncomment the function
+						//fragmentShit();
 						var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
 						var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
 						var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
@@ -1418,9 +1420,27 @@ function shootGrenadeHand(grenadeObject)
 	}
 }
 
-function fragment()
+function fragmentShit()
 {
+	/*var explosionX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
+	var explosionY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
+	var explosionZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
+	Entity.remove(FRAGMENT.fragmentArray[0].entity);
+	FRAGMENT.fragmentArray.splice(0, 1);
 
+	for(var i = 0; i < FRAGMENT.howManyFragments; i++)
+	{
+		var fragment = Level.spawnMob(explosionX, explosionY, explosionZ, 11);
+		Entity.setHealth(fragment, 99999);
+		FRAGMENT.fragmentArray.push(new entityClass(fragment));
+
+		new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+		{
+			fragmentShit();
+		}}), FRAGMENT.fragmentDelay);
+	}
+
+	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);*/
 }
 
 function shootArrow(gun)
