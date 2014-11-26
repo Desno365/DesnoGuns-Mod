@@ -45,6 +45,7 @@ var initCreativeItems = true;
 
 //change carried item variables
 var previousCarriedItem = 0;
+var previousSlotId = 0;
 
 // images in base64
 var scaled = [];
@@ -666,6 +667,7 @@ function leaveGame()
 	displayedMessageNoSound = false;
 
 	previousCarriedItem = 0;
+	previousSlotId = 0;
 
 	// release the resources for sounds
 	try{
@@ -994,7 +996,16 @@ function modTick()
 	//change carried item hook
 	if(Player.getCarriedItem() != previousCarriedItem)
 		changeCarriedItem(Player.getCarriedItem(), previousCarriedItem);
+	else
+	{
+		// switching between items with same id but different damage for example
+		if(Player.getSelectedSlotId() != previousSlotId)
+		{
+			changeCarriedItem(previousCarriedItem, previousCarriedItem);
+		}
+	}
 	previousCarriedItem = Player.getCarriedItem();
+	previousSlotId = Player.getSelectedSlotId();
 
 	// assault rifles shooting system
 	if(shooting && shootingRunnable != null)
@@ -2024,7 +2035,6 @@ function refillAmmo(gun)
 		{
 			try
 			{
-				clientMessage("debug");
 				isRefilling = true;
 				refillingGun = gun;
 
