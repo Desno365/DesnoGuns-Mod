@@ -526,10 +526,13 @@ for(var i in guns)
 // load minigun sounds
 var minigunWarmup = new android.media.MediaPlayer();
 var minigunSpin = new android.media.MediaPlayer();
-minigunSpin.reset();
-minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-minigunSpin.setLooping(true);
-minigunSpin.prepareAsync();
+try {
+	minigunSpin.reset();
+	minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
+	minigunSpin.setLooping(true);
+	minigunSpin.prepareAsync();
+} catch(e) { /* sounds not installed */ }
+
 
 // other items (not guns)
 const knifeId = 432;
@@ -817,11 +820,13 @@ function changeCarriedItem(currentItem, previousItem)
 			minigunSpin.prepareAsync();
 		} catch(e){
 			clientMessage(e);
-			ModPE.log(e);
-			minigunSpin.reset();
-			minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-			minigunSpin.setLooping(true);
-			minigunSpin.prepareAsync();
+			ModPE.log("DesnoGuns: Error while reset minigun sounds in changeCarriedItem " + e);
+			try{
+				minigunSpin.reset();
+				minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
+				minigunSpin.setLooping(true);
+				minigunSpin.prepareAsync();
+			} catch(e) { /* sounds not installed */ }
 		}
 	}
 
@@ -1387,12 +1392,15 @@ function minigunShootCreative(event)
 			minigunSpin.stop();
 			minigunSpin.prepareAsync();
 		} catch(e){
+			// sometimes an error happens also if you have sounds installed correctly and I didn't find why
 			clientMessage("A wild error appeared, sorry. See log.");
 			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
-			minigunSpin.reset();
-			minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-			minigunSpin.setLooping(true);
-			minigunSpin.prepareAsync();
+			try{
+				minigunSpin.reset();
+				minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
+				minigunSpin.setLooping(true);
+				minigunSpin.prepareAsync();
+			} catch(e) { /* sounds not installed */ }
 		}
 		ModPE.playSoundFromFile("MinigunCooldown.ogg");
 	}
@@ -1400,36 +1408,39 @@ function minigunShootCreative(event)
 	{
 		if(!shooting && !minigunTouchingFireButton)
 		{
-			minigunTouchingFireButton = true;
-			minigunWarmup.reset();
-			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunWarmup.ogg");
-			minigunWarmup.prepare();
-			minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			try
 			{
-				onCompletion: function(mp)
+				minigunTouchingFireButton = true;
+				minigunWarmup.reset();
+				minigunWarmup.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunWarmup.ogg");
+				minigunWarmup.prepare();
+				minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
-					if(minigunTouchingFireButton)
+					onCompletion: function(mp)
 					{
-						shooting = true;
-						minigunSpin.start();
-						currentShotTicks = MINIGUN.fireRate;
-						shootingRunnable = (new java.lang.Runnable(
+						if(minigunTouchingFireButton)
 						{
-							run: function()
+							shooting = true;
+							minigunSpin.start();
+							currentShotTicks = MINIGUN.fireRate;
+							shootingRunnable = (new java.lang.Runnable(
 							{
-								if(currentShotTicks == MINIGUN.fireRate)
+								run: function()
 								{
-									currentShotTicks = 0;
-									ModPE.playLoadedSoundPool(minigunVolume);
-									shootArrow(MINIGUN);
+									if(currentShotTicks == MINIGUN.fireRate)
+									{
+										currentShotTicks = 0;
+										ModPE.playLoadedSoundPool(minigunVolume);
+										shootArrow(MINIGUN);
+									}
+									currentShotTicks++;
 								}
-								currentShotTicks++;
-							}
-						}));
+							}));
+						}
 					}
-				}
-			});
-			minigunWarmup.start();
+				});
+				minigunWarmup.start();
+			} catch(e) { clientMessage("The minigun needs sounds to work properly."); }
 		}
 	}
 }
@@ -2470,6 +2481,12 @@ function deleteFile(path)
 	if(file.exists())
 		file.delete();
 }
+
+function doesFileExists(path)
+{
+	var file = new java.io.File(path);
+	return file.exists();
+}
 //########## other functions - END ##########
 
 
@@ -2481,6 +2498,53 @@ function informationsForWeaponsModUI()
 {
 	//
 	clientMessage("WIP");
+}
+
+function missingSounds(missingSoundsText)
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layoutMissing = new android.widget.LinearLayout(currentActivity);
+				layoutMissing.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scrollMissing = new android.widget.ScrollView(currentActivity);
+				scrollMissing.addView(layoutMissing);
+			
+				var popupMissing = new android.app.Dialog(currentActivity); 
+				popupMissing.setContentView(scrollMissing);
+				popupMissing.setTitle(new android.text.Html.fromHtml("DesnoGuns: Error"));
+				popupMissing.setCanceledOnTouchOutside(false);
+				
+				var missingText = new android.widget.TextView(currentActivity);
+				missingText.setText(new android.text.Html.fromHtml("<b>ERROR</b>: missing sounds.<br><br>" +
+					'<b><i>IMPORTANT</b></i>: did you place the "desnoguns-sounds" folder (the folder is inside the zip that contains the mod) in "sdcard/games/com.mojang/"?<br><br>' +
+					"Here a list of the missing sounds: " + missingSoundsText + ".<br><br>"));
+				layoutMissing.addView(missingText);
+				
+				var exitMissingButton = new android.widget.Button(currentActivity); 
+				exitMissingButton.setText("Close"); 
+				exitMissingButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popupMissing.dismiss();
+					}
+				}); 
+				layoutMissing.addView(exitMissingButton); 
+				
+
+				popupMissing.show();
+			
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
 }
 
 
@@ -2519,4 +2583,63 @@ function addGrenadeRenderType(renderer)
      
 var grenadeRenderType = Renderer.createHumanoidRenderer();
 addGrenadeRenderType(grenadeRenderType);
+
+
+//########################################################################################################################################################
+// Things to do when finished loading the script
+//########################################################################################################################################################
+
+// check if sounds are correctly installed, using an Handler to not make too many things at startup
+currentActivity.runOnUiThread(new java.lang.Runnable()
+{
+	run: function()
+	{
+		try
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				var tmpPath = sdcard + "/games/com.mojang/desnoguns-sounds/";
+				var arrayOfErrors = [];
+				for(var i in guns)
+				{
+					if(!doesFileExists(tmpPath + guns[i].sound))
+						if(arrayOfErrors.indexOf(guns[i].sound) == -1)
+							arrayOfErrors.push(guns[i].sound);
+					if(!doesFileExists(tmpPath + "reload/" + guns[i].refillSound))
+						if(arrayOfErrors.indexOf(guns[i].refillSound) == -1)
+							arrayOfErrors.push(guns[i].refillSound);
+				}
+				if(!doesFileExists(tmpPath + "MolotovExplosion.ogg"))
+					arrayOfErrors.push("MolotovExplosion.ogg");
+				if(!doesFileExists(tmpPath + "MinigunSpin.ogg"))
+					arrayOfErrors.push("MinigunSpin.ogg");
+				if(!doesFileExists(tmpPath + "MinigunWarmup.ogg"))
+					arrayOfErrors.push("MinigunWarmup.ogg");
+				if(!doesFileExists(tmpPath + "MinigunCooldown.ogg"))
+					arrayOfErrors.push("MinigunCooldown.ogg");
+				if(!doesFileExists(tmpPath + "benboncan_parachute.wav"))
+					arrayOfErrors.push("benboncan_parachute.wav");
+
+				if(arrayOfErrors.length == 0)
+				{
+					// yeah, sounds installed correctly
+					ModPE.log("DesnoGuns: sounds installed correctly!");
+				}else
+				{
+					// not correctly installed :(
+					ModPE.log("DesnoGuns: some sounds are missing.");
+
+					var missingSoundsText = "";
+					for(var i in arrayOfErrors)
+					{
+						missingSoundsText += arrayOfErrors[i];
+						missingSoundsText += ", ";
+					}
+					missingSounds(missingSoundsText.substring(0, missingSoundsText.length - 2));
+				}
+
+			}}), 500);
+		} catch(e) {}
+	}
+});
 
