@@ -12,7 +12,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/* ******* Desno's Weapons and Guns Mod by Desno365 ******* */
+/* ******* DesnoGuns Mod by Desno365 ******* */
 
 //updates variables
 const CURRENT_VERSION = "r001";
