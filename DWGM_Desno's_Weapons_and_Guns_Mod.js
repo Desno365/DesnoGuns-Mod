@@ -527,7 +527,7 @@ for(var i in guns)
 var minigunWarmup = new android.media.MediaPlayer();
 var minigunSpin = new android.media.MediaPlayer();
 minigunSpin.reset();
-minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
 minigunSpin.setLooping(true);
 minigunSpin.prepareAsync();
 
@@ -651,7 +651,7 @@ Item.addShapedRecipe(molotovId, 1, 0, [
 
 // info item
 const uiId = 456;
-ModPE.setItem(uiId, "apple_golden", 0, "DWGM Info");
+ModPE.setItem(uiId, "apple_golden", 0, "DesnoGuns Info");
 Item.addShapedRecipe(uiId, 1, 0, [
 	"   ",
 	" w ",
@@ -734,7 +734,7 @@ function leaveGame()
 
 function useItem(x, y, z, itemId, blockId, side, itemDamage)
 {
-	// DWGM infos
+	// DesnoGuns infos
 	if(itemId == uiId)
 	{
 		informationsForWeaponsModUI();
@@ -797,7 +797,7 @@ function changeCarriedItem(currentItem, previousItem)
 	{
 		try{
 			refillSound.stop();
-		} catch(e){ ModPE.log("DWGM: error while stopping refillSound: " + e); }
+		} catch(e){ ModPE.log("DesnoGuns: error while stopping refillSound: " + e); }
 		isRefilling = false;
 		ModPE.showTipMessage("Ammo refill interrupted.");
 	}
@@ -808,7 +808,7 @@ function changeCarriedItem(currentItem, previousItem)
 			soundPool.release();
 		soundPool = null;
 		soundID = null;
-	} catch(e){ ModPE.log("DWGM: something wrong: " + e); }
+	} catch(e){ ModPE.log("DesnoGuns: something wrong: " + e); }
 
 	if(previousItem == MINIGUN.id)
 	{
@@ -819,7 +819,7 @@ function changeCarriedItem(currentItem, previousItem)
 			clientMessage(e);
 			ModPE.log(e);
 			minigunSpin.reset();
-			minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+			minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
 			minigunSpin.setLooping(true);
 			minigunSpin.prepareAsync();
 		}
@@ -860,7 +860,7 @@ function changeCarriedItem(currentItem, previousItem)
 		if(currentGun.type == BUTTON_TYPE_ON_TOUCH)
 		{
 			// load sounds for the gun
-			ModPE.loadSoundPool(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);	
+			ModPE.loadSoundPool(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);	
 
 			// load touch events
 			currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -906,7 +906,7 @@ function changeCarriedItem(currentItem, previousItem)
 		if(currentGun.type == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
 		{
 			// load sounds for the gun
-			ModPE.loadSoundPool(sdcard + "/games/com.mojang/dwgm-sounds/" + currentGun.sound);
+			ModPE.loadSoundPool(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
 
 			// load touch events
 			currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -1320,9 +1320,9 @@ function minigunShootSurvival(event)
 			minigunSpin.prepareAsync();
 		} catch(e){
 			clientMessage("A wild error appeared, sorry. See log.");
-			ModPE.log("DWGM: Error in minigun shoot: " + e);
+			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
 			minigunSpin.reset();
-			minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+			minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
 			minigunSpin.setLooping(true);
 			minigunSpin.prepareAsync();
 		}
@@ -1334,7 +1334,7 @@ function minigunShootSurvival(event)
 		{
 			minigunTouchingFireButton = true;
 			minigunWarmup.reset();
-			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunWarmup.ogg");
+			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunWarmup.ogg");
 			minigunWarmup.prepare();
 			minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 			{
@@ -1388,9 +1388,9 @@ function minigunShootCreative(event)
 			minigunSpin.prepareAsync();
 		} catch(e){
 			clientMessage("A wild error appeared, sorry. See log.");
-			ModPE.log("DWGM: Error in minigun shoot: " + e);
+			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
 			minigunSpin.reset();
-			minigunSpin.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunSpin.ogg");
+			minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
 			minigunSpin.setLooping(true);
 			minigunSpin.prepareAsync();
 		}
@@ -1402,7 +1402,7 @@ function minigunShootCreative(event)
 		{
 			minigunTouchingFireButton = true;
 			minigunWarmup.reset();
-			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/MinigunWarmup.ogg");
+			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunWarmup.ogg");
 			minigunWarmup.prepare();
 			minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 			{
@@ -1659,7 +1659,7 @@ ModPE.playSoundFromFile = function(fileName)
 			if(sound1 == null)
 				sound1 = new android.media.MediaPlayer();
 			sound1.reset();
-			sound1.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
+			sound1.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
 			sound1.prepare();
 			sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 			{
@@ -1677,7 +1677,7 @@ ModPE.playSoundFromFile = function(fileName)
 			if(sound2 == null)
 				sound2 = new android.media.MediaPlayer();
 			sound2.reset();
-			sound2.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
+			sound2.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
 			sound2.prepare();
 			sound2.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 			{
@@ -1695,7 +1695,7 @@ ModPE.playSoundFromFile = function(fileName)
 			if(sound3 == null)
 				sound3 = new android.media.MediaPlayer();
 			sound3.reset();
-			sound3.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
+			sound3.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
 			sound3.prepare();
 			sound3.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 			{
@@ -1712,7 +1712,7 @@ ModPE.playSoundFromFile = function(fileName)
 			if(sound1 == null)
 				sound1 = new android.media.MediaPlayer();
 			sound1.reset();
-			sound1.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/" + fileName);
+			sound1.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
 			sound1.prepare();
 			sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 			{
@@ -1729,9 +1729,9 @@ ModPE.playSoundFromFile = function(fileName)
 	{
 		if(!displayedMessageNoSound)
 		{
-			ModPE.showTipMessage("DWGM: Sounds not installed!");
+			ModPE.showTipMessage("DesnoGuns: Sounds not installed!");
 			displayedMessageNoSound = true;
-			ModPE.log("DWGM: Error in playSoundFromFile: " + err);
+			ModPE.log("DesnoGuns: Error in playSoundFromFile: " + err);
 		}
 	}
 }
@@ -1744,8 +1744,8 @@ ModPE.loadSoundPool = function(path)
 		soundID = soundPool.load(path, 1);
 	} catch(e)
 	{
-		ModPE.showTipMessage("DWGM: Sounds not installed!");
-		ModPE.log("DWGM: Error in loadSoundPool: " + err);
+		ModPE.showTipMessage("DesnoGuns: Sounds not installed!");
+		ModPE.log("DesnoGuns: Error in loadSoundPool: " + err);
 	}
 }
 
@@ -2216,7 +2216,7 @@ function refillAmmo(gun)
 				refillingGun = gun;
 
 				refillSound.reset();
-				refillSound.setDataSource(sdcard + "/games/com.mojang/dwgm-sounds/reload/" + gun.refillSound);
+				refillSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.refillSound);
 				refillSound.prepare();
 				refillSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -2249,7 +2249,7 @@ function refillAmmo(gun)
 			} catch(e)
 			{
 				ModPE.showTipMessage("Sounds not installed.");
-				ModPE.log("DWGM: error in refillAmmo: " + e);
+				ModPE.log("DesnoGuns: error in refillAmmo: " + e);
 			}
 		}
 	}
