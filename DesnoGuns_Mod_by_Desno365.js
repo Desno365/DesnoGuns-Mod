@@ -687,6 +687,14 @@ function newLevel()
 		Player.addItemCreativeInv(uiId, 1);
 		initCreativeItems = false;
 	}
+
+	currentActivity.runOnUiThread(new java.lang.Runnable(){run: function(){
+		android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Checking for updates, please wait..."), 0).show();
+	}});
+
+	getLatestVersionGunsMod();
+	if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
+		updateAvailableUI();
 }
 
 function leaveGame()
@@ -1181,7 +1189,6 @@ function modTick()
 //########################################################################################################################################################
 // Added functions (No GUI and No render)
 //########################################################################################################################################################
-
 
 //########## guns functions ##########
 Item.damageCarriedGun = function(gun)
@@ -2377,6 +2384,39 @@ Player.removeItemFromInventory = function(slot, count)
 }
 //########## refill functions - END ##########
 
+//########## internet functions ##########
+function getLatestVersionGunsMod()
+{
+	try
+	{
+		var versionFile = new java.io.File(sdcard + "/desnoguns-updates.dat");
+		if(versionFile.exists())
+			versionFile.delete();
+		versionFile.createNewFile();
+		var streamVersionOutput = new java.io.FileOutputStream(versionFile);
+		var download = android.net.http.AndroidHttpClient.newInstance("Hello. Desno is trying to connect with you, do you want give him some bytes? Please...").execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity().writeTo(streamVersionOutput);
+		streamVersionOutput.close();
+		if(versionFile.exists())
+		{
+			var loadedVersion = "";
+			var streamVersionInput = new java.io.FileInputStream(versionFile);
+			var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(streamVersionInput));
+			var rowVersion = "";
+			while((rowVersion = bufferedVersionReader.readLine()) != null)
+			{
+				loadedVersion += rowVersion;
+			}
+			latestVersion = loadedVersion.split(" ");
+			bufferedVersionReader.close();
+			versionFile.delete();
+		}
+	}catch(err)
+	{
+		clientMessage("Error: " + err);
+	}
+}
+//########## internet functions - END ##########
+
 //########## other functions ##########
 function vector3d(x, y, z)
 {
@@ -2505,8 +2545,304 @@ function resizeImageToFitScreen(image)
 
 function informationsForWeaponsModUI()
 {
-	//
-	clientMessage("WIP");
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle(new android.text.Html.fromHtml("DesnoGuns Mod"));
+
+				var text1 = new android.widget.TextView(currentActivity);
+				text1.setText(new android.text.Html.fromHtml("Welcome to the DesnoGuns Mod by Desno365!<br>"));
+				layout.addView(text1);
+
+				var informationsButton = new android.widget.Button(currentActivity); 
+				informationsButton.setText("Informations"); 
+				informationsButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(informationsButton);
+
+				var settingsButton = new android.widget.Button(currentActivity); 
+				settingsButton.setText("Settings"); 
+				settingsButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(settingsButton);
+				
+				layout.addView(dividerText());
+				
+				var updatesButton = new android.widget.Button(currentActivity); 
+				updatesButton.setText("Check for updates"); 
+				updatesButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						if(latestVersion == CURRENT_VERSION || latestVersion == undefined || latestVersion == " ")
+						{
+							android.widget.Toast.makeText(currentActivity,"You have the latest version.",0).show();
+						}else
+						{
+							updateAvailableUI();
+						}
+					}
+				});
+				layout.addView(updatesButton);
+				
+				var officialThreadButton = new android.widget.Button(currentActivity); 
+				officialThreadButton.setText("Visit the official thread"); 
+				officialThreadButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						visitThread();
+						popup.dismiss();	
+					}
+				});
+				layout.addView(officialThreadButton);
+
+				var donateButton = new android.widget.Button(currentActivity); 
+				donateButton.setText("Support the developer"); 
+				donateButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						supportUI();
+						popup.dismiss();	
+					}
+				});
+				layout.addView(donateButton);
+
+				layout.addView(dividerText());
+
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{ 
+					onClick: function()
+					{ 
+						popup.dismiss();
+					}
+				}); 
+				layout.addView(exitButton); 
+				
+
+				popup.show();
+			
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function updateAvailableUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+							
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle(new android.text.Html.fromHtml("DesnoGuns Mod: new version"));
+				popupMissing.setCanceledOnTouchOutside(false);
+
+				var updatesText = new android.widget.TextView(currentActivity);
+				updatesText.setText(new android.text.Html.fromHtml("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
+					"You can download it at the minecraftforum.net thread (press the button to visit it)."));
+				layout.addView(updatesText);
+				
+				var threadButton = new android.widget.Button(currentActivity); 
+				threadButton.setText("Visit thread"); 
+				threadButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						visitThread();
+						popup.dismiss();
+					}
+				});
+				layout.addView(threadButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+				
+				popup.show();
+			}catch (err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function visitThread()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				android.widget.Toast.makeText(currentActivity,"Opening the URL...",0).show();
+				var intentBrowser = new android.content.Intent(currentActivity);
+				intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+				intentBrowser.setData(android.net.Uri.parse("http://www.minecraftforum.net/forums/minecraft-pocket-edition/mcpe-mods-tools/2179257-mod-beta-laser-mod-laser-gun-r001-by-desno365"));
+				currentActivity.startActivity(intentBrowser);
+			}catch (err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function supportUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll= new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle("Support me");
+
+				var button1 = new android.widget.Button(currentActivity); 
+				button1.setText("Follow me on Twitter"); 
+				button1.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						android.widget.Toast.makeText(currentActivity,"Opening the URL...",0).show();
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("https://twitter.com/desno365"));
+						currentActivity.startActivity(intentBrowser);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button1);
+
+				var button2 = new android.widget.Button(currentActivity); 
+				button2.setText("Subscribe to my YouTube channel"); 
+				button2.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						android.widget.Toast.makeText(currentActivity,"Opening the URL...",0).show();
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("http://www.youtube.com/channel/UCJQL47nQnsijcaN_7pMsjCQ/videos"));
+						currentActivity.startActivity(intentBrowser);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button2);
+				
+				var button3 = new android.widget.Button(currentActivity); 
+				button3.setText("View an ad to support me"); 
+				button3.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						android.widget.Toast.makeText(currentActivity,"Opening the URL...",0).show();
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("http://adf.ly/rezA4"));
+						currentActivity.startActivity(intentBrowser);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button3);
+				
+				layout.addView(dividerText());
+				
+				var backButton = new android.widget.Button(currentActivity); 
+				backButton.setText("Back"); 
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsForWeaponsModUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
+			}catch (err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device.");
+			}
+		}
+	});
+}
+
+function dividerText()
+{
+	var dividerText = new android.widget.TextView(currentActivity);
+	dividerText.setText(" ");
+	return dividerText;
 }
 
 function missingSounds(missingSoundsText)
