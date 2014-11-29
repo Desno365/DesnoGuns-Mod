@@ -64,10 +64,15 @@ var settingsPngScaled;
 var sightPngDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(sightPng, 0), 0, android.util.Base64.decode(sightPng, 0).length);
 var sightPngScaled;
 var barretUIDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(barretUI, 0), 0, android.util.Base64.decode(barretUI, 0).length);
+var barretUIScaled;
 var dragunovUIDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(dragunovUI, 0), 0, android.util.Base64.decode(dragunovUI, 0).length);
+var dragunovUIScaled;
 var m21UIDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(m21UI, 0), 0, android.util.Base64.decode(m21UI, 0).length);
+var m21UIScaled;
 var m40a3UIDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(m40a3UI, 0), 0, android.util.Base64.decode(m40a3UI, 0).length);
+var m40a3UIScaled;
 var r700UIDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(r700UI, 0), 0, android.util.Base64.decode(r700UI, 0).length);
+var r700UIScaled;
 var aimImageScaled;
 
 // variables for guns
@@ -165,7 +170,7 @@ const AK74 = {
 
 const AT4 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"AT4", id:462, fireRate:10, recoil:3, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
+	name:"AT4", id:462, fireRate:30, recoil:3, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:[
 		"   ",
 		"iri",
 		"   "]
@@ -349,7 +354,7 @@ const M60E4 = {
 
 const M72LAW = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"M72LAW", id:485, fireRate:8, recoil:6, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:[
+	name:"M72LAW", id:485, fireRate:25, recoil:6, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:[
 		"   ",
 		"iri",
 		"   "]
@@ -2095,67 +2100,44 @@ function aimImageLayer(gun)
 					case BARRETT.id:
 					case BARRETT_EXPLOSIVE.id:
 					{
-						aimImage = barretUIDecoded;
+						aimImage = barretUIScaled;
 						break;
 					}
 					case DRAGUNOV.id:
 					{
-						aimImage = dragunovUIDecoded;
+						aimImage = dragunovUIScaled;
 						break;
 					}
 					case M21.id:
 					{
-						aimImage = m21UIDecoded;
+						aimImage = m21UIScaled;
 						break;
 					}
 					case M40A3.id:
 					case M40A3_ICE.id:
 					{
-						aimImage = m40a3UIDecoded;
+						aimImage = m40a3UIScaled;
 						break;
 					}
 					case R700.id:
 					{
-						aimImage = r700UIDecoded;
+						aimImage = r700UIScaled;
 						break;
 					}
 					default:
 					{
-						aimImage = barretUIDecoded;
+						aimImage = barretUIScaled;
 					}
 				}
 
 				removeShootAndSettingsButtons();
-				var imageAimWidth = aimImage.getWidth();
-				var imageAimHeight = aimImage.getHeight();
-				var imageAimHeightScaled = displayHeight;
-				var imageAimWidthScaled = imageAimHeightScaled * (imageAimWidth / imageAimHeight);
-
-				// making image to fit the screen
-				if(imageAimWidthScaled > displayWidth)
-				{
-					var pixelsToBeRemoved = imageAimWidthScaled - displayWidth;
-					var pixelsForEachSide = Math.floor(pixelsToBeRemoved / (imageAimWidthScaled / imageAimWidth) / 2);
-
-					var matrix = new android.graphics.Matrix();
-					matrix.postScale(imageAimWidthScaled / imageAimWidth, imageAimHeightScaled / imageAimHeight);
-
-					var firstBitmap = new android.graphics.Bitmap.createBitmap(aimImage, pixelsForEachSide, 0, aimImage.getWidth() - (pixelsForEachSide * 2), aimImage.getHeight());
-					barretUIScaled = new android.graphics.Bitmap.createBitmap(firstBitmap, 0, 0, firstBitmap.getWidth(), firstBitmap.getHeight(), matrix, true);
-				} else
-				{
-					var matrix = new android.graphics.Matrix();
-					matrix.postScale(imageAimWidthScaled / imageAimWidth, imageAimHeightScaled / imageAimHeight);
-
-					barretUIScaled = new android.graphics.Bitmap.createBitmap(aimImage, 0, 0, aimImage.getWidth(), aimImage.getHeight(), matrix, true);
-				}
 				
 				var layoutAiming = new android.widget.LinearLayout(currentActivity);
 				layoutAiming.setOrientation(android.widget.LinearLayout.VERTICAL);
 				layoutAiming.setFocusableInTouchMode(false);
 
 				var backgroundAimImage = new android.widget.ImageView(currentActivity);
-				backgroundAimImage.setImageBitmap(barretUIScaled);
+				backgroundAimImage.setImageBitmap(aimImage);
 				layoutAiming.addView(backgroundAimImage);
 
 				popupAiming = new android.widget.PopupWindow();
@@ -2487,6 +2469,33 @@ function doesFileExists(path)
 	var file = new java.io.File(path);
 	return file.exists();
 }
+
+function resizeImageToFitScreen(image)
+{
+	// resize image: keeping the height, removing pixels on the left and on the right
+	var imageWidth = image.getWidth();
+	var imageHeight = image.getHeight();
+	var imageHeightScaled = displayHeight;
+	var imageWidthScaled = imageHeightScaled * (imageWidth / imageHeight);
+
+	if(imageWidthScaled > displayWidth)
+	{
+		var pixelsToBeRemoved = imageWidthScaled - displayWidth;
+		var pixelsForEachSide = Math.floor(pixelsToBeRemoved / (imageWidthScaled / imageWidth) / 2);
+
+		var matrix = new android.graphics.Matrix();
+		matrix.postScale(imageWidthScaled / imageWidth, imageHeightScaled / imageHeight);
+
+		var firstBitmap = new android.graphics.Bitmap.createBitmap(image, pixelsForEachSide, 0, image.getWidth() - (pixelsForEachSide * 2), image.getHeight());
+		return new android.graphics.Bitmap.createBitmap(firstBitmap, 0, 0, firstBitmap.getWidth(), firstBitmap.getHeight(), matrix, true);
+	} else
+	{
+		var matrix = new android.graphics.Matrix();
+		matrix.postScale(imageWidthScaled / imageWidth, imageHeightScaled / imageHeight);
+
+		return new android.graphics.Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
+	}
+}
 //########## other functions - END ##########
 
 
@@ -2637,9 +2646,27 @@ currentActivity.runOnUiThread(new java.lang.Runnable()
 					}
 					missingSounds(missingSoundsText.substring(0, missingSoundsText.length - 2));
 				}
-
 			}}), 500);
 		} catch(e) {}
+	}
+});
+
+// prepare scaled aim images, using an Handler to not make too many things at startup
+currentActivity.runOnUiThread(new java.lang.Runnable()
+{
+	run: function()
+	{
+		try
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				barretUIScaled = resizeImageToFitScreen(barretUIDecoded);
+				dragunovUIScaled = resizeImageToFitScreen(dragunovUIDecoded);
+				m21UIScaled = resizeImageToFitScreen(m21UIDecoded);
+				m40a3UIScaled = resizeImageToFitScreen(m40a3UIDecoded);
+				r700UIScaled = resizeImageToFitScreen(r700UIDecoded);
+			}}), 250);
+		} catch(e) { print(e); }
 	}
 });
 
