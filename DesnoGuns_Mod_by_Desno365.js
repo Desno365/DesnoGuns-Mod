@@ -1336,12 +1336,14 @@ function minigunShootSurvival(event)
 			minigunSpin.stop();
 			minigunSpin.prepareAsync();
 		} catch(e){
-			clientMessage("A wild error appeared, sorry. See log.");
+			clientMessage("A wild error appeared. See log.");
 			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
-			minigunSpin.reset();
-			minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-			minigunSpin.setLooping(true);
-			minigunSpin.prepareAsync();
+			try{
+				minigunSpin.reset();
+				minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
+				minigunSpin.setLooping(true);
+				minigunSpin.prepareAsync();
+			} catch(e) { /* sounds not installed */ }
 		}
 		ModPE.playSoundFromFile("MinigunCooldown.ogg");
 	}
@@ -1405,7 +1407,7 @@ function minigunShootCreative(event)
 			minigunSpin.prepareAsync();
 		} catch(e){
 			// sometimes an error happens also if you have sounds installed correctly and I didn't find why
-			clientMessage("A wild error appeared, sorry. See log.");
+			clientMessage("A wild error appeared. See log.");
 			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
 			try{
 				minigunSpin.reset();
@@ -1626,7 +1628,12 @@ function shootArrow(gun)
 	if(aiming)
 		var gunAccuracy = gun.accuracy - 1;
 	else
-		var gunAccuracy = gun.accuracy;
+	{
+		if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
+			var gunAccuracy = gun.accuracy + 25;
+		else
+			var gunAccuracy = gun.accuracy;
+	}
 
 	var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
 	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
@@ -1669,6 +1676,49 @@ function getGun(id)
 		currentGun = AK47;
 	}
 	return currentGun;
+}
+
+function getGunTypeName(gunType)
+{
+	switch(gunType)
+	{
+		case GUN_TYPE_ASSAULT_RIFLE:
+		{
+			return "Assault Rifle";
+		}
+		case GUN_TYPE_SUB_MACHINE:
+		{
+			return "Sub Machine";
+		}
+		case GUN_TYPE_LIGHT_MACHINE:
+		{
+			return "Light Machine";
+		}
+		case GUN_TYPE_SNIPER_RIFLE:
+		{
+			return "Sniper Rifle";
+		}
+		case GUN_TYPE_SHOTGUN:
+		{
+			return "Shotgun";
+		}
+		case GUN_TYPE_MACHINE_PISTOL:
+		{
+			return "Machine Pistol";
+		}
+		case GUN_TYPE_HANDGUN:
+		{
+			return "Handgun";
+		}
+		case GUN_TYPE_LAUNCHER:
+		{
+			return "Launcher";
+		}
+		case GUN_TYPE_MINIGUN:
+		{
+			return "Minigun";
+		}
+	}
 }
 //########## guns functions - END ##########
 
@@ -2571,6 +2621,7 @@ function informationsForWeaponsModUI()
 				{
 					onClick: function()
 					{
+						informationsUI();
 						popup.dismiss();
 					}
 				});
@@ -2646,6 +2697,475 @@ function informationsForWeaponsModUI()
 
 				popup.show();
 			
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function informationsUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle("Informations");
+
+				var button1 = new android.widget.Button(currentActivity); 
+				button1.setText("View guns specifications"); 
+				button1.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecifications();
+						popup.dismiss();
+					}
+				});
+				layout.addView(button1);
+
+				var button2 = new android.widget.Button(currentActivity); 
+				button2.setText("Other items"); 
+				button2.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsOtherItems();
+						popup.dismiss();
+					}
+				});
+				layout.addView(button2);
+
+				layout.addView(dividerText());
+
+				var backButton = new android.widget.Button(currentActivity); 
+				backButton.setText("Back"); 
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsForWeaponsModUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function informationsGunsSpecifications()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				layout.setMinimumWidth(displayWidth);
+				layout.setMinimumHeight(displayHeight);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle("Guns specifications");
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_ASSAULT_RIFLE)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_ASSAULT_RIFLE);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_SUB_MACHINE)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_SUB_MACHINE);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_LIGHT_MACHINE)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_LIGHT_MACHINE);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_SNIPER_RIFLE)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_SNIPER_RIFLE);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_SHOTGUN)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_SHOTGUN);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_MACHINE_PISTOL)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_MACHINE_PISTOL);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_HANDGUN)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_HANDGUN);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_LAUNCHER)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_LAUNCHER);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+
+				var button = new android.widget.Button(currentActivity); 
+				button.setText(getGunTypeName(GUN_TYPE_MINIGUN)); 
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecificationsForGunType(GUN_TYPE_MINIGUN);
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+				
+				layout.addView(dividerText());
+
+				var backButton = new android.widget.Button(currentActivity); 
+				backButton.setText("Back"); 
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function informationsGunsSpecificationsForGunType(gunType)
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				layout.setMinimumWidth(displayWidth);
+				layout.setMinimumHeight(displayHeight);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle(getGunTypeName(gunType) + " specifications");
+
+				for(var i in guns)
+				{
+					if(guns[i].gunType == gunType)
+					{
+						var text1 = new android.widget.TextView(currentActivity);
+						text1.setText(new android.text.Html.fromHtml("<b>" + guns[i].name + "</b> (ID: " + guns[i].id + ")"));
+						layout.addView(text1);
+
+						var text = new android.widget.TextView(currentActivity);
+						text.setText(getGunTypeName(guns[i].gunType));
+						text.setGravity(android.view.Gravity.RIGHT);
+						text.setTextSize(12);
+						layout.addView(text);
+
+
+						var text2 = new android.widget.TextView(currentActivity);
+						text2.setText("Fire rate");
+						layout.addView(text2);
+
+						layout.addView(seekBarForInformations(guns[i].fireRate, 20, true, (guns[i].fireRate / 20) + " second(s)"));
+
+
+						var text3 = new android.widget.TextView(currentActivity);
+						text3.setText("Accuracy");
+						layout.addView(text3);
+
+						layout.addView(seekBarForInformations(guns[i].accuracy, SPAS.accuracy, true, (51 - guns[i].accuracy) + "/50"));
+
+
+						var text4 = new android.widget.TextView(currentActivity);
+						text4.setText("Zoom level (when aiming)");
+						layout.addView(text4);
+
+						layout.addView(seekBarForInformations(guns[i].zoomLevel, ZOOM_SNIPER, false, guns[i].zoomLevel + " FOV"));
+
+
+						var text5 = new android.widget.TextView(currentActivity);
+						text5.setText("Ammo");
+						layout.addView(text5);
+
+						layout.addView(seekBarForInformations(guns[i].ammo, 125, false, guns[i].ammo.toString()));
+
+
+						if(guns[i].hasExplosiveBullets)
+						{
+							var text6 = new android.widget.TextView(currentActivity);
+							text6.setText("Explosion radius");
+							layout.addView(text6);
+
+							layout.addView(seekBarForInformations(guns[i].bulletsExplosionRadius, 5, false, guns[i].bulletsExplosionRadius + "/10"));;
+						}
+
+						layout.addView(dividerText());
+					}
+				}
+
+				var backButton = new android.widget.Button(currentActivity); 
+				backButton.setText("Back"); 
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecifications();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function seekBarForInformations(value, max, invert, text)
+{
+	if(value > max)
+		value = max;
+	if(invert)
+		value = max - value;
+	var seekBar = new android.widget.SeekBar(currentActivity);
+	seekBar.setMax(max);
+	seekBar.setProgress(Math.round(value));
+	seekBar.setOnTouchListener(new android.view.View.OnTouchListener()
+	{
+		onTouch: function(v, event)
+		{
+			return true;
+		}
+	});
+	seekBar.setClickable(false);
+	seekBar.setFocusable(false);
+	seekBar.setLongClickable(false);
+	seekBar.setSelected(false);
+	seekBar.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 3));
+	
+
+	var text1 = new android.widget.TextView(currentActivity);
+	text1.setText(text);
+	text1.setGravity(android.view.Gravity.LEFT);
+	text1.setTextSize(12);
+	text1.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+
+	var layoutH = new android.widget.LinearLayout(currentActivity);
+	layoutH.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+
+	layoutH.addView(seekBar);
+	layoutH.addView(text1);
+	return layoutH;
+}
+
+function informationsOtherItems()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle("Informations");
+
+				var button1 = new android.widget.Button(currentActivity); 
+				button1.setText("Guns specifications"); 
+				button1.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsGunsSpecifications();
+						popup.dismiss();
+					}
+				});
+				layout.addView(button1);
+
+				var button2 = new android.widget.Button(currentActivity); 
+				button2.setText("Other items"); 
+				button2.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						laserGUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(button2);
+
+				var backButton = new android.widget.Button(currentActivity); 
+				backButton.setText("Back"); 
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						laserGUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
