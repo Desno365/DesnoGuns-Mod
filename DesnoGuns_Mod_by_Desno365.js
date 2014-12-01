@@ -778,8 +778,13 @@ function leaveGame()
 
 function useItem(x, y, z, itemId, blockId, side, itemDamage)
 {
-	// something here
-	// maybe
+	if(itemId == uiId)
+	{
+		informationsForWeaponsModUI();
+		preventDefault();
+		return;
+	}
+
 }
 
 function attackHook(attacker, victim)
