@@ -2669,7 +2669,7 @@ function resizeImageToFitScreen(image)
 
 function getRandomTip()
 {
-	var random = Math.floor((Math.random() * 10) + 1);
+	var random = Math.floor((Math.random() * 12) + 1);
 	switch(random)
 	{
 		case 1:
@@ -2706,11 +2706,19 @@ function getRandomTip()
 		}
 		case 9:
 		{
-			return "Sounds are important, always remember to install them correctly ;)";
+			return "Sounds are important. Always remember to install them correctly ;)";
 		}
 		case 10:
 		{
 			return ".shootDatCreeper()";
+		}
+		case 11:
+		{
+			return "Press the setting icon on the left, it is awesome.";
+		}
+		case 12:
+		{
+			return "Please don't do a 360 noscope.";
 		}
 	}
 }
