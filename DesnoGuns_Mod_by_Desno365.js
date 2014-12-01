@@ -124,7 +124,7 @@ const ASSAULT_BULLET_SPEED = 6.8;
 const BAZOOKA_BULLET_SPEED = 4.8;
 const PISTOL_BULLET_SPEED = 6;
 const SHOTGUN_BULLET_SPEED = 4.2;
-const GRENADE_LAUNCHER_BULLET_SPEED = 3.3;
+const GRENADE_LAUNCHER_BULLET_SPEED = 2.7;
 
 // zoom level
 const ZOOM_SNIPER = 35;
@@ -520,8 +520,24 @@ const W1200 = {
 		"   "]
 };
 
+const XMAS_MINIGUN = {
+	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
+	name:"X-Mas Minigun", id:507, fireRate:2, recoil:2, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"bell.wav", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
+const XMAS_SNIPER = {
+	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
+	name:"X-Mas Sniper", id:508, fireRate:2, recoil:25, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:[
+		"   ",
+		"iri",
+		"   "]
+};
+
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, XMAS_MINIGUN, XMAS_SNIPER];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, RPG];
 
 // add guns
@@ -746,17 +762,24 @@ function leaveGame()
 	// reset fov
 	ModPE.resetFov();
 	zoomWithFov = 72;
+
+	// info item uis
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			try{
+				popupTip.dismiss();
+				popupSettingsImage.dismiss();
+			}catch(e) {}
+		}
+	}));
 }
 
 function useItem(x, y, z, itemId, blockId, side, itemDamage)
 {
-	// DesnoGuns infos
-	if(itemId == uiId)
-	{
-		informationsForWeaponsModUI();
-		preventDefault();
-		return;
-	}
+	// something here
+	// maybe
 }
 
 function attackHook(attacker, victim)
@@ -779,7 +802,7 @@ function deathHook(murderer, victim)
 {
 	if(deathWorkaround && victim != Player.getEntity())
 	{
-		if(Player.getCarriedItem() >= 460 && Player.getCarriedItem() <= 506)
+		if(Player.getCarriedItem() >= 460 && Player.getCarriedItem() <= 512)
 		{
 			Entity.remove(victim);
 		}
@@ -849,10 +872,23 @@ function changeCarriedItem(currentItem, previousItem)
 		removeShootAndSettingsButtons();
 	}
 
-	// the current item is a gun
-	if(currentItem >= 460 && currentItem <= 506)
+	// removing ui of the info item
+	if(previousItem == uiId)
 	{
-		if(!(previousItem >= 460 && previousItem <= 506))
+		currentActivity.runOnUiThread(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				popupTip.dismiss();
+				popupSettingsImage.dismiss();
+			}
+		}));
+	}
+
+	// the current item is a gun
+	if(currentItem >= 460 && currentItem <= 512)
+	{
+		if(!(previousItem >= 460 && previousItem <= 512))
 			shootAndSettingsButtons(true);
 
 		// reset clicks and long clicks
@@ -957,7 +993,7 @@ function changeCarriedItem(currentItem, previousItem)
 		setAmmoText((currentGun.ammo - Player.getCarriedItemData()) + "/" + currentGun.ammo);
 	} else
 	{
-		if(previousItem >= 460 && previousItem <= 506)
+		if(previousItem >= 460 && previousItem <= 512)
 		{
 			//the item before was weapon, now not
 			removeShootAndSettingsButtons();
@@ -1027,6 +1063,74 @@ function changeCarriedItem(currentItem, previousItem)
 			}
 		}));
 		setAmmoText(" ");
+	}
+
+	// DesnoGuns info
+	if(currentItem == uiId)
+	{
+		currentActivity.runOnUiThread(new java.lang.Runnable()
+		{
+			run: function()
+			{
+				try
+				{
+					var settingsImageSquareLength = settingsPngDecoded.getHeight();
+					var settingsImageSquareLengthScaled = settingsImageSquareLength * deviceDensity * 0.3;
+					var matrix1 = new android.graphics.Matrix();
+					matrix1.postScale(settingsImageSquareLengthScaled / settingsImageSquareLength, settingsImageSquareLengthScaled / settingsImageSquareLength);
+					settingsPngScaled = new android.graphics.Bitmap.createBitmap(settingsPngDecoded, 0, 0, settingsImageSquareLength, settingsImageSquareLength, matrix1, true);
+					
+					popupSettingsImage = new android.widget.PopupWindow();
+					var layoutSettingsImage = new android.widget.RelativeLayout(currentActivity);
+					
+					var settingsImage = new android.widget.ImageView(currentActivity);
+					settingsImage.setImageBitmap(settingsPngScaled);
+					settingsImage.setOnClickListener(new android.view.View.OnClickListener({
+						onClick: function()
+						{
+							informationsForWeaponsModUI();
+						}
+					}));
+					layoutSettingsImage.addView(settingsImage);
+
+					popupSettingsImage.setContentView(layoutSettingsImage);
+					popupSettingsImage.setWidth(settingsImageSquareLengthScaled);
+					popupSettingsImage.setHeight(settingsImageSquareLengthScaled);
+					popupSettingsImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+					popupSettingsImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, 0);
+
+
+					var layoutTip = new android.widget.RelativeLayout(currentActivity);
+					layoutTip.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+					var tipText = new android.widget.TextView(currentActivity);
+					tipText.setOnClickListener(new android.view.View.OnClickListener()
+					{
+						onClick: function(v)
+						{
+							v.setText(getRandomTip());
+							return false;
+						}
+					});
+					tipText.setGravity(android.view.Gravity.LEFT);
+					tipText.setText(getRandomTip());
+					tipText.setTypeface(font);
+					tipText.setPaintFlags(tipText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+					tipText.setTextSize(14);
+					tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					tipText.setShadowLayer(0.001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+					tipText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+					layoutTip.addView(tipText);
+
+					popupTip = new android.widget.PopupWindow(layoutTip, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+					popupTip.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+					popupTip.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, -64 * deviceDensity);
+				}catch(err)
+				{
+					clientMessage("Error: " + err);
+				}
+			}
+		});
 	}
 }
 
@@ -1321,7 +1425,7 @@ function onClickWeaponShoot(gun)
 	}
 }
 
-function minigunShootSurvival(event)
+function minigunShootSurvival(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -1330,7 +1434,7 @@ function minigunShootSurvival(event)
 		if(minigunWarmup.isPlaying())
 			minigunWarmup.stop();
 		if(shooting)
-			showCloudParticle(MINIGUN.smoke);
+			showCloudParticle(gun.smoke);
 		shooting = false;
 		try{
 			minigunSpin.stop();
@@ -1363,21 +1467,21 @@ function minigunShootSurvival(event)
 					{
 						shooting = true;
 						minigunSpin.start();
-						currentShotTicks = MINIGUN.fireRate;
+						currentShotTicks = gun.fireRate;
 						shootingRunnable = (new java.lang.Runnable(
 						{
 							run: function()
 							{
-								if(currentShotTicks == MINIGUN.fireRate)
+								if(currentShotTicks == gun.fireRate)
 								{
-									if(Player.getCarriedItemData() >= MINIGUN.ammo)
+									if(Player.getCarriedItemData() >= gun.ammo)
 										ModPE.showTipMessage("Press the ammo text to refill.");
 									else
 									{
 										currentShotTicks = 0;
 										ModPE.playLoadedSoundPool(minigunVolume);
-										shootArrow(MINIGUN);
-										Item.damageCarriedGun(MINIGUN);
+										shootArrow(gun);
+										Item.damageCarriedGun(gun);
 									}
 								}
 								currentShotTicks++;
@@ -1391,7 +1495,7 @@ function minigunShootSurvival(event)
 	}
 }
 
-function minigunShootCreative(event)
+function minigunShootCreative(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -1400,7 +1504,7 @@ function minigunShootCreative(event)
 		if(minigunWarmup.isPlaying())
 			minigunWarmup.stop();
 		if(shooting)
-			showCloudParticle(MINIGUN.smoke);
+			showCloudParticle(gun.smoke);
 		shooting = false;
 		try{
 			minigunSpin.stop();
@@ -1436,16 +1540,16 @@ function minigunShootCreative(event)
 						{
 							shooting = true;
 							minigunSpin.start();
-							currentShotTicks = MINIGUN.fireRate;
+							currentShotTicks = gun.fireRate;
 							shootingRunnable = (new java.lang.Runnable(
 							{
 								run: function()
 								{
-									if(currentShotTicks == MINIGUN.fireRate)
+									if(currentShotTicks == gun.fireRate)
 									{
 										currentShotTicks = 0;
 										ModPE.playLoadedSoundPool(minigunVolume);
-										shootArrow(MINIGUN);
+										shootArrow(gun);
 									}
 									currentShotTicks++;
 								}
@@ -1639,7 +1743,10 @@ function shootArrow(gun)
 	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
 	var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
-	var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 80);
+	if(gun.hasIceBullets)
+		var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 81);
+	else
+		var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 80);
 	setVelX(arrow, gunShootDir.x * gun.bulletSpeed);
 	setVelY(arrow, gunShootDir.y * gun.bulletSpeed);
 	setVelZ(arrow, gunShootDir.z * gun.bulletSpeed);
@@ -1840,32 +1947,6 @@ function shootAndSettingsButtons(loadAimButton)
 		{
 			try
 			{
-				/*var settingsImageSquareLength = settingsPngDecoded.getHeight();
-				var settingsImageSquareLengthScaled = settingsImageSquareLength * deviceDensity * 0.3;
-				var matrix1 = new android.graphics.Matrix();
-				matrix1.postScale(settingsImageSquareLengthScaled / settingsImageSquareLength, settingsImageSquareLengthScaled / settingsImageSquareLength);
-				settingsPngScaled = new android.graphics.Bitmap.createBitmap(settingsPngDecoded, 0, 0, settingsImageSquareLength, settingsImageSquareLength, matrix1, true);
-				
-				popupSettingsImage = new android.widget.PopupWindow();
-				var layoutSettingsImage = new android.widget.RelativeLayout(currentActivity);
-				
-				var settingsImage = new android.widget.ImageView(currentActivity);
-				settingsImage.setImageBitmap(settingsPngScaled);
-				settingsImage.setOnClickListener(new android.view.View.OnClickListener({
-					onClick: function()
-					{
-						informationsForWeaponsModUI();
-					}
-				}));
-				layoutSettingsImage.addView(settingsImage);
-
-				popupSettingsImage.setContentView(layoutSettingsImage);
-				popupSettingsImage.setWidth(settingsImageSquareLengthScaled);
-				popupSettingsImage.setHeight(settingsImageSquareLengthScaled);
-				popupSettingsImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-				popupSettingsImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, 0);*/
-
-
 				if(loadAimButton)
 				{
 					var layoutAim = new android.widget.RelativeLayout(currentActivity);
@@ -2040,7 +2121,6 @@ function shootAndSettingsButtons(loadAimButton)
 					popupAmmo.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 					popupAmmo.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.BOTTOM, 0, 64 * deviceDensity);
 				}
-				
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -2586,6 +2666,54 @@ function resizeImageToFitScreen(image)
 		return new android.graphics.Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
 	}
 }
+
+function getRandomTip()
+{
+	var random = Math.floor((Math.random() * 10) + 1);
+	switch(random)
+	{
+		case 1:
+		{
+			return "Guns have better accuracy while aiming.";
+		}
+		case 2:
+		{
+			return "Sounds were the most difficult thing to code :/";
+		}
+		case 3:
+		{
+			return "Sniper Rifles have a really bad accuracy if you don't aim.";
+		}
+		case 4:
+		{
+			return "Textures and sounds are made by @jamioflan, a big thanks to him!";
+		}
+		case 5:
+		{
+			return "In Minecraft the damage of an arrow depends on his speed.";
+		}
+		case 6:
+		{
+			return "So... the damage of a bullet depends on his speed.";
+		}
+		case 7:
+		{
+			return "This mod causes addiction, use with caution.";
+		}
+		case 8:
+		{
+			return "You're running the " + CURRENT_VERSION + " version of the DesnoGuns mod!";
+		}
+		case 9:
+		{
+			return "Sounds are important, always remember to install them correctly ;)";
+		}
+		case 10:
+		{
+			return ".shootDatCreeper()";
+		}
+	}
+}
 //########## other functions - END ##########
 
 
@@ -3004,6 +3132,12 @@ function informationsGunsSpecificationsForGunType(gunType)
 						layout.addView(text4);
 
 						layout.addView(seekBarForInformations(guns[i].zoomLevel, ZOOM_SNIPER, false, guns[i].zoomLevel + " FOV"));
+
+						var text7 = new android.widget.TextView(currentActivity);
+						text7.setText("Bullet speed");
+						layout.addView(text7);
+
+						layout.addView(seekBarForInformations(guns[i].bulletSpeed * 10, 100, false, guns[i].bulletSpeed * 10+ "/100"));
 
 
 						var text5 = new android.widget.TextView(currentActivity);
