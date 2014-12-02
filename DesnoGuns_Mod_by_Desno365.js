@@ -2674,7 +2674,7 @@ function resizeImageToFitScreen(image)
 
 function getRandomTip()
 {
-	var random = Math.floor((Math.random() * 12) + 1);
+	var random = Math.floor((Math.random() * 15) + 1);
 	switch(random)
 	{
 		case 1:
@@ -2724,6 +2724,18 @@ function getRandomTip()
 		case 12:
 		{
 			return "Please don't do a 360 noscope.";
+		}
+		case 13:
+		{
+			return "author.name = \"Dennis Motta\"; author.nickname = \"Desno365\"";
+		}
+		case 14:
+		{
+			return "Follow @Desno365 on Twitter";
+		}
+		case 15:
+		{
+			return "@AntiModPe made the grenade renders and some other things. Thanks Anti!";
 		}
 	}
 }
