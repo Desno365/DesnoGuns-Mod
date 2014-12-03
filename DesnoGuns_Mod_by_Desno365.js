@@ -75,6 +75,11 @@ var r700UIDecoded = android.graphics.BitmapFactory.decodeByteArray(android.util.
 var r700UIScaled;
 var aimImageScaled;
 
+// buttons ui settings variables
+var buttonsSize = 22;
+var ammoTextSize = 16;
+var moveButtons = 0;
+
 // variables for guns
 var ammoText;
 var isRefilling = false;
@@ -707,6 +712,18 @@ function newLevel()
 	currentActivity.runOnUiThread(new java.lang.Runnable(){run: function(){
 		android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Checking for updates, please wait..."), 0).show();
 	}});
+
+	var bSizeTest = ModPE.readData("bSize");
+	if(bSizeTest != "" && bSizeTest != null && bSizeTest != undefined)
+		buttonsSize = parseFloat(bSizeTest);
+
+	var mButtonsTest = ModPE.readData("mButtons");
+	if(mButtonsTest != "" && mButtonsTest != null && mButtonsTest != undefined)
+		moveButtons = parseFloat(mButtonsTest);
+
+	var aTSizeTest = ModPE.readData("aTSize");
+	if(aTSizeTest != "" && aTSizeTest != null && aTSizeTest != undefined)
+		ammoTextSize = parseFloat(aTSizeTest);
 
 	getLatestVersionGunsMod();
 	if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
@@ -2023,7 +2040,7 @@ function shootAndSettingsButtons(loadAimButton)
 					aimText.setText("aim");
 					aimText.setTypeface(font);
 					aimText.setPaintFlags(aimText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-					aimText.setTextSize(20);
+					aimText.setTextSize(buttonsSize);
 					aimText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 					aimText.setShadowLayer(0.0001, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 					aimText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -2033,7 +2050,7 @@ function shootAndSettingsButtons(loadAimButton)
 
 					popupAim = new android.widget.PopupWindow(layoutAim, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
 					popupAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, 0);
+					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, moveButtons);
 				}
 
 
@@ -2084,7 +2101,7 @@ function shootAndSettingsButtons(loadAimButton)
 				shotText.setText("fire");
 				shotText.setTypeface(font);
 				shotText.setPaintFlags(shotText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-				shotText.setTextSize(20);
+				shotText.setTextSize(buttonsSize);
 				shotText.setTextColor(android.graphics.Color.parseColor("#FFDE0000"));
 				shotText.setShadowLayer(0.0001, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				shotText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -2094,7 +2111,7 @@ function shootAndSettingsButtons(loadAimButton)
 
 				popupShot = new android.widget.PopupWindow(layoutShot, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
 				popupShot.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, 0);
+				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
 
 
 
@@ -2116,7 +2133,7 @@ function shootAndSettingsButtons(loadAimButton)
 					ammoText.setText("null");
 					ammoText.setTypeface(font);
 					ammoText.setPaintFlags(ammoText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-					ammoText.setTextSize(14);
+					ammoText.setTextSize(ammoTextSize);
 					ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 					ammoText.setShadowLayer(0.001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 					ammoText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -2674,7 +2691,7 @@ function resizeImageToFitScreen(image)
 
 function getRandomTip()
 {
-	var random = Math.floor((Math.random() * 15) + 1);
+	var random = Math.floor((Math.random() * 14) + 1);
 	switch(random)
 	{
 		case 1:
@@ -2683,7 +2700,7 @@ function getRandomTip()
 		}
 		case 2:
 		{
-			return "Sounds were the most difficult thing to code :/";
+			return "Follow @Desno365 on Twitter";
 		}
 		case 3:
 		{
@@ -2699,7 +2716,7 @@ function getRandomTip()
 		}
 		case 6:
 		{
-			return "So... the damage of a bullet depends on his speed.";
+			return "The damage of a bullet depends on his speed.";
 		}
 		case 7:
 		{
@@ -2727,13 +2744,9 @@ function getRandomTip()
 		}
 		case 13:
 		{
-			return "author.name = \"Dennis Motta\"; author.nickname = \"Desno365\"";
+			return "author.name = \"Dennis Motta\"; author.nickname = \"Desno365\";";
 		}
 		case 14:
-		{
-			return "Follow @Desno365 on Twitter";
-		}
-		case 15:
 		{
 			return "@AntiModPe made the grenade renders and some other things. Thanks Anti!";
 		}
@@ -2786,6 +2799,7 @@ function informationsForWeaponsModUI()
 				{
 					onClick: function()
 					{
+						settingsUI();
 						popup.dismiss();
 					}
 				});
@@ -3273,31 +3287,7 @@ function informationsOtherItems()
 			
 				var popup = new android.app.Dialog(currentActivity); 
 				popup.setContentView(scroll);
-				popup.setTitle("Informations");
-
-				var button1 = new android.widget.Button(currentActivity); 
-				button1.setText("Guns specifications"); 
-				button1.setOnClickListener(new android.view.View.OnClickListener()
-				{
-					onClick: function()
-					{
-						informationsGunsSpecifications();
-						popup.dismiss();
-					}
-				});
-				layout.addView(button1);
-
-				var button2 = new android.widget.Button(currentActivity); 
-				button2.setText("Other items"); 
-				button2.setOnClickListener(new android.view.View.OnClickListener()
-				{
-					onClick: function()
-					{
-						laserGUI();
-						popup.dismiss();
-					}
-				});
-				layout.addView(button2);
+				popup.setTitle("Other items");
 
 				var backButton = new android.widget.Button(currentActivity); 
 				backButton.setText("Back"); 
@@ -3305,7 +3295,146 @@ function informationsOtherItems()
 				{
 					onClick: function()
 					{
-						laserGUI();
+						informationsUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
+			}
+		}
+	});
+}
+
+function settingsUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle("Settings");
+
+				layout.addView(dividerText());
+
+				var sizeText = new android.widget.TextView(currentActivity);
+				sizeText.setText("Select the preferred size of the \"fire\" and \"aim\" buttons (default is 22)");
+				layout.addView(sizeText);
+
+				var sizeChooser = new android.widget.SeekBar(currentActivity);
+				sizeChooser.setMax(30);
+				sizeChooser.setProgress(buttonsSize - 10);
+				sizeChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+				{
+					onProgressChanged: function()
+					{
+						buttonsSize = sizeChooser.getProgress() + 10;
+						sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
+					},
+					onStopTrackingTouch: function()
+					{
+						ModPE.saveData("bSize", buttonsSize);
+					}
+				});
+				layout.addView(sizeChooser);
+				
+				var sizeText1 = new android.widget.TextView(currentActivity);
+				sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
+				layout.addView(sizeText1);
+
+				layout.addView(dividerText());
+
+				var moveButtonsText = new android.widget.TextView(currentActivity);
+				moveButtonsText.setText("Select the y positions of the \"fire\" and \"aim\" buttons (default is 0)");
+				layout.addView(moveButtonsText);
+
+				var maxY = (displayHeight / 4 * 3);
+				if(maxY % 2 != 0)
+					maxY--;
+				var moveButtonsChooser = new android.widget.SeekBar(currentActivity);
+				moveButtonsChooser.setMax(maxY);
+				moveButtonsChooser.setProgress((-moveButtons) + (maxY / 2));
+				moveButtonsChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+				{
+					onProgressChanged: function()
+					{
+						moveButtons = -(moveButtonsChooser.getProgress() - (maxY / 2));
+						moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+					},
+					onStopTrackingTouch: function()
+					{
+						ModPE.saveData("mButtons", moveButtons);
+					}
+				});
+				layout.addView(moveButtonsChooser);
+				
+				var moveButtonsText1 = new android.widget.TextView(currentActivity);
+				moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+				layout.addView(moveButtonsText1);
+
+				layout.addView(dividerText());
+
+				var sizeText2 = new android.widget.TextView(currentActivity);
+				sizeText2.setText("Select the preferred size of the ammo text (default is 16)");
+				layout.addView(sizeText2);
+
+				var sizeChooser1 = new android.widget.SeekBar(currentActivity);
+				sizeChooser1.setMax(20);
+				sizeChooser1.setProgress(ammoTextSize - 8);
+				sizeChooser1.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+				{
+					onProgressChanged: function()
+					{
+						ammoTextSize = sizeChooser1.getProgress() + 8;
+						sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
+					},
+					onStopTrackingTouch: function()
+					{
+						ModPE.saveData("aTSize", ammoTextSize);
+					}
+				});
+				layout.addView(sizeChooser1);
+				
+				var sizeText3 = new android.widget.TextView(currentActivity);
+				sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
+				layout.addView(sizeText3);
+
+				layout.addView(dividerText());
+
+				var backButton = new android.widget.Button(currentActivity); 
+				backButton.setText("Back"); 
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationsForWeaponsModUI();
 						popup.dismiss();
 					}
 				});
