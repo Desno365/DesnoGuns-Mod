@@ -725,6 +725,10 @@ function newLevel()
 	if(aTSizeTest != "" && aTSizeTest != null && aTSizeTest != undefined)
 		ammoTextSize = parseFloat(aTSizeTest);
 
+	var dWorkaroundTest = ModPE.readData("dWorkaround");
+	if(dWorkaroundTest != "" && dWorkaroundTest != null && dWorkaroundTest != undefined)
+		deathWorkaround = stringToBoolean(dWorkaroundTest);
+
 	getLatestVersionGunsMod();
 	if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
 		updateAvailableUI();
@@ -2752,6 +2756,16 @@ function getRandomTip()
 		}
 	}
 }
+
+function stringToBoolean(string)
+{
+	switch(string.toLowerCase())
+	{
+		case "true": case "yes": case "1": return true;
+		case "false": case "no": case "0": case null: return false;
+		default: return Boolean(string);
+	}
+}
 //########## other functions - END ##########
 
 
@@ -2962,8 +2976,6 @@ function informationsGunsSpecifications()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				layout.setMinimumWidth(displayWidth);
-				layout.setMinimumHeight(displayHeight);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -3152,11 +3164,22 @@ function informationsGunsSpecificationsForGunType(gunType)
 						layout.addView(text);
 
 
-						var text2 = new android.widget.TextView(currentActivity);
-						text2.setText("Fire rate");
-						layout.addView(text2);
-
-						layout.addView(seekBarForInformations(guns[i].fireRate, 20, true, (guns[i].fireRate / 20) + " second(s)"));
+						if(guns[i].ammo != 1)
+						{
+							var text2 = new android.widget.TextView(currentActivity);
+							text2.setText("Fire rate");
+							layout.addView(text2);
+							if(guns[i].fireRate == 1 && guns[i].type == BUTTON_TYPE_ON_CLICK)
+							{
+								var text2_1 = new android.widget.TextView(currentActivity);
+								text2_1.setText("Shoot one bullet every time the user clicks the \"fire\" button");
+								text2_1.setTextSize(12);
+								layout.addView(text2_1);
+							}else
+							{
+								layout.addView(seekBarForInformations(guns[i].fireRate, 20, true, (guns[i].fireRate / 20) + " second(s)"));
+							}
+						}
 
 
 						var text3 = new android.widget.TextView(currentActivity);
@@ -3425,6 +3448,21 @@ function settingsUI()
 				var sizeText3 = new android.widget.TextView(currentActivity);
 				sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
 				layout.addView(sizeText3);
+
+				layout.addView(dividerText());
+
+				var switchWorkaround = new android.widget.Switch(currentActivity);
+				switchWorkaround.setChecked(deathWorkaround);
+				switchWorkaround.setText("Activate workaround to prevent returning arrows while shooting (experimental)");
+				switchWorkaround.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+				{
+					onCheckedChanged: function()
+					{
+						deathWorkaround = !deathWorkaround;
+						ModPE.saveData("dWorkaround", deathWorkaround);
+					}
+				});
+				layout.addView(switchWorkaround);
 
 				layout.addView(dividerText());
 
