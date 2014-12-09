@@ -79,6 +79,7 @@ var aimImageScaled;
 var buttonsSize = 22;
 var ammoTextSize = 16;
 var moveButtons = 0;
+var displaySight = true;
 
 // variables for guns
 var ammoText;
@@ -158,41 +159,41 @@ const BUTTON_TYPE_ON_TOUCH_WITH_WAIT = 3;
 
 // crafting
 const CRAFTING_ASSAULT_RIFLE = [
-		"   ",
+		" a ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_SUB_MACHINE = [
-		"   ",
+		" b ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_LIGHT_MACHINE = [
-		"   ",
+		" c ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_SNIPER_RIFLE = [
-		"   ",
+		" d ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_SHOTGUN = [
-		"   ",
+		" e ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_MACHINE_PISTOL = [
-		"   ",
+		" f ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_HANDGUN = [
-		"   ",
+		" g ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_LAUNCHER = [
-		"   ",
+		" h ",
 		"iri",
-		"   "];
+		"iri"];
 const CRAFTING_MINIGUN = [
-		"   ",
+		" j ",
 		"iri",
-		"   "];
+		"iri"];
 
 // weapons
 const AK47 = {
@@ -342,106 +343,102 @@ const M1887 = {
 
 const MAKAROV = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Makarov", id:490, fireRate:1, recoil:1, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:8, zoomLevel:ZOOM_PISTOL, sound:"MakarovShoot.ogg", refillSound:"ColtReload.ogg", texture:"item_frame", ammo:8, smoke:0, recipe:CRAFTING_HANDGUN
+	name:"Makarov", id:489, fireRate:1, recoil:1, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:8, zoomLevel:ZOOM_PISTOL, sound:"MakarovShoot.ogg", refillSound:"ColtReload.ogg", texture:"item_frame", ammo:8, smoke:0, recipe:CRAFTING_HANDGUN
 };
 
 const MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Minigun", id:491, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_ASSAULT, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Minigun", id:490, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_ASSAULT, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const MINI_UZI = {
 	gunType:GUN_TYPE_MACHINE_PISTOL, type:BUTTON_TYPE_ON_TOUCH,
-	name:"Mini-Uzi", id:492, fireRate:2, recoil:3, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_PISTOL, sound:"MiniUziShoot.ogg", refillSound:"ColtReload.ogg", texture:"leggings", textureNumber:1, ammo:32, smoke:1, recipe:CRAFTING_MACHINE_PISTOL
+	name:"Mini-Uzi", id:491, fireRate:2, recoil:3, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_PISTOL, sound:"MiniUziShoot.ogg", refillSound:"ColtReload.ogg", texture:"leggings", textureNumber:1, ammo:32, smoke:1, recipe:CRAFTING_MACHINE_PISTOL
 };
 
 const MP5 = {
 	gunType:GUN_TYPE_SUB_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"MP5", id:493, fireRate:3, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_MACHINE, sound:"MP5Shoot.ogg", refillSound:"StenReload.ogg", texture:"magma_cream", ammo:30, smoke:1, recipe:CRAFTING_SUB_MACHINE
+	name:"MP5", id:492, fireRate:3, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_MACHINE, sound:"MP5Shoot.ogg", refillSound:"StenReload.ogg", texture:"magma_cream", ammo:30, smoke:1, recipe:CRAFTING_SUB_MACHINE
 };
 
 const MTAR = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"MTAR", id:494, fireRate:3, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:3, zoomLevel:ZOOM_ASSAULT, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", refillSound:"MP44Reload.ogg", texture:"map_empty", ammo:30, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"MTAR", id:493, fireRate:3, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:3, zoomLevel:ZOOM_ASSAULT, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", refillSound:"MP44Reload.ogg", texture:"map_empty", ammo:30, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const P90 = {
 	gunType:GUN_TYPE_SUB_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"P90", id:495, fireRate:2, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_MACHINE, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", refillSound:"DP28Reload.ogg", texture:"map_filled", ammo:50, smoke:2, recipe:CRAFTING_SUB_MACHINE
+	name:"P90", id:494, fireRate:2, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_MACHINE, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", refillSound:"DP28Reload.ogg", texture:"map_filled", ammo:50, smoke:2, recipe:CRAFTING_SUB_MACHINE
 };
 
 const R700 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"R700", id:496, fireRate:20, recoil:25, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", refillSound:"SpringfieldReload.ogg", texture:"melon_speckled", ammo:4, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"R700", id:495, fireRate:20, recoil:25, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", refillSound:"SpringfieldReload.ogg", texture:"melon_speckled", ammo:4, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const R870 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Remington 870", id:497, fireRate:15, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"R870Shoot.ogg", refillSound:"W1200Reload.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"Remington 870", id:496, fireRate:15, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"R870Shoot.ogg", refillSound:"W1200Reload.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const RPD = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"RPD", id:498, fireRate:3, recoil:6, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_MACHINE, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"minecart_furnace", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
+	name:"RPD", id:497, fireRate:3, recoil:6, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_MACHINE, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"minecart_furnace", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
 };
 
 const RPG = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"RPG", id:499, fireRate:40, recoil:25, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:16, zoomLevel:ZOOM_BAZOOKA, sound:"RPGShoot.ogg", refillSound:"BazookaReload.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"RPG", id:498, fireRate:40, recoil:25, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:16, zoomLevel:ZOOM_BAZOOKA, sound:"RPGShoot.ogg", refillSound:"BazookaReload.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const RPK = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"RPK", id:500, fireRate:3, recoil:5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"quiver", ammo:40, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"RPK", id:499, fireRate:3, recoil:5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"quiver", ammo:40, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const SG550 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"SG550", id:501, fireRate:5, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_ASSAULT, sound:"SG550Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"SG550", id:500, fireRate:5, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_ASSAULT, sound:"SG550Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const SIGP226 = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"SIGP226", id:502, fireRate:1, recoil:3, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:6, zoomLevel:ZOOM_PISTOL, sound:"SIGP226Shoot.ogg", refillSound:"LugerReload.ogg", texture:"name_tag", ammo:10, smoke:0, recipe:CRAFTING_HANDGUN
+	name:"SIGP226", id:501, fireRate:1, recoil:3, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:6, zoomLevel:ZOOM_PISTOL, sound:"SIGP226Shoot.ogg", refillSound:"LugerReload.ogg", texture:"name_tag", ammo:10, smoke:0, recipe:CRAFTING_HANDGUN
 };
 
 const SKORPION = {
 	gunType:GUN_TYPE_MACHINE_PISTOL, type:BUTTON_TYPE_ON_TOUCH,
-	name:"Skorpion", id:503, fireRate:3, recoil:2, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_PISTOL, sound:"SkorpionShoot.ogg", refillSound:"StenReload.ogg", texture:"nether_star", ammo:20, smoke:1, recipe:CRAFTING_MACHINE_PISTOL
+	name:"Skorpion", id:502, fireRate:3, recoil:2, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_PISTOL, sound:"SkorpionShoot.ogg", refillSound:"StenReload.ogg", texture:"nether_star", ammo:20, smoke:1, recipe:CRAFTING_MACHINE_PISTOL
 };
 
 const SPAS = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"SPAS-12", id:504, fireRate:15, recoil:20, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"nether_wart", ammo:6, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"SPAS-12", id:503, fireRate:15, recoil:20, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"nether_wart", ammo:6, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const USP = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"USP", id:505, fireRate:1, recoil:1, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:8, zoomLevel:ZOOM_PISTOL, sound:"USPShoot.ogg", refillSound:"TT33Reload.ogg", texture:"potion_bottle_drinkable", ammo:10, smoke:0, recipe:CRAFTING_HANDGUN
+	name:"USP", id:504, fireRate:1, recoil:1, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:8, zoomLevel:ZOOM_PISTOL, sound:"USPShoot.ogg", refillSound:"TT33Reload.ogg", texture:"potion_bottle_drinkable", ammo:10, smoke:0, recipe:CRAFTING_HANDGUN
 };
 
 const W1200 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"W1200", id:506, fireRate:15, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"potion_bottle_empty", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"W1200", id:505, fireRate:15, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"potion_bottle_empty", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const XMAS_MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"X-Mas Minigun", id:507, fireRate:2, recoil:2, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"bell.wav", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"X-Mas Minigun", id:506, fireRate:2, recoil:2, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"bell.wav", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const XMAS_SNIPER = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"X-Mas Sniper", id:508, fireRate:2, recoil:25, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"X-Mas Sniper", id:507, fireRate:2, recoil:25, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 // all the guns in a single array
 var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, XMAS_MINIGUN, XMAS_SNIPER];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, RPG];
-
-// add guns
-for(var i in guns)
-	addNewGun(guns[i]);
 
 // load minigun sounds
 var minigunWarmup = new android.media.MediaPlayer();
@@ -460,88 +457,92 @@ const knifeMaxDamage = 50;
 ModPE.setItem(knifeId, "book_written", 0, "Knife");
 Item.setMaxDamage(knifeId, knifeMaxDamage);
 Item.addShapedRecipe(knifeId, 1, 0, [
-	"iri",
-	"r r",
-	"iri"], ["i", 265, 0, "r", 331, 0]);
+	" i ",
+	" i ",
+	" i "], ["i", 265, 0]);
 
 const parachuteId = 433;
 const parachuteMaxDamage = 10;
 ModPE.setItem(parachuteId, "boat", 0, "Parachute");
 Item.setMaxDamage(parachuteId, parachuteMaxDamage);
 Item.addShapedRecipe(parachuteId, 1, 0, [
-	"iri",
-	"r r",
-	"iri"], ["i", 265, 0, "r", 331, 0]);
+	"www",
+	"s s",
+	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 var isParachuting = false;
 var countdownHealth = 0;
 var previousHealth;
 
 const medicalKitId = 434;
 ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
+Item.addShapedRecipe(medicalKitId, 1, 0, [
+	" m ",
+	"ama",
+	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 440;
 ModPE.setItem(AMMO_ASSAULT_RIFLE_ID, "record_11", 0, "Assault Rifle Ammo");
 Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	" i ",
+	" g ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SUB_MACHINE_ID = 441;
 ModPE.setItem(AMMO_SUB_MACHINE_ID, "record_13", 0, "Sub Machine Ammo");
 Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	" i ",
+	" g ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_LIGHT_MACHINE_ID = 442;
 ModPE.setItem(AMMO_LIGHT_MACHINE_ID, "record_blocks", 0, "Light Machine Ammo");
 Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	"i i",
+	"g g",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SNIPER_RIFLE_ID = 443;
 ModPE.setItem(AMMO_SNIPER_RIFLE_ID, "record_cat", 0, "Sniper Rifle Ammo");
-Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
+	" i ",
+	" g ",
+	" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SHOTGUN_ID = 444;
 ModPE.setItem(AMMO_SHOTGUN_ID, "record_chirp", 0, "Shotgun Ammo");
-Item.addShapedRecipe(AMMO_SHOTGUN_ID, 1, 0, [
+Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
 	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	" i ",
+	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_MACHINE_PISTOL_ID = 445;
-ModPE.setItem(AMMO_MACHINE_PISTOL_ID, "record_far", 0, "Machine PistolAmmo");
+ModPE.setItem(AMMO_MACHINE_PISTOL_ID, "record_far", 0, "Machine Pistol Ammo");
 Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	" i ",
+	" g ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_HANDGUN_ID = 446;
 ModPE.setItem(AMMO_HANDGUN_ID, "record_mall", 0, "Handgun Ammo");
 Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
 	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	" i ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_LAUNCHER_ID = 447;
 ModPE.setItem(AMMO_LAUNCHER_ID, "record_mellohi", 0, "Launcher Ammo");
 Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	"g g",
+	" g ",
+	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_MINIGUN_ID = 448;
 ModPE.setItem(AMMO_MINIGUN_ID, "record_stal", 0, "Minigun Ammo");
 Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	"i i",
+	"grg",
+	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 // grenades
 const GRENADE = {
@@ -549,18 +550,18 @@ const GRENADE = {
 };
 ModPE.setItem(GRENADE.id, "potion_overlay", 0, "Grenade");
 Item.addShapedRecipe(GRENADE.id, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	"i i",
+	" g ",
+	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const FRAGMENT = {
 	id:454, grenadeSpeed:2.1, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:4, fragmentDelay:1000, accuracy:4, delay:4000
 };
 ModPE.setItem(FRAGMENT.id, "potion_bottle_splash", 0, "Fragment Grenade");
-Item.addShapedRecipe(FRAGMENT.id, 1, 0, [
+Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
+	"g g",
 	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	"g g"], ["g", GRENADE.id, 0]);
 
 const molotovId = 455;
 const MOLOTOV = {
@@ -568,9 +569,9 @@ const MOLOTOV = {
 };
 ModPE.setItem(molotovId, "book_writable", 0, "Molotov");
 Item.addShapedRecipe(molotovId, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
+	"ggg",
+	"gfg",
+	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 
 // info item
 const uiId = 456;
@@ -579,6 +580,10 @@ Item.addShapedRecipe(uiId, 1, 0, [
 	"   ",
 	" w ",
 	"   "], ["w", 17, 0]);
+
+// add guns
+for(var i in guns)
+	addNewGun(guns[i]);
 
 
 function selectLevelHook()
@@ -620,8 +625,40 @@ function newLevel()
 		ammoTextSize = parseFloat(aTSizeTest);
 
 	var dWorkaroundTest = ModPE.readData("dWorkaround");
-	if(dWorkaroundTest != "" && dWorkaroundTest != null && dWorkaroundTest != undefined)
-		deathWorkaround = stringToBoolean(dWorkaroundTest);
+	if(typeof dWorkaroundTest == "boolean")
+	{
+		clientMessage("bool");
+		deathWorkaround = dWorkaroundTest;
+	}else
+	{
+		if(typeof dWorkaroundTest == "string")
+		{
+			clientMessage("string");
+			if(dWorkaroundTest != "" && dWorkaroundTest != null && dWorkaroundTest != undefined)
+				deathWorkaround = stringToBoolean(dWorkaroundTest);
+		}else
+		{
+			clientMessage(typeof dWorkaroundTest);
+		}
+	}
+	clientMessage(dWorkaroundTest);
+	if(deathWorkaround)
+		clientMessage("workaround");
+	else
+		clientMessage("keep everything");
+
+	var dSightTest = ModPE.readData("dSight");
+	if(typeof dSightTest == "boolean")
+	{
+		displaySight = dSightTest;
+	}else
+	{
+		if(typeof dSightTest == "string")
+		{
+			if(dSightTest != "" && dSightTest != null && dSightTest != undefined)
+				displaySight = stringToBoolean(dSightTest);
+		}
+	}
 
 	getLatestVersionGunsMod();
 	if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
@@ -2057,27 +2094,30 @@ function sightImage()
 		{
 			try
 			{
-				try {
-					popupSightImage.dismiss();
-				} catch(e) {}
-				var sightImageSquareLength = sightPngDecoded.getHeight();
-				var sightImageSquareLengthScaled = sightImageSquareLength * deviceDensity;
-				var matrix3 = new android.graphics.Matrix();
-				matrix3.postScale(sightImageSquareLengthScaled / sightImageSquareLength, sightImageSquareLengthScaled / sightImageSquareLength);
-				sightPngScaled = new android.graphics.Bitmap.createBitmap(sightPngDecoded, 0, 0, sightImageSquareLength, sightImageSquareLength, matrix3, false);
-				
-				popupSightImage = new android.widget.PopupWindow();
-				var layoutSightImage = new android.widget.RelativeLayout(currentActivity);
-				
-				var sightImage = new android.widget.ImageView(currentActivity);
-				sightImage.setImageBitmap(sightPngScaled);
-				layoutSightImage.addView(sightImage);
+				if(displaySight)
+				{
+					try {
+						popupSightImage.dismiss();
+					} catch(e) {}
+					var sightImageSquareLength = sightPngDecoded.getHeight();
+					var sightImageSquareLengthScaled = sightImageSquareLength * deviceDensity;
+					var matrix3 = new android.graphics.Matrix();
+					matrix3.postScale(sightImageSquareLengthScaled / sightImageSquareLength, sightImageSquareLengthScaled / sightImageSquareLength);
+					sightPngScaled = new android.graphics.Bitmap.createBitmap(sightPngDecoded, 0, 0, sightImageSquareLength, sightImageSquareLength, matrix3, false);
+					
+					popupSightImage = new android.widget.PopupWindow();
+					var layoutSightImage = new android.widget.RelativeLayout(currentActivity);
+					
+					var sightImage = new android.widget.ImageView(currentActivity);
+					sightImage.setImageBitmap(sightPngScaled);
+					layoutSightImage.addView(sightImage);
 
-				popupSightImage.setContentView(layoutSightImage);
-				popupSightImage.setWidth(sightImageSquareLengthScaled);
-				popupSightImage.setHeight(sightImageSquareLengthScaled);
-				popupSightImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-				popupSightImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
+					popupSightImage.setContentView(layoutSightImage);
+					popupSightImage.setWidth(sightImageSquareLengthScaled);
+					popupSightImage.setHeight(sightImageSquareLengthScaled);
+					popupSightImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+					popupSightImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
+				}
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -2495,7 +2535,7 @@ function entityClass(entity)
 function addCraftingRecipe(id, howMany, recipe)
 {
 	// here add other items for crafting with the chosen letter.
-	Item.addShapedRecipe(id, howMany, 0, recipe, ["s", 280, 0, "i", 265, 0, "r", 331, 0]);
+	Item.addShapedRecipe(id, howMany, 0, recipe, ["i", 265, 0, "r", 331, 0, "a", AMMO_ASSAULT_RIFLE_ID, 0, "b", AMMO_SUB_MACHINE_ID, 0, "c", AMMO_LIGHT_MACHINE_ID, 0, "d", AMMO_SNIPER_RIFLE_ID, 0, "e", AMMO_SHOTGUN_ID, 0, "f", AMMO_MACHINE_PISTOL_ID, 0, "g", AMMO_HANDGUN_ID, 0, "h", AMMO_LAUNCHER_ID, 0, "j", AMMO_MINIGUN_ID, 0]);
 }
 
 Item.damageCarriedItem = function()
@@ -3358,9 +3398,50 @@ function settingsUI()
 					{
 						deathWorkaround = !deathWorkaround;
 						ModPE.saveData("dWorkaround", deathWorkaround);
+						clientMessage(deathWorkaround);
+						var dWorkaroundTest = ModPE.readData("dWorkaround");
+						if(typeof dWorkaroundTest == "boolean")
+						{
+							clientMessage("bool");
+							deathWorkaround = dWorkaroundTest;
+						}else
+						{
+							if(typeof dWorkaroundTest == "string")
+							{
+								clientMessage("string");
+								if(dWorkaroundTest != "" && dWorkaroundTest != null && dWorkaroundTest != undefined)
+									deathWorkaround = stringToBoolean(dWorkaroundTest);
+							}else
+							{
+								clientMessage(typeof dWorkaroundTest);
+							}
+						}
+						clientMessage(dWorkaroundTest);
+						if(deathWorkaround)
+							clientMessage("workaround");
+						else
+							clientMessage("keep everything");
 					}
 				});
 				layout.addView(switchWorkaround);
+
+				layout.addView(dividerText());
+
+				var switchSight = new android.widget.Switch(currentActivity);
+				switchSight.setChecked(displaySight);
+				switchSight.setText("Display a little cross in the center of the screen");
+				switchSight.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+				{
+					onCheckedChanged: function()
+					{
+						displaySight = !displaySight;
+						ModPE.saveData("dSight", displaySight);
+						try{
+							popupSightImage.dismiss();
+						} catch (e){}
+					}
+				});
+				layout.addView(switchSight);
 
 				layout.addView(dividerText());
 
