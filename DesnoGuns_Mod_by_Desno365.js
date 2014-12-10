@@ -14,6 +14,8 @@ SOFTWARE.
 
 /* ******* DesnoGuns Mod by Desno365 ******* */
 
+const DEBUG = false;
+
 //updates variables
 const CURRENT_VERSION = "r001";
 var latestVersion;
@@ -627,25 +629,32 @@ function newLevel()
 	var dWorkaroundTest = ModPE.readData("dWorkaround");
 	if(typeof dWorkaroundTest == "boolean")
 	{
-		clientMessage("bool");
+		if(DEBUG)
+			clientMessage("bool");
 		deathWorkaround = dWorkaroundTest;
 	}else
 	{
 		if(typeof dWorkaroundTest == "string")
 		{
-			clientMessage("string");
+			if(DEBUG)
+				clientMessage("string");
 			if(dWorkaroundTest != "" && dWorkaroundTest != null && dWorkaroundTest != undefined)
 				deathWorkaround = stringToBoolean(dWorkaroundTest);
 		}else
 		{
-			clientMessage(typeof dWorkaroundTest);
+			if(DEBUG)
+				clientMessage(typeof dWorkaroundTest);
 		}
 	}
-	clientMessage(dWorkaroundTest);
-	if(deathWorkaround)
-		clientMessage("workaround");
-	else
-		clientMessage("keep everything");
+	if(DEBUG)
+		clientMessage(dWorkaroundTest);
+	if(DEBUG)
+	{
+		if(deathWorkaround)
+			clientMessage("workaround");
+		else
+			clientMessage("keep everything");
+	}
 
 	var dSightTest = ModPE.readData("dSight");
 	if(typeof dSightTest == "boolean")
@@ -2678,7 +2687,7 @@ function getRandomTip()
 		}
 		case 12:
 		{
-			return "Please don't do a 360 noscope.";
+			return "Do a 360 noscope.";
 		}
 		case 13:
 		{
@@ -3250,6 +3259,96 @@ function informationsOtherItems()
 				popup.setContentView(scroll);
 				popup.setTitle("Other items");
 
+				var text1 = new android.widget.TextView(currentActivity);
+				text1.setText(new android.text.Html.fromHtml("<b>Knife</b>: ID: " + knifeId));
+				layout.addView(text1);
+
+				layout.addView(dividerText());
+
+				var text2 = new android.widget.TextView(currentActivity);
+				text2.setText(new android.text.Html.fromHtml("<b>Parachute</b>: ID: " + parachuteId));
+				layout.addView(text2);
+
+				layout.addView(dividerText());
+
+				var text3 = new android.widget.TextView(currentActivity);
+				text3.setText(new android.text.Html.fromHtml("<b>Medical Kit</b>: ID: " + medicalKitId));
+				layout.addView(text3);
+
+				layout.addView(dividerText());
+
+				var text4 = new android.widget.TextView(currentActivity);
+				text4.setText(new android.text.Html.fromHtml("<b>Grenade</b>: ID: " + GRENADE.id));
+				layout.addView(text4);
+
+				layout.addView(dividerText());
+
+				var text5 = new android.widget.TextView(currentActivity);
+				text5.setText(new android.text.Html.fromHtml("<b>Fragment Grenade</b>: ID: " + FRAGMENT.id));
+				layout.addView(text5);
+
+				layout.addView(dividerText());
+
+				var text6 = new android.widget.TextView(currentActivity);
+				text6.setText(new android.text.Html.fromHtml("<b>Molotov</b>: ID: " + molotovId));
+				layout.addView(text6);
+
+				layout.addView(dividerText());
+
+				var text7 = new android.widget.TextView(currentActivity);
+				text7.setText(new android.text.Html.fromHtml("<b>Assault Rifle Ammo</b>: ID: " + AMMO_ASSAULT_RIFLE_ID));
+				layout.addView(text7);
+
+				layout.addView(dividerText());
+
+				var text8 = new android.widget.TextView(currentActivity);
+				text8.setText(new android.text.Html.fromHtml("<b>Sub Machine Ammo</b>: ID: " + AMMO_SUB_MACHINE_ID));
+				layout.addView(text8);
+
+				layout.addView(dividerText());
+
+				var text9 = new android.widget.TextView(currentActivity);
+				text9.setText(new android.text.Html.fromHtml("<b>Light Machine Ammo</b>: ID: " + AMMO_LIGHT_MACHINE_ID));
+				layout.addView(text9);
+
+				layout.addView(dividerText());
+
+				var text10 = new android.widget.TextView(currentActivity);
+				text10.setText(new android.text.Html.fromHtml("<b>Sniper Rifle Ammo</b>: ID: " + AMMO_SNIPER_RIFLE_ID));
+				layout.addView(text10);
+
+				layout.addView(dividerText());
+
+				var text11 = new android.widget.TextView(currentActivity);
+				text11.setText(new android.text.Html.fromHtml("<b>Shotgun Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
+				layout.addView(text11);
+
+				layout.addView(dividerText());
+
+				var text12 = new android.widget.TextView(currentActivity);
+				text12.setText(new android.text.Html.fromHtml("<b>Machine Pistol Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
+				layout.addView(text12);
+
+				layout.addView(dividerText());
+
+				var text13 = new android.widget.TextView(currentActivity);
+				text13.setText(new android.text.Html.fromHtml("<b>Handgun Ammo</b>: ID: " + AMMO_HANDGUN_ID));
+				layout.addView(text13);
+
+				layout.addView(dividerText());
+
+				var text14 = new android.widget.TextView(currentActivity);
+				text14.setText(new android.text.Html.fromHtml("<b>Launcher Ammo</b>: ID: " + AMMO_LAUNCHER_ID));
+				layout.addView(text14);
+
+				layout.addView(dividerText());
+
+				var text15 = new android.widget.TextView(currentActivity);
+				text15.setText(new android.text.Html.fromHtml("<b>Minigun Ammo</b>: ID: " + AMMO_MINIGUN_ID));
+				layout.addView(text15);
+
+				layout.addView(dividerText());
+
 				var backButton = new android.widget.Button(currentActivity); 
 				backButton.setText("Back"); 
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
@@ -3398,29 +3497,30 @@ function settingsUI()
 					{
 						deathWorkaround = !deathWorkaround;
 						ModPE.saveData("dWorkaround", deathWorkaround);
-						clientMessage(deathWorkaround);
-						var dWorkaroundTest = ModPE.readData("dWorkaround");
-						if(typeof dWorkaroundTest == "boolean")
+
+						if(DEBUG)
 						{
-							clientMessage("bool");
-							deathWorkaround = dWorkaroundTest;
-						}else
-						{
-							if(typeof dWorkaroundTest == "string")
+							var dWorkaroundTest = ModPE.readData("dWorkaround");
+							if(typeof dWorkaroundTest == "boolean")
 							{
-								clientMessage("string");
-								if(dWorkaroundTest != "" && dWorkaroundTest != null && dWorkaroundTest != undefined)
-									deathWorkaround = stringToBoolean(dWorkaroundTest);
+								clientMessage("bool");
 							}else
 							{
-								clientMessage(typeof dWorkaroundTest);
+								if(typeof dWorkaroundTest == "string")
+								{
+									clientMessage("string");
+								}else
+								{
+									clientMessage(typeof dWorkaroundTest);
+								}
 							}
+							clientMessage(dWorkaroundTest);
+							
+							if(deathWorkaround)
+								clientMessage("workaround");
+							else
+								clientMessage("keep everything");
 						}
-						clientMessage(dWorkaroundTest);
-						if(deathWorkaround)
-							clientMessage("workaround");
-						else
-							clientMessage("keep everything");
 					}
 				});
 				layout.addView(switchWorkaround);
@@ -3577,6 +3677,12 @@ function supportUI()
 				var popup = new android.app.Dialog(currentActivity); 
 				popup.setContentView(scroll);
 				popup.setTitle("Support me");
+
+				var text = new android.widget.TextView(currentActivity);
+				text.setText(new android.text.Html.fromHtml("This mod was brought to you with love by Desno365 :)<br>And thank you for playing with it."));
+				layout.addView(text);
+
+				layout.addView(dividerText());
 
 				var button1 = new android.widget.Button(currentActivity); 
 				button1.setText("Follow me on Twitter"); 
