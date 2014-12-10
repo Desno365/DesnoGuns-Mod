@@ -2051,6 +2051,7 @@ function shootAndSettingsButtons(loadAimButton)
 				shotText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 				shotText.setBackgroundDrawable(shotBg);
 				shotText.setPadding(shotPadding, shotPadding, shotPadding, shotPadding);
+				shotText.setSoundEffectsEnabled(false);
 				layoutShot.addView(shotText);
 
 				popupShot = new android.widget.PopupWindow(layoutShot, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
@@ -3515,7 +3516,7 @@ function settingsUI()
 								}
 							}
 							clientMessage(dWorkaroundTest);
-							
+
 							if(deathWorkaround)
 								clientMessage("workaround");
 							else
