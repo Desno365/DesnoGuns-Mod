@@ -17,7 +17,7 @@ SOFTWARE.
 const DEBUG = false;
 
 //updates variables
-const CURRENT_VERSION = "r001";
+const CURRENT_VERSION = "r002";
 var latestVersion;
 
 //activity and other Android variables
@@ -3598,7 +3598,7 @@ function updateAvailableUI()
 				var popup = new android.app.Dialog(currentActivity); 
 				popup.setContentView(scroll);
 				popup.setTitle(new android.text.Html.fromHtml("DesnoGuns Mod: new version"));
-				popupMissing.setCanceledOnTouchOutside(false);
+				popup.setCanceledOnTouchOutside(false);
 
 				var updatesText = new android.widget.TextView(currentActivity);
 				updatesText.setText(new android.text.Html.fromHtml("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
@@ -3650,7 +3650,7 @@ function visitThread()
 				android.widget.Toast.makeText(currentActivity,"Opening the URL...",0).show();
 				var intentBrowser = new android.content.Intent(currentActivity);
 				intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
-				intentBrowser.setData(android.net.Uri.parse("http://www.minecraftforum.net/forums/minecraft-pocket-edition/mcpe-mods-tools/2179257-mod-beta-laser-mod-laser-gun-r001-by-desno365"));
+				intentBrowser.setData(android.net.Uri.parse("http://www.minecraftforum.net/forums/minecraft-pocket-edition/mcpe-mods-tools/2299721-mod-desnoguns-mod-more-than-50-weapons-r001-by"));
 				currentActivity.startActivity(intentBrowser);
 			}catch (err)
 			{
