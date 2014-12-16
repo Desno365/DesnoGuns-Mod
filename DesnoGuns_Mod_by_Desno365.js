@@ -2056,8 +2056,10 @@ function shootAndSettingsButtons(loadAimButton)
 
 				popupShot = new android.widget.PopupWindow(layoutShot, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
 				popupShot.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+				popupShot.setOutsideTouchable(false);
+				popupShot.setFocusable(false);
+				popupShot.setSplitTouchEnabled(true);
 				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
-
 
 
 				if(Level.getGameMode() == 0)
@@ -2684,7 +2686,7 @@ function getRandomTip()
 		}
 		case 11:
 		{
-			return "Press the setting icon on the left, it is awesome.";
+			return "Press the settings icon on the left, it is awesome.";
 		}
 		case 12:
 		{
@@ -2700,7 +2702,7 @@ function getRandomTip()
 		}
 		case 15:
 		{
-			return "A good sniper calculate the gravity before shooting.";
+			return "A good sniper calculates the gravity before shooting.";
 		}
 	}
 }
