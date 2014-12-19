@@ -17,7 +17,7 @@ SOFTWARE.
 const DEBUG = false;
 
 //updates variables
-const CURRENT_VERSION = "r002";
+const CURRENT_VERSION = "r003";
 var latestVersion;
 
 //activity and other Android variables
@@ -40,7 +40,6 @@ deleteFile(sdcard + "/minecraft.ttf");
 
 //tip messages displayed variables
 var displayedMessageNoSound = false;
-var displayedMessageMedicalKit = false;
 
 //initialize variables
 var initCreativeItems = true;
@@ -476,7 +475,7 @@ var countdownHealth = 0;
 var previousHealth;
 
 const MEDICAL_KIT_ID = 434;
-const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 100;
+const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
 ModPE.setItem(MEDICAL_KIT_ID, "book_enchanted", 0, "Medical Kit");
 Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
 Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
@@ -736,6 +735,17 @@ function leaveGame()
 			}catch(e) {}
 		}
 	}));
+
+	// medical kit ui
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			try{
+				popupHealth.dismiss();
+			}catch(e) {}
+		}
+	}));
 }
 
 function useItem(x, y, z, itemId, blockId, side, itemDamage)
@@ -848,6 +858,18 @@ function changeCarriedItem(currentItem, previousItem)
 			{
 				popupTip.dismiss();
 				popupSettingsImage.dismiss();
+			}
+		}));
+	}
+
+	// removing ui of the medical kit
+	if(previousItem == MEDICAL_KIT_ID)
+	{
+		currentActivity.runOnUiThread(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				popupHealth.dismiss();
 			}
 		}));
 	}
@@ -967,15 +989,10 @@ function changeCarriedItem(currentItem, previousItem)
 		}
 	}
 
-	// medical kit explanation
+	// medical kit
 	if(currentItem == MEDICAL_KIT_ID)
 	{
-		if(!displayedMessageMedicalKit)
-		{
-			clientMessage("In the magic world of MCPE you can eat Medical Kits!");
-			clientMessage("Actually a better way of using Medical Kits is currently in development.");
-			displayedMessageMedicalKit = true;
-		}
+		medicalKitButton();
 	}
 
 	// grenade
@@ -1035,69 +1052,7 @@ function changeCarriedItem(currentItem, previousItem)
 	// DesnoGuns info
 	if(currentItem == INFO_ITEM_ID)
 	{
-		currentActivity.runOnUiThread(new java.lang.Runnable()
-		{
-			run: function()
-			{
-				try
-				{
-					var settingsImageSquareLength = settingsPngDecoded.getHeight();
-					var settingsImageSquareLengthScaled = settingsImageSquareLength * deviceDensity * 0.3;
-					var matrix1 = new android.graphics.Matrix();
-					matrix1.postScale(settingsImageSquareLengthScaled / settingsImageSquareLength, settingsImageSquareLengthScaled / settingsImageSquareLength);
-					settingsPngScaled = new android.graphics.Bitmap.createBitmap(settingsPngDecoded, 0, 0, settingsImageSquareLength, settingsImageSquareLength, matrix1, true);
-					
-					popupSettingsImage = new android.widget.PopupWindow();
-					var layoutSettingsImage = new android.widget.RelativeLayout(currentActivity);
-					
-					var settingsImage = new android.widget.ImageView(currentActivity);
-					settingsImage.setImageBitmap(settingsPngScaled);
-					settingsImage.setOnClickListener(new android.view.View.OnClickListener({
-						onClick: function()
-						{
-							informationsForWeaponsModUI();
-						}
-					}));
-					layoutSettingsImage.addView(settingsImage);
-
-					popupSettingsImage.setContentView(layoutSettingsImage);
-					popupSettingsImage.setWidth(settingsImageSquareLengthScaled);
-					popupSettingsImage.setHeight(settingsImageSquareLengthScaled);
-					popupSettingsImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupSettingsImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, 0);
-
-
-					var layoutTip = new android.widget.RelativeLayout(currentActivity);
-					layoutTip.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
-					var tipText = new android.widget.TextView(currentActivity);
-					tipText.setOnClickListener(new android.view.View.OnClickListener()
-					{
-						onClick: function(v)
-						{
-							v.setText(getRandomTip());
-							return false;
-						}
-					});
-					tipText.setGravity(android.view.Gravity.LEFT);
-					tipText.setText(getRandomTip());
-					tipText.setTypeface(font);
-					tipText.setPaintFlags(tipText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-					tipText.setTextSize(14);
-					tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-					tipText.setShadowLayer(0.001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-					tipText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-					layoutTip.addView(tipText);
-
-					popupTip = new android.widget.PopupWindow(layoutTip, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
-					popupTip.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupTip.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, -64 * deviceDensity);
-				}catch(err)
-				{
-					clientMessage("Error: " + err);
-				}
-			}
-		});
+		infoItemUI();
 	}
 }
 
@@ -2487,6 +2442,155 @@ Player.removeItemFromInventory = function(slot, count)
 }
 //########## refill functions - END ##########
 
+//########## medical kit functions ##########
+function medicalKitButton()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layoutHealth = new android.widget.RelativeLayout(currentActivity);
+				layoutHealth.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+				var healthBg = android.graphics.drawable.GradientDrawable();
+				healthBg.setColor(android.graphics.Color.TRANSPARENT);
+				healthBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+				healthBg.setStroke(1, android.graphics.Color.parseColor("#FF00DE00"));
+				var healthPadding = Math.floor(2 * deviceDensity);
+
+				healthText = new android.widget.TextView(currentActivity);
+				healthText.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function(v)
+					{
+						if(Player.getCarriedItem() == MEDICAL_KIT_ID) // one more check, just for security before removing items
+						{
+							var currentHealth = Entity.getHealth(Player.getEntity());
+							if(currentHealth >= 20)
+							{
+								ModPE.showTipMessage("Your health is full.");
+								return;
+							}
+							var healthToBeRestored = 20 - currentHealth;
+							var healthMedicalKitCanRestore = MEDICAL_KIT_MAX_RESTORABLE_HEALTH - Player.getCarriedItemData() + 1;
+							if(healthToBeRestored > healthMedicalKitCanRestore)
+							{
+								Player.setHealth(currentHealth + healthMedicalKitCanRestore);
+								for(var i = 0; i < healthMedicalKitCanRestore; i++)
+									Item.damageCarriedItem();
+								ModPE.showTipMessage("Medical Kit broke before restoring all health.");
+							}else
+							{
+								Player.setHealth(20);
+								for(var i = 0; i < healthToBeRestored; i++)
+									Item.damageCarriedItem();
+								ModPE.showTipMessage("Restored " + healthToBeRestored + " half hearts.");
+							}
+						}else
+						{
+							popupHealth.dismiss();
+						}
+					}
+				});
+				healthText.setGravity(android.view.Gravity.CENTER);
+				healthText.setText("Heal");
+				healthText.setTypeface(font);
+				healthText.setPaintFlags(healthText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+				healthText.setTextSize(buttonsSize);
+				healthText.setTextColor(android.graphics.Color.parseColor("#FF00DE00"));
+				healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				healthText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+				healthText.setBackgroundDrawable(healthBg);
+				healthText.setPadding(healthPadding, healthPadding, healthPadding, healthPadding);
+				healthText.setSoundEffectsEnabled(false);
+				layoutHealth.addView(healthText);
+
+				popupHealth = new android.widget.PopupWindow(layoutHealth, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupHealth.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+				popupHealth.setOutsideTouchable(false);
+				popupHealth.setFocusable(false);
+				popupHealth.setSplitTouchEnabled(true);
+				popupHealth.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
+//########## medical kit functions - END ##########
+
+//########## info item functions ##########
+function infoItemUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var settingsImageSquareLength = settingsPngDecoded.getHeight();
+				var settingsImageSquareLengthScaled = settingsImageSquareLength * deviceDensity * 0.3;
+				var matrix1 = new android.graphics.Matrix();
+				matrix1.postScale(settingsImageSquareLengthScaled / settingsImageSquareLength, settingsImageSquareLengthScaled / settingsImageSquareLength);
+				settingsPngScaled = new android.graphics.Bitmap.createBitmap(settingsPngDecoded, 0, 0, settingsImageSquareLength, settingsImageSquareLength, matrix1, true);
+				
+				popupSettingsImage = new android.widget.PopupWindow();
+				var layoutSettingsImage = new android.widget.RelativeLayout(currentActivity);
+				
+				var settingsImage = new android.widget.ImageView(currentActivity);
+				settingsImage.setImageBitmap(settingsPngScaled);
+				settingsImage.setOnClickListener(new android.view.View.OnClickListener({
+					onClick: function()
+					{
+						informationsForWeaponsModUI();
+					}
+				}));
+				layoutSettingsImage.addView(settingsImage);
+
+				popupSettingsImage.setContentView(layoutSettingsImage);
+				popupSettingsImage.setWidth(settingsImageSquareLengthScaled);
+				popupSettingsImage.setHeight(settingsImageSquareLengthScaled);
+				popupSettingsImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+				popupSettingsImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, 0);
+
+
+				var layoutTip = new android.widget.RelativeLayout(currentActivity);
+				layoutTip.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+				var tipText = new android.widget.TextView(currentActivity);
+				tipText.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function(v)
+					{
+						v.setText(getRandomTip());
+						return false;
+					}
+				});
+				tipText.setGravity(android.view.Gravity.LEFT);
+				tipText.setText(getRandomTip());
+				tipText.setTypeface(font);
+				tipText.setPaintFlags(tipText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+				tipText.setTextSize(14);
+				tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+				tipText.setShadowLayer(0.001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				tipText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+				layoutTip.addView(tipText);
+
+				popupTip = new android.widget.PopupWindow(layoutTip, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupTip.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+				popupTip.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, -64 * deviceDensity);
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
+//########## info item functions - END ##########
+
 //########## internet functions ##########
 function getLatestVersionGunsMod()
 {
@@ -2560,6 +2664,8 @@ Item.damageCarriedItem = function()
 			maxDamage = KNIFE_MAX_DAMAGE;
 		if(Player.getCarriedItem() == PARACHUTE_ID)
 			maxDamage = PARACHUTE_MAX_DAMAGE;
+		if(Player.getCarriedItem() == MEDICAL_KIT_ID)
+			maxDamage = MEDICAL_KIT_MAX_RESTORABLE_HEALTH;
 
 		if(Player.getCarriedItemData() < maxDamage)
 			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
