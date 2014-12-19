@@ -454,20 +454,20 @@ try {
 
 
 // other items (not guns)
-const knifeId = 432;
-const knifeMaxDamage = 50;
-ModPE.setItem(knifeId, "book_written", 0, "Knife");
-Item.setMaxDamage(knifeId, knifeMaxDamage);
-Item.addShapedRecipe(knifeId, 1, 0, [
+const KNIFE_ID = 432;
+const KNIFE_MAX_DAMAGE = 50;
+ModPE.setItem(KNIFE_ID, "book_written", 0, "Knife");
+Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
+Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
 	" i ",
 	" i "], ["i", 265, 0]);
 
-const parachuteId = 433;
-const parachuteMaxDamage = 10;
-ModPE.setItem(parachuteId, "boat", 0, "Parachute");
-Item.setMaxDamage(parachuteId, parachuteMaxDamage);
-Item.addShapedRecipe(parachuteId, 1, 0, [
+const PARACHUTE_ID = 433;
+const PARACHUTE_MAX_DAMAGE = 10;
+ModPE.setItem(PARACHUTE_ID, "boat", 0, "Parachute");
+Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
+Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"www",
 	"s s",
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
@@ -475,9 +475,11 @@ var isParachuting = false;
 var countdownHealth = 0;
 var previousHealth;
 
-const medicalKitId = 434;
-ModPE.setFoodItem(medicalKitId, "book_enchanted", 0, 15, "Medical Kit");
-Item.addShapedRecipe(medicalKitId, 1, 0, [
+const MEDICAL_KIT_ID = 434;
+const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 100;
+ModPE.setItem(MEDICAL_KIT_ID, "book_enchanted", 0, "Medical Kit");
+Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
+Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
@@ -565,20 +567,19 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"   ",
 	"g g"], ["g", GRENADE.id, 0]);
 
-const molotovId = 455;
 const MOLOTOV = {
-	grenadeSpeed:1.5, grenadesExplosionDiameter:4, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
+	id:455, grenadeSpeed:1.5, grenadesExplosionDiameter:4, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
 };
-ModPE.setItem(molotovId, "book_writable", 0, "Molotov");
-Item.addShapedRecipe(molotovId, 1, 0, [
+ModPE.setItem(MOLOTOV.id, "book_writable", 0, "Molotov");
+Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"ggg",
 	"gfg",
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 
 // info item
-const uiId = 456;
-ModPE.setItem(uiId, "apple_golden", 0, "DesnoGuns Info");
-Item.addShapedRecipe(uiId, 1, 0, [
+const INFO_ITEM_ID = 456;
+ModPE.setItem(INFO_ITEM_ID, "apple_golden", 0, "DesnoGuns Info");
+Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 	"   ",
 	" w ",
 	"   "], ["w", 17, 0]);
@@ -600,13 +601,13 @@ function newLevel()
 	{
 		for(var i in guns)
 			Player.addItemCreativeInv(guns[i].id, 1);
-		Player.addItemCreativeInv(knifeId, 1);
-		Player.addItemCreativeInv(parachuteId, 1);
+		Player.addItemCreativeInv(KNIFE_ID, 1);
+		Player.addItemCreativeInv(PARACHUTE_ID, 1);
 
 		Player.addItemCreativeInv(GRENADE.id, 1);
 		Player.addItemCreativeInv(FRAGMENT.id, 1);
-		Player.addItemCreativeInv(molotovId, 1);
-		Player.addItemCreativeInv(uiId, 1);
+		Player.addItemCreativeInv(MOLOTOV.id, 1);
+		Player.addItemCreativeInv(INFO_ITEM_ID, 1);
 		initCreativeItems = false;
 	}
 
@@ -739,7 +740,7 @@ function leaveGame()
 
 function useItem(x, y, z, itemId, blockId, side, itemDamage)
 {
-	if(itemId == uiId)
+	if(itemId == INFO_ITEM_ID)
 	{
 		informationsForWeaponsModUI();
 		preventDefault();
@@ -753,7 +754,7 @@ function attackHook(attacker, victim)
 	if(attacker = Player.getEntity())
 	{
 		// knife
-		if(Player.getCarriedItem() == knifeId)
+		if(Player.getCarriedItem() == KNIFE_ID)
 		{
 			var health = Entity.getHealth(victim) - 20;
 			if(health < 0)
@@ -833,13 +834,13 @@ function changeCarriedItem(currentItem, previousItem)
 	}
 
 	// removing shooting ui of grenades and molotov
-	if(previousItem == molotovId || previousItem == GRENADE.id || previousItem == FRAGMENT.id)
+	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id)
 	{
 		removeShootAndSettingsButtons();
 	}
 
 	// removing ui of the info item
-	if(previousItem == uiId)
+	if(previousItem == INFO_ITEM_ID)
 	{
 		currentActivity.runOnUiThread(new java.lang.Runnable(
 		{
@@ -967,7 +968,7 @@ function changeCarriedItem(currentItem, previousItem)
 	}
 
 	// medical kit explanation
-	if(currentItem == medicalKitId)
+	if(currentItem == MEDICAL_KIT_ID)
 	{
 		if(!displayedMessageMedicalKit)
 		{
@@ -1014,7 +1015,7 @@ function changeCarriedItem(currentItem, previousItem)
 	}
 
 	// molotov
-	if(currentItem == molotovId)
+	if(currentItem == MOLOTOV.id)
 	{
 		shootAndSettingsButtons(false);
 
@@ -1032,7 +1033,7 @@ function changeCarriedItem(currentItem, previousItem)
 	}
 
 	// DesnoGuns info
-	if(currentItem == uiId)
+	if(currentItem == INFO_ITEM_ID)
 	{
 		currentActivity.runOnUiThread(new java.lang.Runnable()
 		{
@@ -1207,9 +1208,9 @@ function modTick()
 	}
 
 	// parachute
-	if(Player.getCarriedItem() == parachuteId)
+	if(Player.getCarriedItem() == PARACHUTE_ID)
 	{
-		if(Player.getCarriedItemData() < parachuteMaxDamage)
+		if(Player.getCarriedItemData() < PARACHUTE_MAX_DAMAGE)
 		{
 			// player will hit the ground soon
 			if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())))
@@ -2555,10 +2556,10 @@ Item.damageCarriedItem = function()
 	if(Level.getGameMode() == 0)
 	{
 		var maxDamage;
-		if(Player.getCarriedItem() == knifeId)
-			maxDamage = knifeMaxDamage;
-		if(Player.getCarriedItem() == parachuteId)
-			maxDamage = parachuteMaxDamage;
+		if(Player.getCarriedItem() == KNIFE_ID)
+			maxDamage = KNIFE_MAX_DAMAGE;
+		if(Player.getCarriedItem() == PARACHUTE_ID)
+			maxDamage = PARACHUTE_MAX_DAMAGE;
 
 		if(Player.getCarriedItemData() < maxDamage)
 			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
@@ -3263,19 +3264,19 @@ function informationsOtherItems()
 				popup.setTitle("Other items");
 
 				var text1 = new android.widget.TextView(currentActivity);
-				text1.setText(new android.text.Html.fromHtml("<b>Knife</b>: ID: " + knifeId));
+				text1.setText(new android.text.Html.fromHtml("<b>Knife</b>: ID: " + KNIFE_ID));
 				layout.addView(text1);
 
 				layout.addView(dividerText());
 
 				var text2 = new android.widget.TextView(currentActivity);
-				text2.setText(new android.text.Html.fromHtml("<b>Parachute</b>: ID: " + parachuteId));
+				text2.setText(new android.text.Html.fromHtml("<b>Parachute</b>: ID: " + PARACHUTE_ID));
 				layout.addView(text2);
 
 				layout.addView(dividerText());
 
 				var text3 = new android.widget.TextView(currentActivity);
-				text3.setText(new android.text.Html.fromHtml("<b>Medical Kit</b>: ID: " + medicalKitId));
+				text3.setText(new android.text.Html.fromHtml("<b>Medical Kit</b>: ID: " + MEDICAL_KIT_ID));
 				layout.addView(text3);
 
 				layout.addView(dividerText());
@@ -3293,7 +3294,7 @@ function informationsOtherItems()
 				layout.addView(dividerText());
 
 				var text6 = new android.widget.TextView(currentActivity);
-				text6.setText(new android.text.Html.fromHtml("<b>Molotov</b>: ID: " + molotovId));
+				text6.setText(new android.text.Html.fromHtml("<b>Molotov</b>: ID: " + MOLOTOV.id));
 				layout.addView(text6);
 
 				layout.addView(dividerText());
