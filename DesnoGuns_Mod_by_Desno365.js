@@ -125,14 +125,14 @@ var currentShotTicks = 0;
 var shooting = false;
 var shootingRunnable;
 var onClickRunnable;
-const assaultRiflesVolume = 0.70;
+const GUNS_ON_TOUCH_SHOOT_VOLUME = 0.70;
 
-// for sniper rifles
+// for guns with single shot
 var latestShotTime;
 
-// for minigun
-var minigunTouchingFireButton = false;
-const minigunVolume = 0.50;
+// for guns with warmup
+var touchingFireButtonGunsWithWait = false;
+const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
@@ -358,7 +358,7 @@ const MAKAROV = {
 
 const MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Minigun", id:490, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_ASSAULT, sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Minigun", id:490, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_ASSAULT, warmupSound:"MinigunWarmup.ogg", sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", spinSound:"MinigunSpin.ogg", cooldownSound:"MinigunCooldown.ogg", refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const MINI_UZI = {
@@ -438,7 +438,7 @@ const W1200 = {
 
 const XMAS_MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"X-Mas Minigun", id:506, fireRate:2, recoil:2, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"bell.wav", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"X-Mas Minigun", id:506, fireRate:2, recoil:2, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, warmupSound:"MinigunWarmup.ogg", sound:"bell.wav", spinSound:"MinigunSpin.ogg", cooldownSound:"MinigunCooldown.ogg", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const XMAS_SNIPER = {
@@ -447,8 +447,8 @@ const XMAS_SNIPER = {
 };
 
 const FLAMETHROWER = {
-	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"Flamethrower", id:508, fireRate:1, recoil:2, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_ward", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
+	name:"Flamethrower", id:508, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, warmupSound:"ignite_flamethrower.ogg", hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const AA12 = {
@@ -465,16 +465,9 @@ const INCENDIARY_GL = {
 var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, XMAS_MINIGUN, XMAS_SNIPER, FLAMETHROWER, AA12, INCENDIARY_GL];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, RPG];
 
-// load minigun sounds
-var minigunWarmup = new android.media.MediaPlayer();
-var minigunSpin = new android.media.MediaPlayer();
-try {
-	minigunSpin.reset();
-	minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-	minigunSpin.setLooping(true);
-	minigunSpin.prepareAsync();
-} catch(e) { /* sounds not installed */ }
-
+// load on touch with wait gun sounds
+var gunWarmupSound = new android.media.MediaPlayer();
+var gunSpinSound = new android.media.MediaPlayer();
 
 // other items (not guns)
 const KNIFE_ID = 432;
@@ -730,7 +723,7 @@ function leaveGame()
 	shootingRunnable = null;
 
 	// for minigun
-	minigunTouchingFireButton = false;
+	touchingFireButtonGunsWithWait = false;
 
 	// remove explosive bullets
 	for(var i in explosiveWeapons)
@@ -857,23 +850,13 @@ function changeCarriedItem(currentItem, previousItem)
 		soundID = null;
 	} catch(e){ ModPE.log("DesnoGuns: something wrong: " + e); }
 
-	// reload sound for minigun spin
-	if(previousItem == MINIGUN.id)
-	{
-		try{
-			minigunSpin.stop();
-			minigunSpin.prepareAsync();
-		} catch(e){
-			clientMessage(e);
-			ModPE.log("DesnoGuns: Error while reset minigun sounds in changeCarriedItem " + e);
-			try{
-				minigunSpin.reset();
-				minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-				minigunSpin.setLooping(true);
-				minigunSpin.prepareAsync();
-			} catch(e) { /* sounds not installed */ }
-		}
-	}
+	// reset sounds for on touch with wait guns spin
+	try{
+		gunSpinSound.stop();
+		gunSpinSound.release();
+		gunSpinSound = null;
+		gunSpinSound = new android.media.MediaPlayer();
+	} catch(e){ clientMessage(e); }
 
 	// removing shooting ui of grenades and molotov
 	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id)
@@ -978,11 +961,28 @@ function changeCarriedItem(currentItem, previousItem)
 			}));
 		}
 
-		// minigun
+		// guns with warmup
 		if(currentGun.type == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
 		{
-			// load sounds for the gun
-			ModPE.loadSoundPool(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
+			// load shooting sound for the gun
+			if(!currentGun.hasntShootingSound)
+				ModPE.loadSoundPool(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
+
+			// load spin sound
+			try {
+				gunSpinSound.reset();
+				gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.spinSound);
+				gunSpinSound.setLooping(true);
+				gunSpinSound.prepareAsync();
+			} catch(e) {
+				try {
+					// trying again, maybe we had a weird sound error
+					gunSpinSound.reset();
+					gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.spinSound);
+					gunSpinSound.setLooping(true);
+					gunSpinSound.prepareAsync();
+				} catch(e) { /* sounds not installed */ }
+			}
 
 			// load touch events
 			currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -994,7 +994,7 @@ function changeCarriedItem(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
-								minigunShootCreative(event, currentGun);
+								onTouchWithWaitWeaponShootCreative(event, currentGun);
 								return false;
 							}
 						});
@@ -1003,7 +1003,7 @@ function changeCarriedItem(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
-								minigunShootSurvival(event, currentGun);
+								onTouchWithWaitWeaponShootSurvival(event, currentGun);
 								return false;
 							}
 						});
@@ -1291,7 +1291,7 @@ function onTouchWeaponShootSurvival(event, gun)
 						else
 						{
 							currentShotTicks = 0;
-							ModPE.playLoadedSoundPool(assaultRiflesVolume);
+							ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
 							shoot(gun);
 							Item.damageCarriedGun(gun);
 						}
@@ -1324,7 +1324,7 @@ function onTouchWeaponShootCreative(event, gun)
 					if(currentShotTicks == gun.fireRate)
 					{
 						currentShotTicks = 0;
-						ModPE.playLoadedSoundPool(assaultRiflesVolume);
+						ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
 						shoot(gun);
 					}
 					currentShotTicks++;
@@ -1368,121 +1368,84 @@ function onClickWeaponShoot(gun)
 	}
 }
 
-function minigunShootSurvival(event, gun)
+function onTouchWithWaitWeaponShootSurvival(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
 	{
-		minigunTouchingFireButton = false;
-		if(minigunWarmup.isPlaying())
-			minigunWarmup.stop();
-		if(shooting)
-			showCloudParticle(gun.smoke);
-		shooting = false;
-		try{
-			minigunSpin.stop();
-			minigunSpin.prepareAsync();
-		} catch(e){
-			clientMessage("A wild error appeared. See log.");
-			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
-			try{
-				minigunSpin.reset();
-				minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-				minigunSpin.setLooping(true);
-				minigunSpin.prepareAsync();
-			} catch(e) { /* sounds not installed */ }
-		}
-		ModPE.playSoundFromFile("MinigunCooldown.ogg");
-	}
-	else
+		onTouchWithWaitWeaponButtonReleased(gun);
+	}else
 	{
-		if(!shooting && !minigunTouchingFireButton)
+		if(!shooting && !touchingFireButtonGunsWithWait)
 		{
-			minigunTouchingFireButton = true;
-			minigunWarmup.reset();
-			minigunWarmup.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunWarmup.ogg");
-			minigunWarmup.prepare();
-			minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+			try
 			{
-				onCompletion: function(mp)
+				touchingFireButtonGunsWithWait = true;
+				gunWarmupSound.reset();
+				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.warmupSound);
+				gunWarmupSound.prepare();
+				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
-					if(minigunTouchingFireButton)
+					onCompletion: function(mp)
 					{
-						shooting = true;
-						minigunSpin.start();
-						currentShotTicks = gun.fireRate;
-						shootingRunnable = (new java.lang.Runnable(
+						if(touchingFireButtonGunsWithWait)
 						{
-							run: function()
+							shooting = true;
+							gunSpinSound.start();
+							currentShotTicks = gun.fireRate;
+							shootingRunnable = (new java.lang.Runnable(
 							{
-								if(currentShotTicks == gun.fireRate)
+								run: function()
 								{
-									if(Player.getCarriedItemData() >= gun.ammo)
-										ModPE.showTipMessage("Press the ammo text to refill.");
-									else
+									if(currentShotTicks == gun.fireRate)
 									{
-										currentShotTicks = 0;
-										ModPE.playLoadedSoundPool(minigunVolume);
-										shoot(gun);
-										Item.damageCarriedGun(gun);
+										if(Player.getCarriedItemData() >= gun.ammo)
+											ModPE.showTipMessage("Press the ammo text to refill.");
+										else
+										{
+											currentShotTicks = 0;
+											if(!gun.hasntShootingSound)
+												ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
+											shoot(gun);
+											Item.damageCarriedGun(gun);
+										}
 									}
+									currentShotTicks++;
 								}
-								currentShotTicks++;
-							}
-						}));
+							}));
+						}
 					}
-				}
-			});
-			minigunWarmup.start();
+				});
+				gunWarmupSound.start();
+			} catch(e) { ModPE.log("DesnoGuns: Error in onTouchWithWaitWeaponShootSurvival(): " + e); clientMessage("The minigun needs sounds to work properly."); }
 		}
 	}
 }
 
-function minigunShootCreative(event, gun)
+function onTouchWithWaitWeaponShootCreative(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
 	{
-		minigunTouchingFireButton = false;
-		if(minigunWarmup.isPlaying())
-			minigunWarmup.stop();
-		if(shooting)
-			showCloudParticle(gun.smoke);
-		shooting = false;
-		try{
-			minigunSpin.stop();
-			minigunSpin.prepareAsync();
-		} catch(e){
-			// sometimes an error happens also if you have sounds installed correctly and I didn't find why
-			clientMessage("A wild error appeared. See log.");
-			ModPE.log("DesnoGuns: Error in minigun shoot: " + e);
-			try{
-				minigunSpin.reset();
-				minigunSpin.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunSpin.ogg");
-				minigunSpin.setLooping(true);
-				minigunSpin.prepareAsync();
-			} catch(e) { /* sounds not installed */ }
-		}
-		ModPE.playSoundFromFile("MinigunCooldown.ogg");
-	}
-	else
+		onTouchWithWaitWeaponButtonReleased(gun);
+	}else
 	{
-		if(!shooting && !minigunTouchingFireButton)
+		if(!shooting && !touchingFireButtonGunsWithWait)
 		{
 			try
 			{
-				minigunTouchingFireButton = true;
-				minigunWarmup.reset();
-				minigunWarmup.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/MinigunWarmup.ogg");
-				minigunWarmup.prepare();
-				minigunWarmup.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+				touchingFireButtonGunsWithWait = true;
+				gunWarmupSound.reset();
+				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.warmupSound);
+				gunWarmupSound.prepare();
+				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
 					onCompletion: function(mp)
 					{
-						if(minigunTouchingFireButton)
+						if(touchingFireButtonGunsWithWait)
 						{
 							shooting = true;
-							minigunSpin.start();
+							gunSpinSound.start();
 							currentShotTicks = gun.fireRate;
 							shootingRunnable = (new java.lang.Runnable(
 							{
@@ -1491,7 +1454,8 @@ function minigunShootCreative(event, gun)
 									if(currentShotTicks == gun.fireRate)
 									{
 										currentShotTicks = 0;
-										ModPE.playLoadedSoundPool(minigunVolume);
+										if(!gun.hasntShootingSound)
+											ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
 										shoot(gun);
 									}
 									currentShotTicks++;
@@ -1500,10 +1464,37 @@ function minigunShootCreative(event, gun)
 						}
 					}
 				});
-				minigunWarmup.start();
-			} catch(e) { clientMessage("The minigun needs sounds to work properly."); }
+				gunWarmupSound.start();
+			} catch(e) { ModPE.log("DesnoGuns: Error in onTouchWithWaitWeaponShootCreative(): " + e); clientMessage("The minigun needs sounds to work properly."); }
 		}
 	}
+}
+
+function onTouchWithWaitWeaponButtonReleased(gun)
+{
+	touchingFireButtonGunsWithWait = false;
+	if(gunWarmupSound.isPlaying())
+		gunWarmupSound.stop();
+	if(shooting)
+		showCloudParticle(gun.smoke);
+	shooting = false;
+	try{
+		gunSpinSound.stop();
+		gunSpinSound.prepareAsync();
+	} catch(e){
+		// sometimes an error happens also if you have sounds installed correctly and I didn't find why
+		clientMessage("A wild error appeared. See log.");
+		ModPE.log("DesnoGuns: Error in onTouchWithWaitWeaponButtonReleased(): " + e);
+		try{
+			gunSpinSound.reset();
+			gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.spinSound);
+			gunSpinSound.setLooping(true);
+			gunSpinSound.prepareAsync();
+		} catch(e) { /* sounds not installed */ }
+	}
+
+	if(!gun.hasntCooldownSound)
+		ModPE.playSoundFromFile(gun.cooldownSound);
 }
 
 function shootGrenadeWeapon(gun)
