@@ -150,7 +150,7 @@ const SHOTGUN_BULLET_SPEED = 3.9;
 const GRENADE_LAUNCHER_BULLET_SPEED = 2.4;
 
 // zoom level
-const ZOOM_SNIPER = 35;
+const ZOOM_SNIPER = 40;
 const ZOOM_ASSAULT = 25;
 const ZOOM_BAZOOKA = 12;
 const ZOOM_MACHINE = 18;
