@@ -24,6 +24,11 @@ var latestVersion;
 var currentActivity = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 var sdcard = new android.os.Environment.getExternalStorageDirectory();
 
+// minecraft variables
+const GAME_MODE_CREATIVE = 1;
+const GAME_MODE_SURVIVAL = 0;
+
+
 //display size and density variables
 var metrics = new android.util.DisplayMetrics();
 currentActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -136,10 +141,10 @@ const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
-const ASSAULT_BULLET_SPEED = 6.8;
-const BAZOOKA_BULLET_SPEED = 4.8;
-const PISTOL_BULLET_SPEED = 6;
-const SHOTGUN_BULLET_SPEED = 4.2;
+const ASSAULT_BULLET_SPEED = 5.9;
+const BAZOOKA_BULLET_SPEED = 4.2;
+const PISTOL_BULLET_SPEED = 5.1;
+const SHOTGUN_BULLET_SPEED = 3.9;
 const GRENADE_LAUNCHER_BULLET_SPEED = 2.4;
 
 // zoom level
@@ -398,7 +403,7 @@ const RPD = {
 
 const RPG = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"RPG", id:498, fireRate:40, recoil:25, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:16, zoomLevel:ZOOM_BAZOOKA, sound:"RPGShoot.ogg", refillSound:"BazookaReload.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"RPG", id:498, fireRate:40, recoil:25, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:15, zoomLevel:ZOOM_BAZOOKA, sound:"RPGShoot.ogg", refillSound:"BazookaReload.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const RPK = {
@@ -794,7 +799,8 @@ function attackHook(attacker, victim)
 			if(health < 0)
 				health = 0;
 			Entity.setHealth(victim, health);
-			Item.damageCarriedItem();
+			if(Level.getGameMode() == GAME_MODE_SURVIVAL)
+				Item.damageCarriedItem();
 		}
 	}
 }
@@ -926,24 +932,14 @@ function changeCarriedItem(currentItem, previousItem)
 			{
 				run: function()
 				{
-					if(Level.getGameMode() == 1)
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+					shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+					{
+						onTouch: function(v, event)
 						{
-							onTouch: function(v, event)
-							{
-								onTouchWeaponShootCreative(event, currentGun);
-								return false;
-							}
-						});
-					if(Level.getGameMode() == 0)
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-						{
-							onTouch: function(v, event)
-							{
-								onTouchWeaponShootSurvival(event, currentGun);
-								return false;
-							}
-						});
+							onTouchWeaponShoot(event, currentGun);
+							return false;
+						}
+					});
 				}
 			}));
 		}
@@ -989,24 +985,14 @@ function changeCarriedItem(currentItem, previousItem)
 			{
 				run: function()
 				{
-					if(Level.getGameMode() == 1)
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+					shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+					{
+						onTouch: function(v, event)
 						{
-							onTouch: function(v, event)
-							{
-								onTouchWithWaitWeaponShootCreative(event, currentGun);
-								return false;
-							}
-						});
-					if(Level.getGameMode() == 0)
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-						{
-							onTouch: function(v, event)
-							{
-								onTouchWithWaitWeaponShootSurvival(event, currentGun);
-								return false;
-							}
-						});
+							onTouchWithWaitWeaponShoot(event, currentGun);
+							return false;
+						}
+					});
 				}
 			}));
 		}
@@ -1040,7 +1026,7 @@ function changeCarriedItem(currentItem, previousItem)
 			run: function()
 			{
 				shootGrenadeHand(GRENADE);
-				if(Level.getGameMode() == 0)
+				if(Level.getGameMode() == GAME_MODE_SURVIVAL)
 					Item.removeOneCarriedItem();
 			}
 		}));
@@ -1058,7 +1044,7 @@ function changeCarriedItem(currentItem, previousItem)
 			run: function()
 			{
 				shootGrenadeHand(FRAGMENT);
-				if(Level.getGameMode() == 0)
+				if(Level.getGameMode() == GAME_MODE_SURVIVAL)
 					Item.removeOneCarriedItem();
 			}
 		}));
@@ -1076,7 +1062,7 @@ function changeCarriedItem(currentItem, previousItem)
 			run: function()
 			{
 				shootGrenadeHand(MOLOTOV);
-				if(Level.getGameMode() == 0)
+				if(Level.getGameMode() == GAME_MODE_SURVIVAL)
 					Item.removeOneCarriedItem();
 			}
 		}));
@@ -1211,12 +1197,15 @@ function modTick()
 				countdownHealth++;
 				if(countdownHealth == 5)
 				{
-					Player.setHealth(20);
-					countdownHealth = 0;
-					Player.setHealth(previousHealth);
 					isParachuting = false;
-					if(Level.getGameMode() == 0)
+					countdownHealth = 0;
+
+					if(Level.getGameMode() == GAME_MODE_SURVIVAL)
+					{
+						Player.setHealth(20);
+						Player.setHealth(previousHealth);
 						Item.damageCarriedItem();
+					}
 				}
 			}
 
@@ -1237,10 +1226,15 @@ function modTick()
 	{
 		if(isParachuting)
 		{
-			Player.setHealth(20);
-			countdownHealth = 0;
-			Player.setHealth(previousHealth);
 			isParachuting = false;
+			countdownHealth = 0;
+
+			if(Level.getGameMode() == GAME_MODE_SURVIVAL)
+			{
+				Player.setHealth(20);
+				Player.setHealth(previousHealth);
+				Item.damageCarriedItem();
+			}
 		}
 	}
 	if(isParachuting)
@@ -1266,7 +1260,7 @@ function addNewGun(gun)
 	Item.setMaxDamage(gun.id, gun.ammo);
 }
 
-function onTouchWeaponShootSurvival(event, gun)
+function onTouchWeaponShoot(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -1287,7 +1281,7 @@ function onTouchWeaponShootSurvival(event, gun)
 					if(currentShotTicks == gun.fireRate)
 					{
 						if(Player.getCarriedItemData() >= gun.ammo)
-							ModPE.showTipMessage("Press the ammo text to refill.");
+							ModPE.showTipMessage("Press the ammo text to reload.");
 						else
 						{
 							currentShotTicks = 0;
@@ -1303,72 +1297,27 @@ function onTouchWeaponShootSurvival(event, gun)
 	}
 }
 
-function onTouchWeaponShootCreative(event, gun)
-{
-	var action = event.getActionMasked();
-	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
-	{
-		shooting = false;
-		showCloudParticle(gun.smoke)
-	}
-	else
-	{
-		if(!shooting)
-		{
-			shooting = true;
-			currentShotTicks = gun.fireRate;
-			shootingRunnable = (new java.lang.Runnable(
-			{
-				run: function()
-				{
-					if(currentShotTicks == gun.fireRate)
-					{
-						currentShotTicks = 0;
-						ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
-						shoot(gun);
-					}
-					currentShotTicks++;
-				}
-			}));
-		}
-	}
-}
-
 function onClickWeaponShoot(gun)
 {
 	if(latestShotTime == null || java.lang.System.currentTimeMillis() > (latestShotTime + (gun.fireRate * 50)))
 	{
-		if(Level.getGameMode() == 0)
-		{
-			if(Player.getCarriedItemData() >= gun.ammo)
-				ModPE.showTipMessage("Press the ammo text to refill.");
-			else
-			{
-				ModPE.playSoundFromFile(gun.sound);
-				if(gun.isGrenadeLauncher)
-					shootGrenadeWeapon(gun);
-				else
-					shoot(gun);
-				Item.damageCarriedGun(gun);
-				latestShotTime = java.lang.System.currentTimeMillis();
-				showCloudParticle(gun.smoke);
-			}
-		}
-
-		if(Level.getGameMode() == 1)
+		if(Player.getCarriedItemData() >= gun.ammo)
+			ModPE.showTipMessage("Press the ammo text to reload.");
+		else
 		{
 			ModPE.playSoundFromFile(gun.sound);
 			if(gun.isGrenadeLauncher)
 				shootGrenadeWeapon(gun);
 			else
 				shoot(gun);
+			Item.damageCarriedGun(gun);
 			latestShotTime = java.lang.System.currentTimeMillis();
 			showCloudParticle(gun.smoke);
 		}
 	}
 }
 
-function onTouchWithWaitWeaponShootSurvival(event, gun)
+function onTouchWithWaitWeaponShoot(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -1406,7 +1355,7 @@ function onTouchWithWaitWeaponShootSurvival(event, gun)
 									if(currentShotTicks == gun.fireRate)
 									{
 										if(Player.getCarriedItemData() >= gun.ammo)
-											ModPE.showTipMessage("Press the ammo text to refill.");
+											ModPE.showTipMessage("Press the ammo text to reload.");
 										else
 										{
 											currentShotTicks = 0;
@@ -1424,60 +1373,6 @@ function onTouchWithWaitWeaponShootSurvival(event, gun)
 				});
 				gunWarmupSound.start();
 			} catch(e) { ModPE.log("DesnoGuns: Error in onTouchWithWaitWeaponShootSurvival(): " + e); clientMessage("The minigun needs sounds to work properly."); }
-		}
-	}
-}
-
-function onTouchWithWaitWeaponShootCreative(event, gun)
-{
-	var action = event.getActionMasked();
-	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
-	{
-		onTouchWithWaitWeaponButtonReleased(gun);
-	}else
-	{
-		if(!shooting && !touchingFireButtonGunsWithWait)
-		{
-			try
-			{
-				var warmupSoundString;
-				if(gun.hasRandomWarmupSound)
-					warmupSoundString = createRandomString(gun.warmupSound);
-				else
-					warmupSoundString = gun.warmupSound;
-
-				touchingFireButtonGunsWithWait = true;
-				gunWarmupSound.reset();
-				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + warmupSoundString);
-				gunWarmupSound.prepare();
-				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
-				{
-					onCompletion: function(mp)
-					{
-						if(touchingFireButtonGunsWithWait)
-						{
-							shooting = true;
-							gunSpinSound.start();
-							currentShotTicks = gun.fireRate;
-							shootingRunnable = (new java.lang.Runnable(
-							{
-								run: function()
-								{
-									if(currentShotTicks == gun.fireRate)
-									{
-										currentShotTicks = 0;
-										if(!gun.hasntShootingSound)
-											ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
-										shoot(gun);
-									}
-									currentShotTicks++;
-								}
-							}));
-						}
-					}
-				});
-				gunWarmupSound.start();
-			} catch(e) { ModPE.log("DesnoGuns: Error in onTouchWithWaitWeaponShootCreative(): " + e); clientMessage("The minigun needs sounds to work properly."); }
 		}
 	}
 }
@@ -2060,34 +1955,31 @@ function shootAndSettingsButtons(loadAimButton)
 				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
 
 
-				if(Level.getGameMode() == 0)
+				var layoutAmmo = new android.widget.RelativeLayout(currentActivity);
+				layoutAmmo.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+				ammoText = new android.widget.TextView(currentActivity);
+				ammoText.setOnClickListener(new android.view.View.OnClickListener()
 				{
-					var layoutAmmo = new android.widget.RelativeLayout(currentActivity);
-					layoutAmmo.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
-					ammoText = new android.widget.TextView(currentActivity);
-					ammoText.setOnClickListener(new android.view.View.OnClickListener()
+					onClick: function(v)
 					{
-						onClick: function(v)
-						{
-							refillAmmo(getGun(Player.getCarriedItem()));
-							return false;
-						}
-					});
-					ammoText.setGravity(android.view.Gravity.CENTER);
-					ammoText.setText("null");
-					ammoText.setTypeface(font);
-					ammoText.setPaintFlags(ammoText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-					ammoText.setTextSize(ammoTextSize);
-					ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-					ammoText.setShadowLayer(0.001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-					ammoText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-					layoutAmmo.addView(ammoText);
+						refillAmmo(getGun(Player.getCarriedItem()));
+						return false;
+					}
+				});
+				ammoText.setGravity(android.view.Gravity.CENTER);
+				ammoText.setText("null");
+				ammoText.setTypeface(font);
+				ammoText.setPaintFlags(ammoText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+				ammoText.setTextSize(ammoTextSize);
+				ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+				ammoText.setShadowLayer(0.001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				ammoText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+				layoutAmmo.addView(ammoText);
 
-					popupAmmo = new android.widget.PopupWindow(layoutAmmo, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
-					popupAmmo.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupAmmo.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.BOTTOM, 0, 64 * deviceDensity);
-				}
+				popupAmmo = new android.widget.PopupWindow(layoutAmmo, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupAmmo.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+				popupAmmo.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.BOTTOM, 0, 64 * deviceDensity);
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -2293,8 +2185,7 @@ function setAmmoText(text)
 		{
 			try
 			{
-				if(Level.getGameMode() == 0)
-					ammoText.setText(text);
+				ammoText.setText(text);
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -2313,12 +2204,63 @@ Item.damageCarriedGun = function(gun)
 
 function refillAmmo(gun)
 {
-	var slot = Player.getSlotOfItem(getAmmoId(gun));
-	if(Player.getCarriedItemData() != 0)
+	if(Level.getGameMode() == GAME_MODE_SURVIVAL)
 	{
-		if(slot == -1)
-			clientMessage("You don't have one " + Item.getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
-		else
+		// gamemode survival
+		var slot = Player.getSlotOfItem(getAmmoId(gun));
+		if(Player.getCarriedItemData() != 0)
+		{
+			if(slot == -1)
+				clientMessage("You don't have one " + Item.getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
+			else
+			{
+				try
+				{
+					isRefilling = true;
+					refillingGun = gun;
+
+					refillSound.reset();
+					refillSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.refillSound);
+					refillSound.prepare();
+					refillSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+					{
+						onCompletion: function(mp)
+						{
+							isRefilling = false;
+
+							// let's do a re-check to see if the player hasn't changed his carried item
+							if(Player.getCarriedItem() == refillingGun.id)
+							{
+								var ammoSlot = Player.getSlotOfItem(getAmmoId(refillingGun));
+								if(ammoSlot == -1)
+									clientMessage("You don't have one " + Item.getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
+								else
+								{
+									Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
+									setAmmoText((refillingGun.ammo - Player.getCarriedItemData()) + "/" + refillingGun.ammo);
+									Player.removeItemFromInventory(ammoSlot, 1);
+								}
+							}
+
+							// reset sound
+							refillSound.release();
+							refillSound = null;
+							refillSound = new android.media.MediaPlayer();
+						}
+					});
+					refillSound.start();
+					ModPE.showTipMessage("Refilling");
+				} catch(e)
+				{
+					ModPE.showTipMessage("Sounds not installed.");
+					ModPE.log("DesnoGuns: error in refillAmmo: " + e);
+				}
+			}
+		}
+	}else
+	{
+		// gamemode creative
+		if(Player.getCarriedItemData() != 0)
 		{
 			try
 			{
@@ -2334,18 +2276,11 @@ function refillAmmo(gun)
 					{
 						isRefilling = false;
 
-						// this code can only be executed with the carried item
+						// let's do a re-check to see if the player hasn't changed his carried item
 						if(Player.getCarriedItem() == refillingGun.id)
 						{
-							var ammoSlot = Player.getSlotOfItem(getAmmoId(refillingGun));
-							if(ammoSlot == -1)
-								clientMessage("You don't have one " + Item.getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
-							else
-							{
-								Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
-								setAmmoText((refillingGun.ammo - Player.getCarriedItemData()) + "/" + refillingGun.ammo);
-								Player.removeItemFromInventory(ammoSlot, 1);
-							}
+							Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
+							setAmmoText((refillingGun.ammo - Player.getCarriedItemData()) + "/" + refillingGun.ammo);
 						}
 
 						// reset sound
@@ -2792,26 +2727,23 @@ function lookDir(yaw, pitch)
 //########## general item functions ##########
 Item.damageCarriedItem = function()
 {
-	if(Level.getGameMode() == 0)
-	{
-		var maxDamage;
-		if(Player.getCarriedItem() == KNIFE_ID)
-			maxDamage = KNIFE_MAX_DAMAGE;
-		if(Player.getCarriedItem() == PARACHUTE_ID)
-			maxDamage = PARACHUTE_MAX_DAMAGE;
-		if(Player.getCarriedItem() == MEDICAL_KIT_ID)
-			maxDamage = MEDICAL_KIT_MAX_RESTORABLE_HEALTH;
+	var maxDamage;
+	if(Player.getCarriedItem() == KNIFE_ID)
+		maxDamage = KNIFE_MAX_DAMAGE;
+	if(Player.getCarriedItem() == PARACHUTE_ID)
+		maxDamage = PARACHUTE_MAX_DAMAGE;
+	if(Player.getCarriedItem() == MEDICAL_KIT_ID)
+		maxDamage = MEDICAL_KIT_MAX_RESTORABLE_HEALTH;
 
-		if(Player.getCarriedItemData() < maxDamage)
-			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
+	if(Player.getCarriedItemData() < maxDamage)
+		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
+	else
+	{
+		Level.playSoundEnt(Player.getEntity(), "random.break", 100, 30);
+		if(Player.getCarriedItemCount() == 1)
+			Player.clearInventorySlot(Player.getSelectedSlotId());
 		else
-		{
-			Level.playSoundEnt(Player.getEntity(), "random.break", 100, 30);
-			if(Player.getCarriedItemCount() == 1)
-				Player.clearInventorySlot(Player.getSelectedSlotId());
-			else
-				Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
-		}
+			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
 	}
 }
 
