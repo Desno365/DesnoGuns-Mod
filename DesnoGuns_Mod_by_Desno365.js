@@ -28,7 +28,6 @@ var sdcard = new android.os.Environment.getExternalStorageDirectory();
 const GAME_MODE_CREATIVE = 1;
 const GAME_MODE_SURVIVAL = 0;
 
-
 //display size and density variables
 var metrics = new android.util.DisplayMetrics();
 currentActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -112,7 +111,10 @@ var soundPool;
 var soundID;
 
 // general value for the weapons accuracy, the more this value is the less accuracy weapons have
-const randomness = 0.55;
+const RANDOMNESS = 0.55;
+
+// general value for the weapons recoil, the more this value is the less recoil weapons have
+const RECOIL = 5;
 
 // workaround for returning arrows variable
 var deathWorkaround = false;
@@ -363,7 +365,7 @@ const MAKAROV = {
 
 const MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Minigun", id:490, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_ASSAULT, warmupSound:"MinigunWarmup.ogg", sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", spinSound:"MinigunSpin.ogg", cooldownSound:"MinigunCooldown.ogg", refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Minigun", id:490, fireRate:1, recoil:1, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_ASSAULT, warmupSound:"MinigunWarmup.ogg", sound:"P90_and_Bizon_and_G3Shoot_and_Minigun.ogg", spinSound:"MinigunSpin.ogg", cooldownSound:"MinigunCooldown.ogg", refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const MINI_UZI = {
@@ -408,12 +410,12 @@ const RPG = {
 
 const RPK = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"RPK", id:499, fireRate:3, recoil:5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"quiver", ammo:40, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"RPK", id:499, fireRate:3, recoil:2.5 , bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"quiver", ammo:40, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const SG550 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"SG550", id:500, fireRate:5, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_ASSAULT, sound:"SG550Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"SG550", id:500, fireRate:5, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_ASSAULT, sound:"SG550Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const SIGP226 = {
@@ -423,7 +425,7 @@ const SIGP226 = {
 
 const SKORPION = {
 	gunType:GUN_TYPE_MACHINE_PISTOL, type:BUTTON_TYPE_ON_TOUCH,
-	name:"Skorpion", id:502, fireRate:3, recoil:2, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_PISTOL, sound:"SkorpionShoot.ogg", refillSound:"StenReload.ogg", texture:"nether_star", ammo:20, smoke:1, recipe:CRAFTING_MACHINE_PISTOL
+	name:"Skorpion", id:502, fireRate:3, recoil:1.5, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_PISTOL, sound:"SkorpionShoot.ogg", refillSound:"StenReload.ogg", texture:"nether_star", ammo:20, smoke:1, recipe:CRAFTING_MACHINE_PISTOL
 };
 
 const SPAS = {
@@ -443,17 +445,17 @@ const W1200 = {
 
 const XMAS_MINIGUN = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"X-Mas Minigun", id:506, fireRate:2, recoil:2, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, warmupSound:"MinigunWarmup.ogg", sound:"bell.wav", spinSound:"MinigunSpin.ogg", cooldownSound:"MinigunCooldown.ogg", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"X-Mas Minigun", id:506, fireRate:2, recoil:1, hasIceBullets:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, warmupSound:"MinigunWarmup.ogg", sound:"bell.wav", spinSound:"MinigunSpin.ogg", cooldownSound:"MinigunCooldown.ogg", refillSound:"BrowningReload.ogg", texture:"record_strad", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const XMAS_SNIPER = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"X-Mas Sniper", id:507, fireRate:2, recoil:25, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"X-Mas Sniper", id:507, fireRate:5, recoil:15, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const FLAMETHROWER = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Flamethrower", id:508, fireRate:1, recoil:2, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Flamethrower", id:508, fireRate:1, recoil:1, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const AA12 = {
@@ -1288,6 +1290,7 @@ function onTouchWeaponShoot(event, gun)
 							ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
 							shoot(gun);
 							Item.damageCarriedGun(gun);
+							makeRecoil(gun);
 						}
 					}
 					currentShotTicks++;
@@ -1313,6 +1316,7 @@ function onClickWeaponShoot(gun)
 			Item.damageCarriedGun(gun);
 			latestShotTime = java.lang.System.currentTimeMillis();
 			showCloudParticle(gun.smoke);
+			makeRecoil(gun);
 		}
 	}
 }
@@ -1363,6 +1367,7 @@ function onTouchWithWaitWeaponShoot(event, gun)
 												ModPE.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
 											shoot(gun);
 											Item.damageCarriedGun(gun);
+											makeRecoil(gun);
 										}
 									}
 									currentShotTicks++;
@@ -1412,8 +1417,8 @@ function shootGrenadeWeapon(gun)
 	else
 		var gunAccuracy = gun.accuracy;
 
-	var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
-	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
+	var yawAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
+	var pitchAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
 	var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
 	if(gun.hasIncendiaryBullets)
@@ -1433,8 +1438,8 @@ function shootGrenadeWeapon(gun)
 
 function shootGrenadeHand(grenadeObject)
 {
-	var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * grenadeObject.accuracy;
-	var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * grenadeObject.accuracy;
+	var yawAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * grenadeObject.accuracy;
+	var pitchAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * grenadeObject.accuracy;
 	var playerShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
 	var handShootDir = lookDir(getYaw() + 30, getPitch());
@@ -1571,8 +1576,8 @@ function shoot(gun)
 		{
 			for(var j = -gun.shotgunWidth; j <= gun.shotgunWidth; j += bulletsPerShotForXY)
 			{
-				var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
-				var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
+				var yawAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
+				var pitchAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
 				var gunShootDir = lookDir(getYaw() + yawAccuracyValue + i, getPitch() + pitchAccuracyValue + j);
 
 				if(gun.hasIceBullets)
@@ -1596,8 +1601,8 @@ function shoot(gun)
 		}else
 		{
 			// a single arrow
-			var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
-			var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
+			var yawAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
+			var pitchAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
 			var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
 			if(gun.hasIceBullets)
@@ -1835,8 +1840,7 @@ function shootAndSettingsButtons(loadAimButton)
 										{
 											zoomWithFov--;
 											ModPE.setFov(zoomWithFov);
-										}
-										}), ms * 12);
+										}}), ms * 12);
 									}
 									new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 									{
@@ -1861,8 +1865,7 @@ function shootAndSettingsButtons(loadAimButton)
 										{
 											zoomWithFov--;
 											ModPE.setFov(zoomWithFov);
-										}
-										}), ms * 12);
+										}}), ms * 12);
 									}
 								}else
 								{
@@ -2029,6 +2032,168 @@ function resetRunnables()
 }
 //########## shoot ui functions - END ##########
 
+//########## recoil functions ##########
+function makeRecoil(gun)
+{
+	if(gun.fireRate >= 2 && gun.recoil >= 1)
+	{
+		if(gun.fireRate >= 7)
+		{
+			if(gun.recoil >= 5)
+			{
+				makeMoreTimedRecoil(gun);
+				return;
+			}else
+			{
+				makeTimedRecoil(gun);
+				return;
+			}
+		}
+		if(gun.fireRate >= 5)
+		{
+			makeTimedRecoil(gun);
+			return;
+		}
+			makeLessTimedRecoil(gun);
+			return;
+	}
+	else
+	{
+		makeInstantRecoil(gun);
+	}
+}
+
+function makeInstantRecoil(gun)
+{
+	var recoilDegree = gun.recoil / RECOIL;
+	Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - recoilDegree);
+}
+
+var timedRecoilVar;
+function makeLessTimedRecoil(gun)
+{
+	// to use this fire rate must be more than
+	var recoilDegree = gun.recoil / RECOIL;
+	var timedRecoilVar = recoilDegree / 4;
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar));
+			}}), 1 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
+			}}), 2 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
+			}}), 3 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
+			}}), 4 * 5);
+		}
+	}));
+}
+
+function makeTimedRecoil(gun)
+{
+	// to use this fire rate must be more than
+	var recoilDegree = gun.recoil / RECOIL;
+	var timedRecoilVar = recoilDegree / 20;
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			for(var ms = 1; ms <= 15; ms++)
+			{
+				new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+				{
+					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
+				}}), ms * 5);
+			}
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
+			}}), 16 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
+			}}), 17 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.6));
+			}}), 18 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
+			}}), 19 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.4));
+			}}), 20 * 5);
+		}
+	}));
+}
+
+function makeMoreTimedRecoil(gun)
+{
+	// to use this fire rate must be more than
+	var recoilDegree = gun.recoil / RECOIL;
+	var timedRecoilVar = recoilDegree / 30;
+
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			for(var ms = 1; ms <= 25; ms++)
+			{
+				new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+				{
+					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
+				}}), ms * 5);
+			}
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
+			}}), 26 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
+			}}), 27 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.6));
+			}}), 28 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
+			}}), 29 * 5);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+			{
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.4));
+			}}), 30 * 5);
+		}
+	}));
+}
+//########## recoil functions - END ##########
+
 //########## aim functions ##########
 function sightImage()
 {
@@ -2086,8 +2251,7 @@ function removeAiming()
 					{
 						zoomWithFov++;
 						ModPE.setFov(zoomWithFov);
-					}
-					}), ms * 12);
+					}}), ms * 12);
 				}
 			}
 			try {
