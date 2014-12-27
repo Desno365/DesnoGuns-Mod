@@ -1882,7 +1882,10 @@ function shootAndSettingsButtons(loadAimButton)
 					aimText.setPaintFlags(aimText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 					aimText.setTextSize(buttonsSize);
 					aimText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-					aimText.setShadowLayer(0.0001, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+					if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+						aimText.setShadowLayer(1, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+					else
+						aimText.setShadowLayer(0.0001, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 					aimText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 					aimText.setBackgroundDrawable(aimBg);
 					aimText.setPadding(aimPadding, aimPadding, aimPadding, aimPadding);
@@ -1943,7 +1946,10 @@ function shootAndSettingsButtons(loadAimButton)
 				shotText.setPaintFlags(shotText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				shotText.setTextSize(buttonsSize);
 				shotText.setTextColor(android.graphics.Color.parseColor("#FFDE0000"));
-				shotText.setShadowLayer(0.0001, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+					shotText.setShadowLayer(1, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				else
+					shotText.setShadowLayer(0.0001, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				shotText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 				shotText.setBackgroundDrawable(shotBg);
 				shotText.setPadding(shotPadding, shotPadding, shotPadding, shotPadding);
@@ -1976,7 +1982,10 @@ function shootAndSettingsButtons(loadAimButton)
 				ammoText.setPaintFlags(ammoText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				ammoText.setTextSize(ammoTextSize);
 				ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				ammoText.setShadowLayer(0.001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+					ammoText.setShadowLayer(1, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				else
+					ammoText.setShadowLayer(0.0001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				ammoText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 				layoutAmmo.addView(ammoText);
 
@@ -2651,7 +2660,10 @@ function medicalKitButton()
 				healthText.setPaintFlags(healthText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				healthText.setTextSize(buttonsSize);
 				healthText.setTextColor(android.graphics.Color.parseColor("#FF00DE00"));
-				healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+					healthText.setShadowLayer(1, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				else
+					healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				healthText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 				healthText.setBackgroundDrawable(healthBg);
 				healthText.setPadding(healthPadding, healthPadding, healthPadding, healthPadding);
@@ -2726,7 +2738,10 @@ function infoItemUI()
 				tipText.setPaintFlags(tipText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				tipText.setTextSize(14);
 				tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				tipText.setShadowLayer(0.001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+					tipText.setShadowLayer(1, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				else
+					tipText.setShadowLayer(0.0001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				tipText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 				layoutTip.addView(tipText);
 
