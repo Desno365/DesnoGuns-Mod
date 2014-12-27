@@ -448,7 +448,7 @@ const XMAS_SNIPER = {
 
 const FLAMETHROWER = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Flamethrower", id:508, fireRate:1, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, warmupSound:"ignite_flamethrower.ogg", hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"lead", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Flamethrower", id:508, fireRate:1, recoil:2, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const AA12 = {
@@ -1380,9 +1380,15 @@ function onTouchWithWaitWeaponShootSurvival(event, gun)
 		{
 			try
 			{
+				var warmupSoundString;
+				if(gun.hasRandomWarmupSound)
+					warmupSoundString = createRandomString(gun.warmupSound);
+				else
+					warmupSoundString = gun.warmupSound;
+
 				touchingFireButtonGunsWithWait = true;
 				gunWarmupSound.reset();
-				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.warmupSound);
+				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + warmupSoundString);
 				gunWarmupSound.prepare();
 				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -1434,9 +1440,15 @@ function onTouchWithWaitWeaponShootCreative(event, gun)
 		{
 			try
 			{
+				var warmupSoundString;
+				if(gun.hasRandomWarmupSound)
+					warmupSoundString = createRandomString(gun.warmupSound);
+				else
+					warmupSoundString = gun.warmupSound;
+
 				touchingFireButtonGunsWithWait = true;
 				gunWarmupSound.reset();
-				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.warmupSound);
+				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + warmupSoundString);
 				gunWarmupSound.prepare();
 				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -1683,21 +1695,27 @@ function shoot(gun)
 		}
 	}else
 	{
-		// a single arrow
-		var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
-		var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
-		var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+		if(gun.isFlamethrower)
+		{
+			ModPE.showTipMessage("zughi fire!!!");
+		}else
+		{
+			// a single arrow
+			var yawAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
+			var pitchAccuracyValue = ( (Math.random() * randomness) - (randomness / 2) ) * gunAccuracy;
+			var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
-		if(gun.hasIceBullets)
-			var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 81);
-		else
-			var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 80);
-		setVelX(arrow, gunShootDir.x * gun.bulletSpeed);
-		setVelY(arrow, gunShootDir.y * gun.bulletSpeed);
-		setVelZ(arrow, gunShootDir.z * gun.bulletSpeed);
+			if(gun.hasIceBullets)
+				var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 81);
+			else
+				var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 80);
+			setVelX(arrow, gunShootDir.x * gun.bulletSpeed);
+			setVelY(arrow, gunShootDir.y * gun.bulletSpeed);
+			setVelZ(arrow, gunShootDir.z * gun.bulletSpeed);
 
-		if(gun.hasExplosiveBullets)
-			gun.bulletsArray.push(new entityClass(arrow));
+			if(gun.hasExplosiveBullets)
+				gun.bulletsArray.push(new entityClass(arrow));
+		}
 	}
 }
 
@@ -2822,6 +2840,13 @@ function doesFileExists(path)
 //########## file functions - END ##########
 
 //########## other functions ##########
+function createRandomString(randomObject)
+{
+	// randomObjectExample = { startingFrom:1, endingAt:4, startText:"ignite_flamethrower", endText:".ogg" }
+	var random = Math.floor((Math.random() * (randomObject.endingAt - randomObject.startingFrom + 1)) + randomObject.startingFrom);
+	return (randomObject.startText + random + randomObject.endText);
+}
+
 function entityClass(entity)
 {
 	this.entity = entity;
