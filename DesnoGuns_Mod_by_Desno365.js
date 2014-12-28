@@ -640,12 +640,12 @@ function newLevel()
 	if(!isPro())
 	{
 		currentActivity.runOnUiThread(new java.lang.Runnable(){run: function(){
-			android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Checking for updates, please wait..."), 0).show();
+			android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Checking for updates..."), 0).show();
 		}});
 	}else
 	{
 		currentActivity.runOnUiThread(new java.lang.Runnable(){run: function(){
-			android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns Pro</b>: Checking for updates, please wait..."), 0).show();
+			android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns Pro</b>: Checking for updates..."), 0).show();
 		}});
 	}
 
@@ -719,9 +719,15 @@ function newLevel()
 		}
 	}
 
-	getLatestVersionGunsMod();
-	if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
-		updateAvailableUI();
+	new java.lang.Thread(new java.lang.Runnable()
+	{ 
+		run: function()
+		{        
+			getLatestVersionGunsMod();
+			if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
+				updateAvailableUI();
+		}
+	}).start();
 }
 
 function leaveGame()
