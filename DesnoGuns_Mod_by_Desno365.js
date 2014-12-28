@@ -1283,7 +1283,10 @@ function onTouchWeaponShoot(event, gun)
 					if(currentShotTicks == gun.fireRate)
 					{
 						if(Player.getCarriedItemData() >= gun.ammo)
+						{
+							ModPE.playSoundFromFile("EmptyGun.ogg");
 							ModPE.showTipMessage("Press the ammo text to reload.");
+						}
 						else
 						{
 							currentShotTicks = 0;
@@ -1305,7 +1308,10 @@ function onClickWeaponShoot(gun)
 	if(latestShotTime == null || java.lang.System.currentTimeMillis() > (latestShotTime + (gun.fireRate * 50)))
 	{
 		if(Player.getCarriedItemData() >= gun.ammo)
+		{
+			ModPE.playSoundFromFile("EmptyGun.ogg");
 			ModPE.showTipMessage("Press the ammo text to reload.");
+		}
 		else
 		{
 			ModPE.playSoundFromFile(gun.sound);
@@ -1359,7 +1365,10 @@ function onTouchWithWaitWeaponShoot(event, gun)
 									if(currentShotTicks == gun.fireRate)
 									{
 										if(Player.getCarriedItemData() >= gun.ammo)
+										{
+											ModPE.playSoundFromFile("EmptyGun.ogg");
 											ModPE.showTipMessage("Press the ammo text to reload.");
+										}
 										else
 										{
 											currentShotTicks = 0;
@@ -4061,6 +4070,7 @@ function missingSoundsUI(missingSoundsText)
 				var missingText = new android.widget.TextView(currentActivity);
 				missingText.setText(new android.text.Html.fromHtml("<b>ERROR</b>: missing sounds.<br><br>" +
 					'<b><i>IMPORTANT</b></i>: did you place the "desnoguns-sounds" folder (the folder is inside the zip that contains the mod) in "sdcard/games/com.mojang/"?<br><br>' +
+					"<b><i>UPDATES</b></i>: If you have recently updated the mod, you need to delete the previous sound folder and replace it with the new one.<br><br>" +
 					"Here a list of the missing sounds: " + missingSoundsText + ".<br><br>"));
 				layoutMissing.addView(missingText);
 				
@@ -4141,27 +4151,57 @@ currentActivity.runOnUiThread(new java.lang.Runnable()
 				var arrayOfErrors = [];
 				for(var i in guns)
 				{
-					if(!doesFileExists(tmpPath + guns[i].sound))
-						if(arrayOfErrors.indexOf(guns[i].sound) == -1)
-							arrayOfErrors.push(guns[i].sound);
+					// shoot sound
+					if(!guns[i].hasntShootingSound)
+					{
+						if(!doesFileExists(tmpPath + guns[i].sound))
+						{
+							if(arrayOfErrors.indexOf(guns[i].sound) == -1)
+								arrayOfErrors.push(guns[i].sound);
+						}
+					}
+
+					// reload sound
 					if(!doesFileExists(tmpPath + "reload/" + guns[i].refillSound))
+					{
 						if(arrayOfErrors.indexOf(guns[i].refillSound) == -1)
 							arrayOfErrors.push(guns[i].refillSound);
+					}	
+
+					// spin sound (only for guns that should have it)
+					if(guns[i].type == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+					{
+						if(!doesFileExists(tmpPath + guns[i].spinSound))
+						{
+							if(arrayOfErrors.indexOf(guns[i].spinSound) == -1)
+								arrayOfErrors.push(guns[i].spinSound);
+						}
+					}
 				}
-				if(!doesFileExists(tmpPath + "MolotovExplosion.ogg"))
-					arrayOfErrors.push("MolotovExplosion.ogg");
-				if(!doesFileExists(tmpPath + "MinigunSpin.ogg"))
-					arrayOfErrors.push("MinigunSpin.ogg");
+
 				if(!doesFileExists(tmpPath + "MinigunWarmup.ogg"))
 					arrayOfErrors.push("MinigunWarmup.ogg");
 				if(!doesFileExists(tmpPath + "MinigunCooldown.ogg"))
 					arrayOfErrors.push("MinigunCooldown.ogg");
+
+				if(!doesFileExists(tmpPath + "ignite_flamethrower1.ogg"))
+					arrayOfErrors.push("ignite_flamethrower1.ogg");
+				if(!doesFileExists(tmpPath + "ignite_flamethrower2.ogg"))
+					arrayOfErrors.push("ignite_flamethrower2.ogg");
+				if(!doesFileExists(tmpPath + "ignite_flamethrower3.ogg"))
+					arrayOfErrors.push("ignite_flamethrower3.ogg");
+				if(!doesFileExists(tmpPath + "MolotovExplosion.ogg"))
+					arrayOfErrors.push("MolotovExplosion.ogg");
+
 				if(!doesFileExists(tmpPath + "benboncan_parachute.wav"))
 					arrayOfErrors.push("benboncan_parachute.wav");
+
 				if(!doesFileExists(tmpPath + "fire-explosion.wav"))
 					arrayOfErrors.push("fire-explosion.wav");
-				if(!doesFileExists(tmpPath + "flamethrower.flac"))
-					arrayOfErrors.push("flamethrower.flac");
+
+				if(!doesFileExists(tmpPath + "EmptyGun.ogg"))
+					arrayOfErrors.push("EmptyGun.ogg");
+
 
 				if(arrayOfErrors.length == 0)
 				{
