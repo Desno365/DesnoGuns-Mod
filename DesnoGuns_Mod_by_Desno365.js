@@ -95,6 +95,12 @@ var ammoTextSize = 16;
 var moveButtons = 0;
 var displaySight = true;
 
+// workaround for returning arrows variable
+var deathWorkaround = false;
+
+// instant reload in creative variable
+var instantReloadInCreative = false;
+
 // variables for guns
 var ammoText;
 var isRefilling = false;
@@ -115,9 +121,6 @@ const RANDOMNESS = 0.55;
 
 // general value for the weapons recoil, the more this value is the less recoil weapons have
 const RECOIL = 5;
-
-// workaround for returning arrows variable
-var deathWorkaround = false;
 
 // aiming variables
 var aiming = false;
@@ -225,7 +228,7 @@ const AK74 = {
 
 const AT4 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"AT4", id:462, fireRate:30, recoil:10, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"AT4", id:462, fireRate:10, recoil:10, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const AUG = {
@@ -280,7 +283,7 @@ const G36 = {
 
 const GL1 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"GL1", id:473, fireRate:20, recoil:12, bulletSpeed:GRENADE_LAUNCHER_BULLET_SPEED, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:10, zoomLevel:ZOOM_GRENADE_LAUNCHER, sound:"GrenadeLauncherShoot.ogg", refillSound:"GrenadeLauncherReload.ogg", texture:"ender_pearl", ammo:1, smoke:0, recipe:CRAFTING_LAUNCHER
+	name:"GL1", id:473, fireRate:10, recoil:12, bulletSpeed:GRENADE_LAUNCHER_BULLET_SPEED, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:10, zoomLevel:ZOOM_GRENADE_LAUNCHER, sound:"GrenadeLauncherShoot.ogg", refillSound:"GrenadeLauncherReload.ogg", texture:"ender_pearl", ammo:1, smoke:0, recipe:CRAFTING_LAUNCHER
 };
 
 const GL6 = {
@@ -340,7 +343,7 @@ const M60E4 = {
 
 const M72LAW = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"M72LAW", id:485, fireRate:25, recoil:13, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"M72LAW", id:485, fireRate:10, recoil:13, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const M249 = {
@@ -405,7 +408,7 @@ const RPD = {
 
 const RPG = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"RPG", id:498, fireRate:40, recoil:25, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:15, zoomLevel:ZOOM_BAZOOKA, sound:"RPGShoot.ogg", refillSound:"BazookaReload.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"RPG", id:498, fireRate:10, recoil:25, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:15, zoomLevel:ZOOM_BAZOOKA, sound:"RPGShoot.ogg", refillSound:"BazookaReload.ogg", texture:"minecart_hopper", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const RPK = {
@@ -658,6 +661,7 @@ function newLevel()
 	if(aTSizeTest != "" && aTSizeTest != null && aTSizeTest != undefined)
 		ammoTextSize = parseFloat(aTSizeTest);
 
+	// workaround for returning arrows setting
 	var dWorkaroundTest = ModPE.readData("dWorkaround");
 	if(typeof dWorkaroundTest == "boolean")
 	{
@@ -688,6 +692,7 @@ function newLevel()
 			clientMessage("keep everything");
 	}
 
+	// display sight in the center of the screen setting
 	var dSightTest = ModPE.readData("dSight");
 	if(typeof dSightTest == "boolean")
 	{
@@ -698,6 +703,19 @@ function newLevel()
 		{
 			if(dSightTest != "" && dSightTest != null && dSightTest != undefined)
 				displaySight = stringToBoolean(dSightTest);
+		}
+	}
+
+	var instReloadTest = ModPE.readData("instReload");
+	if(typeof instReloadTest == "boolean")
+	{
+		instantReloadInCreative = instReloadTest;
+	}else
+	{
+		if(typeof instReloadTest == "string")
+		{
+			if(instReloadTest != "" && instReloadTest != null && instReloadTest != undefined)
+				instantReloadInCreative = stringToBoolean(instReloadTest);
 		}
 	}
 
@@ -1652,7 +1670,7 @@ function getGun(id)
 	}
 	if(currentGun == 0)
 	{
-		clientMessage("Error: no such gun");
+		clientMessage("Error: gun not found in getGun()");
 		currentGun = AK47;
 	}
 	return currentGun;
@@ -2390,39 +2408,53 @@ function refillAmmo(gun)
 		// gamemode creative
 		if(Player.getCarriedItemData() != 0)
 		{
-			try
+			if(instantReloadInCreative)
 			{
-				isRefilling = true;
-				refillingGun = gun;
+				isRefilling = false;
 
-				refillSound.reset();
-				refillSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.refillSound);
-				refillSound.prepare();
-				refillSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+				// let's do a re-check to see if the player hasn't changed his carried item
+				if(Player.getCarriedItem() == gun.id)
 				{
-					onCompletion: function(mp)
-					{
-						isRefilling = false;
-
-						// let's do a re-check to see if the player hasn't changed his carried item
-						if(Player.getCarriedItem() == refillingGun.id)
-						{
-							Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
-							setAmmoText((refillingGun.ammo - Player.getCarriedItemData()) + "/" + refillingGun.ammo);
-						}
-
-						// reset sound
-						refillSound.release();
-						refillSound = null;
-						refillSound = new android.media.MediaPlayer();
-					}
-				});
-				refillSound.start();
-				ModPE.showTipMessage("Refilling");
-			} catch(e)
+					Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
+					setAmmoText((gun.ammo - Player.getCarriedItemData()) + "/" + gun.ammo);
+				}
+			}else
 			{
-				ModPE.showTipMessage("Sounds not installed.");
-				ModPE.log("DesnoGuns: error in refillAmmo: " + e);
+				// disabled instant reload
+				try
+				{
+					isRefilling = true;
+					refillingGun = gun;
+
+					refillSound.reset();
+					refillSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.refillSound);
+					refillSound.prepare();
+					refillSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
+					{
+						onCompletion: function(mp)
+						{
+							isRefilling = false;
+
+							// let's do a re-check to see if the player hasn't changed his carried item
+							if(Player.getCarriedItem() == refillingGun.id)
+							{
+								Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
+								setAmmoText((refillingGun.ammo - Player.getCarriedItemData()) + "/" + refillingGun.ammo);
+							}
+
+							// reset sound
+							refillSound.release();
+							refillSound = null;
+							refillSound = new android.media.MediaPlayer();
+						}
+					});
+					refillSound.start();
+					ModPE.showTipMessage("Refilling");
+				} catch(e)
+				{
+					ModPE.showTipMessage("Sounds not installed.");
+					ModPE.log("DesnoGuns: error in refillAmmo: " + e);
+				}
 			}
 		}
 	}
@@ -3446,6 +3478,13 @@ function informationGunsSpecificationsForGunType(gunType)
 						}
 
 
+						var text7 = new android.widget.TextView(currentActivity);
+						text7.setText("Recoil");
+						layout.addView(text7);
+
+						layout.addView(seekBarForInformation(guns[i].recoil, 30, true, (61 - (guns[i].recoil * 2)) + "/60"));
+
+
 						var text3 = new android.widget.TextView(currentActivity);
 						text3.setText("Accuracy");
 						layout.addView(text3);
@@ -3458,6 +3497,7 @@ function informationGunsSpecificationsForGunType(gunType)
 						layout.addView(text4);
 
 						layout.addView(seekBarForInformation(guns[i].zoomLevel, ZOOM_SNIPER, false, guns[i].zoomLevel + " FOV"));
+
 
 						var text7 = new android.widget.TextView(currentActivity);
 						text7.setText("Bullet speed");
@@ -3684,8 +3724,11 @@ function settingsUI()
 
 				layout.addView(dividerText());
 
+
+
 				var sizeText = new android.widget.TextView(currentActivity);
 				sizeText.setText("Select the preferred size of the \"fire\" and \"aim\" buttons (default is 22)");
+				sizeText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				layout.addView(sizeText);
 
 				var sizeChooser = new android.widget.SeekBar(currentActivity);
@@ -3707,12 +3750,17 @@ function settingsUI()
 				
 				var sizeText1 = new android.widget.TextView(currentActivity);
 				sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
+				sizeText1.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				layout.addView(sizeText1);
 
 				layout.addView(dividerText());
+				layout.addView(dividerText());
+
+
 
 				var moveButtonsText = new android.widget.TextView(currentActivity);
 				moveButtonsText.setText("Select the y positions of the \"fire\" and \"aim\" buttons (default is 0)");
+				moveButtonsText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				layout.addView(moveButtonsText);
 
 				var maxY = (displayHeight / 4 * 3);
@@ -3737,12 +3785,17 @@ function settingsUI()
 				
 				var moveButtonsText1 = new android.widget.TextView(currentActivity);
 				moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+				moveButtonsText1.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				layout.addView(moveButtonsText1);
 
 				layout.addView(dividerText());
+				layout.addView(dividerText());
+
+
 
 				var sizeText2 = new android.widget.TextView(currentActivity);
 				sizeText2.setText("Select the preferred size of the ammo text (default is 16)");
+				sizeText2.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				layout.addView(sizeText2);
 
 				var sizeChooser1 = new android.widget.SeekBar(currentActivity);
@@ -3764,13 +3817,18 @@ function settingsUI()
 				
 				var sizeText3 = new android.widget.TextView(currentActivity);
 				sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
+				sizeText3.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				layout.addView(sizeText3);
 
 				layout.addView(dividerText());
+				layout.addView(dividerText());
+
+
 
 				var switchWorkaround = new android.widget.Switch(currentActivity);
 				switchWorkaround.setChecked(deathWorkaround);
 				switchWorkaround.setText("Activate workaround to prevent returning arrows while shooting (experimental)");
+				switchWorkaround.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				switchWorkaround.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
 				{
 					onCheckedChanged: function()
@@ -3806,10 +3864,14 @@ function settingsUI()
 				layout.addView(switchWorkaround);
 
 				layout.addView(dividerText());
+				layout.addView(dividerText());
+
+
 
 				var switchSight = new android.widget.Switch(currentActivity);
 				switchSight.setChecked(displaySight);
 				switchSight.setText("Display a little cross in the center of the screen");
+				switchSight.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				switchSight.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
 				{
 					onCheckedChanged: function()
@@ -3824,6 +3886,27 @@ function settingsUI()
 				layout.addView(switchSight);
 
 				layout.addView(dividerText());
+				layout.addView(dividerText());
+
+
+
+				var switchSight = new android.widget.Switch(currentActivity);
+				switchSight.setChecked(instantReloadInCreative);
+				switchSight.setText("Instant reload in creative (disable reload sounds)");
+				switchSight.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+				switchSight.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+				{
+					onCheckedChanged: function()
+					{
+						instantReloadInCreative = !instantReloadInCreative;
+						ModPE.saveData("instReload", instantReloadInCreative);
+					}
+				});
+				layout.addView(switchSight);
+
+				layout.addView(dividerText());
+
+
 
 				var backButton = new android.widget.Button(currentActivity); 
 				backButton.setText("Back"); 
