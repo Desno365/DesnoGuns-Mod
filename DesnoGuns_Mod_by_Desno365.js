@@ -2625,7 +2625,7 @@ function medicalKitButton()
 				{
 					onClick: function(v)
 					{
-						if(Player.getCarriedItem() == MEDICAL_KIT_ID) // one more check, just for security before removing items
+						if(Player.getCarriedItem() == MEDICAL_KIT_ID) // one more check before removing items
 						{
 							var currentHealth = Entity.getHealth(Player.getEntity());
 							if(currentHealth >= 20)
@@ -2646,7 +2646,7 @@ function medicalKitButton()
 								Player.setHealth(20);
 								for(var i = 0; i < healthToBeRestored; i++)
 									Item.damageCarriedItem();
-								ModPE.showTipMessage("Restored " + healthToBeRestored + " half hearts.");
+								ModPE.showTipMessage("Restored " + (healthToBeRestored / 2) + " hearts.");
 							}
 						}else
 						{
