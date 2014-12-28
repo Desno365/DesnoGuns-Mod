@@ -151,7 +151,7 @@ const GRENADE_LAUNCHER_BULLET_SPEED = 2.4;
 
 // zoom level
 const ZOOM_SNIPER = 40;
-const ZOOM_ASSAULT = 25;
+const ZOOM_ASSAULT = 23;
 const ZOOM_BAZOOKA = 12;
 const ZOOM_MACHINE = 18;
 const ZOOM_SHOTGUN = 15;
@@ -215,7 +215,7 @@ const CRAFTING_MINIGUN = [
 // weapons
 const AK47 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"AK47", id:460, fireRate:3, recoil:2, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5, zoomLevel:ZOOM_ASSAULT, sound:"AK47Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"AK47", id:460, fireRate:3, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5, zoomLevel:ZOOM_ASSAULT, sound:"AK47Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"carrot_golden", ammo:30, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const AK74 = {
@@ -225,22 +225,22 @@ const AK74 = {
 
 const AT4 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"AT4", id:462, fireRate:30, recoil:3, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"AT4", id:462, fireRate:30, recoil:10, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"cauldron", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const AUG = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"AUG", id:463, fireRate:3, recoil:3, bulletSpeed:6.8, accuracy:3, zoomLevel:ZOOM_ASSAULT, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", refillSound:"MP44Reload.ogg", texture:"chestplate", textureNumber:1, ammo:42, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"AUG", id:463, fireRate:3, recoil:2.5, bulletSpeed:6.8, accuracy:3, zoomLevel:ZOOM_ASSAULT, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", refillSound:"MP44Reload.ogg", texture:"chestplate", textureNumber:1, ammo:42, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const BARRETT_EXPLOSIVE = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"Barrett Explosive", id:464, fireRate:12, recoil:22, bulletSpeed:SNIPER_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:2, bulletsArray:[], accuracy:3, zoomLevel:ZOOM_SNIPER, sound:"BarrettShoot.ogg", refillSound:"BARReload.ogg", texture:"comparator", ammo:10, smoke:2, recipe:CRAFTING_SNIPER_RIFLE
+	name:"Barrett Explosive", id:464, fireRate:12, recoil:25, bulletSpeed:SNIPER_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:2, bulletsArray:[], accuracy:3, zoomLevel:ZOOM_SNIPER, sound:"BarrettShoot.ogg", refillSound:"BARReload.ogg", texture:"comparator", ammo:10, smoke:2, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const BARRETT = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"Barrett", id:465, fireRate:12, recoil:22, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"BarrettShoot.ogg", refillSound:"BARReload.ogg", texture:"cookie", ammo:10, smoke:2, recipe:CRAFTING_SNIPER_RIFLE
+	name:"Barrett", id:465, fireRate:12, recoil:25, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"BarrettShoot.ogg", refillSound:"BARReload.ogg", texture:"cookie", ammo:10, smoke:2, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const BIZON = {
@@ -250,22 +250,22 @@ const BIZON = {
 
 const DESERT_EAGLE = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Desert Eagle", id:467, fireRate:1, recoil:3, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:6, zoomLevel:ZOOM_PISTOL, sound:"DesertEagleShoot.ogg", refillSound:"LugerReload.ogg", texture:"door_iron", ammo:7, smoke:0, recipe:CRAFTING_HANDGUN
+	name:"Desert Eagle", id:467, fireRate:1, recoil:4, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:6, zoomLevel:ZOOM_PISTOL, sound:"DesertEagleShoot.ogg", refillSound:"LugerReload.ogg", texture:"door_iron", ammo:7, smoke:0, recipe:CRAFTING_HANDGUN
 };
 
 const DESERT_EAGLE_GOLD = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Desert Eagle Gold", id:468, fireRate:1, recoil:3, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:5, zoomLevel:ZOOM_PISTOL, sound:"DesertEagleShoot.ogg", refillSound:"LugerReload.ogg", texture:"empty_armor_slot_boots", ammo:7, smoke:0, recipe:CRAFTING_HANDGUN
+	name:"Desert Eagle Gold", id:468, fireRate:1, recoil:4, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:5, zoomLevel:ZOOM_PISTOL, sound:"DesertEagleShoot.ogg", refillSound:"LugerReload.ogg", texture:"empty_armor_slot_boots", ammo:7, smoke:0, recipe:CRAFTING_HANDGUN
 };
 
 const DRAGUNOV = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"Dragunov", id:469, fireRate:8, recoil:20, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"DragunovShoot.ogg", refillSound:"BARReload.ogg", texture:"empty_armor_slot_chestplate", ammo:10, smoke:2, recipe:CRAFTING_SNIPER_RIFLE
+	name:"Dragunov", id:469, fireRate:8, recoil:23, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"DragunovShoot.ogg", refillSound:"BARReload.ogg", texture:"empty_armor_slot_chestplate", ammo:10, smoke:2, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const FNSCAR = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"FNSCAR", id:470, fireRate:3, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:3, zoomLevel:ZOOM_ASSAULT, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", refillSound:"MP44Reload.ogg", texture:"empty_armor_slot_helmet", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"FNSCAR", id:470, fireRate:3, recoil:1.5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:3, zoomLevel:ZOOM_ASSAULT, sound:"FNSCAR_and_AUG_and_MTARShoot.ogg", refillSound:"MP44Reload.ogg", texture:"empty_armor_slot_helmet", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const G3 = {
@@ -280,12 +280,12 @@ const G36 = {
 
 const GL1 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"GL1", id:473, fireRate:20, recoil:14, bulletSpeed:GRENADE_LAUNCHER_BULLET_SPEED, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:10, zoomLevel:ZOOM_GRENADE_LAUNCHER, sound:"GrenadeLauncherShoot.ogg", refillSound:"GrenadeLauncherReload.ogg", texture:"ender_pearl", ammo:1, smoke:0, recipe:CRAFTING_LAUNCHER
+	name:"GL1", id:473, fireRate:20, recoil:12, bulletSpeed:GRENADE_LAUNCHER_BULLET_SPEED, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:10, zoomLevel:ZOOM_GRENADE_LAUNCHER, sound:"GrenadeLauncherShoot.ogg", refillSound:"GrenadeLauncherReload.ogg", texture:"ender_pearl", ammo:1, smoke:0, recipe:CRAFTING_LAUNCHER
 };
 
 const GL6 = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"GL6", id:474, fireRate:1, recoil:10, bulletSpeed:GRENADE_LAUNCHER_BULLET_SPEED, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:15, zoomLevel:ZOOM_GRENADE_LAUNCHER, sound:"GrenadeLauncherShoot.ogg", refillSound:"GL6Reload.ogg", texture:"experience_bottle", ammo:6, smoke:0, recipe:CRAFTING_LAUNCHER
+	name:"GL6", id:474, fireRate:1, recoil:8, bulletSpeed:GRENADE_LAUNCHER_BULLET_SPEED, isGrenadeLauncher:true, grenadeExplosionRadius:4, grenadesArray:[], accuracy:15, zoomLevel:ZOOM_GRENADE_LAUNCHER, sound:"GrenadeLauncherShoot.ogg", refillSound:"GL6Reload.ogg", texture:"experience_bottle", ammo:6, smoke:0, recipe:CRAFTING_LAUNCHER
 };
 
 const GLOCK = {
@@ -295,12 +295,12 @@ const GLOCK = {
 
 const L86 = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"L86", id:476, fireRate:3, recoil:6, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_MACHINE, sound:"M249_and_L86Shoot.ogg", refillSound:"BrowningReload.ogg", texture:"fireworks", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
+	name:"L86", id:476, fireRate:3, recoil:5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_MACHINE, sound:"M249_and_L86Shoot.ogg", refillSound:"BrowningReload.ogg", texture:"fireworks", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
 };
 
 const L96 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"L96", id:477, fireRate:26, recoil:15, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"L96Shoot.ogg", refillSound:"BARReload.ogg", texture:"fireworks_charge", ammo:10, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"L96", id:477, fireRate:26, recoil:14, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"L96Shoot.ogg", refillSound:"BARReload.ogg", texture:"fireworks_charge", ammo:10, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const M9 = {
@@ -320,27 +320,27 @@ const M16A4 = {
 
 const M21 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"M21", id:481, fireRate:10, recoil:15, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"M21Shoot.ogg", refillSound:"BARReload.ogg", texture:"fish_cooked", ammo:10, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"M21", id:481, fireRate:10, recoil:18, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"M21Shoot.ogg", refillSound:"BARReload.ogg", texture:"fish_cooked", ammo:10, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const M40A3_ICE = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"M40A3 Ice", id:482, fireRate:10, recoil:20, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", refillSound:"SpringfieldReload.ogg", texture:"fish_raw", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"M40A3 Ice", id:482, fireRate:10, recoil:23, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", refillSound:"SpringfieldReload.ogg", texture:"fish_raw", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const M40A3 = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"M40A3", id:483, fireRate:10, recoil:20, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", refillSound:"SpringfieldReload.ogg", texture:"flower_pot", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"M40A3", id:483, fireRate:10, recoil:23, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"R700_and_M40A3Shoot.ogg", refillSound:"SpringfieldReload.ogg", texture:"flower_pot", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const M60E4 = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"M60E4", id:484, fireRate:3, recoil:7, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:3.5, zoomLevel:ZOOM_MACHINE, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"BrowningReload.ogg", texture:"ghast_tear", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
+	name:"M60E4", id:484, fireRate:3, recoil:6, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:3.5, zoomLevel:ZOOM_MACHINE, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"BrowningReload.ogg", texture:"ghast_tear", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
 };
 
 const M72LAW = {
 	gunType:GUN_TYPE_LAUNCHER, type:BUTTON_TYPE_ON_CLICK,
-	name:"M72LAW", id:485, fireRate:25, recoil:6, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
+	name:"M72LAW", id:485, fireRate:25, recoil:13, bulletSpeed:BAZOOKA_BULLET_SPEED, hasExplosiveBullets:true, bulletsExplosionRadius:4, bulletsArray:[], accuracy:3.5, zoomLevel:ZOOM_BAZOOKA, sound:"AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg", refillSound:"BazookaReload.ogg", texture:"gold_horse_armor", ammo:1, smoke:4, recipe:CRAFTING_LAUNCHER
 };
 
 const M249 = {
@@ -350,17 +350,17 @@ const M249 = {
 
 const M1014 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"M1014", id:487, fireRate:18, recoil:8, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:2, shotgunBulletsPerLineShot:3, accuracy:10, zoomLevel:ZOOM_SHOTGUN, sound:"M1014Shoot.ogg", refillSound:"M1014Reload.ogg", texture:"hopper", ammo:4, smoke:0, recipe:CRAFTING_SHOTGUN
+	name:"M1014", id:487, fireRate:18, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:2, shotgunBulletsPerLineShot:3, accuracy:10, zoomLevel:ZOOM_SHOTGUN, sound:"M1014Shoot.ogg", refillSound:"M1014Reload.ogg", texture:"hopper", ammo:4, smoke:0, recipe:CRAFTING_SHOTGUN
 };
 
 const M1887 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Model 1887", id:488, fireRate:20, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:10, zoomLevel:ZOOM_SHOTGUN, sound:"M1887Shoot.ogg", refillSound:"M1887Reload.ogg", texture:"iron_horse_armor", ammo:5, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"Model 1887", id:488, fireRate:20, recoil:18, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:10, zoomLevel:ZOOM_SHOTGUN, sound:"M1887Shoot.ogg", refillSound:"M1887Reload.ogg", texture:"iron_horse_armor", ammo:5, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const MAKAROV = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Makarov", id:489, fireRate:1, recoil:1, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:8, zoomLevel:ZOOM_PISTOL, sound:"MakarovShoot.ogg", refillSound:"ColtReload.ogg", texture:"item_frame", ammo:8, smoke:0, recipe:CRAFTING_HANDGUN
+	name:"Makarov", id:489, fireRate:1, recoil:2.5, bulletSpeed:PISTOL_BULLET_SPEED, accuracy:8, zoomLevel:ZOOM_PISTOL, sound:"MakarovShoot.ogg", refillSound:"ColtReload.ogg", texture:"item_frame", ammo:8, smoke:0, recipe:CRAFTING_HANDGUN
 };
 
 const MINIGUN = {
@@ -395,12 +395,12 @@ const R700 = {
 
 const R870 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"Remington 870", id:496, fireRate:15, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"R870Shoot.ogg", refillSound:"W1200Reload.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"Remington 870", id:496, fireRate:15, recoil:19, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"R870Shoot.ogg", refillSound:"W1200Reload.ogg", texture:"minecart_chest", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const RPD = {
 	gunType:GUN_TYPE_LIGHT_MACHINE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"RPD", id:497, fireRate:3, recoil:6, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_MACHINE, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"minecart_furnace", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
+	name:"RPD", id:497, fireRate:3, recoil:5.5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_MACHINE, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"minecart_furnace", ammo:100, smoke:2, recipe:CRAFTING_LIGHT_MACHINE
 };
 
 const RPG = {
@@ -410,12 +410,12 @@ const RPG = {
 
 const RPK = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_TOUCH,
-	name:"RPK", id:499, fireRate:3, recoil:2.5 , bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"quiver", ammo:40, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"RPK", id:499, fireRate:3, recoil:3.5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:4, zoomLevel:ZOOM_ASSAULT, sound:"RPD_and_M60E4_and_RPKShoot.ogg", refillSound:"MG42Reload.ogg", texture:"quiver", ammo:40, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const SG550 = {
 	gunType:GUN_TYPE_ASSAULT_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"SG550", id:500, fireRate:5, recoil:3, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_ASSAULT, sound:"SG550Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
+	name:"SG550", id:500, fireRate:5, recoil:2.5, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:2.5, zoomLevel:ZOOM_ASSAULT, sound:"SG550Shoot.ogg", refillSound:"MP44Reload.ogg", texture:"minecart_tnt", ammo:20, smoke:1, recipe:CRAFTING_ASSAULT_RIFLE
 };
 
 const SIGP226 = {
@@ -430,7 +430,7 @@ const SKORPION = {
 
 const SPAS = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"SPAS-12", id:503, fireRate:15, recoil:20, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"nether_wart", ammo:6, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"SPAS-12", id:503, fireRate:15, recoil:22, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"nether_wart", ammo:6, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const USP = {
@@ -440,7 +440,7 @@ const USP = {
 
 const W1200 = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"W1200", id:505, fireRate:15, recoil:10, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"potion_bottle_empty", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"W1200", id:505, fireRate:15, recoil:17, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:11, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", refillSound:"W1200Reload.ogg", texture:"potion_bottle_empty", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const XMAS_MINIGUN = {
@@ -450,7 +450,7 @@ const XMAS_MINIGUN = {
 
 const XMAS_SNIPER = {
 	gunType:GUN_TYPE_SNIPER_RIFLE, type:BUTTON_TYPE_ON_CLICK,
-	name:"X-Mas Sniper", id:507, fireRate:5, recoil:15, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
+	name:"X-Mas Sniper", id:507, fireRate:5, recoil:12, hasIceBullets:true, bulletSpeed:SNIPER_BULLET_SPEED, zoomLevel:ZOOM_SNIPER, accuracy:2, sound:"bell.wav", refillSound:"SpringfieldReload.ogg", texture:"record_wait", ammo:5, smoke:1, recipe:CRAFTING_SNIPER_RIFLE
 };
 
 const FLAMETHROWER = {
@@ -469,7 +469,7 @@ const INCENDIARY_GL = {
 };
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, XMAS_MINIGUN, XMAS_SNIPER, FLAMETHROWER, AA12, INCENDIARY_GL];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, XMAS_MINIGUN, XMAS_SNIPER, FLAMETHROWER, AA12, INCENDIARY_GL];
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, RPG];
 
 // load on touch with wait gun sounds
@@ -2044,31 +2044,35 @@ function resetRunnables()
 //########## recoil functions ##########
 function makeRecoil(gun)
 {
-	if(gun.fireRate >= 2 && gun.recoil >= 1)
+	if(gun.fireRate < 2)
 	{
-		if(gun.fireRate >= 7)
+		if(gun.type == BUTTON_TYPE_ON_CLICK)
 		{
-			if(gun.recoil >= 5)
-			{
-				makeMoreTimedRecoil(gun);
-				return;
-			}else
-			{
-				makeTimedRecoil(gun);
-				return;
-			}
-		}
-		if(gun.fireRate >= 5)
-		{
-			makeTimedRecoil(gun);
-			return;
-		}
 			makeLessTimedRecoil(gun);
 			return;
+		}
+		else
+		{
+			makeInstantRecoil(gun);
+			return;
+		}	
 	}
-	else
+
+	if(gun.fireRate >= 2 && gun.fireRate <= 5)
 	{
-		makeInstantRecoil(gun);
+		makeLessTimedRecoil(gun);
+		return;
+	}
+
+	// fire rate > 5
+	if(gun.recoil >= 15)
+	{
+		makeTimedRecoil(gun);
+		return;
+	}else
+	{
+		makeLessTimedRecoil(gun);
+		return;
 	}
 }
 
@@ -2081,7 +2085,6 @@ function makeInstantRecoil(gun)
 var timedRecoilVar;
 function makeLessTimedRecoil(gun)
 {
-	// to use this fire rate must be more than
 	var recoilDegree = gun.recoil / RECOIL;
 	var timedRecoilVar = recoilDegree / 4;
 	currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -2091,113 +2094,56 @@ function makeLessTimedRecoil(gun)
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
 				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar));
-			}}), 1 * 5);
+			}}), 1 * 6);
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
 				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
-			}}), 2 * 5);
+			}}), 2 * 6);
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
 				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
-			}}), 3 * 5);
+			}}), 3 * 6);
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
 				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
-			}}), 4 * 5);
+			}}), 4 * 6);
 		}
 	}));
 }
 
 function makeTimedRecoil(gun)
 {
-	// to use this fire rate must be more than
 	var recoilDegree = gun.recoil / RECOIL;
-	var timedRecoilVar = recoilDegree / 20;
+	var timedRecoilVar = recoilDegree / 8;
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
 		run: function()
 		{
-			for(var ms = 1; ms <= 15; ms++)
+			for(var ms = 1; ms <= 5; ms++)
 			{
 				new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 				{
 					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
-				}}), ms * 5);
+				}}), ms * 7);
 			}
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
-			}}), 16 * 5);
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
+			}}), 6 * 7);
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
-			}}), 17 * 5);
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.6));
-			}}), 18 * 5);
+				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.75));
+			}}), 7 * 7);
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 			{
 				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
-			}}), 19 * 5);
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.4));
-			}}), 20 * 5);
-		}
-	}));
-}
-
-function makeMoreTimedRecoil(gun)
-{
-	// to use this fire rate must be more than
-	var recoilDegree = gun.recoil / RECOIL;
-	var timedRecoilVar = recoilDegree / 30;
-
-	currentActivity.runOnUiThread(new java.lang.Runnable(
-	{
-		run: function()
-		{
-			for(var ms = 1; ms <= 25; ms++)
-			{
-				new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-				{
-					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
-				}}), ms * 5);
-			}
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
-			}}), 26 * 5);
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
-			}}), 27 * 5);
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.6));
-			}}), 28 * 5);
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
-			}}), 29 * 5);
-
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.4));
-			}}), 30 * 5);
+			}}), 8 * 7);
 		}
 	}));
 }
