@@ -89,6 +89,17 @@ var r700UIScaled;
 r700UI = null;
 var aimImageScaled;
 
+// easter egg variables
+var killedPigmenEE = 0;
+var easterEgg = false;
+var codeEE;
+var currentColorEE = 0;
+var pigmen = [];
+var unstuck = -1;
+var xCoalEE;
+var yCoalEE;
+var zCoalEE;
+
 // buttons ui settings variables
 var buttonsSize = 22;
 var ammoTextSize = 16;
@@ -472,7 +483,8 @@ const INCENDIARY_GL = {
 };
 
 // all the guns in a single array
-var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, XMAS_MINIGUN, XMAS_SNIPER, FLAMETHROWER, AA12, INCENDIARY_GL];
+var guns = [AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200, FLAMETHROWER, AA12, INCENDIARY_GL];
+setUpGunsWithDate();
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, RPG];
 
 // load on touch with wait gun sounds
@@ -812,6 +824,24 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 		preventDefault();
 		return;
 	}
+
+	// easter egg
+	if(blockId == 173) // 173 block of coal
+	{
+		if(Level.getTile(Math.floor(x), Math.floor(y) - 1, Math.floor(z)) == 42) // block of iron
+		{
+			preventDefault();
+			if(Level.getGameMode() == GAME_MODE_SURVIVAL)
+			{
+				xCoalEE = Math.floor(x);
+				yCoalEE = Math.floor(y);
+				zCoalEE = Math.floor(z);
+				easterEggUI();
+			}
+			else
+				clientMessage("Only in survival.");
+		}
+	}
 }
 
 function attackHook(attacker, victim)
@@ -833,6 +863,27 @@ function attackHook(attacker, victim)
 
 function deathHook(murderer, victim)
 {
+	// easter egg
+	if(Entity.getEntityTypeId(victim) == 36) // 36 = pigman id
+	{
+		if(Player.getCarriedItem() == BARRETT_EXPLOSIVE.id)
+		{
+			killedPigmenEE++;
+			if(killedPigmenEE % 20 == 0)
+			{
+				codeEE = Math.floor((Math.random() * 8999) + 1000);
+				clientMessage(codeEE);
+			}
+		}
+		
+		var index = pigmen.indexOf(victim);
+		if(index != -1)
+		{
+			pigmen.splice(index, 1);
+		}
+	}
+
+	// remove the mob after he dies, this prevent returning arrows
 	if(deathWorkaround && victim != Player.getEntity())
 	{
 		if(Player.getCarriedItem() >= 460 && Player.getCarriedItem() <= 512)
@@ -855,7 +906,7 @@ function entityRemovedHook(entity)
 	}
 }
 
-function changeCarriedItem(currentItem, previousItem)
+function changeCarriedItemHook(currentItem, previousItem)
 {
 	// prevent infinite shooting
 	currentShotTicks = 0;
@@ -1107,13 +1158,13 @@ function modTick()
 {
 	//change carried item hook
 	if(Player.getCarriedItem() != previousCarriedItem)
-		changeCarriedItem(Player.getCarriedItem(), previousCarriedItem);
+		changeCarriedItemHook(Player.getCarriedItem(), previousCarriedItem);
 	else
 	{
 		// switching between items with same id but different damage for example
 		if(Player.getSelectedSlotId() != previousSlotId)
 		{
-			changeCarriedItem(previousCarriedItem, previousCarriedItem);
+			changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
 		}
 	}
 	previousCarriedItem = Player.getCarriedItem();
@@ -1267,6 +1318,20 @@ function modTick()
 	{
 		// thanks to Anti for this line of code, it works better than making the player riding a chicken (that was my idea)
 		Entity.setVelY(Player.getEntity(), -0.10);
+	}
+
+	// Sin0psysS's spawning pattern code (with some changes by me)
+	if(unstuck >= 1)
+	{
+		for(var i in pigmen)
+		{
+			if(Level.getTile(Math.floor(Entity.getX(pigmen[i])), Math.floor(Entity.getY(pigmen[i])), Math.floor(Entity.getZ(pigmen[i])) ) != 0)
+			{
+				Entity.setPosition(pigmen[i], Entity.getX(pigmen[i]), Entity.getY(pigmen[i]) + 1, Entity.getZ(pigmen[i]));
+			}
+		}
+		unstuck--;
+		
 	}
 }
 
@@ -2319,6 +2384,25 @@ function aimImageLayer(gun)
 				try {
 					popupSightImage.dismiss();
 				} catch(e) {}
+
+				if(gun.type == BUTTON_TYPE_ON_TOUCH)
+				{
+					// load touch events
+					currentActivity.runOnUiThread(new java.lang.Runnable(
+					{
+						run: function()
+						{
+							shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+							{
+								onTouch: function(v, event)
+								{
+									onTouchWeaponShoot(event, gun);
+									return false;
+								}
+							});
+						}
+					}));
+				}
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -2771,7 +2855,7 @@ function getRandomTip()
 		return "Happy new year!";
 	}
 
-	var random = Math.floor((Math.random() * 16) + 1);
+	var random = Math.floor((Math.random() * 17) + 1);
 	switch(random)
 	{
 		case 1:
@@ -2792,7 +2876,7 @@ function getRandomTip()
 		}
 		case 5:
 		{
-			return "In Minecraft the damage of an arrow depends on his speed.";
+			return "Place a Block of Coal on top of a Block of Iron, then touch it.";
 		}
 		case 6:
 		{
@@ -2804,7 +2888,7 @@ function getRandomTip()
 		}
 		case 8:
 		{
-			return "You're running the " + CURRENT_VERSION + " version of the DesnoGuns mod!";
+			return "In Minecraft the damage of an arrow depends on his speed.";
 		}
 		case 9:
 		{
@@ -2840,6 +2924,10 @@ function getRandomTip()
 				return "Pro Key installed. Thanks for your support! :)";
 			else
 				return "Consider getting the Pro Key, you will support the development and unlock features.";
+		}
+		case 17:
+		{
+			return "You're running the " + CURRENT_VERSION + " version of the DesnoGuns mod!";
 		}
 	}
 }
@@ -2944,6 +3032,29 @@ function doesFileExists(path)
 //########## file functions - END ##########
 
 //########## other functions ##########
+function setUpGunsWithDate()
+{
+	var cal = java.util.Calendar.getInstance();
+	var day = cal.get(java.util.Calendar.DAY_OF_MONTH);
+	var month = cal.get(java.util.Calendar.MONTH);
+
+	if((day > 6 && month == java.util.Calendar.JANUARY) || month == java.util.Calendar.FEBRUARY || (day <= 21 && month == java.util.Calendar.MARCH))
+	{
+		// winter after Xmas period
+		XMAS_SNIPER.name = "Snow Sniper";
+		XMAS_MINIGUN.name = "Snow Minigun";
+		guns.push(XMAS_MINIGUN);
+		guns.push(XMAS_SNIPER);
+	}
+
+	if(month == java.util.Calendar.DECEMBER || (day <= 6 && month == java.util.Calendar.JANUARY))
+	{
+		// Xmas period
+		guns.push(XMAS_MINIGUN);
+		guns.push(XMAS_SNIPER);
+	}
+}
+
 function createRandomString(randomObject)
 {
 	// randomObjectExample = { startingFrom:1, endingAt:4, startText:"ignite_flamethrower", endText:".ogg" }
@@ -4180,6 +4291,139 @@ function missingSoundsUI(missingSoundsText)
 			}catch(err)
 			{
 				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
+
+function easterEggUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle("I don't want to explode!");
+
+				layout.addView(dividerText());
+
+				var layoutH = new android.widget.LinearLayout(currentActivity);
+				layoutH.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+
+				var inputText1 = new android.widget.EditText(currentActivity);
+				inputText1.setHint("The code");
+				if(codeEE == null || codeEE == undefined)
+					inputText1.setEnabled(false);
+				layoutH.addView(inputText1);
+
+				var button1 = new android.widget.Button(currentActivity); 
+				button1.setText("Ok"); 
+				button1.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						if(codeEE != null && codeEE != undefined && String(codeEE) == String(inputText1.getText()))
+						{
+							Level.setTime(1000);
+							Level.setTime(10000);
+							Level.setTime(1000);
+							Level.setTile(xCoalEE, yCoalEE, zCoalEE, 0);
+							Level.setTile(xCoalEE, yCoalEE - 1, zCoalEE, 0);
+
+							popup.dismiss();
+							easterEgg = true;
+							unstuck = -1;
+							pigmen = [];
+							codeEE = null;
+						
+							BARRETT_EXPLOSIVE.type = BUTTON_TYPE_ON_TOUCH;
+							BARRETT_EXPLOSIVE.ammo = 500;
+							BARRETT_EXPLOSIVE.recoil = 3;
+							BARRETT_EXPLOSIVE.fireRate = 3;
+							Item.setMaxDamage(BARRETT_EXPLOSIVE.id, 500);
+
+							if(Player.getCarriedItem() == BARRETT_EXPLOSIVE.id)
+								changeCarriedItemHook(BARRETT_EXPLOSIVE.id, BARRETT.id);
+
+							currentActivity.runOnUiThread(new java.lang.Runnable(
+							{
+								run: function()
+								{
+									for(var ms = 0; ms < 60; ms++)
+									{
+										new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+										{
+											ModPE.showTipMessage("§" + currentColorEE.toString(16) + "Easter Egg enabled!");
+											if(currentColorEE  == 15)
+												currentColorEE = 0;
+											else
+												currentColorEE++;
+										}}), ms * 250 + 1);
+									}
+								}
+							}));
+						}
+					}
+				});
+				if(codeEE == null || codeEE == undefined)
+					button1.setEnabled(false);
+				layoutH.addView(button1);
+
+				layout.addView(layoutH);
+
+				layout.addView(dividerText());
+
+				var button2 = new android.widget.Button(currentActivity); 
+				button2.setText("Start wave"); 
+				button2.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						Level.setTime(10000);
+						for(var i = 0; i <= 20; i++)
+						{
+							var playerDir = lookDir(getYaw(), getPitch());
+
+							pigmen.push(Level.spawnMob(getPlayerX() + (playerDir.x * 10), getPlayerY(), getPlayerZ() + (playerDir.z * 10), 36));
+
+							// enable Sin0psysS's spawning pattern code (with some changes by me)
+							unstuck=20;
+						}
+						clientMessage("Barrett Explosive.");
+						popup.dismiss();
+					}
+				});
+				layout.addView(button2);
+
+				layout.addView(dividerText());
+
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				
+
+				popup.show();
+
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+				clientMessage("Maybe GUI is not supported for your device. Report this error in the official minecraftforum.net thread, please.");
 			}
 		}
 	});
