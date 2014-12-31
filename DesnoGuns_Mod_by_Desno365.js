@@ -154,6 +154,9 @@ var latestShotTime;
 var touchingFireButtonGunsWithWait = false;
 const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 
+// for flamethrower
+var flameTick = 2;
+
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
 const ASSAULT_BULLET_SPEED = 5.9;
@@ -468,7 +471,7 @@ const XMAS_SNIPER = {
 
 const FLAMETHROWER = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Flamethrower", id:508, fireRate:1, recoil:1, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:500, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Flamethrower", id:508, fireRate:1, recoil:0.5, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:1000, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const AA12 = {
@@ -997,6 +1000,10 @@ function changeCarriedItemHook(currentItem, previousItem)
 		// load current gun
 		var currentGun = getGun(currentItem);
 
+		// reset flamethrower tick
+		if(currentGun.isFlamethrower)
+			flameTick = 2;
+
 		// assault rifles, sub machine guns and light machine guns
 		if(currentGun.type == BUTTON_TYPE_ON_TOUCH)
 		{
@@ -1481,6 +1488,9 @@ function onTouchWithWaitWeaponShoot(event, gun)
 
 function onTouchWithWaitWeaponButtonReleased(gun)
 {
+	if(gun.isFlamethrower)
+		flameTick = 2;
+
 	touchingFireButtonGunsWithWait = false;
 	if(gunWarmupSound.isPlaying())
 		gunWarmupSound.stop();
@@ -1667,6 +1677,7 @@ function shoot(gun)
 	if(gun.isShotgun)
 	{
 		// multiple arrows
+
 		var playerDir = lookDir(getYaw(), getPitch());
 		var bulletsPerShotForXY = gun.shotgunWidth / (gun.shotgunBulletsPerLineShot - 1) * 2;
 		for(var i = -gun.shotgunWidth; i <= gun.shotgunWidth; i += bulletsPerShotForXY)
@@ -1694,10 +1705,68 @@ function shoot(gun)
 	{
 		if(gun.isFlamethrower)
 		{
-			ModPE.showTipMessage("zughi fire!!!");
+			// flamethrower
+
+			var yawAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gun.accuracy;
+			var pitchAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gun.accuracy;
+			var playerShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+			var flameShootDir = lookDir(getYaw() + 45, getPitch());
+
+			var xDir;
+			var yDir;
+			var zDir;
+			var tile;
+
+			// first flame tick
+			xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
+			yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
+			zDir = Player.getZ() + (playerShootDir.z * flameTick) + flameShootDir.z;
+
+			tile = Level.getTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir));
+
+			if(tile == 0 || tile == 31) // 31 grass
+			{
+				if(flameTick > 5)
+				{
+					Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
+				}else
+				{
+					Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
+				}
+			}
+
+			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, 0, 0, 0, 1);
+			Level.addParticle(5, xDir, yDir, zDir, 0, 0, 0, 1);
+			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, 0, 0, 0, 1);
+
+
+			flameTick += 0.5;
+
+
+			// second flame tick
+			xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
+			yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
+			zDir = Player.getZ() + (playerShootDir.z * flameTick) + flameShootDir.z;
+
+			tile = Level.getTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir));
+
+			if(tile == 0 || tile == 31) // 31 grass
+				Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
+
+			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, 0, 0, 0, 1);
+			Level.addParticle(5, xDir, yDir, zDir, 0, 0, 0, 1);
+			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, 0, 0, 0, 1);
+
+
+			flameTick += 0.5;
+
+			if(flameTick > 10)
+				flameTick = 2;
 		}else
 		{
 			// a single arrow
+
 			var yawAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
 			var pitchAccuracyValue = ( (Math.random() * RANDOMNESS) - (RANDOMNESS / 2) ) * gunAccuracy;
 			var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
