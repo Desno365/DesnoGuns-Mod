@@ -471,7 +471,7 @@ const XMAS_SNIPER = {
 
 const FLAMETHROWER = {
 	gunType:GUN_TYPE_MINIGUN, type:BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name:"Flamethrower", id:508, fireRate:1, recoil:0.5, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:1000, smoke:3, recipe:CRAFTING_MINIGUN
+	name:"Flamethrower", id:508, fireRate:1, recoil:0.5, isFlamethrower:true, bulletSpeed:ASSAULT_BULLET_SPEED, accuracy:5.5, zoomLevel:ZOOM_GRENADE_LAUNCHER, hasRandomWarmupSound:true, warmupSound:{ startingFrom:1, endingAt:3, startText:"ignite_flamethrower", endText:".ogg" }, hasntShootingSound:true, spinSound:"flamethrower.flac", hasntCooldownSound:true, refillSound:"BrowningReload.ogg", texture:"record_ward", ammo:750, smoke:3, recipe:CRAFTING_MINIGUN
 };
 
 const AA12 = {
@@ -1718,6 +1718,16 @@ function shoot(gun)
 			var zDir;
 			var tile;
 
+			// particles near the player
+			xDir = Player.getX() + (playerShootDir.x * 0.75) + flameShootDir.x;
+			yDir = Player.getY() + (playerShootDir.y * 0.75) - 0.3;
+			zDir = Player.getZ() + (playerShootDir.z * 0.75) + flameShootDir.z;
+
+			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+			Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+
+
 			// first flame tick
 			xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
 			yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
@@ -1736,9 +1746,9 @@ function shoot(gun)
 				}
 			}
 
-			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, 0, 0, 0, 1);
-			Level.addParticle(5, xDir, yDir, zDir, 0, 0, 0, 1);
-			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, 0, 0, 0, 1);
+			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+			Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 			flameTick += 0.5;
@@ -1754,9 +1764,9 @@ function shoot(gun)
 			if(tile == 0 || tile == 31) // 31 grass
 				Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
 
-			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, 0, 0, 0, 1);
-			Level.addParticle(5, xDir, yDir, zDir, 0, 0, 0, 1);
-			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, 0, 0, 0, 1);
+			Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+			Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+			Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 			flameTick += 0.5;
@@ -2923,7 +2933,7 @@ function getRandomTip()
 	}
 	if(day == 31 && month == java.util.Calendar.OCTOBER)
 	{
-		return "Keep calm and be scary.";
+		return "Keep calm and scary on.";
 	}
 	if(day == 25 && month == java.util.Calendar.DECEMBER)
 	{
@@ -2934,7 +2944,7 @@ function getRandomTip()
 		return "Happy new year!";
 	}
 
-	var random = Math.floor((Math.random() * 17) + 1);
+	var random = Math.floor((Math.random() * 18) + 1);
 	switch(random)
 	{
 		case 1:
@@ -3007,6 +3017,10 @@ function getRandomTip()
 		case 17:
 		{
 			return "You're running the " + CURRENT_VERSION + " version of the DesnoGuns mod!";
+		}
+		case 18:
+		{
+			return "Don't you like to reload guns in Creative? There is an option in Settings that enables instant reload!";
 		}
 	}
 }
