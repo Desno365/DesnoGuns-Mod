@@ -460,7 +460,7 @@ const SKORPION = {
 
 const SPAS = {
 	gunType:GUN_TYPE_SHOTGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:"SPAS-12", id:503, fireRate:15, recoil:22, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", reloadSound:"W1200Reload.ogg", texture:"nether_wart", ammo:6, smoke:1, recipe:CRAFTING_SHOTGUN
+	name:"SPAS-12", id:503, fireRate:15, recoil:22, bulletSpeed:SHOTGUN_BULLET_SPEED, isShotgun:true, shotgunWidth:3, shotgunBulletsPerLineShot:3, accuracy:25, zoomLevel:ZOOM_SHOTGUN, sound:"W1200_and_SPASShoot.ogg", reloadSound:"W1200Reload.ogg", texture:"nether_wart", ammo:7, smoke:1, recipe:CRAFTING_SHOTGUN
 };
 
 const USP = {
@@ -2180,7 +2180,7 @@ function shootAndSettingsButtons(loadAimButton)
 					aimText.setPaintFlags(aimText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 					aimText.setTextSize(buttonsSize);
 					aimText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-					if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+					if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
 						aimText.setShadowLayer(1, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 					else
 						aimText.setShadowLayer(0.0001, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
@@ -2244,7 +2244,7 @@ function shootAndSettingsButtons(loadAimButton)
 				shotText.setPaintFlags(shotText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				shotText.setTextSize(buttonsSize);
 				shotText.setTextColor(android.graphics.Color.parseColor("#FFDE0000"));
-				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
 					shotText.setShadowLayer(1, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				else
 					shotText.setShadowLayer(0.0001, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
@@ -2280,7 +2280,7 @@ function shootAndSettingsButtons(loadAimButton)
 				ammoText.setPaintFlags(ammoText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				ammoText.setTextSize(ammoTextSize);
 				ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
 					ammoText.setShadowLayer(1, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				else
 					ammoText.setShadowLayer(0.0001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
@@ -2591,20 +2591,41 @@ function aimImageLayer(gun)
 				if(gun.type == BUTTON_TYPE_ON_TOUCH)
 				{
 					// load touch events
-					currentActivity.runOnUiThread(new java.lang.Runnable(
+					if(shouldReload())
 					{
-						run: function()
+						// survival or creative with reload option enabled
+						currentActivity.runOnUiThread(new java.lang.Runnable(
 						{
-							shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+							run: function()
 							{
-								onTouch: function(v, event)
+								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
 								{
-									onTouchWeaponShoot(event, gun);
-									return false;
-								}
-							});
-						}
-					}));
+									onTouch: function(v, event)
+									{
+										onTouchWeaponShoot(event, gun, true);
+										return false;
+									}
+								});
+							}
+						}));
+					}else
+					{
+						// creative with reload option disabled
+						currentActivity.runOnUiThread(new java.lang.Runnable(
+						{
+							run: function()
+							{
+								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+								{
+									onTouch: function(v, event)
+									{
+										onTouchWeaponShoot(event, gun, false);
+										return false;
+									}
+								});
+							}
+						}));
+					}
 				}
 			}catch(err)
 			{
@@ -2959,7 +2980,7 @@ function medicalKitButton()
 				healthText.setPaintFlags(healthText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				healthText.setTextSize(buttonsSize);
 				healthText.setTextColor(android.graphics.Color.parseColor("#FF00DE00"));
-				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
 					healthText.setShadowLayer(1, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				else
 					healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
@@ -3037,7 +3058,7 @@ function infoItemUI()
 				tipText.setPaintFlags(tipText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				tipText.setTextSize(14);
 				tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT)
+				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
 					tipText.setShadowLayer(1, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				else
 					tipText.setShadowLayer(0.0001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
