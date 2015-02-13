@@ -3519,7 +3519,7 @@ function informationForWeaponsModUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -3638,7 +3638,7 @@ function informationUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -3719,7 +3719,7 @@ function informationGunsSpecifications()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -3886,7 +3886,7 @@ function informationGunsSpecificationsForGunType(gunType)
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
 				layout.setMinimumWidth(displayWidth);
 				layout.setMinimumHeight(displayHeight);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -4022,7 +4022,7 @@ function informationOtherItems()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -4167,7 +4167,7 @@ function settingsUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, 0);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -4177,228 +4177,271 @@ function settingsUI()
 				popup.setContentView(scroll);
 				popup.setTitle("Settings");
 
+				var bg = android.graphics.drawable.GradientDrawable();
+				bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
+				bg.setColors([android.graphics.Color.parseColor("#FF0099BB"), android.graphics.Color.parseColor("#FF00FFFF")]);
+				bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+				bg.setStroke(2, android.graphics.Color.parseColor("#FF0080FF"));
 
 
-				var sizeText = new android.widget.TextView(currentActivity);
-				sizeText.setText("Select the preferred size of the \"fire\" and \"aim\" buttons (default is 22)");
-				sizeText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				layout.addView(sizeText);
 
-				var sizeChooser = new android.widget.SeekBar(currentActivity);
-				sizeChooser.setMax(30);
-				sizeChooser.setProgress(buttonsSize - 10);
-				sizeChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
-				{
-					onProgressChanged: function()
+				var title1 = new android.widget.TextView(currentActivity);
+				title1.setText("Buttons");
+				title1.setTextSize(18);
+				title1.setTextColor(android.graphics.Color.WHITE);
+				title1.setBackgroundDrawable(bg);
+				title1.setPadding(padding, 0, padding, 0);
+				layout.addView(title1);
+
+					layout.addView(dividerText());
+
+					var sizeText = new android.widget.TextView(currentActivity);
+					sizeText.setText("Select the preferred size of the \"fire\" and \"aim\" buttons (default is 22)");
+					sizeText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					sizeText.setPadding(padding, 0, padding, 0);
+					layout.addView(sizeText);
+
+					var sizeChooser = new android.widget.SeekBar(currentActivity);
+					sizeChooser.setMax(30);
+					sizeChooser.setProgress(buttonsSize - 10);
+					sizeChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
 					{
-						buttonsSize = sizeChooser.getProgress() + 10;
-						sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
-					},
-					onStopTrackingTouch: function()
-					{
-						ModPE.saveData("bSize", buttonsSize);
-					}
-				});
-				layout.addView(sizeChooser);
-				
-				var sizeText1 = new android.widget.TextView(currentActivity);
-				sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
-				sizeText1.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				layout.addView(sizeText1);
-
-				layout.addView(dividerText());
-				layout.addView(dividerText());
-
-
-
-				var moveButtonsText = new android.widget.TextView(currentActivity);
-				moveButtonsText.setText("Select the y positions of the \"fire\" and \"aim\" buttons (default is 0)");
-				moveButtonsText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				layout.addView(moveButtonsText);
-
-				var maxY = (displayHeight / 4 * 3);
-				if(maxY % 2 != 0)
-					maxY--;
-				var moveButtonsChooser = new android.widget.SeekBar(currentActivity);
-				moveButtonsChooser.setMax(maxY);
-				moveButtonsChooser.setProgress((-moveButtons) + (maxY / 2));
-				moveButtonsChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
-				{
-					onProgressChanged: function()
-					{
-						moveButtons = -(moveButtonsChooser.getProgress() - (maxY / 2));
-						moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
-					},
-					onStopTrackingTouch: function()
-					{
-						ModPE.saveData("mButtons", moveButtons);
-					}
-				});
-				layout.addView(moveButtonsChooser);
-				
-				var moveButtonsText1 = new android.widget.TextView(currentActivity);
-				moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
-				moveButtonsText1.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				layout.addView(moveButtonsText1);
-
-				layout.addView(dividerText());
-				layout.addView(dividerText());
-
-
-
-				var sizeText2 = new android.widget.TextView(currentActivity);
-				sizeText2.setText("Select the preferred size of the ammo text (default is 16)");
-				sizeText2.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				layout.addView(sizeText2);
-
-				var sizeChooser1 = new android.widget.SeekBar(currentActivity);
-				sizeChooser1.setMax(20);
-				sizeChooser1.setProgress(ammoTextSize - 8);
-				sizeChooser1.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
-				{
-					onProgressChanged: function()
-					{
-						ammoTextSize = sizeChooser1.getProgress() + 8;
-						sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
-					},
-					onStopTrackingTouch: function()
-					{
-						ModPE.saveData("aTSize", ammoTextSize);
-					}
-				});
-				layout.addView(sizeChooser1);
-				
-				var sizeText3 = new android.widget.TextView(currentActivity);
-				sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
-				sizeText3.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				layout.addView(sizeText3);
-
-				layout.addView(dividerText());
-				layout.addView(dividerText());
-
-
-
-				var switchWorkaround = new android.widget.Switch(currentActivity);
-				switchWorkaround.setChecked(deathWorkaround);
-				switchWorkaround.setText("Activate workaround to prevent returning arrows while shooting (experimental)");
-				switchWorkaround.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				switchWorkaround.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
-				{
-					onCheckedChanged: function()
-					{
-						deathWorkaround = !deathWorkaround;
-						ModPE.saveData("dWorkaround", deathWorkaround);
-
-						if(DEBUG1)
+						onProgressChanged: function()
 						{
-							var dWorkaroundTest = ModPE.readData("dWorkaround");
-							if(typeof dWorkaroundTest == "boolean")
+							buttonsSize = sizeChooser.getProgress() + 10;
+							sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
+						},
+						onStopTrackingTouch: function()
+						{
+							ModPE.saveData("bSize", buttonsSize);
+						}
+					});
+					sizeChooser.setPadding(padding * 2, 0, padding * 2, 0);
+					layout.addView(sizeChooser);
+					
+					var sizeText1 = new android.widget.TextView(currentActivity);
+					sizeText1.setText("Size: " + buttonsSize + "/" + (sizeChooser.getMax() + 10));
+					sizeText1.setTextColor(android.graphics.Color.parseColor("#FFC0C0C0"));
+					sizeText1.setPadding(padding * 2, 0, padding * 2, 0);
+					layout.addView(sizeText1);
+
+					layout.addView(dividerText());
+
+
+
+					var moveButtonsText = new android.widget.TextView(currentActivity);
+					moveButtonsText.setText("Select the y positions of the \"fire\" and \"aim\" buttons (default is 0)");
+					moveButtonsText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					moveButtonsText.setPadding(padding, 0, padding, 0);
+					layout.addView(moveButtonsText);
+
+					var maxY = (displayHeight / 4 * 3);
+					if(maxY % 2 != 0)
+						maxY--;
+					var moveButtonsChooser = new android.widget.SeekBar(currentActivity);
+					moveButtonsChooser.setMax(maxY);
+					moveButtonsChooser.setProgress((-moveButtons) + (maxY / 2));
+					moveButtonsChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+					{
+						onProgressChanged: function()
+						{
+							moveButtons = -(moveButtonsChooser.getProgress() - (maxY / 2));
+							moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+						},
+						onStopTrackingTouch: function()
+						{
+							ModPE.saveData("mButtons", moveButtons);
+						}
+					});
+					moveButtonsChooser.setPadding(padding * 2, 0, padding * 2, 0);
+					layout.addView(moveButtonsChooser);
+					
+					var moveButtonsText1 = new android.widget.TextView(currentActivity);
+					moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+					moveButtonsText1.setTextColor(android.graphics.Color.parseColor("#FFC0C0C0"));
+					moveButtonsText1.setPadding(padding * 2, 0, padding * 2, 0);
+					layout.addView(moveButtonsText1);
+
+					layout.addView(dividerText());
+
+
+
+					var sizeText2 = new android.widget.TextView(currentActivity);
+					sizeText2.setText("Select the preferred size of the ammo text (default is 16)");
+					sizeText2.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					sizeText2.setPadding(padding, 0, padding, 0);
+					layout.addView(sizeText2);
+
+					var sizeChooser1 = new android.widget.SeekBar(currentActivity);
+					sizeChooser1.setMax(20);
+					sizeChooser1.setProgress(ammoTextSize - 8);
+					sizeChooser1.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+					{
+						onProgressChanged: function()
+						{
+							ammoTextSize = sizeChooser1.getProgress() + 8;
+							sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
+						},
+						onStopTrackingTouch: function()
+						{
+							ModPE.saveData("aTSize", ammoTextSize);
+						}
+					});
+					sizeChooser1.setPadding(padding * 2, 0, padding * 2, 0);
+					layout.addView(sizeChooser1);
+					
+					var sizeText3 = new android.widget.TextView(currentActivity);
+					sizeText3.setText("Size: " + ammoTextSize + "/" + (sizeChooser1.getMax() + 8));
+					sizeText3.setTextColor(android.graphics.Color.parseColor("#FFC0C0C0"));
+					sizeText3.setPadding(padding * 2, 0, padding * 2, 0);
+					layout.addView(sizeText3);
+
+					layout.addView(dividerText());
+
+
+
+				var title3 = new android.widget.TextView(currentActivity);
+				title3.setText("UI");
+				title3.setTextSize(18);
+				title3.setTextColor(android.graphics.Color.WHITE);
+				title3.setBackgroundDrawable(bg);
+				title3.setPadding(padding, 0, padding, 0);
+				layout.addView(title3);
+
+					layout.addView(dividerText());
+
+					var switchSight = new android.widget.Switch(currentActivity);
+					switchSight.setChecked(displaySight);
+					switchSight.setText("Display a little cross in the center of the screen");
+					switchSight.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					switchSight.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+					{
+						onCheckedChanged: function()
+						{
+							displaySight = !displaySight;
+							ModPE.saveData("dSight", displaySight);
+							try{
+								popupSightImage.dismiss();
+							} catch (e){}
+						}
+					});
+					switchSight.setPadding(padding, 0, padding, 0);
+					layout.addView(switchSight);
+
+					layout.addView(dividerText());
+
+
+
+					var switchGunName = new android.widget.Switch(currentActivity);
+					switchGunName.setChecked(displayGunNameInAmmo);
+					switchGunName.setText("Display gun's name in the ammo text");
+					switchGunName.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					switchGunName.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+					{
+						onCheckedChanged: function()
+						{
+							displayGunNameInAmmo = !displayGunNameInAmmo;
+							ModPE.saveData("dNameAmmo", displayGunNameInAmmo);
+						}
+					});
+					switchGunName.setPadding(padding, 0, padding, 0);
+					layout.addView(switchGunName);
+
+					layout.addView(dividerText());
+
+
+
+				var title2 = new android.widget.TextView(currentActivity);
+				title2.setText("Other");
+				title2.setTextSize(18);
+				title2.setTextColor(android.graphics.Color.WHITE);
+				title2.setBackgroundDrawable(bg);
+				title2.setPadding(padding, 0, padding, 0);
+				layout.addView(title2);
+
+					layout.addView(dividerText());
+
+					var switchWorkaround = new android.widget.Switch(currentActivity);
+					switchWorkaround.setChecked(deathWorkaround);
+					switchWorkaround.setText("Activate workaround to prevent returning arrows while shooting (experimental)");
+					switchWorkaround.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					switchWorkaround.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+					{
+						onCheckedChanged: function()
+						{
+							deathWorkaround = !deathWorkaround;
+							ModPE.saveData("dWorkaround", deathWorkaround);
+
+							if(DEBUG1)
 							{
-								clientMessage("bool");
-							}else
-							{
-								if(typeof dWorkaroundTest == "string")
+								var dWorkaroundTest = ModPE.readData("dWorkaround");
+								if(typeof dWorkaroundTest == "boolean")
 								{
-									clientMessage("string");
+									clientMessage("bool");
 								}else
 								{
-									clientMessage(typeof dWorkaroundTest);
+									if(typeof dWorkaroundTest == "string")
+									{
+										clientMessage("string");
+									}else
+									{
+										clientMessage(typeof dWorkaroundTest);
+									}
 								}
+								clientMessage(dWorkaroundTest);
+
+								if(deathWorkaround)
+									clientMessage("workaround");
+								else
+									clientMessage("keep everything");
 							}
-							clientMessage(dWorkaroundTest);
-
-							if(deathWorkaround)
-								clientMessage("workaround");
-							else
-								clientMessage("keep everything");
 						}
-					}
-				});
-				layout.addView(switchWorkaround);
+					});
+					switchWorkaround.setPadding(padding, 0, padding, 0);
+					layout.addView(switchWorkaround);
 
-				layout.addView(dividerText());
-				layout.addView(dividerText());
-
+					layout.addView(dividerText());
 
 
-				var switchSight = new android.widget.Switch(currentActivity);
-				switchSight.setChecked(displaySight);
-				switchSight.setText("Display a little cross in the center of the screen");
-				switchSight.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				switchSight.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
-				{
-					onCheckedChanged: function()
+
+					var switchReloadCreative = new android.widget.Switch(currentActivity);
+					switchReloadCreative.setChecked(reloadInCreative);
+					switchReloadCreative.setText("Reload in creative");
+					switchReloadCreative.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					switchReloadCreative.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
 					{
-						displaySight = !displaySight;
-						ModPE.saveData("dSight", displaySight);
-						try{
-							popupSightImage.dismiss();
-						} catch (e){}
-					}
-				});
-				layout.addView(switchSight);
+						onCheckedChanged: function()
+						{
+							reloadInCreative = !reloadInCreative;
+							ModPE.saveData("rCreative", reloadInCreative);
 
-				layout.addView(dividerText());
-				layout.addView(dividerText());
+							switchInstantReloadCreative.setEnabled(reloadInCreative);
+						}
+					});
+					switchReloadCreative.setPadding(padding, 0, padding, 0);
+					layout.addView(switchReloadCreative);
+
+					layout.addView(dividerText());
 
 
 
-				var switchGunName = new android.widget.Switch(currentActivity);
-				switchGunName.setChecked(displayGunNameInAmmo);
-				switchGunName.setText("Display gun's name in the ammo text");
-				switchGunName.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				switchGunName.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
-				{
-					onCheckedChanged: function()
+					var switchInstantReloadCreative = new android.widget.Switch(currentActivity);
+					switchInstantReloadCreative.setChecked(instantReloadInCreative);
+					switchInstantReloadCreative.setText("Instant reload in creative (disable reload sounds)");
+					switchInstantReloadCreative.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					switchInstantReloadCreative.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
 					{
-						displayGunNameInAmmo = !displayGunNameInAmmo;
-						ModPE.saveData("dNameAmmo", displayGunNameInAmmo);
-					}
-				});
-				layout.addView(switchGunName);
+						onCheckedChanged: function()
+						{
+							instantReloadInCreative = !instantReloadInCreative;
+							ModPE.saveData("instReload", instantReloadInCreative);
+						}
+					});
+					switchInstantReloadCreative.setEnabled(reloadInCreative);
+					switchInstantReloadCreative.setPadding(padding, 0, padding, 0);
+					layout.addView(switchInstantReloadCreative);
 
-				layout.addView(dividerText());
-				layout.addView(dividerText());
-
-
-
-				var switchReloadCreative = new android.widget.Switch(currentActivity);
-				switchReloadCreative.setChecked(reloadInCreative);
-				switchReloadCreative.setText("Reload in creative");
-				switchReloadCreative.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				switchReloadCreative.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
-				{
-					onCheckedChanged: function()
-					{
-						reloadInCreative = !reloadInCreative;
-						ModPE.saveData("rCreative", reloadInCreative);
-
-						switchInstantReloadCreative.setEnabled(reloadInCreative);
-					}
-				});
-				layout.addView(switchReloadCreative);
-
-				layout.addView(dividerText());
-				layout.addView(dividerText());
-
-
-
-				var switchInstantReloadCreative = new android.widget.Switch(currentActivity);
-				switchInstantReloadCreative.setChecked(instantReloadInCreative);
-				switchInstantReloadCreative.setText("Instant reload in creative (disable reload sounds)");
-				switchInstantReloadCreative.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				switchInstantReloadCreative.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
-				{
-					onCheckedChanged: function()
-					{
-						instantReloadInCreative = !instantReloadInCreative;
-						ModPE.saveData("instReload", instantReloadInCreative);
-					}
-				});
-				switchInstantReloadCreative.setEnabled(reloadInCreative);
-				layout.addView(switchInstantReloadCreative);
-
-				layout.addView(dividerText());
+					layout.addView(dividerText());
 
 
 
@@ -4447,7 +4490,7 @@ function updateAvailableUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -4529,7 +4572,7 @@ function supportUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll= new android.widget.ScrollView(currentActivity);
@@ -4639,7 +4682,7 @@ function easterEggUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(10 * deviceDensity);
+				var padding = Math.floor(8 * deviceDensity);
 				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
@@ -5061,6 +5104,8 @@ var SoundsInstaller =
 
 					var layout = new android.widget.LinearLayout(currentActivity);
 					layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+					var padding = Math.floor(8 * deviceDensity);
+					layout.setPadding(padding, padding, padding, padding);
 					
 					var scroll = new android.widget.ScrollView(currentActivity);
 					scroll.addView(layout);
