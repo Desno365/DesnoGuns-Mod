@@ -3194,8 +3194,10 @@ function getLatestVersionGunsMod()
 			versionFile.delete();
 		versionFile.createNewFile();
 		var streamVersionOutput = new java.io.FileOutputStream(versionFile);
-		var download = android.net.http.AndroidHttpClient.newInstance("Hello. Desno365 is trying to connect with you, do you want to give him some bytes? Please...").execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity().writeTo(streamVersionOutput);
+		var httpClient = android.net.http.AndroidHttpClient.newInstance("Desno365's awesome browser");
+		httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity().writeTo(streamVersionOutput);
 		streamVersionOutput.close();
+		httpClient.close();
 		if(versionFile.exists())
 		{
 			var loadedVersion = "";
@@ -3290,6 +3292,15 @@ function doesFileExist(path)
 {
 	var file = new java.io.File(path);
 	return file.exists();
+}
+
+function isFileEmpty(path)
+{
+	var file = new java.io.File(path);
+	if(file.length() > 0)
+		return false;
+	else
+		return true;
 }
 //########## file functions - END ##########
 
@@ -5125,6 +5136,14 @@ var SoundsInstaller =
 				{
 					if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
 						arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+				}else
+				{
+					// file exists, maybe is empty?
+					if(isFileEmpty(tmpPath + SoundsInstaller.sounds.soundArray[i].fileName))
+					{
+						if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
+							arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+					}
 				}
 			}else
 			{
@@ -5133,6 +5152,14 @@ var SoundsInstaller =
 				{
 					if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
 						arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+				}else
+				{
+					// file exists, maybe is empty?
+					if(isFileEmpty(tmpPath + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName))
+					{
+						if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
+							arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+					}
 				}
 			}
 		}
@@ -5286,23 +5313,25 @@ var SoundsInstaller =
 	{
 		try
 		{
+			// download file
+			var httpClient = android.net.http.AndroidHttpClient.newInstance("No User Agent");
+			var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet(url)).getEntity();
+
+			// create file
 			var downloadFile = new java.io.File(savePath);
 			if(downloadFile.exists())
 				downloadFile.delete();
 			downloadFile.createNewFile();
 
+			// write to file
 			var streamOutput = new java.io.FileOutputStream(downloadFile);
-			var httpClient = android.net.http.AndroidHttpClient.newInstance("No User Agent");
-			httpClient.execute(new org.apache.http.client.methods.HttpGet(url)).getEntity().writeTo(streamOutput);
+			entity.writeTo(streamOutput);
 
+			// close everything
 			httpClient.close();
 			streamOutput.close();
 		}catch(err)
 		{
-			currentActivity.runOnUiThread(new java.lang.Runnable(){run: function(){
-				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Download unsuccessful, please check your Internet connection."), android.widget.Toast.LENGTH_LONG).show();
-			}});
-
 			ModPE.log(getLogText() + "downloadFile(): caught an error: " + err);
 		}
 	},
@@ -5318,7 +5347,7 @@ var SoundsInstaller =
 		if(notSuccess)
 		{
 			currentActivity.runOnUiThread(new java.lang.Runnable(){run: function(){
-				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: An error has happened during installation, so sounds aren't correctly installed, please try again later."), android.widget.Toast.LENGTH_LONG).show();
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: An error has happened during installation, so sounds aren't correctly installed, please check your Internet connection and try again."), android.widget.Toast.LENGTH_LONG).show();
 			}});
 			ModPE.log(getLogText() + "Sounds HAVEN'T been correctly installed!");
 		}else
