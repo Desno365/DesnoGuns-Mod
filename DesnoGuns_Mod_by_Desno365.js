@@ -3519,6 +3519,8 @@ function informationForWeaponsModUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -3636,6 +3638,8 @@ function informationUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -3715,6 +3719,8 @@ function informationGunsSpecifications()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -3880,6 +3886,8 @@ function informationGunsSpecificationsForGunType(gunType)
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
 				layout.setMinimumWidth(displayWidth);
 				layout.setMinimumHeight(displayHeight);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -4014,6 +4022,8 @@ function informationOtherItems()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -4157,6 +4167,8 @@ function settingsUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, 0);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -4164,8 +4176,6 @@ function settingsUI()
 				var popup = new android.app.Dialog(currentActivity); 
 				popup.setContentView(scroll);
 				popup.setTitle("Settings");
-
-				layout.addView(dividerText());
 
 
 
@@ -4437,6 +4447,8 @@ function updateAvailableUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -4517,6 +4529,8 @@ function supportUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll= new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -4615,54 +4629,6 @@ function supportUI()
 	});
 }
 
-function missingSoundsUI(missingSoundsText)
-{
-	currentActivity.runOnUiThread(new java.lang.Runnable()
-	{
-		run: function()
-		{
-			try
-			{
-				var layoutMissing = new android.widget.LinearLayout(currentActivity);
-				layoutMissing.setOrientation(android.widget.LinearLayout.VERTICAL);
-
-				var scrollMissing = new android.widget.ScrollView(currentActivity);
-				scrollMissing.addView(layoutMissing);
-			
-				var popupMissing = new android.app.Dialog(currentActivity); 
-				popupMissing.setContentView(scrollMissing);
-				popupMissing.setTitle(new android.text.Html.fromHtml("DesnoGuns: Error"));
-				popupMissing.setCanceledOnTouchOutside(false);
-				
-				var missingText = new android.widget.TextView(currentActivity);
-				missingText.setText(new android.text.Html.fromHtml("<b>ERROR</b>: missing sounds.<br><br>" +
-					'<b><i>IMPORTANT</b></i>: did you place the "desnoguns-sounds" folder (the folder is inside the zip that contains the mod) in "sdcard/games/com.mojang/"?<br><br>' +
-					"<b><i>UPDATES</b></i>: If you have recently updated the mod, you need to delete the previous sound folder and replace it with the new one.<br><br>" +
-					"Here a list of the missing sounds: " + missingSoundsText + ".<br><br>"));
-				layoutMissing.addView(missingText);
-				
-				var exitMissingButton = new android.widget.Button(currentActivity); 
-				exitMissingButton.setText("Close"); 
-				exitMissingButton.setOnClickListener(new android.view.View.OnClickListener()
-				{
-					onClick: function()
-					{
-						popupMissing.dismiss();
-					}
-				}); 
-				layoutMissing.addView(exitMissingButton); 
-				
-
-				popupMissing.show();
-			
-			}catch(err)
-			{
-				clientMessage("Error: " + err);
-			}
-		}
-	});
-}
-
 function easterEggUI()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
@@ -4673,6 +4639,8 @@ function easterEggUI()
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var padding = Math.floor(10 * deviceDensity);
+				layout.setPadding(padding, padding, padding, padding);
 
 				var scroll = new android.widget.ScrollView(currentActivity);
 				scroll.addView(layout);
@@ -4837,93 +4805,6 @@ addGrenadeRenderType(grenadeRenderType);
 //########################################################################################################################################################
 // Things to do when finished loading the script
 //########################################################################################################################################################
-
-// check if sounds are correctly installed, using an Handler to not make too many things at startup
-/*currentActivity.runOnUiThread(new java.lang.Runnable()
-{
-	run: function()
-	{
-		try
-		{
-			new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
-			{
-				var tmpPath = sdcard + "/games/com.mojang/desnoguns-sounds/";
-				var arrayOfErrors = [];
-				for(var i in guns)
-				{
-					// shoot sound
-					if(!guns[i].hasntShootingSound)
-					{
-						if(!doesFileExist(tmpPath + guns[i].sound))
-						{
-							if(arrayOfErrors.indexOf(guns[i].sound) == -1)
-								arrayOfErrors.push(guns[i].sound);
-						}
-					}
-
-					// reload sound
-					if(!doesFileExist(tmpPath + "reload/" + guns[i].reloadSound))
-					{
-						if(arrayOfErrors.indexOf(guns[i].reloadSound) == -1)
-							arrayOfErrors.push(guns[i].reloadSound);
-					}	
-
-					// spin sound (only for guns that should have it)
-					if(guns[i].type == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
-					{
-						if(!doesFileExist(tmpPath + guns[i].spinSound))
-						{
-							if(arrayOfErrors.indexOf(guns[i].spinSound) == -1)
-								arrayOfErrors.push(guns[i].spinSound);
-						}
-					}
-				}
-
-				if(!doesFileExist(tmpPath + "MinigunWarmup.ogg"))
-					arrayOfErrors.push("MinigunWarmup.ogg");
-				if(!doesFileExist(tmpPath + "MinigunCooldown.ogg"))
-					arrayOfErrors.push("MinigunCooldown.ogg");
-
-				if(!doesFileExist(tmpPath + "ignite_flamethrower1.ogg"))
-					arrayOfErrors.push("ignite_flamethrower1.ogg");
-				if(!doesFileExist(tmpPath + "ignite_flamethrower2.ogg"))
-					arrayOfErrors.push("ignite_flamethrower2.ogg");
-				if(!doesFileExist(tmpPath + "ignite_flamethrower3.ogg"))
-					arrayOfErrors.push("ignite_flamethrower3.ogg");
-				if(!doesFileExist(tmpPath + "MolotovExplosion.mp3"))
-					arrayOfErrors.push("MolotovExplosion.mp3");
-
-				if(!doesFileExist(tmpPath + "benboncan_parachute.mp3"))
-					arrayOfErrors.push("benboncan_parachute.mp3");
-
-				if(!doesFileExist(tmpPath + "fire-explosion.mp3"))
-					arrayOfErrors.push("fire-explosion.mp3");
-
-				if(!doesFileExist(tmpPath + "EmptyGun.ogg"))
-					arrayOfErrors.push("EmptyGun.ogg");
-
-
-				if(arrayOfErrors.length == 0)
-				{
-					// yeah, sounds installed correctly
-					ModPE.log(getLogText() + "sounds installed correctly!");
-				}else
-				{
-					// not correctly installed :(
-					ModPE.log(getLogText() + "some sounds are missing.");
-
-					var missingSoundsText = "";
-					for(var i in arrayOfErrors)
-					{
-						missingSoundsText += arrayOfErrors[i];
-						missingSoundsText += ", ";
-					}
-					missingSoundsUI(missingSoundsText.substring(0, missingSoundsText.length - 2));
-				}
-			}}), 500);
-		} catch(e) {}
-	}
-});*/
 
 // prepare scaled aim images, using an Handler to not make too many things at startup
 currentActivity.runOnUiThread(new java.lang.Runnable()
