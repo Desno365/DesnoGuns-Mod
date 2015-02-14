@@ -29,6 +29,7 @@ var sdcard = new android.os.Environment.getExternalStorageDirectory();
 // minecraft variables
 const GAME_MODE_CREATIVE = 1;
 const GAME_MODE_SURVIVAL = 0;
+const ITEM_CATEGORY_TOOL = 3; // 3 seems to be the category of the tools
 
 //display size and density variables
 var metrics = new android.util.DisplayMetrics();
@@ -107,6 +108,7 @@ var ammoTextSize = 16;
 var moveButtons = 0;
 var displaySight = true;
 var displayGunNameInAmmo = false;
+var switchedButtonsPosition = false;
 
 // workaround for returning arrows variable
 var deathWorkaround = false;
@@ -512,6 +514,7 @@ Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
 	" i ",
 	" i "], ["i", 265, 0]);
+Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
 
 const PARACHUTE_ID = 433;
 const PARACHUTE_MAX_DAMAGE = 10;
@@ -521,6 +524,7 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"www",
 	"s s",
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
+Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
 var isParachuting = false;
 var countdownHealth = 0;
 var previousHealth;
@@ -607,6 +611,7 @@ Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	"i i",
 	" g ",
 	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
 
 const FRAGMENT = {
 	id:454, grenadeSpeed:2.1, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:4, fragmentDelay:1000, accuracy:4, delay:4000
@@ -616,6 +621,7 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"g g",
 	"   ",
 	"g g"], ["g", GRENADE.id, 0]);
+Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
 
 const MOLOTOV = {
 	id:455, grenadeSpeed:1.5, grenadesExplosionDiameter:3, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
@@ -625,6 +631,7 @@ Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"ggg",
 	"gfg",
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
+Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
 
 // info item
 const INFO_ITEM_ID = 456;
@@ -633,6 +640,7 @@ Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 	"   ",
 	" w ",
 	"   "], ["w", 17, 0]);
+Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
 
 // add guns
 for(var i in guns)
@@ -688,11 +696,13 @@ function newLevel()
 		ammoTextSize = parseFloat(aTSizeTest);
 
 	// load saved boolean settings
+	// getSavedBoolean(name, defaultValue, debug);
 	deathWorkaround = getSavedBoolean("dWorkaround", false, true);
 	displaySight = getSavedBoolean("dSight", true);
 	displayGunNameInAmmo = getSavedBoolean("dNameAmmo", false);
 	reloadInCreative = getSavedBoolean("rCreative", false);
 	instantReloadInCreative = getSavedBoolean("instReload", false);
+	switchedButtonsPosition = getSavedBoolean("sBPosition", false);
 
 	new java.lang.Thread(new java.lang.Runnable()
 	{ 
@@ -1362,6 +1372,7 @@ function addNewGun(gun)
 		ModPE.setItem(gun.id, gun.texture, 0, gun.name, 1);
 	addCraftingRecipe(gun.id, 1, gun.recipe);
 	Item.setMaxDamage(gun.id, gun.ammo);
+	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
 }
 
 function shootGrenadeWeapon(gun)
@@ -2191,7 +2202,7 @@ function shootAndSettingsButtons(loadAimButton)
 
 					popupAim = new android.widget.PopupWindow(layoutAim, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
 					popupAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, moveButtons);
+					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.LEFT : android.view.Gravity.RIGHT) | android.view.Gravity.CENTER, 0, moveButtons);
 				}
 
 
@@ -2259,7 +2270,7 @@ function shootAndSettingsButtons(loadAimButton)
 				popupShot.setOutsideTouchable(false);
 				popupShot.setFocusable(false);
 				popupShot.setSplitTouchEnabled(true);
-				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
+				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.RIGHT : android.view.Gravity.LEFT) | android.view.Gravity.CENTER, 0, moveButtons);
 
 
 				var layoutAmmo = new android.widget.RelativeLayout(currentActivity);
@@ -4187,7 +4198,7 @@ function settingsUI()
 
 				var title1 = new android.widget.TextView(currentActivity);
 				title1.setText("Buttons");
-				title1.setTextSize(18);
+				title1.setTextSize(17);
 				title1.setTextColor(android.graphics.Color.WHITE);
 				title1.setBackgroundDrawable(bg);
 				title1.setPadding(padding, 0, padding, 0);
@@ -4300,9 +4311,28 @@ function settingsUI()
 
 
 
+					var switchButtonsPosition = new android.widget.Switch(currentActivity);
+					switchButtonsPosition.setChecked(switchedButtonsPosition);
+					switchButtonsPosition.setText("Switch position of the \"fire\" and \"aim\" buttons");
+					switchButtonsPosition.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+					switchButtonsPosition.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+					{
+						onCheckedChanged: function()
+						{
+							switchedButtonsPosition = !switchedButtonsPosition;
+							ModPE.saveData("sBPosition", switchedButtonsPosition);
+						}
+					});
+					switchButtonsPosition.setPadding(padding, 0, padding, 0);
+					layout.addView(switchButtonsPosition);
+
+					layout.addView(dividerText());
+
+
+
 				var title3 = new android.widget.TextView(currentActivity);
 				title3.setText("UI");
-				title3.setTextSize(18);
+				title3.setTextSize(17);
 				title3.setTextColor(android.graphics.Color.WHITE);
 				title3.setBackgroundDrawable(bg);
 				title3.setPadding(padding, 0, padding, 0);
@@ -4353,7 +4383,7 @@ function settingsUI()
 
 				var title2 = new android.widget.TextView(currentActivity);
 				title2.setText("Other");
-				title2.setTextSize(18);
+				title2.setTextSize(17);
 				title2.setTextColor(android.graphics.Color.WHITE);
 				title2.setBackgroundDrawable(bg);
 				title2.setPadding(padding, 0, padding, 0);
