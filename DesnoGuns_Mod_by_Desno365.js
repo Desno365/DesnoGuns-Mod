@@ -515,6 +515,9 @@ Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
 	" i "], ["i", 265, 0]);
 Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
+try{
+		Item.setHandEquipped(KNIFE_ID, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 
 const PARACHUTE_ID = 433;
 const PARACHUTE_MAX_DAMAGE = 10;
@@ -525,6 +528,9 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"s s",
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
+try{
+		Item.setHandEquipped(PARACHUTE_ID, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 var isParachuting = false;
 var countdownHealth = 0;
 var previousHealth;
@@ -537,6 +543,9 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
+try{
+		Item.setHandEquipped(MEDICAL_KIT_ID, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 440;
@@ -612,6 +621,9 @@ Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	" g ",
 	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
+try{
+		Item.setHandEquipped(GRENADE.id, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 
 const FRAGMENT = {
 	id:454, grenadeSpeed:2.1, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:4, fragmentDelay:1000, accuracy:4, delay:4000
@@ -622,6 +634,9 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"   ",
 	"g g"], ["g", GRENADE.id, 0]);
 Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
+try{
+		Item.setHandEquipped(FRAGMENT.id, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 
 const MOLOTOV = {
 	id:455, grenadeSpeed:1.5, grenadesExplosionDiameter:3, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
@@ -632,6 +647,9 @@ Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"gfg",
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
+try{
+		Item.setHandEquipped(MOLOTOV.id, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 
 // info item
 const INFO_ITEM_ID = 456;
@@ -1373,6 +1391,9 @@ function addNewGun(gun)
 	addCraftingRecipe(gun.id, 1, gun.recipe);
 	Item.setMaxDamage(gun.id, gun.ammo);
 	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
+	try{
+		Item.setHandEquipped(gun.id, true);
+	}catch(e){ /* old version of BlockLauncher */ }
 }
 
 function shootGrenadeWeapon(gun)
