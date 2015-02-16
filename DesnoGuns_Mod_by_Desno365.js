@@ -3274,19 +3274,29 @@ function getLatestVersionGunsMod()
 {
 	try
 	{
-		var versionFile = new java.io.File(sdcard + "/desnoguns-updates.dat");
-		if(versionFile.exists())
-			versionFile.delete();
-		versionFile.createNewFile();
-		var streamVersionOutput = new java.io.FileOutputStream(versionFile);
+		// download file
 		var httpClient = android.net.http.AndroidHttpClient.newInstance("Desno365's awesome browser");
-		httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity().writeTo(streamVersionOutput);
-		streamVersionOutput.close();
+		var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity();
+
+		// create file
+		var downloadFile = new java.io.File(sdcard + "/desnoguns-updates.dat");
+		if(downloadFile.exists())
+			downloadFile.delete();
+		downloadFile.createNewFile();
+
+		// write to file
+		var streamOutput = new java.io.FileOutputStream(downloadFile);
+		entity.writeTo(streamOutput);
+
+		// close everything
 		httpClient.close();
-		if(versionFile.exists())
+		streamOutput.close();
+
+		// read result
+		if(downloadFile.exists())
 		{
 			var loadedVersion = "";
-			var streamVersionInput = new java.io.FileInputStream(versionFile);
+			var streamVersionInput = new java.io.FileInputStream(downloadFile);
 			var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(streamVersionInput));
 			var rowVersion = "";
 			while((rowVersion = bufferedVersionReader.readLine()) != null)
@@ -3295,11 +3305,12 @@ function getLatestVersionGunsMod()
 			}
 			latestVersion = loadedVersion.split(" ");
 			bufferedVersionReader.close();
-			versionFile.delete();
+			downloadFile.delete();
 		}
 	}catch(err)
 	{
-		clientMessage("Error: " + err);
+		clientMessage("Can't check for updates, please check your Internet connection.");
+		ModPE.log(getLogText() + "getLatestVersionGunsMod(): caught an error: " + err);
 	}
 }
 //########## internet functions - END ##########
@@ -3435,7 +3446,7 @@ function resizeImageToFitScreen(image)
 
 	var imageWidth = image.getWidth();
 	var imageHeight = image.getHeight();
-	var imageHeightScaled = displayHeight;
+	var imageHeightScaled = displayHeight + 1;
 	var imageWidthScaled = imageHeightScaled * (imageWidth / imageHeight);
 
 	if(imageWidthScaled > displayWidth)
