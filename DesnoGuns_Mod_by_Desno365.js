@@ -4925,6 +4925,7 @@ function easterEggUI()
 var textureUiShowed = false;
 function pleaseInstallTextureUI()
 {
+	textureUiShowed = true;
 	currentActivity.runOnUiThread(new java.lang.Runnable()
 	{
 		run: function()
@@ -4964,7 +4965,7 @@ function pleaseInstallTextureUI()
 				
 				
 				popup.show();
-				textureUiShowed = true;
+
 			}catch(err)
 			{
 				print("Error: " + err);
