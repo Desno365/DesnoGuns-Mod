@@ -4618,7 +4618,7 @@ function updateAvailableUI()
 
 				var updatesText = new android.widget.TextView(currentActivity);
 				updatesText.setText(new android.text.Html.fromHtml("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
-					"You can download it at the minecraftforum.net thread (press the button to visit it)."));
+					"You can find a download link on the minecraftforum.net thread (press the button to visit it)."));
 				layout.addView(updatesText);
 				
 				var threadButton = new android.widget.Button(currentActivity); 
