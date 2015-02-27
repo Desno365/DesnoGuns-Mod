@@ -163,6 +163,14 @@ const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 // for flamethrower
 var flameTick = 2;
 
+// items function needed on load
+Item.setVerticalRender = function(id)
+{
+	try{
+		Item.setHandEquipped(id, true);
+	}catch(e){ /* old version of BlockLauncher */ }
+}
+
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
 const ASSAULT_BULLET_SPEED = 5.9;
@@ -237,7 +245,7 @@ const CRAFTING_MINIGUN = [
 // weapons
 const MAGNUM44 = {
 	gunType:GUN_TYPE_HANDGUN, type:BUTTON_TYPE_ON_CLICK,
-	name:".44 Magnum", id:459, fireRate:4, recoil:20, bulletSpeed:SNIPER_BULLET_SPEED /* one shot one kill, yeah */, accuracy:6, zoomLevel:ZOOM_PISTOL, sound:"44Magnum.mp3", reloadSound:"GL6Reload.ogg", texture:"compass_item", textureNumber:1, ammo:6, smoke:1, recipe:CRAFTING_HANDGUN
+	name:".44 Magnum", id:456, fireRate:4, recoil:20, bulletSpeed:SNIPER_BULLET_SPEED /* one shot one kill, yeah */, accuracy:6, zoomLevel:ZOOM_PISTOL, sound:"44Magnum.mp3", reloadSound:"GL6Reload.ogg", texture:"compass_item", textureNumber:1, ammo:6, smoke:1, recipe:CRAFTING_HANDGUN
 };
 
 const AK47 = {
@@ -520,9 +528,7 @@ Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
 	" i "], ["i", 265, 0]);
 Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
-try{
-		Item.setHandEquipped(KNIFE_ID, true);
-	}catch(e){ /* old version of BlockLauncher */ }
+Item.setVerticalRender(KNIFE_ID);
 
 const PARACHUTE_ID = 433;
 const PARACHUTE_MAX_DAMAGE = 10;
@@ -533,9 +539,7 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"s s",
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
-try{
-		Item.setHandEquipped(PARACHUTE_ID, true);
-	}catch(e){ /* old version of BlockLauncher */ }
+Item.setVerticalRender(PARACHUTE_ID);
 var isParachuting = false;
 var countdownHealth = 0;
 var previousHealth;
@@ -548,9 +552,7 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
-try{
-		Item.setHandEquipped(MEDICAL_KIT_ID, true);
-	}catch(e){ /* old version of BlockLauncher */ }
+Item.setVerticalRender(MEDICAL_KIT_ID);
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 440;
@@ -618,7 +620,7 @@ Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
 
 // grenades
 const GRENADE = {
-	id:453, grenadeSpeed:2.1, grenadesExplosionRadius:4, grenadesArray:[], accuracy:4, delay:4000
+	id:435, grenadeSpeed:2.1, grenadesExplosionRadius:4, grenadesArray:[], accuracy:4, delay:4000
 };
 ModPE.setItem(GRENADE.id, "potion_overlay", 0, "Grenade");
 Item.addShapedRecipe(GRENADE.id, 1, 0, [
@@ -626,12 +628,10 @@ Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	" g ",
 	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
-try{
-		Item.setHandEquipped(GRENADE.id, true);
-	}catch(e){ /* old version of BlockLauncher */ }
+Item.setVerticalRender(GRENADE.id);
 
 const FRAGMENT = {
-	id:454, grenadeSpeed:2.1, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:4, fragmentDelay:1000, accuracy:4, delay:4000
+	id:436, grenadeSpeed:2.1, grenadesExplosionRadius:2, grenadesArray:[], fragmentArray:[], howManyFragments:4, fragmentDelay:1000, accuracy:4, delay:4000
 };
 ModPE.setItem(FRAGMENT.id, "potion_bottle_splash", 0, "Fragment Grenade");
 Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
@@ -639,12 +639,10 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"   ",
 	"g g"], ["g", GRENADE.id, 0]);
 Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
-try{
-		Item.setHandEquipped(FRAGMENT.id, true);
-	}catch(e){ /* old version of BlockLauncher */ }
+Item.setVerticalRender(FRAGMENT.id);
 
 const MOLOTOV = {
-	id:455, grenadeSpeed:1.5, grenadesExplosionDiameter:3, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
+	id:437, grenadeSpeed:1.5, grenadesExplosionDiameter:3, explodeOnTouch:true, isWithFire:true, grenadesArray:[], accuracy:4
 };
 ModPE.setItem(MOLOTOV.id, "book_writable", 0, "Molotov");
 Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
@@ -652,12 +650,10 @@ Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"gfg",
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
-try{
-		Item.setHandEquipped(MOLOTOV.id, true);
-	}catch(e){ /* old version of BlockLauncher */ }
+Item.setVerticalRender(MOLOTOV.id);
 
 // info item
-const INFO_ITEM_ID = 456;
+const INFO_ITEM_ID = 438;
 ModPE.setItem(INFO_ITEM_ID, "apple_golden", 0, "DesnoGuns Info");
 Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 	"   ",
@@ -914,7 +910,7 @@ function deathHook(murderer, victim)
 	// remove the mob after he dies, this prevent returning arrows
 	if(deathWorkaround && victim != Player.getEntity())
 	{
-		if(Player.getCarriedItem() >= 459 && Player.getCarriedItem() <= 512)
+		if(isItemAGun(Player.getCarriedItem()))
 		{
 			Entity.remove(victim);
 		}
@@ -1002,9 +998,9 @@ function changeCarriedItemHook(currentItem, previousItem)
 	}
 
 	// the current item is a gun
-	if(currentItem >= 459 && currentItem <= 512 && needsToLoadTheUI(currentItem, true))
+	if( <= && needsToLoadTheUI(currentItem, true))
 	{
-		if(!(previousItem >= 459 && previousItem <= 512) || !needsToLoadTheUI(previousItem, false))
+		if(!isItemAGun(previousItem) || !needsToLoadTheUI(previousItem, false))
 			shootAndSettingsButtons(true);
 
 		// reset clicks and long clicks
@@ -1155,7 +1151,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 			setAmmoText(" ");
 	} else
 	{
-		if(previousItem >= 459 && previousItem <= 512)
+		if(isItemAGun(previousItem))
 		{
 			//the item before was weapon, now not
 			removeShootAndSettingsButtons();
@@ -1418,6 +1414,11 @@ function modTick()
 //########################################################################################################################################################
 
 //########## guns functions ##########
+function isItemAGun(itemId)
+{
+	return (itemId >= 460 && itemId <= 512) || (itemId >= 456 && itemId <= 456);
+}
+
 function addNewGun(gun)
 {
 	try
@@ -1429,9 +1430,7 @@ function addNewGun(gun)
 		addCraftingRecipe(gun.id, 1, gun.recipe);
 		Item.setMaxDamage(gun.id, gun.ammo);
 		Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
-		try{
-			Item.setHandEquipped(gun.id, true);
-		}catch(e){ /* old version of BlockLauncher */ }
+		Item.setVerticalRender(gun.id);
 	}catch(e)
 	{
 		// user haven't installed texture
@@ -1443,9 +1442,7 @@ function addNewGun(gun)
 		addCraftingRecipe(gun.id, 1, gun.recipe);
 		Item.setMaxDamage(gun.id, gun.ammo);
 		Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
-		try{
-			Item.setHandEquipped(gun.id, true);
-		}catch(e){ /* old version of BlockLauncher */ }
+		Item.setVerticalRender(gun.id);
 	}
 }
 
@@ -3553,6 +3550,7 @@ function getLogText()
 	return (TAG + ": ");
 }
 //########## other functions - END ##########
+
 
 //########################################################################################################################################################
 // GUI functions
