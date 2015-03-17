@@ -998,7 +998,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	}
 
 	// the current item is a gun
-	if( <= && needsToLoadTheUI(currentItem, true))
+	if(isItemAGun(currentItem) && needsToLoadTheUI(currentItem, true))
 	{
 		if(!isItemAGun(previousItem) || !needsToLoadTheUI(previousItem, false))
 			shootAndSettingsButtons(true);
@@ -3271,42 +3271,29 @@ function getLatestVersionGunsMod()
 {
 	try
 	{
-		// download file
+		// download content
 		var httpClient = android.net.http.AndroidHttpClient.newInstance("Desno365's awesome browser");
 		var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity();
 
-		// create file
-		var downloadFile = new java.io.File(sdcard + "/desnoguns-updates.dat");
-		if(downloadFile.exists())
-			downloadFile.delete();
-		downloadFile.createNewFile();
-
-		// write to file
-		var streamOutput = new java.io.FileOutputStream(downloadFile);
-		entity.writeTo(streamOutput);
-
-		// close everything
-		httpClient.close();
-		streamOutput.close();
+		// get content
+		inputStream = entity.getContent();
 
 		// read result
-		if(downloadFile.exists())
+		var loadedVersion = "";
+		var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
+		var rowVersion = "";
+		while((rowVersion = bufferedVersionReader.readLine()) != null)
 		{
-			var loadedVersion = "";
-			var streamVersionInput = new java.io.FileInputStream(downloadFile);
-			var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(streamVersionInput));
-			var rowVersion = "";
-			while((rowVersion = bufferedVersionReader.readLine()) != null)
-			{
-				loadedVersion += rowVersion;
-			}
-			latestVersion = loadedVersion.split(" ");
-			bufferedVersionReader.close();
-			downloadFile.delete();
+			loadedVersion += rowVersion;
 		}
+		latestVersion = loadedVersion.split(" ")[0];
+
+		// close what needs to be closed
+		httpClient.close();
+		bufferedVersionReader.close();
 	}catch(err)
 	{
-		clientMessage("Can't check for updates, please check your Internet connection.");
+		clientMessage("DesnoGuns Mod: Can't check for updates, please check your Internet connection.");
 		ModPE.log(getLogText() + "getLatestVersionGunsMod(): caught an error: " + err);
 	}
 }
