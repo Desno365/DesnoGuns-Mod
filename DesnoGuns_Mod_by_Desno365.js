@@ -4382,43 +4382,43 @@ function dividerText()
 }
 
 function seekBarForInformation(value, max, invert, text)
+{
+	// a seek bar that can't be dragged, it just display a value for information
+	if(value > max)
+		value = max;
+	if(invert)
+		value = max - value;
+	var seekBar = new android.widget.SeekBar(currentActivity);
+	seekBar.setMax(max);
+	seekBar.setProgress(Math.round(value));
+	seekBar.setOnTouchListener(new android.view.View.OnTouchListener()
 	{
-		// a seek bar that can't be dragged, it just display a value for information
-		if(value > max)
-			value = max;
-		if(invert)
-			value = max - value;
-		var seekBar = new android.widget.SeekBar(currentActivity);
-		seekBar.setMax(max);
-		seekBar.setProgress(Math.round(value));
-		seekBar.setOnTouchListener(new android.view.View.OnTouchListener()
+		onTouch: function(v, event)
 		{
-			onTouch: function(v, event)
-			{
-				return true;
-			}
-		});
-		seekBar.setClickable(false);
-		seekBar.setFocusable(false);
-		seekBar.setLongClickable(false);
-		seekBar.setSelected(false);
-		seekBar.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 3));
+			return true;
+		}
+	});
+	seekBar.setClickable(false);
+	seekBar.setFocusable(false);
+	seekBar.setLongClickable(false);
+	seekBar.setSelected(false);
+	seekBar.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 3));
 
 
-		var text1 = new android.widget.TextView(currentActivity);
-		text1.setText(text);
-		text1.setGravity(android.view.Gravity.LEFT);
-		text1.setTextSize(12);
-		text1.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+	var text1 = new android.widget.TextView(currentActivity);
+	text1.setText(text);
+	text1.setGravity(android.view.Gravity.LEFT);
+	text1.setTextSize(12);
+	text1.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
-		var layoutH = new android.widget.LinearLayout(currentActivity);
-		layoutH.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+	var layoutH = new android.widget.LinearLayout(currentActivity);
+	layoutH.setOrientation(android.widget.LinearLayout.HORIZONTAL);
 
-		layoutH.addView(seekBar);
-		layoutH.addView(text1);
-		return layoutH;
-	}
-	//########## used to make ui functions - END ##########
+	layoutH.addView(seekBar);
+	layoutH.addView(text1);
+	return layoutH;
+}
+//########## used to make ui functions - END ##########
 
 function informationForWeaponsModUI()
 {
