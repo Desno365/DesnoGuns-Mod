@@ -4094,12 +4094,12 @@ function getLatestVersionGunsMod()
 	try
 	{
 		// download content
-		var httpClient = android.net.http.AndroidHttpClient.newInstance("Desno365's awesome browser");
-		var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity();
-
+		var url = new java.net.URL("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version");
+		var connection = url.openConnection();
+ 
 		// get content
-		inputStream = entity.getContent();
-
+		inputStream = connection.getInputStream();
+ 
 		// read result
 		var loadedVersion = "";
 		var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
@@ -4109,10 +4109,10 @@ function getLatestVersionGunsMod()
 			loadedVersion += rowVersion;
 		}
 		latestVersion = loadedVersion.split(" ")[0];
-
+ 
 		// close what needs to be closed
-		httpClient.close();
 		bufferedVersionReader.close();
+		inputStream.close();
 	} catch(err)
 	{
 		clientMessage("DesnoGuns Mod: Can't check for updates, please check your Internet connection.");
@@ -6465,23 +6465,29 @@ var SoundsInstaller = {
 	{
 		try
 		{
-			// download file
-			var httpClient = android.net.http.AndroidHttpClient.newInstance("No User Agent");
-			var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet(url)).getEntity();
+			// download content
+			var url = new java.net.URL(url);
+			var connection = url.openConnection();
 
 			// create file
-			var downloadFile = new java.io.File(savePath);
-			if(downloadFile.exists())
-				downloadFile.delete();
-			downloadFile.createNewFile();
+			var file = new java.io.File(savePath);
+			if(file.exists())
+				file.delete();
+			file.createNewFile();
+	 
+			// get content
+			inputStream = connection.getInputStream();
 
 			// write to file
-			var streamOutput = new java.io.FileOutputStream(downloadFile);
-			entity.writeTo(streamOutput);
-
-			// close everything
-			httpClient.close();
-			streamOutput.close();
+			var outputStream = new java.io.FileOutputStream(file);
+			var read = 0;
+			var bytes = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+	 
+			// close what needs to be closed
+			outputStream.close();
 		} catch(err)
 		{
 			ModPE.log(getLogText() + "downloadFile(): caught an error: " + err);
