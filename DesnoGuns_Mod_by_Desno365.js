@@ -2617,11 +2617,11 @@ function setUpGunsWithDate()
 }
 
 function shouldReload()
-	{
-		// reload in survival, or in creative with reload option enabled
-		return reloadInCreative || Level.getGameMode() == GAME_MODE_SURVIVAL;
-	}
-	//########## guns functions - END ##########
+{
+	// reload in survival, or in creative with reload option enabled
+	return reloadInCreative || Level.getGameMode() == GAME_MODE_SURVIVAL;
+}
+//########## guns functions - END ##########
 
 //########## on touch guns functions ##########
 function onTouchWeaponShoot(event, gun, reload)
@@ -2674,23 +2674,23 @@ function onTouchShootingRunnableWithReload(gun)
 }
 
 function onTouchShootingRunnableWIthoutReload(gun)
+{
+	shootingRunnable = (new java.lang.Runnable(
 	{
-		shootingRunnable = (new java.lang.Runnable(
+		run: function()
 		{
-			run: function()
+			if(currentShotTicks == gun.fireRate)
 			{
-				if(currentShotTicks == gun.fireRate)
-				{
-					currentShotTicks = 0;
-					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
-					shoot(gun);
-					makeRecoil(gun);
-				}
-				currentShotTicks++;
+				currentShotTicks = 0;
+				Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
+				shoot(gun);
+				makeRecoil(gun);
 			}
-		}));
-	}
-	//########## on touch guns functions - END ##########
+			currentShotTicks++;
+		}
+	}));
+}
+//########## on touch guns functions - END ##########
 
 //########## on click guns functions ##########
 function onClickWeaponShoot(gun)
@@ -2850,24 +2850,24 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 }
 
 function onTouchWithWaitShootingRunnableWithoutReload(gun)
+{
+	shootingRunnable = (new java.lang.Runnable(
 	{
-		shootingRunnable = (new java.lang.Runnable(
+		run: function()
 		{
-			run: function()
+			if(currentShotTicks == gun.fireRate)
 			{
-				if(currentShotTicks == gun.fireRate)
-				{
-					currentShotTicks = 0;
-					if(!gun.hasntShootingSound)
-						Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
-					shoot(gun);
-					makeRecoil(gun);
-				}
-				currentShotTicks++;
+				currentShotTicks = 0;
+				if(!gun.hasntShootingSound)
+					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
+				shoot(gun);
+				makeRecoil(gun);
 			}
-		}));
-	}
-	//########## on touch with wait guns functions - END ##########
+			currentShotTicks++;
+		}
+	}));
+}
+//########## on touch with wait guns functions - END ##########
 
 //########## sounds functions ##########
 var Sound = {};
@@ -2972,13 +2972,13 @@ Sound.loadSoundPoolFromPath = function(path)
 }
 
 Sound.playLoadedSoundPool = function(volume)
+{
+	try
 	{
-		try
-		{
-			soundPool.play(soundID, volume, volume, 1, 0, 1.0);
-		} catch(e) { /* probably sounds not installed error */ }
-	}
-	//########## sounds functions - END ##########
+		soundPool.play(soundID, volume, volume, 1, 0, 1.0);
+	} catch(e) { /* probably sounds not installed error */ }
+}
+//########## sounds functions - END ##########
 
 //########## shoot buttons functions ##########
 function shootAndSettingsButtons(loadAimButton)
@@ -3307,47 +3307,47 @@ function makeLessTimedRecoil(gun)
 }
 
 function makeTimedRecoil(gun)
+{
+	var recoilDegree = gun.recoil / RECOIL;
+	var timedRecoilVar = recoilDegree / 8;
+	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
-		var recoilDegree = gun.recoil / RECOIL;
-		var timedRecoilVar = recoilDegree / 8;
-		currentActivity.runOnUiThread(new java.lang.Runnable(
+		run: function()
 		{
-			run: function()
+			for(var ms = 1; ms <= 5; ms++)
 			{
-				for(var ms = 1; ms <= 5; ms++)
-				{
-					new android.os.Handler().postDelayed(new java.lang.Runnable({
-						run: function()
-						{
-							Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
-						}
-					}), ms * 7);
-				}
-
 				new android.os.Handler().postDelayed(new java.lang.Runnable({
 					run: function()
 					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
 					}
-				}), 6 * 7);
-
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
-					run: function()
-					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.75));
-					}
-				}), 7 * 7);
-
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
-					run: function()
-					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
-					}
-				}), 8 * 7);
+				}), ms * 7);
 			}
-		}));
-	}
-	//########## recoil functions - END ##########
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({
+				run: function()
+				{
+					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
+				}
+			}), 6 * 7);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({
+				run: function()
+				{
+					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.75));
+				}
+			}), 7 * 7);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable({
+				run: function()
+				{
+					Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
+				}
+			}), 8 * 7);
+		}
+	}));
+}
+//########## recoil functions - END ##########
 
 //########## aim functions ##########
 function sightImage()
@@ -3419,126 +3419,126 @@ function removeAiming()
 }
 
 function aimImageLayer(gun)
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
-		currentActivity.runOnUiThread(new java.lang.Runnable(
+		run: function()
 		{
-			run: function()
+			try
 			{
-				try
+				// get the correct image
+				var aimImage;
+				switch(gun.id)
 				{
-					// get the correct image
-					var aimImage;
-					switch(gun.id)
-					{
-						case BARRETT.id:
-						case BARRETT_EXPLOSIVE.id:
-							{
-								aimImage = barretUIScaled;
-								break;
-							}
-						case DRAGUNOV.id:
-							{
-								aimImage = dragunovUIScaled;
-								break;
-							}
-						case M21.id:
-							{
-								aimImage = m21UIScaled;
-								break;
-							}
-						case M40A3.id:
-						case M40A3_ICE.id:
-							{
-								aimImage = m40a3UIScaled;
-								break;
-							}
-						case R700.id:
-							{
-								aimImage = r700UIScaled;
-								break;
-							}
-						default:
-							{
-								aimImage = barretUIScaled;
-							}
-					}
-
-					removeShootAndSettingsButtons();
-
-					var layoutAiming = new android.widget.LinearLayout(currentActivity);
-					layoutAiming.setOrientation(android.widget.LinearLayout.VERTICAL);
-					layoutAiming.setFocusableInTouchMode(false);
-
-					var backgroundAimImage = new android.widget.ImageView(currentActivity);
-					backgroundAimImage.setImageBitmap(aimImage);
-					layoutAiming.addView(backgroundAimImage);
-
-					popupAiming = new android.widget.PopupWindow();
-					popupAiming.setContentView(layoutAiming);
-					popupAiming.setOutsideTouchable(false);
-					popupAiming.setFocusable(false);
-					popupAiming.setTouchable(false);
-					popupAiming.setAnimationStyle(-1);
-					popupAiming.setWidth(displayWidth);
-					popupAiming.setHeight(displayHeight);
-					popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
-
-					shootAndSettingsButtons(true);
-					if(shouldReload())
-						setAmmoTextFromGun(gun);
-					else
-						setAmmoText(" ");
-					try {
-						popupSightImage.dismiss();
-					} catch(e) {}
-
-					if(gun.type == BUTTON_TYPE_ON_TOUCH)
-					{
-						// load touch events
-						if(shouldReload())
+					case BARRETT.id:
+					case BARRETT_EXPLOSIVE.id:
 						{
-							// survival or creative with reload option enabled
-							currentActivity.runOnUiThread(new java.lang.Runnable(
-							{
-								run: function()
-								{
-									shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-									{
-										onTouch: function(v, event)
-										{
-											onTouchWeaponShoot(event, gun, true);
-											return false;
-										}
-									});
-								}
-							}));
-						} else
-						{
-							// creative with reload option disabled
-							currentActivity.runOnUiThread(new java.lang.Runnable(
-							{
-								run: function()
-								{
-									shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-									{
-										onTouch: function(v, event)
-										{
-											onTouchWeaponShoot(event, gun, false);
-											return false;
-										}
-									});
-								}
-							}));
+							aimImage = barretUIScaled;
+							break;
 						}
-					}
-				} catch(err)
-				{
-					clientMessage("Error: " + err);
+					case DRAGUNOV.id:
+						{
+							aimImage = dragunovUIScaled;
+							break;
+						}
+					case M21.id:
+						{
+							aimImage = m21UIScaled;
+							break;
+						}
+					case M40A3.id:
+					case M40A3_ICE.id:
+						{
+							aimImage = m40a3UIScaled;
+							break;
+						}
+					case R700.id:
+						{
+							aimImage = r700UIScaled;
+							break;
+						}
+					default:
+						{
+							aimImage = barretUIScaled;
+						}
 				}
+
+				removeShootAndSettingsButtons();
+
+				var layoutAiming = new android.widget.LinearLayout(currentActivity);
+				layoutAiming.setOrientation(android.widget.LinearLayout.VERTICAL);
+				layoutAiming.setFocusableInTouchMode(false);
+
+				var backgroundAimImage = new android.widget.ImageView(currentActivity);
+				backgroundAimImage.setImageBitmap(aimImage);
+				layoutAiming.addView(backgroundAimImage);
+
+				popupAiming = new android.widget.PopupWindow();
+				popupAiming.setContentView(layoutAiming);
+				popupAiming.setOutsideTouchable(false);
+				popupAiming.setFocusable(false);
+				popupAiming.setTouchable(false);
+				popupAiming.setAnimationStyle(-1);
+				popupAiming.setWidth(displayWidth);
+				popupAiming.setHeight(displayHeight);
+				popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
+
+				shootAndSettingsButtons(true);
+				if(shouldReload())
+					setAmmoTextFromGun(gun);
+				else
+					setAmmoText(" ");
+				try {
+					popupSightImage.dismiss();
+				} catch(e) {}
+
+				if(gun.type == BUTTON_TYPE_ON_TOUCH)
+				{
+					// load touch events
+					if(shouldReload())
+					{
+						// survival or creative with reload option enabled
+						currentActivity.runOnUiThread(new java.lang.Runnable(
+						{
+							run: function()
+							{
+								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+								{
+									onTouch: function(v, event)
+									{
+										onTouchWeaponShoot(event, gun, true);
+										return false;
+									}
+								});
+							}
+						}));
+					} else
+					{
+						// creative with reload option disabled
+						currentActivity.runOnUiThread(new java.lang.Runnable(
+						{
+							run: function()
+							{
+								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+								{
+									onTouch: function(v, event)
+									{
+										onTouchWeaponShoot(event, gun, false);
+										return false;
+									}
+								});
+							}
+						}));
+					}
+				}
+			} catch(err)
+			{
+				clientMessage("Error: " + err);
 			}
-		}));
-	}
-	//########## aim functions - END ##########
+		}
+	}));
+}
+//########## aim functions - END ##########
 
 //########## reload functions ##########
 function reloadAmmo(gun)
@@ -3810,104 +3810,104 @@ Player.getSlotOfItem = function(item, count)
 }
 
 Player.removeItemFromInventory = function(slot, count)
+{
+	if(Player.getInventorySlotCount(slot) > count)
 	{
-		if(Player.getInventorySlotCount(slot) > count)
-		{
-			var id = Player.getInventorySlot(slot);
-			var countBefore = Player.getInventorySlotCount(slot);
+		var id = Player.getInventorySlot(slot);
+		var countBefore = Player.getInventorySlotCount(slot);
 
-			Player.clearInventorySlot(slot);
-			Player.addItemInventory(id, countBefore - count);
-		}
-		else
-		{
-			Player.clearInventorySlot(slot);
-		}
+		Player.clearInventorySlot(slot);
+		Player.addItemInventory(id, countBefore - count);
 	}
-	//########## reload functions - END ##########
+	else
+	{
+		Player.clearInventorySlot(slot);
+	}
+}
+//########## reload functions - END ##########
 
 //########## medical kit functions ##########
 function medicalKitButton()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
 	{
-		currentActivity.runOnUiThread(new java.lang.Runnable()
+		run: function()
 		{
-			run: function()
+			try
 			{
-				try
+				var layoutHealth = new android.widget.RelativeLayout(currentActivity);
+				layoutHealth.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+				var healthBg = android.graphics.drawable.GradientDrawable();
+				healthBg.setColor(android.graphics.Color.TRANSPARENT);
+				healthBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+				healthBg.setStroke(1, android.graphics.Color.parseColor("#FF00DE00"));
+				var healthPadding = Math.floor(2 * deviceDensity);
+
+				healthText = new android.widget.TextView(currentActivity);
+				healthText.setOnClickListener(new android.view.View.OnClickListener()
 				{
-					var layoutHealth = new android.widget.RelativeLayout(currentActivity);
-					layoutHealth.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
-					var healthBg = android.graphics.drawable.GradientDrawable();
-					healthBg.setColor(android.graphics.Color.TRANSPARENT);
-					healthBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-					healthBg.setStroke(1, android.graphics.Color.parseColor("#FF00DE00"));
-					var healthPadding = Math.floor(2 * deviceDensity);
-
-					healthText = new android.widget.TextView(currentActivity);
-					healthText.setOnClickListener(new android.view.View.OnClickListener()
+					onClick: function(v)
 					{
-						onClick: function(v)
+						if(Player.getCarriedItem() == MEDICAL_KIT_ID) // one more check before removing items
 						{
-							if(Player.getCarriedItem() == MEDICAL_KIT_ID) // one more check before removing items
+							var currentHealth = Entity.getHealth(Player.getEntity());
+							if(currentHealth >= 20)
 							{
-								var currentHealth = Entity.getHealth(Player.getEntity());
-								if(currentHealth >= 20)
-								{
-									ModPE.showTipMessage("Your health is full.");
-									return;
-								}
-								var healthToBeRestored = 20 - currentHealth;
-								var healthMedicalKitCanRestore = MEDICAL_KIT_MAX_RESTORABLE_HEALTH - Player.getCarriedItemData() + 1;
-								if(healthToBeRestored > healthMedicalKitCanRestore)
-								{
-									Player.setHealth(currentHealth + healthMedicalKitCanRestore);
-									for(var i = 0; i < healthMedicalKitCanRestore; i++)
-										Item.damageCarriedItem();
-									ModPE.showTipMessage("Medical Kit broke before restoring all health.");
-								} else
-								{
-									Player.setHealth(20);
-									for(var i = 0; i < healthToBeRestored; i++)
-										Item.damageCarriedItem();
-									ModPE.showTipMessage("Restored " + (healthToBeRestored / 2) + " hearts.");
-								}
+								ModPE.showTipMessage("Your health is full.");
+								return;
+							}
+							var healthToBeRestored = 20 - currentHealth;
+							var healthMedicalKitCanRestore = MEDICAL_KIT_MAX_RESTORABLE_HEALTH - Player.getCarriedItemData() + 1;
+							if(healthToBeRestored > healthMedicalKitCanRestore)
+							{
+								Player.setHealth(currentHealth + healthMedicalKitCanRestore);
+								for(var i = 0; i < healthMedicalKitCanRestore; i++)
+									Item.damageCarriedItem();
+								ModPE.showTipMessage("Medical Kit broke before restoring all health.");
 							} else
 							{
-								popupHealth.dismiss();
+								Player.setHealth(20);
+								for(var i = 0; i < healthToBeRestored; i++)
+									Item.damageCarriedItem();
+								ModPE.showTipMessage("Restored " + (healthToBeRestored / 2) + " hearts.");
 							}
+						} else
+						{
+							popupHealth.dismiss();
 						}
-					});
-					healthText.setGravity(android.view.Gravity.CENTER);
-					healthText.setText("Heal");
-					healthText.setTypeface(font);
-					healthText.setPaintFlags(healthText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-					healthText.setTextSize(buttonsSize);
-					healthText.setTextColor(android.graphics.Color.parseColor("#FF00DE00"));
-					if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-						healthText.setShadowLayer(1, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-					else
-						healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-					healthText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-					healthText.setBackgroundDrawable(healthBg);
-					healthText.setPadding(healthPadding, healthPadding, healthPadding, healthPadding);
-					healthText.setSoundEffectsEnabled(false);
-					layoutHealth.addView(healthText);
+					}
+				});
+				healthText.setGravity(android.view.Gravity.CENTER);
+				healthText.setText("Heal");
+				healthText.setTypeface(font);
+				healthText.setPaintFlags(healthText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+				healthText.setTextSize(buttonsSize);
+				healthText.setTextColor(android.graphics.Color.parseColor("#FF00DE00"));
+				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
+					healthText.setShadowLayer(1, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				else
+					healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				healthText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+				healthText.setBackgroundDrawable(healthBg);
+				healthText.setPadding(healthPadding, healthPadding, healthPadding, healthPadding);
+				healthText.setSoundEffectsEnabled(false);
+				layoutHealth.addView(healthText);
 
-					popupHealth = new android.widget.PopupWindow(layoutHealth, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
-					popupHealth.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupHealth.setOutsideTouchable(false);
-					popupHealth.setFocusable(false);
-					popupHealth.setSplitTouchEnabled(true);
-					popupHealth.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
-				} catch(err)
-				{
-					clientMessage("Error: " + err);
-				}
+				popupHealth = new android.widget.PopupWindow(layoutHealth, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupHealth.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+				popupHealth.setOutsideTouchable(false);
+				popupHealth.setFocusable(false);
+				popupHealth.setSplitTouchEnabled(true);
+				popupHealth.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
+			} catch(err)
+			{
+				clientMessage("Error: " + err);
 			}
-		});
-	}
-	//########## medical kit functions - END ##########
+		}
+	});
+}
+//########## medical kit functions - END ##########
 
 //########## info item functions ##########
 function infoItemUI()
@@ -3981,145 +3981,145 @@ function infoItemUI()
 }
 
 function getRandomTip()
+{
+	var cal = java.util.Calendar.getInstance();
+	var day = cal.get(java.util.Calendar.DAY_OF_MONTH);
+	var month = cal.get(java.util.Calendar.MONTH);
+	if(day == 3 && month == java.util.Calendar.JULY)
 	{
-		var cal = java.util.Calendar.getInstance();
-		var day = cal.get(java.util.Calendar.DAY_OF_MONTH);
-		var month = cal.get(java.util.Calendar.MONTH);
-		if(day == 3 && month == java.util.Calendar.JULY)
-		{
-			return "Happy birthday, Desno365!";
-		}
-		if(day == 31 && month == java.util.Calendar.OCTOBER)
-		{
-			return "Keep calm and scary on.";
-		}
-		if(day == 25 && month == java.util.Calendar.DECEMBER)
-		{
-			return "Merry Christmas!";
-		}
-		if(day == 1 && month == java.util.Calendar.JANUARY)
-		{
-			return "Happy new year!";
-		}
-
-		var random = Math.floor((Math.random() * 19) + 1);
-		switch(random)
-		{
-			case 1:
-				{
-					return "Guns have better accuracy while aiming.";
-				}
-			case 2:
-				{
-					return "Follow @Desno365 on Twitter";
-				}
-			case 3:
-				{
-					return "Sniper Rifles have a really bad accuracy if you don't aim.";
-				}
-			case 4:
-				{
-					return "Textures and sounds are made by @jamioflan, a big thanks to him!";
-				}
-			case 5:
-				{
-					return "Place a Block of Coal on top of a Block of Iron, then touch it.";
-				}
-			case 6:
-				{
-					return "The damage of a bullet depends on his speed.";
-				}
-			case 7:
-				{
-					return "This mod causes addiction, use with caution.";
-				}
-			case 8:
-				{
-					return "In Minecraft the damage of an arrow depends on his speed.";
-				}
-			case 9:
-				{
-					return "Sounds are important. Always remember to install them correctly ;)";
-				}
-			case 10:
-				{
-					return ".shootDatCreeper()";
-				}
-			case 11:
-				{
-					return "Press the settings icon on the left, it is awesome.";
-				}
-			case 12:
-				{
-					return "Do a 360 noscope.";
-				}
-			case 13:
-				{
-					return "author.name = \"Dennis Motta\"; author.nickname = \"Desno365\";";
-				}
-			case 14:
-				{
-					return "@AntiModPe made the grenade renders and helped me with some other things. Thanks Anti!";
-				}
-			case 15:
-				{
-					return "A good sniper calculates the gravity before shooting.";
-				}
-			case 16:
-				{
-					if(isPro())
-						return "Pro Key installed. Thanks for your support! :)";
-					else
-						return "Consider getting the Pro Key, you will support the development and unlock features.";
-				}
-			case 17:
-				{
-					return "You're running the " + CURRENT_VERSION + " version of the DesnoGuns mod!";
-				}
-			case 18:
-				{
-					return "There is an option in Settings that enables reload in creative.";
-				}
-			case 19:
-				{
-					return "Did you find the Easter Egg? No? Read all these splash texts, you'll find a tip.";
-				}
-		}
+		return "Happy birthday, Desno365!";
 	}
-	//########## info item functions - END ##########
+	if(day == 31 && month == java.util.Calendar.OCTOBER)
+	{
+		return "Keep calm and scary on.";
+	}
+	if(day == 25 && month == java.util.Calendar.DECEMBER)
+	{
+		return "Merry Christmas!";
+	}
+	if(day == 1 && month == java.util.Calendar.JANUARY)
+	{
+		return "Happy new year!";
+	}
+
+	var random = Math.floor((Math.random() * 19) + 1);
+	switch(random)
+	{
+		case 1:
+			{
+				return "Guns have better accuracy while aiming.";
+			}
+		case 2:
+			{
+				return "Follow @Desno365 on Twitter";
+			}
+		case 3:
+			{
+				return "Sniper Rifles have a really bad accuracy if you don't aim.";
+			}
+		case 4:
+			{
+				return "Textures and sounds are made by @jamioflan, a big thanks to him!";
+			}
+		case 5:
+			{
+				return "Place a Block of Coal on top of a Block of Iron, then touch it.";
+			}
+		case 6:
+			{
+				return "The damage of a bullet depends on his speed.";
+			}
+		case 7:
+			{
+				return "This mod causes addiction, use with caution.";
+			}
+		case 8:
+			{
+				return "In Minecraft the damage of an arrow depends on his speed.";
+			}
+		case 9:
+			{
+				return "Sounds are important. Always remember to install them correctly ;)";
+			}
+		case 10:
+			{
+				return ".shootDatCreeper()";
+			}
+		case 11:
+			{
+				return "Press the settings icon on the left, it is awesome.";
+			}
+		case 12:
+			{
+				return "Do a 360 noscope.";
+			}
+		case 13:
+			{
+				return "author.name = \"Dennis Motta\"; author.nickname = \"Desno365\";";
+			}
+		case 14:
+			{
+				return "@AntiModPe made the grenade renders and helped me with some other things. Thanks Anti!";
+			}
+		case 15:
+			{
+				return "A good sniper calculates the gravity before shooting.";
+			}
+		case 16:
+			{
+				if(isPro())
+					return "Pro Key installed. Thanks for your support! :)";
+				else
+					return "Consider getting the Pro Key, you will support the development and unlock features.";
+			}
+		case 17:
+			{
+				return "You're running the " + CURRENT_VERSION + " version of the DesnoGuns mod!";
+			}
+		case 18:
+			{
+				return "There is an option in Settings that enables reload in creative.";
+			}
+		case 19:
+			{
+				return "Did you find the Easter Egg? No? Read all these splash texts, you'll find a tip.";
+			}
+	}
+}
+//########## info item functions - END ##########
 
 //########## internet functions ##########
 function getLatestVersionGunsMod()
+{
+	try
 	{
-		try
+		// download content
+		var httpClient = android.net.http.AndroidHttpClient.newInstance("Desno365's awesome browser");
+		var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity();
+
+		// get content
+		inputStream = entity.getContent();
+
+		// read result
+		var loadedVersion = "";
+		var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
+		var rowVersion = "";
+		while((rowVersion = bufferedVersionReader.readLine()) != null)
 		{
-			// download content
-			var httpClient = android.net.http.AndroidHttpClient.newInstance("Desno365's awesome browser");
-			var entity = httpClient.execute(new org.apache.http.client.methods.HttpGet("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/desnogunsMOD-version")).getEntity();
-
-			// get content
-			inputStream = entity.getContent();
-
-			// read result
-			var loadedVersion = "";
-			var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
-			var rowVersion = "";
-			while((rowVersion = bufferedVersionReader.readLine()) != null)
-			{
-				loadedVersion += rowVersion;
-			}
-			latestVersion = loadedVersion.split(" ")[0];
-
-			// close what needs to be closed
-			httpClient.close();
-			bufferedVersionReader.close();
-		} catch(err)
-		{
-			clientMessage("DesnoGuns Mod: Can't check for updates, please check your Internet connection.");
-			ModPE.log(getLogText() + "getLatestVersionGunsMod(): caught an error: " + err);
+			loadedVersion += rowVersion;
 		}
+		latestVersion = loadedVersion.split(" ")[0];
+
+		// close what needs to be closed
+		httpClient.close();
+		bufferedVersionReader.close();
+	} catch(err)
+	{
+		clientMessage("DesnoGuns Mod: Can't check for updates, please check your Internet connection.");
+		ModPE.log(getLogText() + "getLatestVersionGunsMod(): caught an error: " + err);
 	}
-	//########## internet functions - END ##########
+}
+//########## internet functions - END ##########
 
 //########## direction, vector functions ##########
 function vector3d(x, y, z)
@@ -4130,14 +4130,14 @@ function vector3d(x, y, z)
 }
 
 function lookDir(yaw, pitch)
-	{
-		var direction = new vector3d(0, 0, 0);
-		direction.y = -Math.sin(java.lang.Math.toRadians(pitch));
-		direction.x = -Math.sin(java.lang.Math.toRadians(yaw)) * Math.cos(java.lang.Math.toRadians(pitch));
-		direction.z = Math.cos(java.lang.Math.toRadians(yaw)) * Math.cos(java.lang.Math.toRadians(pitch));
-		return direction;
-	}
-	//########## direction, vector functions - END ##########
+{
+	var direction = new vector3d(0, 0, 0);
+	direction.y = -Math.sin(java.lang.Math.toRadians(pitch));
+	direction.x = -Math.sin(java.lang.Math.toRadians(yaw)) * Math.cos(java.lang.Math.toRadians(pitch));
+	direction.z = Math.cos(java.lang.Math.toRadians(yaw)) * Math.cos(java.lang.Math.toRadians(pitch));
+	return direction;
+}
+//########## direction, vector functions - END ##########
 
 //########## general item functions ##########
 Item.damageCarriedItem = function()
@@ -4163,13 +4163,13 @@ Item.damageCarriedItem = function()
 }
 
 Item.removeOneCarriedItem = function()
-	{
-		if(Player.getCarriedItemCount() == 1)
-			Player.clearInventorySlot(Player.getSelectedSlotId());
-		else
-			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
-	}
-	//########## general item functions - END ##########
+{
+	if(Player.getCarriedItemCount() == 1)
+		Player.clearInventorySlot(Player.getSelectedSlotId());
+	else
+		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
+}
+//########## general item functions - END ##########
 
 //########## file functions ##########
 function deleteFile(path)
@@ -4197,14 +4197,14 @@ function doesFileExist(path)
 }
 
 function isFileEmpty(path)
-	{
-		var file = new java.io.File(path);
-		if(file.length() > 0)
-			return false;
-		else
-			return true;
-	}
-	//########## file functions - END ##########
+{
+	var file = new java.io.File(path);
+	if(file.length() > 0)
+		return false;
+	else
+		return true;
+}
+//########## file functions - END ##########
 
 //########## other functions ##########
 function createRandomString(randomObject)
@@ -4362,11 +4362,11 @@ function getSavedBoolean(name, defaultValue, debug)
 }
 
 function getLogText()
-	{
-		//
-		return(TAG + ": ");
-	}
-	//########## other functions - END ##########
+{
+	//
+	return(TAG + ": ");
+}
+//########## other functions - END ##########
 
 
 //########################################################################################################################################################
