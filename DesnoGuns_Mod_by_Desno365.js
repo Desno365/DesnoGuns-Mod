@@ -74,22 +74,17 @@ settingsPng = null;
 var sightPngDecoded = decodeImageFromBase64(sightPng);
 var sightPngScaled;
 sightPng = null;
+
 var barretUIDecoded = decodeImageFromBase64(barretUI);
-var barretUIScaled;
 barretUI = null;
 var dragunovUIDecoded = decodeImageFromBase64(dragunovUI);
-var dragunovUIScaled;
 dragunovUI = null;
 var m21UIDecoded = decodeImageFromBase64(m21UI);
-var m21UIScaled;
 m21UI = null;
 var m40a3UIDecoded = decodeImageFromBase64(m40a3UI);
-var m40a3UIScaled;
 m40a3UI = null;
 var r700UIDecoded = decodeImageFromBase64(r700UI);
-var r700UIScaled;
 r700UI = null;
-var aimImageScaled;
 
 // easter egg variables
 var killedPigmenEE = 0;
@@ -3429,33 +3424,34 @@ function aimImageLayer(gun)
 					case BARRETT.id:
 					case BARRETT_EXPLOSIVE.id:
 						{
-							aimImage = barretUIScaled;
+							// TODO not only this
+							aimImage = barretUIDecoded;
 							break;
 						}
 					case DRAGUNOV.id:
 						{
-							aimImage = dragunovUIScaled;
+							aimImage = dragunovUIDecoded;
 							break;
 						}
 					case M21.id:
 						{
-							aimImage = m21UIScaled;
+							aimImage = m21UIDecoded;
 							break;
 						}
 					case M40A3.id:
 					case M40A3_ICE.id:
 						{
-							aimImage = m40a3UIScaled;
+							aimImage = m40a3UIDecoded;
 							break;
 						}
 					case R700.id:
 						{
-							aimImage = r700UIScaled;
+							aimImage = r700UIDecoded;
 							break;
 						}
 					default:
 						{
-							aimImage = barretUIScaled;
+							aimImage = barretUIDecoded;
 						}
 				}
 
@@ -3467,6 +3463,8 @@ function aimImageLayer(gun)
 
 				var backgroundAimImage = new android.widget.ImageView(currentActivity);
 				backgroundAimImage.setImageBitmap(aimImage);
+				backgroundAimImage.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+				backgroundAimImage.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 				layoutAiming.addView(backgroundAimImage);
 
 				popupAiming = new android.widget.PopupWindow();
@@ -4240,34 +4238,6 @@ function decodeImageFromBase64(base64String)
 {
 	var byteArray = android.util.Base64.decode(base64String, 0);
 	return android.graphics.BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-}
-
-function resizeImageToFitScreen(image)
-{
-	// how this function resizes image: keep the height, remove pixels on the left and on the right
-
-	var imageWidth = image.getWidth();
-	var imageHeight = image.getHeight();
-	var imageHeightScaled = displayHeight + 1;
-	var imageWidthScaled = imageHeightScaled * (imageWidth / imageHeight);
-
-	if(imageWidthScaled > displayWidth)
-	{
-		var pixelsToBeRemoved = imageWidthScaled - displayWidth;
-		var pixelsForEachSide = Math.floor(pixelsToBeRemoved / (imageWidthScaled / imageWidth) / 2);
-
-		var matrix = new android.graphics.Matrix();
-		matrix.postScale(imageWidthScaled / imageWidth, imageHeightScaled / imageHeight);
-
-		var firstBitmap = new android.graphics.Bitmap.createBitmap(image, pixelsForEachSide, 0, image.getWidth() - (pixelsForEachSide * 2), image.getHeight());
-		return new android.graphics.Bitmap.createBitmap(firstBitmap, 0, 0, firstBitmap.getWidth(), firstBitmap.getHeight(), matrix, true);
-	} else
-	{
-		var matrix = new android.graphics.Matrix();
-		matrix.postScale(imageWidthScaled / imageWidth, imageHeightScaled / imageHeight);
-
-		return new android.graphics.Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
-	}
 }
 
 function stringToBoolean(string)
@@ -5814,34 +5784,6 @@ function addGrenadeRenderType(renderer)
 
 var grenadeRenderType = Renderer.createHumanoidRenderer();
 addGrenadeRenderType(grenadeRenderType);
-
-
-//########################################################################################################################################################
-// Things to do when finished loading the script
-//########################################################################################################################################################
-
-// prepare scaled aim images, using an Handler to not make too many things at startup
-currentActivity.runOnUiThread(new java.lang.Runnable()
-{
-	run: function()
-	{
-		try
-		{
-			new android.os.Handler().postDelayed(new java.lang.Runnable({
-				run: function()
-				{
-					barretUIScaled = resizeImageToFitScreen(barretUIDecoded);
-					dragunovUIScaled = resizeImageToFitScreen(dragunovUIDecoded);
-					m21UIScaled = resizeImageToFitScreen(m21UIDecoded);
-					m40a3UIScaled = resizeImageToFitScreen(m40a3UIDecoded);
-					r700UIScaled = resizeImageToFitScreen(r700UIDecoded);
-				}
-			}), 250);
-		} catch(e) {
-			print(e);
-		}
-	}
-});
 
 
 //########################################################################################################################################################
