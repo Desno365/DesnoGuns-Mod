@@ -255,8 +255,7 @@ const MAGNUM44 = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "44Magnum.mp3",
 	reloadSound: "GL6Reload.ogg",
-	texture: "compass_item",
-	textureNumber: 1,
+	texture: "44magnum",
 	ammo: 6,
 	smoke: 1,
 	recipe: CRAFTING_HANDGUN
@@ -274,7 +273,7 @@ const AK47 = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "AK47Shoot.ogg",
 	reloadSound: "MP44Reload.ogg",
-	texture: "carrot_golden",
+	texture: "ak47",
 	ammo: 30,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -292,8 +291,7 @@ const AK74 = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "AK74Shoot.ogg",
 	reloadSound: "MP40Reload.ogg",
-	texture: "compass_item",
-	textureNumber: 5,
+	texture: "ak74",
 	ammo: 30,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -314,7 +312,7 @@ const AT4 = {
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 	reloadSound: "BazookaReload.ogg",
-	texture: "cauldron",
+	texture: "at4",
 	ammo: 1,
 	smoke: 4,
 	recipe: CRAFTING_LAUNCHER
@@ -332,7 +330,7 @@ const AUG = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
 	reloadSound: "MP44Reload.ogg",
-	texture: "skull_wither",
+	texture: "aug",
 	ammo: 42,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -353,7 +351,7 @@ const BARRETT_EXPLOSIVE = {
 	zoomLevel: ZOOM_SNIPER,
 	sound: "BarrettShoot.ogg",
 	reloadSound: "BARReload.ogg",
-	texture: "comparator",
+	texture: "barrettexplosive",
 	ammo: 10,
 	smoke: 2,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -371,8 +369,7 @@ const BARRETT = {
 	accuracy: 2,
 	sound: "BarrettShoot.ogg",
 	reloadSound: "BARReload.ogg",
-	texture: "compass_item",
-	textureNumber: 4,
+	texture: "barrett",
 	ammo: 10,
 	smoke: 2,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -390,7 +387,7 @@ const BIZON = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
 	reloadSound: "MP40Reload.ogg",
-	texture: "diamond_horse_armor",
+	texture: "bizon",
 	ammo: 53,
 	smoke: 1,
 	recipe: CRAFTING_SUB_MACHINE
@@ -408,8 +405,7 @@ const DESERT_EAGLE = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "DesertEagleShoot.ogg",
 	reloadSound: "LugerReload.ogg",
-	texture: "compass_item",
-	textureNumber: 3,
+	texture: "deserteagle",
 	ammo: 7,
 	smoke: 0,
 	recipe: CRAFTING_HANDGUN
@@ -427,7 +423,7 @@ const DESERT_EAGLE_GOLD = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "DesertEagleShoot.ogg",
 	reloadSound: "LugerReload.ogg",
-	texture: "empty_armor_slot_boots",
+	texture: "deserteaglegold",
 	ammo: 7,
 	smoke: 0,
 	recipe: CRAFTING_HANDGUN
@@ -445,7 +441,7 @@ const DRAGUNOV = {
 	accuracy: 2,
 	sound: "DragunovShoot.ogg",
 	reloadSound: "BARReload.ogg",
-	texture: "empty_armor_slot_chestplate",
+	texture: "dragunov",
 	ammo: 10,
 	smoke: 2,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -473,7 +469,7 @@ const FLAMETHROWER = {
 	spinSound: "flamethrower.mp3",
 	hasntCooldownSound: true,
 	reloadSound: "BrowningReload.ogg",
-	texture: "record_ward",
+	texture: "flamethrower",
 	ammo: 750,
 	smoke: 3,
 	recipe: CRAFTING_MINIGUN
@@ -491,7 +487,7 @@ const FNSCAR = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
 	reloadSound: "MP44Reload.ogg",
-	texture: "empty_armor_slot_helmet",
+	texture: "fnscar",
 	ammo: 20,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -509,7 +505,7 @@ const G3 = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
 	reloadSound: "ThompsonReload.ogg",
-	texture: "empty_armor_slot_leggings",
+	texture: "g3",
 	ammo: 20,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -527,7 +523,7 @@ const G36 = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "G36Shoot.ogg",
 	reloadSound: "MP40Reload.ogg",
-	texture: "ender_eye",
+	texture: "g36",
 	ammo: 30,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -548,7 +544,7 @@ const GL1 = {
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	sound: "GrenadeLauncherShoot.ogg",
 	reloadSound: "GrenadeLauncherReload.ogg",
-	texture: "ender_pearl",
+	texture: "gl1",
 	ammo: 1,
 	smoke: 0,
 	recipe: CRAFTING_LAUNCHER
@@ -569,7 +565,7 @@ const GL6 = {
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	sound: "GrenadeLauncherShoot.ogg",
 	reloadSound: "GL6Reload.ogg",
-	texture: "experience_bottle",
+	texture: "gl6",
 	ammo: 6,
 	smoke: 0,
 	recipe: CRAFTING_LAUNCHER
@@ -587,7 +583,7 @@ const GLOCK = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "GlockShoot.ogg",
 	reloadSound: "ColtReload.ogg",
-	texture: "fireball",
+	texture: "glock",
 	ammo: 31,
 	smoke: 1,
 	recipe: CRAFTING_MACHINE_PISTOL
@@ -605,7 +601,7 @@ const L86 = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "M249_and_L86Shoot.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "fireworks",
+	texture: "l86",
 	ammo: 100,
 	smoke: 2,
 	recipe: CRAFTING_LIGHT_MACHINE
@@ -623,7 +619,7 @@ const L96 = {
 	accuracy: 2,
 	sound: "L96Shoot.ogg",
 	reloadSound: "BARReload.ogg",
-	texture: "fireworks_charge",
+	texture: "l96",
 	ammo: 10,
 	smoke: 1,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -641,7 +637,7 @@ const M9 = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "M9Shoot.ogg",
 	reloadSound: "ColtReload.ogg",
-	texture: "fireworks_charge_overlay",
+	texture: "m9",
 	ammo: 15,
 	smoke: 0,
 	recipe: CRAFTING_HANDGUN
@@ -659,7 +655,7 @@ const M14 = {
 	accuracy: 2,
 	sound: "M14_and_M16A4Shoot.ogg",
 	reloadSound: "BARReload.ogg",
-	texture: "fishing_rod_cast",
+	texture: "m14",
 	ammo: 20,
 	smoke: 0,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -677,7 +673,7 @@ const M16A4 = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "M14_and_M16A4Shoot.ogg",
 	reloadSound: "MP44Reload.ogg",
-	texture: "fishing_rod_uncast",
+	texture: "m16a4",
 	ammo: 30,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -695,7 +691,7 @@ const M21 = {
 	accuracy: 2,
 	sound: "M21Shoot.ogg",
 	reloadSound: "BARReload.ogg",
-	texture: "fish_cooked",
+	texture: "m21",
 	ammo: 10,
 	smoke: 1,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -713,7 +709,7 @@ const M40A3_ICE = {
 	accuracy: 2,
 	sound: "R700_and_M40A3Shoot.ogg",
 	reloadSound: "SpringfieldReload.ogg",
-	texture: "fish_raw",
+	texture: "m40a3ice",
 	ammo: 5,
 	smoke: 1,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -731,7 +727,7 @@ const M40A3 = {
 	accuracy: 2,
 	sound: "R700_and_M40A3Shoot.ogg",
 	reloadSound: "SpringfieldReload.ogg",
-	texture: "flower_pot",
+	texture: "m40a3",
 	ammo: 5,
 	smoke: 1,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -749,7 +745,7 @@ const M60E4 = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "ghast_tear",
+	texture: "m60e4",
 	ammo: 100,
 	smoke: 2,
 	recipe: CRAFTING_LIGHT_MACHINE
@@ -770,7 +766,7 @@ const M72LAW = {
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 	reloadSound: "BazookaReload.ogg",
-	texture: "gold_horse_armor",
+	texture: "m72law",
 	ammo: 1,
 	smoke: 4,
 	recipe: CRAFTING_LAUNCHER
@@ -788,7 +784,7 @@ const M249 = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "M249_and_L86Shoot.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "skull_skeleton",
+	texture: "m249",
 	ammo: 100,
 	smoke: 2,
 	recipe: CRAFTING_LIGHT_MACHINE
@@ -809,7 +805,7 @@ const M1014 = {
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "M1014Shoot.ogg",
 	reloadSound: "M1014Reload.ogg",
-	texture: "hopper",
+	texture: "m1014",
 	ammo: 4,
 	smoke: 0,
 	recipe: CRAFTING_SHOTGUN
@@ -830,7 +826,7 @@ const M1887 = {
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "M1887Shoot.ogg",
 	reloadSound: "M1887Reload.ogg",
-	texture: "iron_horse_armor",
+	texture: "m1887",
 	ammo: 5,
 	smoke: 1,
 	recipe: CRAFTING_SHOTGUN
@@ -848,7 +844,7 @@ const MAKAROV = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "MakarovShoot.ogg",
 	reloadSound: "ColtReload.ogg",
-	texture: "item_frame",
+	texture: "makarov",
 	ammo: 8,
 	smoke: 0,
 	recipe: CRAFTING_HANDGUN
@@ -872,8 +868,7 @@ const MINIGUN_EXPLOSIVE = {
 	spinSound: "MinigunSpin.ogg",
 	cooldownSound: "MinigunCooldown.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "compass_item",
-	textureNumber: 2,
+	texture: "minigunexplosive",
 	ammo: 250,
 	smoke: 3,
 	recipe: CRAFTING_MINIGUN
@@ -894,7 +889,7 @@ const MINIGUN = {
 	spinSound: "MinigunSpin.ogg",
 	cooldownSound: "MinigunCooldown.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "lead",
+	texture: "minigun",
 	ammo: 500,
 	smoke: 3,
 	recipe: CRAFTING_MINIGUN
@@ -912,7 +907,7 @@ const MINI_UZI = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "MiniUziShoot.ogg",
 	reloadSound: "ColtReload.ogg",
-	texture: "skull_steve",
+	texture: "miniuzi",
 	ammo: 32,
 	smoke: 1,
 	recipe: CRAFTING_MACHINE_PISTOL
@@ -930,7 +925,7 @@ const MP5 = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "MP5Shoot.ogg",
 	reloadSound: "StenReload.ogg",
-	texture: "magma_cream",
+	texture: "mp5",
 	ammo: 30,
 	smoke: 1,
 	recipe: CRAFTING_SUB_MACHINE
@@ -948,7 +943,7 @@ const MTAR = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
 	reloadSound: "MP44Reload.ogg",
-	texture: "map_empty",
+	texture: "mtar",
 	ammo: 30,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -966,7 +961,7 @@ const P90 = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
 	reloadSound: "DP28Reload.ogg",
-	texture: "map_filled",
+	texture: "p90",
 	ammo: 50,
 	smoke: 2,
 	recipe: CRAFTING_SUB_MACHINE
@@ -984,7 +979,7 @@ const R700 = {
 	accuracy: 2,
 	sound: "R700_and_M40A3Shoot.ogg",
 	reloadSound: "SpringfieldReload.ogg",
-	texture: "melon_speckled",
+	texture: "r700",
 	ammo: 4,
 	smoke: 1,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -1005,7 +1000,7 @@ const R870 = {
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "R870Shoot.ogg",
 	reloadSound: "W1200Reload.ogg",
-	texture: "minecart_chest",
+	texture: "r870",
 	ammo: 7,
 	smoke: 1,
 	recipe: CRAFTING_SHOTGUN
@@ -1023,7 +1018,7 @@ const RPD = {
 	zoomLevel: ZOOM_MACHINE,
 	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
 	reloadSound: "MG42Reload.ogg",
-	texture: "minecart_furnace",
+	texture: "rpd",
 	ammo: 100,
 	smoke: 2,
 	recipe: CRAFTING_LIGHT_MACHINE
@@ -1044,7 +1039,7 @@ const RPG = {
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "RPGShoot.ogg",
 	reloadSound: "BazookaReload.ogg",
-	texture: "minecart_hopper",
+	texture: "rpg",
 	ammo: 1,
 	smoke: 4,
 	recipe: CRAFTING_LAUNCHER
@@ -1062,7 +1057,7 @@ const RPK = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
 	reloadSound: "MG42Reload.ogg",
-	texture: "quiver",
+	texture: "rpk",
 	ammo: 40,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -1080,7 +1075,7 @@ const SG550 = {
 	zoomLevel: ZOOM_ASSAULT,
 	sound: "SG550Shoot.ogg",
 	reloadSound: "MP44Reload.ogg",
-	texture: "minecart_tnt",
+	texture: "sg550",
 	ammo: 20,
 	smoke: 1,
 	recipe: CRAFTING_ASSAULT_RIFLE
@@ -1098,7 +1093,7 @@ const SIGP226 = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "SIGP226Shoot.ogg",
 	reloadSound: "LugerReload.ogg",
-	texture: "name_tag",
+	texture: "sigp226",
 	ammo: 10,
 	smoke: 0,
 	recipe: CRAFTING_HANDGUN
@@ -1116,7 +1111,7 @@ const SKORPION = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "SkorpionShoot.ogg",
 	reloadSound: "StenReload.ogg",
-	texture: "nether_star",
+	texture: "skorpion",
 	ammo: 20,
 	smoke: 1,
 	recipe: CRAFTING_MACHINE_PISTOL
@@ -1137,7 +1132,7 @@ const SPAS = {
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "W1200_and_SPASShoot.ogg",
 	reloadSound: "W1200Reload.ogg",
-	texture: "nether_wart",
+	texture: "spas",
 	ammo: 7,
 	smoke: 1,
 	recipe: CRAFTING_SHOTGUN
@@ -1155,7 +1150,7 @@ const USP = {
 	zoomLevel: ZOOM_PISTOL,
 	sound: "USPShoot.ogg",
 	reloadSound: "TT33Reload.ogg",
-	texture: "potion_bottle_drinkable",
+	texture: "usp",
 	ammo: 10,
 	smoke: 0,
 	recipe: CRAFTING_HANDGUN
@@ -1176,7 +1171,7 @@ const W1200 = {
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "W1200_and_SPASShoot.ogg",
 	reloadSound: "W1200Reload.ogg",
-	texture: "potion_bottle_empty",
+	texture: "w1200",
 	ammo: 7,
 	smoke: 1,
 	recipe: CRAFTING_SHOTGUN
@@ -1198,7 +1193,7 @@ const XMAS_MINIGUN = {
 	spinSound: "MinigunSpin.ogg",
 	cooldownSound: "MinigunCooldown.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "record_strad",
+	texture: "xmasminigun",
 	ammo: 500,
 	smoke: 3,
 	recipe: CRAFTING_MINIGUN
@@ -1217,7 +1212,7 @@ const XMAS_SNIPER = {
 	accuracy: 2,
 	sound: "bell.mp3",
 	reloadSound: "SpringfieldReload.ogg",
-	texture: "record_wait",
+	texture: "xmassniper",
 	ammo: 5,
 	smoke: 1,
 	recipe: CRAFTING_SNIPER_RIFLE
@@ -1238,7 +1233,7 @@ const AA12 = {
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "AA-12Shoot.ogg",
 	reloadSound: "PPSHReload.ogg",
-	texture: "repeater",
+	texture: "aa12",
 	ammo: 8,
 	smoke: 1,
 	recipe: CRAFTING_SHOTGUN
@@ -1260,7 +1255,7 @@ const INCENDIARY_GL = {
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	sound: "GrenadeLauncherShoot.ogg",
 	reloadSound: "GL6Reload.ogg",
-	texture: "ruby",
+	texture: "glincendiary",
 	ammo: 6,
 	smoke: 0,
 	recipe: CRAFTING_LAUNCHER
@@ -1279,7 +1274,7 @@ var gunSpinSound = new android.media.MediaPlayer();
 // other items (not guns)
 const KNIFE_ID = 432;
 const KNIFE_MAX_DAMAGE = 32;
-ModPE.setItem(KNIFE_ID, "book_written", 0, "Knife");
+ModPE.setItem(KNIFE_ID, "knife", 0, "Knife");
 Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
 Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
@@ -1290,7 +1285,7 @@ Item.setVerticalRender(KNIFE_ID);
 
 const PARACHUTE_ID = 433;
 const PARACHUTE_MAX_DAMAGE = 10;
-ModPE.setItem(PARACHUTE_ID, "boat", 0, "Parachute");
+ModPE.setItem(PARACHUTE_ID, "parachute", 0, "Parachute");
 Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
 Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"www",
@@ -1304,7 +1299,7 @@ var previousHealth;
 
 const MEDICAL_KIT_ID = 434;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
-ModPE.setItem(MEDICAL_KIT_ID, "book_enchanted", 0, "Medical Kit");
+ModPE.setItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
 Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
 Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
@@ -1314,63 +1309,63 @@ Item.setVerticalRender(MEDICAL_KIT_ID);
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 440;
-ModPE.setItem(AMMO_ASSAULT_RIFLE_ID, "record_11", 0, "Assault Rifle Ammo");
+ModPE.setItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
 Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
 	" i ",
 	" g ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SUB_MACHINE_ID = 441;
-ModPE.setItem(AMMO_SUB_MACHINE_ID, "record_13", 0, "Sub Machine Ammo");
+ModPE.setItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
 Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
 	" i ",
 	" g ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_LIGHT_MACHINE_ID = 442;
-ModPE.setItem(AMMO_LIGHT_MACHINE_ID, "record_blocks", 0, "Light Machine Ammo");
+ModPE.setItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
 Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
 	"i i",
 	"g g",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SNIPER_RIFLE_ID = 443;
-ModPE.setItem(AMMO_SNIPER_RIFLE_ID, "record_cat", 0, "Sniper Rifle Ammo");
+ModPE.setItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
 Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
 	" i ",
 	" g ",
 	" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SHOTGUN_ID = 444;
-ModPE.setItem(AMMO_SHOTGUN_ID, "record_chirp", 0, "Shotgun Ammo");
+ModPE.setItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
 Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
 	"   ",
 	" i ",
 	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_MACHINE_PISTOL_ID = 445;
-ModPE.setItem(AMMO_MACHINE_PISTOL_ID, "record_far", 0, "Machine Pistol Ammo");
+ModPE.setItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
 Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
 	" i ",
 	" g ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_HANDGUN_ID = 446;
-ModPE.setItem(AMMO_HANDGUN_ID, "record_mall", 0, "Handgun Ammo");
+ModPE.setItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
 Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
 	"   ",
 	" i ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_LAUNCHER_ID = 447;
-ModPE.setItem(AMMO_LAUNCHER_ID, "record_mellohi", 0, "Launcher Ammo");
+ModPE.setItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
 Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
 	"g g",
 	" g ",
 	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_MINIGUN_ID = 448;
-ModPE.setItem(AMMO_MINIGUN_ID, "record_stal", 0, "Minigun Ammo");
+ModPE.setItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
 Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
 	"i i",
 	"grg",
@@ -1385,7 +1380,7 @@ const GRENADE = {
 	accuracy: 4,
 	delay: 4000
 };
-ModPE.setItem(GRENADE.id, "potion_overlay", 0, "Grenade");
+ModPE.setItem(GRENADE.id, "grenade", 0, "Grenade");
 Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	"i i",
 	" g ",
@@ -1404,7 +1399,7 @@ const FRAGMENT = {
 	accuracy: 4,
 	delay: 4000
 };
-ModPE.setItem(FRAGMENT.id, "potion_bottle_splash", 0, "Fragment Grenade");
+ModPE.setItem(FRAGMENT.id, "grenadefragment", 0, "Fragment Grenade");
 Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"g g",
 	"   ",
@@ -1421,7 +1416,7 @@ const MOLOTOV = {
 	grenadesArray: [],
 	accuracy: 4
 };
-ModPE.setItem(MOLOTOV.id, "book_writable", 0, "Molotov");
+ModPE.setItem(MOLOTOV.id, "molotov", 0, "Molotov");
 Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"ggg",
 	"gfg",
@@ -1431,7 +1426,7 @@ Item.setVerticalRender(MOLOTOV.id);
 
 // info item
 const INFO_ITEM_ID = 438;
-ModPE.setItem(INFO_ITEM_ID, "apple_golden", 0, "DesnoGuns Info");
+ModPE.setItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
 Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 	"   ",
 	" w ",
@@ -1482,15 +1477,16 @@ function newLevel()
 {
 	if(initCreativeItems)
 	{
-		for(var i in guns)
-			Player.addItemCreativeInv(guns[guns.length - i - 1].id, 1);
-		Player.addItemCreativeInv(KNIFE_ID, 1);
-		Player.addItemCreativeInv(PARACHUTE_ID, 1);
-
-		Player.addItemCreativeInv(GRENADE.id, 1);
-		Player.addItemCreativeInv(FRAGMENT.id, 1);
-		Player.addItemCreativeInv(MOLOTOV.id, 1);
 		Player.addItemCreativeInv(INFO_ITEM_ID, 1);
+		Player.addItemCreativeInv(MOLOTOV.id, 1);
+		Player.addItemCreativeInv(FRAGMENT.id, 1);
+		Player.addItemCreativeInv(GRENADE.id, 1);
+		Player.addItemCreativeInv(PARACHUTE_ID, 1);
+		Player.addItemCreativeInv(KNIFE_ID, 1);
+
+		for(var i in guns)
+			Player.addItemCreativeInv(guns[i].id, 1);
+		
 		initCreativeItems = false;
 	}
 
