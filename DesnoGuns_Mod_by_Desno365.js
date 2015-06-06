@@ -1715,17 +1715,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// remove aiming if the user was aiming
 	removeAiming();
 
-	// was reloading ammo
-	if(isReloading)
-	{
-		try {
-			reloadSound.stop();
-		} catch(e) {
-			ModPE.log(getLogText() + "error while stopping reloadSound: " + e);
-		}
-		isReloading = false;
-		ModPE.showTipMessage("Ammo reload interrupted.");
-	}
+	// stop reloading if necessary
+	stopReloading();
 
 	// release the resources for sounds
 	try {
@@ -2657,6 +2648,7 @@ function onTouchShootingRunnableWithReload(gun)
 				}
 				else
 				{
+					stopReloading();
 					currentShotTicks = 0;
 					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
 					shoot(gun);
@@ -2714,6 +2706,7 @@ function onClickShootWithReload(gun)
 	}
 	else
 	{
+		stopReloading();
 		Sound.playFromFileName(gun.sound);
 		if(gun.isGrenadeLauncher)
 			shootGrenadeWeapon(gun);
@@ -2832,6 +2825,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 				}
 				else
 				{
+					stopReloading();
 					currentShotTicks = 0;
 					if(!gun.hasntShootingSound)
 						Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
@@ -3664,6 +3658,20 @@ function reloadAmmo(gun)
 				}
 			}
 		}
+	}
+}
+
+function stopReloading()
+{
+	if(isReloading)
+	{
+		try {
+			reloadSound.stop();
+		} catch(e) {
+			ModPE.log(getLogText() + "error while stopping reloadSound: " + e);
+		}
+		isReloading = false;
+		ModPE.showTipMessage("Ammo reload interrupted.");
 	}
 }
 
