@@ -1649,7 +1649,7 @@ function attackHook(attacker, victim)
 	if(attacker = Player.getEntity())
 	{
 		// knife
-		if(Player.getCarriedItem() == KNIFE_ID)
+		if(Player.getCarriedItem() == KNIFE_ID && Entity.getHealth(victim) != 0)
 		{
 			Sound.playFromFileName("knife.mp3");
 			var health = Entity.getHealth(victim) - 20;
