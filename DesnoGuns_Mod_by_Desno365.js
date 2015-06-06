@@ -98,8 +98,10 @@ var yCoalEE;
 var zCoalEE;
 
 // buttons ui settings variables
-var buttonsSize = 22;
-var ammoTextSize = 16;
+const BUTTONS_SIZE_DEFAULT = 24;
+const AMMO_TEXT_SIZE_DEFAULT = 18;
+var buttonsSize = BUTTONS_SIZE_DEFAULT;
+var ammoTextSize = AMMO_TEXT_SIZE_DEFAULT;
 var moveButtons = 0;
 var displaySight = true;
 var displayGunNameInAmmo = false;
@@ -131,7 +133,7 @@ var soundID;
 const RANDOMNESS = 0.55;
 
 // general value for the weapons recoil, the more this value is the less recoil weapons have
-const RECOIL = 5;
+const RECOIL = 3;
 
 // aiming variables
 var aiming = false;
@@ -5063,7 +5065,7 @@ function settingsUI()
 				layout.addView(dividerText());
 
 				var sizeText = new android.widget.TextView(currentActivity);
-				sizeText.setText("Select the preferred size of the \"fire\" and \"aim\" buttons (default is 22)");
+				sizeText.setText("Select the preferred size of the \"fire\" and \"aim\" buttons (default is " + BUTTONS_SIZE_DEFAULT + ")");
 				sizeText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				sizeText.setPadding(padding, 0, padding, 0);
 				layout.addView(sizeText);
@@ -5134,7 +5136,7 @@ function settingsUI()
 
 
 				var sizeText2 = new android.widget.TextView(currentActivity);
-				sizeText2.setText("Select the preferred size of the ammo text (default is 16)");
+				sizeText2.setText("Select the preferred size of the ammo text (default is " + AMMO_TEXT_SIZE_DEFAULT + ")");
 				sizeText2.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				sizeText2.setPadding(padding, 0, padding, 0);
 				layout.addView(sizeText2);
