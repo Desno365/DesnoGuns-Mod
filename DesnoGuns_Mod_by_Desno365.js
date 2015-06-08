@@ -2002,182 +2002,213 @@ function changeCarriedItemHook(currentItem, previousItem)
 
 function modTick()
 {
-	//change carried item hook
-	if(Player.getCarriedItem() != previousCarriedItem)
-		changeCarriedItemHook(Player.getCarriedItem(), previousCarriedItem);
-	else
+	ModTickFunctions.checkChangedCarriedItem();
+
+	ModTickFunctions.onTouchShooting();
+
+	ModTickFunctions.explosiveWeapons();
+
+	incendiaryGrenadeLauncher();
+
+	ModTickFunctions.molotov();
+	
+	ModTickFunctions.parachute();
+	
+	ModTickFunctions.unstuckPigmenEE();
+}
+
+var ModTickFunctions = {
+
+	checkChangedCarriedItem: function()
 	{
-		// switching between items with same id but different damage for example
-		if(Player.getSelectedSlotId() != previousSlotId)
+		if(Player.getCarriedItem() != previousCarriedItem)
+			changeCarriedItemHook(Player.getCarriedItem(), previousCarriedItem);
+		else
 		{
-			changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
+			// switching between items with same id but different damage for example
+			if(Player.getSelectedSlotId() != previousSlotId)
+			{
+				changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
+			}
 		}
-	}
-	previousCarriedItem = Player.getCarriedItem();
-	previousSlotId = Player.getSelectedSlotId();
+		previousCarriedItem = Player.getCarriedItem();
+		previousSlotId = Player.getSelectedSlotId();
 
-	// assault rifles shooting system
-	if(shooting && shootingRunnable != null)
-		shootingRunnable.run();
-	else
-	if(currentShotTicks != 0)
-		currentShotTicks = 0;
+	},
 
-	// explosive bullets
-	for(var i in explosiveWeapons)
+	onTouchShooting: function()
 	{
-		for(var j in explosiveWeapons[i].bulletsArray)
+		if(shooting && shootingRunnable != null)
 		{
-			var arrow = explosiveWeapons[i].bulletsArray[j];
-			var xArrow = Entity.getX(arrow.entity);
-			var yArrow = Entity.getY(arrow.entity);
-			var zArrow = Entity.getZ(arrow.entity);
-			if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow)
-			{
-				Level.explode(xArrow, yArrow, zArrow, explosiveWeapons[i].bulletsExplosionRadius);
+			shootingRunnable.run();
+		}
+		else
+		{
+			if(currentShotTicks != 0)
+				currentShotTicks = 0;
+		}
+	},
 
-				Entity.remove(arrow.entity);
-				explosiveWeapons[i].bulletsArray.splice(j, 1);
-			} else
+	explosiveWeapons: function()
+	{
+		for(var i in explosiveWeapons)
+		{
+			for(var j in explosiveWeapons[i].bulletsArray)
 			{
-				if(xArrow == 0 && yArrow == 0 && zArrow == 0)
+				var arrow = explosiveWeapons[i].bulletsArray[j];
+				var xArrow = Entity.getX(arrow.entity);
+				var yArrow = Entity.getY(arrow.entity);
+				var zArrow = Entity.getZ(arrow.entity);
+				if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow)
 				{
-					// the arrow hit an entity
-					Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, explosiveWeapons[i].bulletsExplosionRadius);
+					Level.explode(xArrow, yArrow, zArrow, explosiveWeapons[i].bulletsExplosionRadius);
 
+					Entity.remove(arrow.entity);
 					explosiveWeapons[i].bulletsArray.splice(j, 1);
 				} else
 				{
-					arrow.previousX = xArrow;
-					arrow.previousY = yArrow;
-					arrow.previousZ = zArrow;
-				}
-			}
-		}
-	}
-
-	// incendiary grenade launcher
-	incendiaryGrenadeLauncher();
-
-	// molotov
-	for(var i in MOLOTOV.grenadesArray)
-	{
-		var grenade = MOLOTOV.grenadesArray[i];
-		var xGrenade = Entity.getX(grenade.entity);
-		var yGrenade = Entity.getY(grenade.entity);
-		var zGrenade = Entity.getZ(grenade.entity);
-		//ModPE.showTipMessage("x: " + Math.floor(xGrenade) + "y: " + Math.floor(yGrenade) + "z: " + Math.floor(zGrenade));
-
-		if(xGrenade == 0 && yGrenade == 0 && zGrenade == 0)
-		{
-			// the entity has been removed
-
-			// fire!!!!
-			var xStarting = Math.floor(grenade.previousX) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
-			var yStarting = Math.floor(grenade.previousY) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
-			var zStarting = Math.floor(grenade.previousZ) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
-			for(var xExplosion = xStarting; xExplosion <= xStarting + MOLOTOV.grenadesExplosionDiameter; xExplosion++)
-			{
-				for(var yExplosion = yStarting; yExplosion <= yStarting + MOLOTOV.grenadesExplosionDiameter; yExplosion++)
-				{
-					for(var zExplosion = zStarting; zExplosion <= zStarting + MOLOTOV.grenadesExplosionDiameter; zExplosion++)
+					if(xArrow == 0 && yArrow == 0 && zArrow == 0)
 					{
-						var setFire = true;
-						if(xExplosion == xStarting || xExplosion == xStarting + MOLOTOV.grenadesExplosionDiameter || zExplosion == zStarting || zExplosion == zStarting + MOLOTOV.grenadesExplosionDiameter)
-						{
-							setFire = java.util.Random().nextBoolean();
-						}
-						if(setFire && (Level.getTile(xExplosion, yExplosion, zExplosion) == 0 || Level.getTile(xExplosion, yExplosion, zExplosion) == 31))
-						{
-							Level.setTile(xExplosion, yExplosion, zExplosion, 51);
-						}
+						// the arrow hit an entity
+						Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, explosiveWeapons[i].bulletsExplosionRadius);
+
+						explosiveWeapons[i].bulletsArray.splice(j, 1);
+					} else
+					{
+						arrow.previousX = xArrow;
+						arrow.previousY = yArrow;
+						arrow.previousZ = zArrow;
 					}
 				}
 			}
+		}
+	},
 
-			Sound.playFromFileName("MolotovExplosion.mp3");
+	molotov: function()
+	{
+		for(var i in MOLOTOV.grenadesArray)
+		{
+			var grenade = MOLOTOV.grenadesArray[i];
+			var xGrenade = Entity.getX(grenade.entity);
+			var yGrenade = Entity.getY(grenade.entity);
+			var zGrenade = Entity.getZ(grenade.entity);
+			//ModPE.showTipMessage("x: " + Math.floor(xGrenade) + "y: " + Math.floor(yGrenade) + "z: " + Math.floor(zGrenade));
 
-			//clientMessage("x: " + Math.floor(grenade.previousX ) + "y: " + Math.floor(grenade.previousY) + "z: " + Math.floor(grenade.previousZ));
-			Entity.remove(grenade.entity);
-			MOLOTOV.grenadesArray.splice(i, 1);
+			if(xGrenade == 0 && yGrenade == 0 && zGrenade == 0)
+			{
+				// the entity has been removed
+
+				// fire!!!!
+				var xStarting = Math.floor(grenade.previousX) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
+				var yStarting = Math.floor(grenade.previousY) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
+				var zStarting = Math.floor(grenade.previousZ) - Math.floor(MOLOTOV.grenadesExplosionDiameter / 2);
+				for(var xExplosion = xStarting; xExplosion <= xStarting + MOLOTOV.grenadesExplosionDiameter; xExplosion++)
+				{
+					for(var yExplosion = yStarting; yExplosion <= yStarting + MOLOTOV.grenadesExplosionDiameter; yExplosion++)
+					{
+						for(var zExplosion = zStarting; zExplosion <= zStarting + MOLOTOV.grenadesExplosionDiameter; zExplosion++)
+						{
+							var setFire = true;
+							if(xExplosion == xStarting || xExplosion == xStarting + MOLOTOV.grenadesExplosionDiameter || zExplosion == zStarting || zExplosion == zStarting + MOLOTOV.grenadesExplosionDiameter)
+							{
+								setFire = java.util.Random().nextBoolean();
+							}
+							if(setFire && (Level.getTile(xExplosion, yExplosion, zExplosion) == 0 || Level.getTile(xExplosion, yExplosion, zExplosion) == 31))
+							{
+								Level.setTile(xExplosion, yExplosion, zExplosion, 51);
+							}
+						}
+					}
+				}
+
+				Sound.playFromFileName("MolotovExplosion.mp3");
+
+				//clientMessage("x: " + Math.floor(grenade.previousX ) + "y: " + Math.floor(grenade.previousY) + "z: " + Math.floor(grenade.previousZ));
+				Entity.remove(grenade.entity);
+				MOLOTOV.grenadesArray.splice(i, 1);
+			} else
+			{
+				Level.addParticle(5, xGrenade, yGrenade, zGrenade, 0, 0, 0, 1);
+				grenade.previousX = xGrenade;
+				grenade.previousY = yGrenade;
+				grenade.previousZ = zGrenade;
+			}
+		}
+	},
+
+	parachute: function()
+	{
+		if(Player.getCarriedItem() == PARACHUTE_ID)
+		{
+			if(Player.getCarriedItemData() < PARACHUTE_MAX_DAMAGE)
+			{
+				// player will hit the ground soon
+				if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())))
+				{
+					countdownHealth++;
+					if(countdownHealth == 5)
+					{
+						isParachuting = false;
+						countdownHealth = 0;
+
+						if(Level.getGameMode() == GameMode.SURVIVAL)
+						{
+							Player.setHealth(20);
+							Player.setHealth(previousHealth);
+							Item.damageCarriedItem();
+						}
+					}
+				}
+
+				// player is falling, oh no! We have to help him.
+				if(Entity.getVelY(Player.getEntity()) <= -0.5)
+				{
+					Sound.playFromFileName("benboncan_parachute.mp3");
+					isParachuting = true;
+					previousHealth = Entity.getHealth(Player.getEntity());
+					if(previousHealth > 20)
+					{
+						previousHealth = 20;
+					}
+					Player.setHealth(9999);
+				}
+			}
 		} else
 		{
-			Level.addParticle(5, xGrenade, yGrenade, zGrenade, 0, 0, 0, 1);
-			grenade.previousX = xGrenade;
-			grenade.previousY = yGrenade;
-			grenade.previousZ = zGrenade;
-		}
-	}
-
-	// parachute
-	if(Player.getCarriedItem() == PARACHUTE_ID)
-	{
-		if(Player.getCarriedItemData() < PARACHUTE_MAX_DAMAGE)
-		{
-			// player will hit the ground soon
-			if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())))
+			if(isParachuting)
 			{
-				countdownHealth++;
-				if(countdownHealth == 5)
-				{
-					isParachuting = false;
-					countdownHealth = 0;
+				isParachuting = false;
+				countdownHealth = 0;
 
-					if(Level.getGameMode() == GameMode.SURVIVAL)
-					{
-						Player.setHealth(20);
-						Player.setHealth(previousHealth);
-						Item.damageCarriedItem();
-					}
+				if(Level.getGameMode() == GameMode.SURVIVAL)
+				{
+					Player.setHealth(20);
+					Player.setHealth(previousHealth);
+					Item.damageCarriedItem();
 				}
 			}
-
-			// player is falling, oh no! We have to help him.
-			if(Entity.getVelY(Player.getEntity()) <= -0.5)
-			{
-				Sound.playFromFileName("benboncan_parachute.mp3");
-				isParachuting = true;
-				previousHealth = Entity.getHealth(Player.getEntity());
-				if(previousHealth > 20)
-				{
-					previousHealth = 20;
-				}
-				Player.setHealth(9999);
-			}
 		}
-	} else
-	{
 		if(isParachuting)
 		{
-			isParachuting = false;
-			countdownHealth = 0;
-
-			if(Level.getGameMode() == GameMode.SURVIVAL)
-			{
-				Player.setHealth(20);
-				Player.setHealth(previousHealth);
-				Item.damageCarriedItem();
-			}
+			// thanks to Anti for this line of code, it works better than making the player riding a chicken (that was my idea)
+			Entity.setVelY(Player.getEntity(), -0.10);
 		}
-	}
-	if(isParachuting)
-	{
-		// thanks to Anti for this line of code, it works better than making the player riding a chicken (that was my idea)
-		Entity.setVelY(Player.getEntity(), -0.10);
-	}
+	},
 
-	// Sin0psysS's spawning pattern code (with some changes by me)
-	if(unstuck >= 1)
+	unstuckPigmenEE: function()
 	{
-		for(var i in pigmen)
+		// Sin0psysS's spawning pattern code (with some changes by me)
+		if(unstuck >= 1)
 		{
-			if(Level.getTile(Math.floor(Entity.getX(pigmen[i])), Math.floor(Entity.getY(pigmen[i])), Math.floor(Entity.getZ(pigmen[i]))) != 0)
+			for(var i in pigmen)
 			{
-				Entity.setPosition(pigmen[i], Entity.getX(pigmen[i]), Entity.getY(pigmen[i]) + 1, Entity.getZ(pigmen[i]));
+				if(Level.getTile(Math.floor(Entity.getX(pigmen[i])), Math.floor(Entity.getY(pigmen[i])), Math.floor(Entity.getZ(pigmen[i]))) != 0)
+				{
+					Entity.setPosition(pigmen[i], Entity.getX(pigmen[i]), Entity.getY(pigmen[i]) + 1, Entity.getZ(pigmen[i]));
+				}
 			}
+			unstuck--;
 		}
-		unstuck--;
-
 	}
 }
 
