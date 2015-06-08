@@ -1293,8 +1293,7 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
 Item.setVerticalRender(PARACHUTE_ID);
 var isParachuting = false;
-var countdownHealth = 0;
-var previousHealth;
+var countdownDisableParachute = 0;
 
 const MEDICAL_KIT_ID = 434;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
@@ -1584,8 +1583,7 @@ function leaveGame()
 
 	// parachute
 	isParachuting = false;
-	countdownHealth = 0;
-	previousHealth;
+	countdownDisableParachute = 0;
 
 	// reset fov
 	ModPE.resetFov();
@@ -2145,16 +2143,18 @@ var ModTickFunctions = {
 				// player will hit the ground soon
 				if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())))
 				{
-					countdownHealth++;
-					if(countdownHealth == 5)
+					countdownDisableParachute++;
+					if(countdownDisableParachute == 10)
 					{
+						// STOP parachuting
 						isParachuting = false;
-						countdownHealth = 0;
+						countdownDisableParachute = 0;
 
 						if(Level.getGameMode() == GameMode.SURVIVAL)
 						{
-							Player.setHealth(20);
-							Player.setHealth(previousHealth);
+							// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
+							//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
+							Entity.removeAllEffects(Player.getEntity());
 							Item.damageCarriedItem();
 						}
 					}
@@ -2163,27 +2163,27 @@ var ModTickFunctions = {
 				// player is falling, oh no! We have to help him.
 				if(Entity.getVelY(Player.getEntity()) <= -0.5)
 				{
+					// START parachuting
 					Sound.playFromFileName("benboncan_parachute.mp3");
 					isParachuting = true;
-					previousHealth = Entity.getHealth(Player.getEntity());
-					if(previousHealth > 20)
-					{
-						previousHealth = 20;
-					}
-					Player.setHealth(9999);
+
+					if(Level.getGameMode() == GameMode.SURVIVAL)
+						Entity.addEffect(Player.getEntity(), MobEffect.jump, 999999, 255, false, false);
 				}
 			}
 		} else
 		{
 			if(isParachuting)
 			{
+				// STOP parachuting
 				isParachuting = false;
-				countdownHealth = 0;
+				countdownDisableParachute = 0;
 
 				if(Level.getGameMode() == GameMode.SURVIVAL)
 				{
-					Player.setHealth(20);
-					Player.setHealth(previousHealth);
+					// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
+					//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
+					Entity.removeAllEffects(Player.getEntity());
 					Item.damageCarriedItem();
 				}
 			}
