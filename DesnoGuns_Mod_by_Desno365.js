@@ -2138,38 +2138,36 @@ var ModTickFunctions = {
 	{
 		if(Player.getCarriedItem() == PARACHUTE_ID)
 		{
-			if(Player.getCarriedItemData() < PARACHUTE_MAX_DAMAGE)
+			var blockUnder = Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ()));
+			// player will hit the ground soon
+			if(isParachuting && (blockUnder > 0 && blockUnder != 31 && blockUnder != 175 && blockUnder != 38 && blockUnder != 83)) // 31 = grass, 175 double grass, 38 flowers, 83 sugar canes
 			{
-				// player will hit the ground soon
-				if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())))
+				countdownDisableParachute++;
+				if(countdownDisableParachute == 10)
 				{
-					countdownDisableParachute++;
-					if(countdownDisableParachute == 10)
-					{
-						// STOP parachuting
-						isParachuting = false;
-						countdownDisableParachute = 0;
-
-						if(Level.getGameMode() == GameMode.SURVIVAL)
-						{
-							// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
-							//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
-							Entity.removeAllEffects(Player.getEntity());
-							Item.damageCarriedItem();
-						}
-					}
-				}
-
-				// player is falling, oh no! We have to help him.
-				if(Entity.getVelY(Player.getEntity()) <= -0.5)
-				{
-					// START parachuting
-					Sound.playFromFileName("benboncan_parachute.mp3");
-					isParachuting = true;
+					// STOP parachuting
+					isParachuting = false;
+					countdownDisableParachute = 0;
 
 					if(Level.getGameMode() == GameMode.SURVIVAL)
-						Entity.addEffect(Player.getEntity(), MobEffect.jump, 999999, 255, false, false);
+					{
+						// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
+						//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
+						Entity.removeAllEffects(Player.getEntity());
+						Item.damageCarriedItem();
+					}
 				}
+			}
+
+			// player is falling, oh no! We have to help him.
+			if(Entity.getVelY(Player.getEntity()) <= -0.5)
+			{
+				// START parachuting
+				Sound.playFromFileName("benboncan_parachute.mp3");
+				isParachuting = true;
+
+				if(Level.getGameMode() == GameMode.SURVIVAL)
+					Entity.addEffect(Player.getEntity(), MobEffect.jump, 999999, 255, false, false);
 			}
 		} else
 		{
