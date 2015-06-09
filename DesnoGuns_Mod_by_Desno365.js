@@ -122,10 +122,7 @@ var ammoText;
 var isReloading = false;
 var reloadingGun;
 
-// general sounds
-var sound1;
-var sound2;
-var sound3;
+// sounds
 var reloadSound = new android.media.MediaPlayer();
 
 // gun sounds
@@ -163,12 +160,32 @@ const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 // for flamethrower
 var flameTick = 2;
 
-// items function needed on load
+// item functions needed on load
 Item.setVerticalRender = function(id)
 {
 	try {
 		Item.setHandEquipped(id, true);
 	} catch(e) { /* old version of BlockLauncher */ }
+}
+Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
+{
+	try
+	{
+		if(stackLimit > 0)
+			ModPE.setItem(id, textureName, textureNumber, name, stackLimit);
+		else
+			ModPE.setItem(id, textureName, textureNumber, name);
+	}catch(e)
+	{
+		// user hasn't installed the texture pack
+		if(!textureUiShowed)
+			pleaseInstallTextureUI();
+
+		if(stackLimit > 0)
+			ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
+		else
+			ModPE.setItem(id, "skull_zombie", 0, name);
+	}
 }
 
 // bullet speed
@@ -1274,7 +1291,7 @@ var gunSpinSound = new android.media.MediaPlayer();
 // other items (not guns)
 const KNIFE_ID = 432;
 const KNIFE_MAX_DAMAGE = 32;
-ModPE.setItem(KNIFE_ID, "knife", 0, "Knife");
+Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
 Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
 Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
@@ -1283,9 +1300,10 @@ Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
 Item.setVerticalRender(KNIFE_ID);
 
+var isParachuting = false;
 const PARACHUTE_ID = 433;
 const PARACHUTE_MAX_DAMAGE = 10;
-ModPE.setItem(PARACHUTE_ID, "parachute", 0, "Parachute");
+Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute");
 Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
 Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"www",
@@ -1293,11 +1311,10 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
 Item.setVerticalRender(PARACHUTE_ID);
-var isParachuting = false;
 
 const MEDICAL_KIT_ID = 434;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
-ModPE.setItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
+Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
 Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
 Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
@@ -1307,63 +1324,63 @@ Item.setVerticalRender(MEDICAL_KIT_ID);
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 440;
-ModPE.setItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
+Item.defineItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
 Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
 	" i ",
 	" g ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SUB_MACHINE_ID = 441;
-ModPE.setItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
+Item.defineItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
 Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
 	" i ",
 	" g ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_LIGHT_MACHINE_ID = 442;
-ModPE.setItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
+Item.defineItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
 Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
 	"i i",
 	"g g",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SNIPER_RIFLE_ID = 443;
-ModPE.setItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
+Item.defineItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
 Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
 	" i ",
 	" g ",
 	" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_SHOTGUN_ID = 444;
-ModPE.setItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
+Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
 Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
 	"   ",
 	" i ",
 	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_MACHINE_PISTOL_ID = 445;
-ModPE.setItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
+Item.defineItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
 Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
 	" i ",
 	" g ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_HANDGUN_ID = 446;
-ModPE.setItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
+Item.defineItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
 Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
 	"   ",
 	" i ",
 	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_LAUNCHER_ID = 447;
-ModPE.setItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
+Item.defineItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
 Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
 	"g g",
 	" g ",
 	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 const AMMO_MINIGUN_ID = 448;
-ModPE.setItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
+Item.defineItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
 Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
 	"i i",
 	"grg",
@@ -1378,7 +1395,7 @@ const GRENADE = {
 	accuracy: 4,
 	delay: 4000
 };
-ModPE.setItem(GRENADE.id, "grenade", 0, "Grenade");
+Item.defineItem(GRENADE.id, "grenade", 0, "Grenade");
 Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	"i i",
 	" g ",
@@ -1397,7 +1414,7 @@ const FRAGMENT = {
 	accuracy: 4,
 	delay: 4000
 };
-ModPE.setItem(FRAGMENT.id, "grenadefragment", 0, "Fragment Grenade");
+Item.defineItem(FRAGMENT.id, "grenadefragment", 0, "Fragment Grenade");
 Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"g g",
 	"   ",
@@ -1414,7 +1431,7 @@ const MOLOTOV = {
 	grenadesArray: [],
 	accuracy: 4
 };
-ModPE.setItem(MOLOTOV.id, "molotov", 0, "Molotov");
+Item.defineItem(MOLOTOV.id, "molotov", 0, "Molotov");
 Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"ggg",
 	"gfg",
@@ -1424,7 +1441,7 @@ Item.setVerticalRender(MOLOTOV.id);
 
 // info item
 const INFO_ITEM_ID = 438;
-ModPE.setItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
+Item.defineItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
 Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 	"   ",
 	" w ",
@@ -1633,9 +1650,10 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 				yCoalEE = Math.floor(y);
 				zCoalEE = Math.floor(z);
 				easterEggUI();
-			}
-			else
+			} else
+			{
 				clientMessage("Only in survival.");
+			}
 		}
 	}
 }
@@ -1653,7 +1671,7 @@ function attackHook(attacker, victim)
 				health = 1;
 			Entity.setHealth(victim, health);
 			if(Level.getGameMode() == GameMode.SURVIVAL)
-				Item.damageCarriedItem();
+				Player.damageCarriedItem();
 		}
 	}
 }
@@ -1947,7 +1965,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 			{
 				shootGrenadeHand(GRENADE);
 				if(Level.getGameMode() == GameMode.SURVIVAL)
-					Item.removeOneCarriedItem();
+					Player.decreaseByOneCarriedItem();
 			}
 		}));
 		setAmmoText(" ");
@@ -1965,7 +1983,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 			{
 				shootGrenadeHand(FRAGMENT);
 				if(Level.getGameMode() == GameMode.SURVIVAL)
-					Item.removeOneCarriedItem();
+					Player.decreaseByOneCarriedItem();
 			}
 		}));
 		setAmmoText(" ");
@@ -1983,7 +2001,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 			{
 				shootGrenadeHand(MOLOTOV);
 				if(Level.getGameMode() == GameMode.SURVIVAL)
-					Item.removeOneCarriedItem();
+					Player.decreaseByOneCarriedItem();
 			}
 		}));
 		setAmmoText(" ");
@@ -2043,8 +2061,7 @@ var ModTickFunctions = {
 		if(shooting && shootingRunnable != null)
 		{
 			shootingRunnable.run();
-		}
-		else
+		} else
 		{
 			if(currentShotTicks != 0)
 				currentShotTicks = 0;
@@ -2155,7 +2172,7 @@ var ModTickFunctions = {
 						// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
 						//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
 						Entity.removeAllEffects(Player.getEntity());
-						Item.damageCarriedItem();
+						Player.damageCarriedItem();
 					}
 				}
 			}
@@ -2183,7 +2200,7 @@ var ModTickFunctions = {
 					//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
 					Entity.removeAllEffects(Player.getEntity());
 
-					//Item.damageCarriedItem(); // TODO fix
+					//Player.damageCarriedItem(); // TODO fix
 					//Player.damageItemInInventory(item)
 				}
 			}
@@ -2217,7 +2234,7 @@ var ModTickFunctions = {
 // Added functions (No GUI and No render)
 //########################################################################################################################################################
 
-//########## guns functions ##########
+//########## WEAPONS functions ##########
 function isItemAGun(itemId)
 {
 	//
@@ -2226,29 +2243,14 @@ function isItemAGun(itemId)
 
 function addNewGun(gun)
 {
-	try
-	{
-		if(gun.textureNumber > 0)
-			ModPE.setItem(gun.id, gun.texture, gun.textureNumber, gun.name, 1);
-		else
-			ModPE.setItem(gun.id, gun.texture, 0, gun.name, 1);
-		addCraftingRecipe(gun.id, 1, gun.recipe);
-		Item.setMaxDamage(gun.id, gun.ammo);
-		Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
-		Item.setVerticalRender(gun.id);
-	} catch(e)
-	{
-		// user haven't installed texture pack
-
-		if(!textureUiShowed)
-			pleaseInstallTextureUI();
-
-		ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
-		addCraftingRecipe(gun.id, 1, gun.recipe);
-		Item.setMaxDamage(gun.id, gun.ammo);
-		Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
-		Item.setVerticalRender(gun.id);
-	}
+	if(gun.textureNumber > 0)
+		Item.defineItem(gun.id, gun.texture, gun.textureNumber, gun.name, 1);
+	else
+		Item.defineItem(gun.id, gun.texture, 0, gun.name, 1);
+	addCraftingRecipe(gun.id, 1, gun.recipe);
+	Item.setMaxDamage(gun.id, gun.ammo);
+	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
+	Item.setVerticalRender(gun.id);
 }
 
 function shootGrenadeWeapon(gun)
@@ -2406,8 +2408,7 @@ function shoot(gun)
 	if(aiming)
 	{
 		var gunAccuracy = gun.accuracy - 1;
-	}
-	else
+	} else
 	{
 		if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
 			var gunAccuracy = gun.accuracy + 25;
@@ -2639,9 +2640,62 @@ function shouldReload()
 	// reload in survival, or in creative with reload option enabled
 	return reloadInCreative || Level.getGameMode() == GameMode.SURVIVAL;
 }
-//########## guns functions - END ##########
+//########## WEAPONS functions - END ##########
 
-//########## on touch guns functions ##########
+
+//########## ON CLICK GUNS functions ##########
+function onClickWeaponShoot(gun)
+{
+	if(latestShotTime == null || java.lang.System.currentTimeMillis() > (latestShotTime + (gun.fireRate * 50)))
+	{
+		if(shouldReload())
+		{
+			// survival or creative with reload option enabled
+			onClickShootWithReload(gun);
+		} else
+		{
+			// creative with reload option disabled
+			onClickShootWithoutReload(gun);
+		}
+	}
+}
+
+function onClickShootWithReload(gun)
+{
+	if(Player.getCarriedItemData() >= gun.ammo)
+	{
+		Sound.playFromFileName("EmptyGun.ogg");
+		ModPE.showTipMessage("Press the ammo text to reload.");
+	} else
+	{
+		stopReloading();
+		Sound.playFromFileName(gun.sound);
+		if(gun.isGrenadeLauncher)
+			shootGrenadeWeapon(gun);
+		else
+			shoot(gun);
+		damageCarriedGun(gun);
+		latestShotTime = java.lang.System.currentTimeMillis();
+		showCloudParticle(gun.smoke);
+		Recoil.makeRecoil(gun);
+	}
+}
+
+function onClickShootWithoutReload(gun)
+{
+	Sound.playFromFileName(gun.sound);
+	if(gun.isGrenadeLauncher)
+		shootGrenadeWeapon(gun);
+	else
+		shoot(gun);
+	latestShotTime = java.lang.System.currentTimeMillis();
+	showCloudParticle(gun.smoke);
+	Recoil.makeRecoil(gun);
+}
+//########## ON CLICK GUNS functions - END ##########
+
+
+//########## ON TOUCH GUNS functions ##########
 function onTouchWeaponShoot(event, gun, reload)
 {
 	var action = event.getActionMasked();
@@ -2649,8 +2703,7 @@ function onTouchWeaponShoot(event, gun, reload)
 	{
 		shooting = false;
 		showCloudParticle(gun.smoke);
-	}
-	else
+	} else
 	{
 		if(!shooting)
 		{
@@ -2676,14 +2729,13 @@ function onTouchShootingRunnableWithReload(gun)
 				{
 					Sound.playFromFileName("EmptyGun.ogg");
 					ModPE.showTipMessage("Press the ammo text to reload.");
-				}
-				else
+				} else
 				{
 					stopReloading();
 					currentShotTicks = 0;
 					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME);
 					shoot(gun);
-					Item.damageCarriedGun(gun);
+					damageCarriedGun(gun);
 					Recoil.makeRecoil(gun);
 				}
 			}
@@ -2709,61 +2761,10 @@ function onTouchShootingRunnableWithoutReload(gun)
 		}
 	}));
 }
-//########## on touch guns functions - END ##########
+//########## ON TOUCH GUNS functions - END ##########
 
-//########## on click guns functions ##########
-function onClickWeaponShoot(gun)
-{
-	if(latestShotTime == null || java.lang.System.currentTimeMillis() > (latestShotTime + (gun.fireRate * 50)))
-	{
-		if(shouldReload())
-		{
-			// survival or creative with reload option enabled
-			onClickShootWithReload(gun);
-		} else
-		{
-			// creative with reload option disabled
-			onClickShootWithoutReload(gun);
-		}
-	}
-}
 
-function onClickShootWithReload(gun)
-{
-	if(Player.getCarriedItemData() >= gun.ammo)
-	{
-		Sound.playFromFileName("EmptyGun.ogg");
-		ModPE.showTipMessage("Press the ammo text to reload.");
-	}
-	else
-	{
-		stopReloading();
-		Sound.playFromFileName(gun.sound);
-		if(gun.isGrenadeLauncher)
-			shootGrenadeWeapon(gun);
-		else
-			shoot(gun);
-		Item.damageCarriedGun(gun);
-		latestShotTime = java.lang.System.currentTimeMillis();
-		showCloudParticle(gun.smoke);
-		Recoil.makeRecoil(gun);
-	}
-}
-
-function onClickShootWithoutReload(gun)
-	{
-		Sound.playFromFileName(gun.sound);
-		if(gun.isGrenadeLauncher)
-			shootGrenadeWeapon(gun);
-		else
-			shoot(gun);
-		latestShotTime = java.lang.System.currentTimeMillis();
-		showCloudParticle(gun.smoke);
-		Recoil.makeRecoil(gun);
-	}
-	//########## on click guns functions - END ##########
-
-//########## on touch with wait guns functions ##########
+//########## ON TOUCH WITH WAIT GUNS functions ##########
 function onTouchWithWaitWeaponShoot(event, gun, reload)
 {
 	var action = event.getActionMasked();
@@ -2853,15 +2854,14 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 				{
 					Sound.playFromFileName("EmptyGun.ogg");
 					ModPE.showTipMessage("Press the ammo text to reload.");
-				}
-				else
+				} else
 				{
 					stopReloading();
 					currentShotTicks = 0;
 					if(!gun.hasntShootingSound)
 						Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME);
 					shoot(gun);
-					Item.damageCarriedGun(gun);
+					damageCarriedGun(gun);
 					Recoil.makeRecoil(gun);
 				}
 			}
@@ -2888,9 +2888,14 @@ function onTouchWithWaitShootingRunnableWithoutReload(gun)
 		}
 	}));
 }
-//########## on touch with wait guns functions - END ##########
+//########## ON TOUCH WITH WAIT GUNS functions - END ##########
 
-//########## sounds functions ##########
+
+//########## SOUND functions ##########
+var sound1;
+var sound2;
+var sound3;
+
 var Sound = {
 
 	playFromFileName: function(fileName)
@@ -3020,9 +3025,10 @@ var Sound = {
 		} catch(e) { /* probably sounds not installed error */ }
 	}
 };
-//########## sounds functions - END ##########
+//########## SOUND functions - END ##########
 
-//########## shoot buttons functions ##########
+
+//########## SHOOT UI functions ##########
 function shootAndSettingsButtons(loadAimButton)
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -3264,9 +3270,10 @@ function resetRunnables()
 	if(onClickRunnable != null)
 		onClickRunnable = null;
 }
-//########## shoot UI functions - END ##########
+//########## SHOOT UI functions - END ##########
 
-//########## recoil functions ##########
+
+//########## RECOIL functions ##########
 var timedRecoilVar;
 
 var Recoil = {
@@ -3279,8 +3286,7 @@ var Recoil = {
 			{
 				Recoil.makeLessTimedRecoil(gun);
 				return;
-			}
-			else
+			} else
 			{
 				Recoil.makeInstantRecoil(gun);
 				return;
@@ -3392,9 +3398,10 @@ var Recoil = {
 		}));
 	}
 };
-//########## recoil functions - END ##########
+//########## RECOIL functions - END ##########
 
-//########## aim functions ##########
+
+//########## AIM functions ##########
 function sightImage()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -3586,9 +3593,10 @@ function aimImageLayer(gun)
 		}
 	}));
 }
-//########## aim functions - END ##########
+//########## AIM functions - END ##########
 
-//########## reload functions ##########
+
+//########## RELOAD GUN functions ##########
 function reloadAmmo(gun)
 {
 	if(Level.getGameMode() == GameMode.SURVIVAL)
@@ -3598,7 +3606,7 @@ function reloadAmmo(gun)
 		if(Player.getCarriedItemData() != 0)
 		{
 			if(slot == -1)
-				clientMessage("You don't have one " + Item.getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
+				clientMessage("You don't have one " + getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
 			else
 			{
 				try
@@ -3620,7 +3628,7 @@ function reloadAmmo(gun)
 							{
 								var ammoSlot = Player.getSlotOfItem(getAmmoId(reloadingGun));
 								if(ammoSlot == -1)
-									clientMessage("You don't have one " + Item.getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
+									clientMessage("You don't have one " + getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
 								else
 								{
 									Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
@@ -3751,7 +3759,7 @@ function setAmmoText(text)
 	}));
 }
 
-Item.damageCarriedGun = function(gun)
+function damageCarriedGun(gun)
 {
 	var maxDamage = gun.ammo;
 	if(Player.getCarriedItemData() < maxDamage)
@@ -3806,7 +3814,7 @@ function getAmmoId(gun)
 	}
 }
 
-Item.getAmmoName = function(id)
+function getAmmoName(id)
 {
 	switch(id)
 	{
@@ -3852,43 +3860,10 @@ Item.getAmmoName = function(id)
 		}
 	}
 }
+//########## RELOAD GUN functions - END ##########
 
-Player.getSlotOfItem = function(item, count)
-{
-	if(count == null || count <= 0)
-		count = 1;
-	// return -1 if the item wasn't found otherwise returns the inventory slot
-	for(var i = 0; i <= 255; i++)
-	{
-		if(Player.getInventorySlot(i) == item)
-		{
-			if(Player.getInventorySlotCount(i) >= count)
-			{
-				return i;
-			}
-		}
-	}
-	return -1;
-}
 
-Player.removeItemFromInventory = function(slot, count)
-{
-	if(Player.getInventorySlotCount(slot) > count)
-	{
-		var id = Player.getInventorySlot(slot);
-		var countBefore = Player.getInventorySlotCount(slot);
-
-		Player.clearInventorySlot(slot);
-		Player.addItemInventory(id, countBefore - count);
-	}
-	else
-	{
-		Player.clearInventorySlot(slot);
-	}
-}
-//########## reload functions - END ##########
-
-//########## medical kit functions ##########
+//########## MED KIT functions ##########
 function medicalKitButton()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
@@ -3925,13 +3900,13 @@ function medicalKitButton()
 							{
 								Player.setHealth(currentHealth + healthMedicalKitCanRestore);
 								for(var i = 0; i < healthMedicalKitCanRestore; i++)
-									Item.damageCarriedItem();
+									Player.damageCarriedItem();
 								ModPE.showTipMessage("Medical Kit broke before restoring all health.");
 							} else
 							{
 								Player.setHealth(20);
 								for(var i = 0; i < healthToBeRestored; i++)
-									Item.damageCarriedItem();
+									Player.damageCarriedItem();
 								ModPE.showTipMessage("Restored " + (healthToBeRestored / 2) + " hearts.");
 							}
 						} else
@@ -3969,9 +3944,10 @@ function medicalKitButton()
 		}
 	});
 }
-//########## medical kit functions - END ##########
+//########## MED KIT functions - END ##########
 
-//########## info item functions ##########
+
+//########## INFO ITEM functions ##########
 function infoItemUI()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
@@ -4148,9 +4124,10 @@ function getRandomTip()
 		}
 	}
 }
-//########## info item functions - END ##########
+//########## INFO ITEM functions - END ##########
 
-//########## internet functions ##########
+
+//########## INTERNET functions ##########
 function getLatestVersionMod()
 {
 	try
@@ -4181,9 +4158,10 @@ function getLatestVersionMod()
 		ModPE.log(getLogText() + "getLatestVersionMod(): caught an error: " + err);
 	}
 }
-//########## internet functions - END ##########
+//########## INTERNET functions - END ##########
 
-//########## direction, vector functions ##########
+
+//########## DIRECTION functions ##########
 function vector3d(x, y, z)
 {
 	this.x = x;
@@ -4199,10 +4177,11 @@ function lookDir(yaw, pitch)
 	direction.z = Math.cos(java.lang.Math.toRadians(yaw)) * Math.cos(java.lang.Math.toRadians(pitch));
 	return direction;
 }
-//########## direction, vector functions - END ##########
+//########## DIRECTION functions - END ##########
 
-//########## general item functions ##########
-Item.damageCarriedItem = function()
+
+//########## PLAYER functions ##########
+Player.damageCarriedItem = function()
 {
 	var maxDamage;
 	if(Player.getCarriedItem() == KNIFE_ID)
@@ -4224,16 +4203,50 @@ Item.damageCarriedItem = function()
 	}
 }
 
-Item.removeOneCarriedItem = function()
+Player.decreaseByOneCarriedItem = function()
 {
 	if(Player.getCarriedItemCount() == 1)
 		Player.clearInventorySlot(Player.getSelectedSlotId());
 	else
 		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
 }
-//########## general item functions - END ##########
 
-//########## file functions ##########
+Player.getSlotOfItem = function(item, count)
+{
+	if(count == null || count <= 0)
+		count = 1;
+	// return -1 if the item wasn't found otherwise returns the inventory slot
+	for(var i = 0; i <= 255; i++)
+	{
+		if(Player.getInventorySlot(i) == item)
+		{
+			if(Player.getInventorySlotCount(i) >= count)
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+Player.removeItemFromInventory = function(slot, count)
+{
+	if(Player.getInventorySlotCount(slot) > count)
+	{
+		var id = Player.getInventorySlot(slot);
+		var countBefore = Player.getInventorySlotCount(slot);
+
+		Player.clearInventorySlot(slot);
+		Player.addItemInventory(id, countBefore - count);
+	} else
+	{
+		Player.clearInventorySlot(slot);
+	}
+}
+//########## PLAYER functions - END ##########
+
+
+//########## FILE functions ##########
 function deleteFile(path)
 {
 	var file = new java.io.File(path);
@@ -4266,9 +4279,10 @@ function isFileEmpty(path)
 	else
 		return true;
 }
-//########## file functions - END ##########
+//########## FILE functions - END ##########
 
-//########## other functions ##########
+
+//########## MISC functions ##########
 function createRandomString(randomObject)
 {
 	// randomObjectExample = { startingFrom:1, endingAt:4, startText:"ignite_flamethrower", endText:".ogg" }
@@ -4346,8 +4360,7 @@ function getSavedBoolean(name, defaultValue, debug)
 			{
 				clientMessage(name + " is string");
 				debugTest = stringToBoolean(savedDataTest);
-			}
-			else
+			} else
 			{
 				clientMessage(name + " is " + typeof savedDataTest);
 			}
@@ -4378,8 +4391,7 @@ function getSavedBoolean(name, defaultValue, debug)
 			if(savedDataTest != "" && savedDataTest != null && savedDataTest != undefined)
 			{
 				return stringToBoolean(savedDataTest);
-			}
-			else
+			} else
 			{
 				// this setting has never been saved.
 				if(typeof defaultValue == "boolean")
@@ -4400,7 +4412,7 @@ function getLogText()
 	//
 	return(TAG + ": ");
 }
-//########## other functions - END ##########
+//########## MISC functions - END ##########
 
 
 //########################################################################################################################################################
@@ -5764,7 +5776,6 @@ function easterEggUI()
 }
 
 var textureUiShowed = false;
-
 function pleaseInstallTextureUI()
 {
 	textureUiShowed = true;
@@ -6209,8 +6220,7 @@ var SoundsInstaller = {
 			{
 				ModPE.log(getLogText() + "needsInstallation(): version of the file matches saved version.");
 				return !SoundsInstaller.areSoundsPresent();
-			}
-			else
+			} else
 			{
 				ModPE.log(getLogText() + "needsInstallation(): version of the file is different than saved version.");
 				return true;
