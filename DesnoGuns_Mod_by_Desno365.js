@@ -14,12 +14,12 @@ SOFTWARE.
 
 /* ******* DesnoGuns Mod by Desno365 ******* */
 
-const DEBUG1 = false;
+const DEBUG1 = false; // debug: loading boolean saved at startup; sounds correctly installed; Sound.playFromFileName function (start and finish)
 const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
 //updates variables
-const CURRENT_VERSION = "r004";
+const CURRENT_VERSION = "r005";
 var latestVersion;
 
 //activity and other Android variables
@@ -32,6 +32,7 @@ const GameMode = {
 	CREATIVE: 1
 };
 const ITEM_CATEGORY_TOOL = 3; // 3 seems to be the category of the tools
+const VEL_Y_OFFSET = -0.07840000092983246;
 
 //display size and density variables
 var metrics = new android.util.DisplayMetrics();
@@ -1293,7 +1294,6 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
 Item.setVerticalRender(PARACHUTE_ID);
 var isParachuting = false;
-var countdownDisableParachute = 0;
 
 const MEDICAL_KIT_ID = 434;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
@@ -1583,7 +1583,6 @@ function leaveGame()
 
 	// parachute
 	isParachuting = false;
-	countdownDisableParachute = 0;
 
 	// reset fov
 	ModPE.resetFov();
@@ -2013,6 +2012,11 @@ function modTick()
 	ModTickFunctions.parachute();
 	
 	ModTickFunctions.unstuckPigmenEE();
+
+	/*if(DEBUG1)
+	{
+		ModPE.showTipMessage(Entity.getVelY(Player.getEntity()));
+	}*/
 }
 
 var ModTickFunctions = {
@@ -2138,16 +2142,13 @@ var ModTickFunctions = {
 	{
 		if(Player.getCarriedItem() == PARACHUTE_ID)
 		{
-			var blockUnder = Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ()));
 			// player will hit the ground soon
-			if(isParachuting && (blockUnder > 0 && blockUnder != 31 && blockUnder != 175 && blockUnder != 38 && blockUnder != 83)) // 31 = grass, 175 double grass, 38 flowers, 83 sugar canes
+			if(isParachuting && Level.getTile(Math.floor(Player.getX()), Math.floor(Player.getY()) - 2, Math.floor(Player.getZ())) > 0)
 			{
-				countdownDisableParachute++;
-				if(countdownDisableParachute == 10)
+				if(Entity.getVelY(Player.getEntity()) == VEL_Y_OFFSET)
 				{
 					// STOP parachuting
 					isParachuting = false;
-					countdownDisableParachute = 0;
 
 					if(Level.getGameMode() == GameMode.SURVIVAL)
 					{
@@ -2167,7 +2168,7 @@ var ModTickFunctions = {
 				isParachuting = true;
 
 				if(Level.getGameMode() == GameMode.SURVIVAL)
-					Entity.addEffect(Player.getEntity(), MobEffect.jump, 999999, 255, false, false);
+					Entity.addEffect(Player.getEntity(), MobEffect.jump, 999999, 254, false, false);
 			}
 		} else
 		{
@@ -2175,14 +2176,15 @@ var ModTickFunctions = {
 			{
 				// STOP parachuting
 				isParachuting = false;
-				countdownDisableParachute = 0;
 
 				if(Level.getGameMode() == GameMode.SURVIVAL)
 				{
 					// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
 					//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
 					Entity.removeAllEffects(Player.getEntity());
-					Item.damageCarriedItem();
+
+					//Item.damageCarriedItem(); // TODO fix
+					//Player.damageItemInInventory(item)
 				}
 			}
 		}
@@ -2895,8 +2897,11 @@ var Sound = {
 	{
 		try
 		{
-			if(sound1 == null || !sound1.isPlaying())
+			if(sound1 == null)
 			{
+				if(DEBUG1)
+					clientMessage("sound 1");
+
 				if(sound1 == null)
 					sound1 = new android.media.MediaPlayer();
 				sound1.reset();
@@ -2906,6 +2911,8 @@ var Sound = {
 				{
 					onCompletion: function(mp)
 					{
+						if(DEBUG1)
+							clientMessage("sound 1 finish");
 						sound1.release();
 						sound1 = null;
 					}
@@ -2913,8 +2920,11 @@ var Sound = {
 				sound1.start();
 				return;
 			}
-			if(sound2 == null || !sound2.isPlaying())
+			if(sound2 == null)
 			{
+				if(DEBUG1)
+					clientMessage("sound 2");
+
 				if(sound2 == null)
 					sound2 = new android.media.MediaPlayer();
 				sound2.reset();
@@ -2924,6 +2934,8 @@ var Sound = {
 				{
 					onCompletion: function(mp)
 					{
+						if(DEBUG1)
+							clientMessage("sound 2 finish");
 						sound2.release();
 						sound2 = null;
 					}
@@ -2931,8 +2943,11 @@ var Sound = {
 				sound2.start();
 				return;
 			}
-			if(sound3 == null || !sound3.isPlaying())
+			if(sound3 == null)
 			{
+				if(DEBUG1)
+					clientMessage("sound 3");
+
 				if(sound3 == null)
 					sound3 = new android.media.MediaPlayer();
 				sound3.reset();
@@ -2942,6 +2957,8 @@ var Sound = {
 				{
 					onCompletion: function(mp)
 					{
+						if(DEBUG1)
+							clientMessage("sound 3 finish");
 						sound3.release();
 						sound3 = null;
 					}
@@ -2950,6 +2967,9 @@ var Sound = {
 				return;
 			} else
 			{
+				if(DEBUG1)
+					clientMessage("sound 1 all");
+
 				if(sound1 == null)
 					sound1 = new android.media.MediaPlayer();
 				sound1.reset();
@@ -2959,6 +2979,8 @@ var Sound = {
 				{
 					onCompletion: function(mp)
 					{
+						if(DEBUG1)
+							clientMessage("sound 1 all finish");
 						sound1.release();
 						sound1 = null;
 					}
@@ -3593,7 +3615,7 @@ function reloadAmmo(gun)
 						{
 							isReloading = false;
 
-							// let's do a re-check to see if the player hasn't changed his carried item
+							// let's do again a check to see if the player hasn't changed his carried item
 							if(Player.getCarriedItem() == reloadingGun.id)
 							{
 								var ammoSlot = Player.getSlotOfItem(getAmmoId(reloadingGun));
