@@ -52,9 +52,6 @@ minecraftFont = null;
 //tip messages displayed variables
 var displayedMessageNoSound = false;
 
-//initialize variables
-var initCreativeItems = true;
-
 //change carried item variables
 var previousCarriedItem = 0;
 var previousSlotId = 0;
@@ -171,20 +168,14 @@ Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
 {
 	try
 	{
-		if(stackLimit > 0)
-			ModPE.setItem(id, textureName, textureNumber, name, stackLimit);
-		else
-			ModPE.setItem(id, textureName, textureNumber, name);
+		ModPE.setItem(id, textureName, textureNumber, name, stackLimit);
 	}catch(e)
 	{
 		// user hasn't installed the texture pack
 		if(!textureUiShowed)
 			pleaseInstallTextureUI();
 
-		if(stackLimit > 0)
-			ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
-		else
-			ModPE.setItem(id, "skull_zombie", 0, name);
+		ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
 	}
 }
 
@@ -1490,8 +1481,9 @@ function selectLevelHook()
 
 function newLevel()
 {
-	if(initCreativeItems)
+	if(Level.getGameMode() == GameMode.CREATIVE)
 	{
+		// crashes in survival
 		Player.addItemCreativeInv(INFO_ITEM_ID, 1);
 		Player.addItemCreativeInv(MOLOTOV.id, 1);
 		Player.addItemCreativeInv(FRAGMENT.id, 1);
@@ -1501,8 +1493,6 @@ function newLevel()
 
 		for(var i in guns)
 			Player.addItemCreativeInv(guns[i].id, 1);
-		
-		initCreativeItems = false;
 	}
 
 	refreshIsPro();
@@ -2227,7 +2217,7 @@ var ModTickFunctions = {
 			unstuck--;
 		}
 	}
-}
+};
 
 
 //########################################################################################################################################################
