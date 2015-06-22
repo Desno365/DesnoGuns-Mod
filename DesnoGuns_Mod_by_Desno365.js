@@ -1457,28 +1457,28 @@ Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
 //Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
 
 const JUGGERNAUT_HELMET_ID = 3285;
-Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 2, 546, ArmorType.helmet);
+Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 2, 249, ArmorType.helmet);
 Item.addShapedRecipe(JUGGERNAUT_HELMET_ID, 1, 0, [
 	"cic",
 	"c c",
 	"   "], ["c", 351, 2, "i", 265, 0]);
 
 const JUGGERNAUT_BODY_ID = 3286;
-Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 794, ArmorType.chestplate);
+Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 362, ArmorType.chestplate);
 Item.addShapedRecipe(JUGGERNAUT_BODY_ID, 1, 0, [
 	"i i",
 	"cic",
 	"cic"], ["c", 351, 2, "i", 265, 0]);
 
 const JUGGERNAUT_PANTS_ID = 3287;
-Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 744, ArmorType.leggings);
+Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 339, ArmorType.leggings);
 Item.addShapedRecipe(JUGGERNAUT_PANTS_ID, 1, 0, [
 	"ccc",
 	"i i",
 	"i i"], ["c", 351, 2, "i", 265, 0]);
 
 const JUGGERNAUT_BOOTS_ID = 3288;
-Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 645, ArmorType.boots);
+Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 294, ArmorType.boots);
 Item.addShapedRecipe(JUGGERNAUT_BOOTS_ID, 1, 0, [
 	"   ",
 	"c c",
