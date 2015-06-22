@@ -178,6 +178,20 @@ Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
 		ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
 	}
 }
+Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType)
+{
+	try
+	{
+		Item.defineArmor(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType);
+	}catch(e)
+	{
+		// user hasn't installed the texture pack
+		if(!textureUiShowed)
+			pleaseInstallTextureUI();
+
+		Item.defineArmor(id, "skull_zombie", 0, name, "armor/chain_2.png", damageReduceAmount, maxDamage, armorType);
+	}
+}
 
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
@@ -1440,30 +1454,32 @@ Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
 
 // armors
-ModPE.langEdit("item.helmetChain.name", "Juggernaut Helmet");
-Item.setMaxDamage(302, 728);
-Item.addShapedRecipe(302, 1, 0, [
+//Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
+
+const JUGGERNAUT_HELMET_ID = 3285;
+Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 2, 546, ArmorType.helmet);
+Item.addShapedRecipe(JUGGERNAUT_HELMET_ID, 1, 0, [
 	"cic",
 	"c c",
 	"   "], ["c", 351, 2, "i", 265, 0]);
 
-ModPE.langEdit("item.chestplateChain.name", "Juggernaut Body");
-Item.setMaxDamage(303, 1058);
-Item.addShapedRecipe(303, 1, 0, [
+const JUGGERNAUT_BODY_ID = 3286;
+Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 794, ArmorType.chestplate);
+Item.addShapedRecipe(JUGGERNAUT_BODY_ID, 1, 0, [
 	"i i",
 	"cic",
 	"cic"], ["c", 351, 2, "i", 265, 0]);
 
-ModPE.langEdit("item.leggingsChain.name", "Juggernaut Pants");
-Item.setMaxDamage(304, 992);
-Item.addShapedRecipe(304, 1, 0, [
+const JUGGERNAUT_PANTS_ID = 3287;
+Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 744, ArmorType.leggings);
+Item.addShapedRecipe(JUGGERNAUT_PANTS_ID, 1, 0, [
 	"ccc",
 	"i i",
 	"i i"], ["c", 351, 2, "i", 265, 0]);
 
-ModPE.langEdit("item.bootsChain.name", "Juggernaut Boots");
-Item.setMaxDamage(305, 860);
-Item.addShapedRecipe(305, 1, 0, [
+const JUGGERNAUT_BOOTS_ID = 3288;
+Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 645, ArmorType.boots);
+Item.addShapedRecipe(JUGGERNAUT_BOOTS_ID, 1, 0, [
 	"   ",
 	"c c",
 	"i i"], ["c", 351, 2, "i", 265, 0]);
