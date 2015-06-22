@@ -123,6 +123,7 @@ var reloadingGun;
 var reloadSound = new android.media.MediaPlayer();
 
 // gun sounds
+const MAX_LOGARITHMIC_VOLUME = 50;
 var soundPool;
 var soundID;
 
@@ -2146,7 +2147,7 @@ var ModTickFunctions = {
 					}
 				}
 
-				Sound.playFromFileName("MolotovExplosion.mp3");
+				Sound.playFromFileName("MolotovExplosion.mp3", grenade.previousX, grenade.previousY, grenade.previousZ);
 
 				//clientMessage("x: " + Math.floor(grenade.previousX ) + "y: " + Math.floor(grenade.previousY) + "z: " + Math.floor(grenade.previousZ));
 				Entity.remove(grenade.entity);
@@ -2904,8 +2905,23 @@ var sound3;
 
 var Sound = {
 
-	playFromFileName: function(fileName)
+	playFromFileName: function(fileName, x, y, z)
 	{
+		var volume = 1.0;
+
+		// change volume based on distance from source
+		if(!(x == null || y == null || z == null))
+		{
+			var distance = Math.sqrt( Math.pow(x - Player.getX(), 2) + Math.pow(y - Player.getY(), 2) + Math.pow(z - Player.getZ(), 2) );
+			if(distance > MAX_LOGARITHMIC_VOLUME)
+				volume = 0.0;
+			else
+			{
+				volume = 1 - (Math.log(distance) / Math.log(MAX_LOGARITHMIC_VOLUME));
+			}
+		}
+
+		// play sound
 		try
 		{
 			if(sound1 == null)
@@ -2917,6 +2933,7 @@ var Sound = {
 					sound1 = new android.media.MediaPlayer();
 				sound1.reset();
 				sound1.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound1.setVolume(volume, volume);
 				sound1.prepare();
 				sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -2929,7 +2946,7 @@ var Sound = {
 					}
 				});
 				sound1.start();
-				return;
+				return; // END
 			}
 			if(sound2 == null)
 			{
@@ -2940,6 +2957,7 @@ var Sound = {
 					sound2 = new android.media.MediaPlayer();
 				sound2.reset();
 				sound2.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound2.setVolume(volume, volume);
 				sound2.prepare();
 				sound2.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -2952,7 +2970,7 @@ var Sound = {
 					}
 				});
 				sound2.start();
-				return;
+				return; // END
 			}
 			if(sound3 == null)
 			{
@@ -2963,6 +2981,7 @@ var Sound = {
 					sound3 = new android.media.MediaPlayer();
 				sound3.reset();
 				sound3.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound3.setVolume(volume, volume);
 				sound3.prepare();
 				sound3.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -2975,7 +2994,7 @@ var Sound = {
 					}
 				});
 				sound3.start();
-				return;
+				return; // END
 			} else
 			{
 				if(DEBUG1)
@@ -2985,6 +3004,7 @@ var Sound = {
 					sound1 = new android.media.MediaPlayer();
 				sound1.reset();
 				sound1.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound1.setVolume(volume, volume);
 				sound1.prepare();
 				sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -2997,7 +3017,7 @@ var Sound = {
 					}
 				});
 				sound1.start();
-				return;
+				return; // END
 			}
 		} catch(err)
 		{
