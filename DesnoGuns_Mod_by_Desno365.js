@@ -4562,36 +4562,61 @@ function progressBarForInformation(value, max, invert, text)
 	return layoutH;
 }
 
-function defaultTextView(text)
+function basicMinecraftTextView(text)
 {
 	var textview = new android.widget.TextView(currentActivity);
 	textview.setText(new android.text.Html.fromHtml(text));
 	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
+	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 	textview.setLineSpacing(convertDpToPixel(4), 1);
+	if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
+		textview.setShadowLayer(1, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+	else
+		textview.setShadowLayer(0.001, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+
+	return textview;
+}
+
+function defaultContentTextView(text)
+{
+	var textview = basicMinecraftTextView(text);
 	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
 	textview.setTextSize(12);
+
 	return textview;
+}
+
+function defaultSubTitle(subtitle)
+{
+	var padding = convertDpToPixel(8);
+
+	var bg = android.graphics.drawable.GradientDrawable();
+	bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
+	bg.setColor(android.graphics.Color.parseColor("#FF736A6F"));
+	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
+
+	var title = basicMinecraftTextView(subtitle);
+	title.setTextColor(android.graphics.Color.WHITE);
+	title.setTextSize(16);
+	title.setBackgroundDrawable(bg);
+	title.setPadding(padding, padding, padding, padding);
+
+	return title;
 }
 
 function defaultLayout(title)
 {
 	var layout = new android.widget.LinearLayout(currentActivity);
 	layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-	var padding = Math.floor(8 * deviceDensity);
+	var padding = convertDpToPixel(8);
 	layout.setPadding(padding, padding, padding, padding);
 	layout.setBackgroundDrawable(background);
 
-	var titleTextView = new android.widget.TextView(currentActivity);
-	titleTextView.setGravity(android.view.Gravity.CENTER);
-	titleTextView.setText(new android.text.Html.fromHtml(title));
-	titleTextView.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-	titleTextView.setPaintFlags(titleTextView.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+	var titleTextView = basicMinecraftTextView(title);
+	titleTextView.setTextColor(android.graphics.Color.WHITE);
 	titleTextView.setTextSize(18);
-	titleTextView.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-	if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-		titleTextView.setShadowLayer(1, Math.round(titleTextView.getLineHeight() / 8), Math.round(titleTextView.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-	else
-		titleTextView.setShadowLayer(0.001, Math.round(titleTextView.getLineHeight() / 8), Math.round(titleTextView.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+	titleTextView.setGravity(android.view.Gravity.CENTER);
 	layout.addView(titleTextView);
 	setMarginsLinearLayout(titleTextView, 0, 4, 0, 4);
 
@@ -4626,7 +4651,7 @@ function setMarginsLinearLayout(view, left, top, right, bottom)
 function convertDpToPixel(dp)
 {
 	//
-	return (dp * deviceDensity);
+	return Math.round(dp * deviceDensity);
 }
 //########## UTILS OF UI functions - END ##########
 
@@ -4649,7 +4674,7 @@ function infoDesnoGunsMod()
 				else
 					layout = defaultLayout("DesnoGuns Mod");
 
-				var text = defaultTextView("Welcome to the DesnoGuns Mod by Desno365!");
+				var text = defaultContentTextView("Welcome to the DesnoGuns Mod by Desno365!");
 				layout.addView(text);
 				setMarginsLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
@@ -5126,97 +5151,97 @@ function informationOtherItems()
 				var layout;
 				layout = defaultLayout("Other items");
 
-				var textview = defaultTextView("<i>Knife</i>: ID: " + KNIFE_ID);
+				var textview = defaultContentTextView("<i>Knife</i>: ID: " + KNIFE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Parachute</i>: ID: " + PARACHUTE_ID);
+				var textview = defaultContentTextView("<i>Parachute</i>: ID: " + PARACHUTE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Medical Kit</i>: ID: " + MEDICAL_KIT_ID);
+				var textview = defaultContentTextView("<i>Medical Kit</i>: ID: " + MEDICAL_KIT_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Grenade</i>: ID: " + GRENADE.id);
+				var textview = defaultContentTextView("<i>Grenade</i>: ID: " + GRENADE.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Fragment Grenade</i>: ID: " + FRAGMENT.id);
+				var textview = defaultContentTextView("<i>Fragment Grenade</i>: ID: " + FRAGMENT.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Molotov</i>: ID: " + MOLOTOV.id);
+				var textview = defaultContentTextView("<i>Molotov</i>: ID: " + MOLOTOV.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Assault Rifle Ammo</i>: ID: " + AMMO_ASSAULT_RIFLE_ID);
+				var textview = defaultContentTextView("<i>Assault Rifle Ammo</i>: ID: " + AMMO_ASSAULT_RIFLE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Sub Machine Ammo</i>: ID: " + AMMO_SUB_MACHINE_ID);
+				var textview = defaultContentTextView("<i>Sub Machine Ammo</i>: ID: " + AMMO_SUB_MACHINE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Light Machine Ammo</i>: ID: " + AMMO_LIGHT_MACHINE_ID);
+				var textview = defaultContentTextView("<i>Light Machine Ammo</i>: ID: " + AMMO_LIGHT_MACHINE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Sniper Rifle Ammo</i>: ID: " + AMMO_SNIPER_RIFLE_ID);
+				var textview = defaultContentTextView("<i>Sniper Rifle Ammo</i>: ID: " + AMMO_SNIPER_RIFLE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Shotgun Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
+				var textview = defaultContentTextView("<i>Shotgun Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Machine Pistol Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
+				var textview = defaultContentTextView("<i>Machine Pistol Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Handgun Ammo</i>: ID: " + AMMO_HANDGUN_ID);
+				var textview = defaultContentTextView("<i>Handgun Ammo</i>: ID: " + AMMO_HANDGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Launcher Ammo</i>: ID: " + AMMO_LAUNCHER_ID);
+				var textview = defaultContentTextView("<i>Launcher Ammo</i>: ID: " + AMMO_LAUNCHER_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Minigun Ammo</i>: ID: " + AMMO_MINIGUN_ID);
+				var textview = defaultContentTextView("<i>Minigun Ammo</i>: ID: " + AMMO_MINIGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Juggernaut Helmet</i>: ID: " + JUGGERNAUT_HELMET_ID);
+				var textview = defaultContentTextView("<i>Juggernaut Helmet</i>: ID: " + JUGGERNAUT_HELMET_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Juggernaut Body</i>: ID: " + JUGGERNAUT_BODY_ID);
+				var textview = defaultContentTextView("<i>Juggernaut Body</i>: ID: " + JUGGERNAUT_BODY_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Juggernaut Pants</i>: ID: " + JUGGERNAUT_PANTS_ID);
+				var textview = defaultContentTextView("<i>Juggernaut Pants</i>: ID: " + JUGGERNAUT_PANTS_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = defaultTextView("<i>Juggernaut Boots</i>: ID: " + JUGGERNAUT_BOOTS_ID);
+				var textview = defaultContentTextView("<i>Juggernaut Boots</i>: ID: " + JUGGERNAUT_BOOTS_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
@@ -5270,23 +5295,11 @@ function settingsUI()
 				var layout;
 				layout = defaultLayout("Settings");
 
-				var padding = Math.floor(8 * deviceDensity);
-
-				var bg = android.graphics.drawable.GradientDrawable();
-				bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
-				bg.setColors([android.graphics.Color.parseColor("#FF0099BB"), android.graphics.Color.parseColor("#FF00FFFF")]);
-				bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-				bg.setStroke(2, android.graphics.Color.parseColor("#FF0080FF"));
+				var padding = convertDpToPixel(8);
 
 
-
-				var title1 = new android.widget.TextView(currentActivity);
-				title1.setText("Buttons");
-				title1.setTextSize(17);
-				title1.setTextColor(android.graphics.Color.WHITE);
-				title1.setBackgroundDrawable(bg);
-				title1.setPadding(padding, 0, padding, 0);
-				layout.addView(title1);
+				var title = defaultSubTitle("Buttons");
+				layout.addView(title);
 
 				layout.addView(dividerText());
 
@@ -5414,13 +5427,8 @@ function settingsUI()
 
 
 
-				var title3 = new android.widget.TextView(currentActivity);
-				title3.setText("UI");
-				title3.setTextSize(17);
-				title3.setTextColor(android.graphics.Color.WHITE);
-				title3.setBackgroundDrawable(bg);
-				title3.setPadding(padding, 0, padding, 0);
-				layout.addView(title3);
+				var title = defaultSubTitle("UI");
+				layout.addView(title);
 
 				layout.addView(dividerText());
 
@@ -5465,13 +5473,8 @@ function settingsUI()
 
 
 
-				var title2 = new android.widget.TextView(currentActivity);
-				title2.setText("Other");
-				title2.setTextSize(17);
-				title2.setTextColor(android.graphics.Color.WHITE);
-				title2.setBackgroundDrawable(bg);
-				title2.setPadding(padding, 0, padding, 0);
-				layout.addView(title2);
+				var title = defaultSubTitle("Other");
+				layout.addView(title);
 
 				layout.addView(dividerText());
 
@@ -5607,7 +5610,7 @@ function updateAvailableUI()
 				var layout;
 				layout = defaultLayout("DesnoGuns Mod: new version");
 
-				var updatesText = defaultTextView("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
+				var updatesText = defaultContentTextView("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
 					"You can find a download link on the minecraftforum.net thread (press the button to visit it).");
 				layout.addView(updatesText);
 				setMarginsLinearLayout(updatesText, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
@@ -5682,7 +5685,7 @@ function supportUI()
 				var layout;
 				layout = defaultLayout("Support me");
 
-				var text = defaultTextView("This mod was brought to you with love by Desno365 :)<br>Thank you for playing with it.");
+				var text = defaultContentTextView("This mod was brought to you with love by Desno365 :)<br>Thank you for playing with it.");
 				layout.addView(text);
 				setMarginsLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
@@ -5929,7 +5932,7 @@ function pleaseInstallTextureUI()
 			try
 			{
 				var layout = new android.widget.LinearLayout(currentActivity);
-				var padding = Math.floor(8 * deviceDensity);
+				var padding = convertDpToPixel(8);
 				layout.setPadding(padding, padding, padding, padding);
 				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
 
@@ -6404,7 +6407,7 @@ var SoundsInstaller = {
 
 					var layout = new android.widget.LinearLayout(currentActivity);
 					layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-					var padding = Math.floor(8 * deviceDensity);
+					var padding = convertDpToPixel(8);
 					layout.setPadding(padding, padding, padding, padding);
 
 					var scroll = new android.widget.ScrollView(currentActivity);
