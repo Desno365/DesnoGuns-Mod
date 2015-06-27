@@ -94,8 +94,8 @@ const BUTTONS_SIZE_DEFAULT = 24;
 const AMMO_TEXT_SIZE_DEFAULT = 18;
 var buttonsSize = BUTTONS_SIZE_DEFAULT;
 var ammoTextSize = AMMO_TEXT_SIZE_DEFAULT;
-var moveButtons = 0;
-var displaySight = true;
+var pixelsOffsetButtons = 0;
+var shouldDisplaySight = true;
 var displayGunNameInAmmo = false;
 var switchedButtonsPosition = false;
 
@@ -126,7 +126,7 @@ const RANDOMNESS = 0.55;
 const RECOIL = 3;
 
 // aiming variables
-var aiming = false;
+var isAiming = false;
 var zoomWithFov = 72;
 var aimingGun;
 
@@ -135,7 +135,7 @@ var shotText;
 var currentShotTicks = 0;
 
 // for assault rifles
-var shooting = false;
+var isShooting = false;
 var shootingRunnable;
 var onClickRunnable;
 const GUNS_ON_TOUCH_SHOOT_VOLUME = 0.70;
@@ -1508,7 +1508,7 @@ function newLevel()
 
 	var mButtonsTest = ModPE.readData("mButtons");
 	if(mButtonsTest != "" && mButtonsTest != null && mButtonsTest != undefined)
-		moveButtons = parseFloat(mButtonsTest);
+		pixelsOffsetButtons = parseFloat(mButtonsTest);
 
 	var aTSizeTest = ModPE.readData("aTSize");
 	if(aTSizeTest != "" && aTSizeTest != null && aTSizeTest != undefined)
@@ -1517,7 +1517,7 @@ function newLevel()
 	// load saved boolean settings
 	// getSavedBoolean(name, defaultValue, debug);
 	deathWorkaround = getSavedBoolean("dWorkaround", false, true);
-	displaySight = getSavedBoolean("dSight", true);
+	shouldDisplaySight = getSavedBoolean("dSight", true);
 	displayGunNameInAmmo = getSavedBoolean("dNameAmmo", false);
 	reloadInCreative = getSavedBoolean("rCreative", false);
 	instantReloadInCreative = getSavedBoolean("instReload", false);
@@ -1554,7 +1554,7 @@ function newLevel()
 
 function leaveGame()
 {
-	removeShootAndSettingsButtons();
+	removeShootAndAimButtons();
 
 	displayedMessageNoSound = false;
 
@@ -1572,7 +1572,7 @@ function leaveGame()
 	currentShotTicks = 0;
 
 	// for assault rifles
-	shooting = false;
+	isShooting = false;
 	shootingRunnable = null;
 
 	// for minigun
@@ -1601,27 +1601,10 @@ function leaveGame()
 	zoomWithFov = 72;
 
 	// info item UIs
-	currentActivity.runOnUiThread(new java.lang.Runnable(
-	{
-		run: function()
-		{
-			try {
-				popupTip.dismiss();
-				popupSettingsImage.dismiss();
-			} catch(e) {}
-		}
-	}));
+	removeInfoItemUI();
 
 	// medical kit UI
-	currentActivity.runOnUiThread(new java.lang.Runnable(
-	{
-		run: function()
-		{
-			try {
-				popupHealth.dismiss();
-			} catch(e) {}
-		}
-	}));
+	removeHealButton();
 }
 
 function procCmd(text)
@@ -1765,10 +1748,10 @@ function changeCarriedItemHook(currentItem, previousItem)
 {
 	// prevent infinite shooting
 	currentShotTicks = 0;
-	shooting = false;
+	isShooting = false;
 
 	// remove aiming if the user was aiming
-	removeAiming();
+	removeAimAndImageLayer();
 
 	// stop reloading if necessary
 	stopReloading();
@@ -1797,39 +1780,26 @@ function changeCarriedItemHook(currentItem, previousItem)
 	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id)
 	{
 		//
-		removeShootAndSettingsButtons();
+		removeShootAndAimButtons();
 	}
 
 	// remove UI of the info item
 	if(previousItem == INFO_ITEM_ID)
 	{
-		currentActivity.runOnUiThread(new java.lang.Runnable(
-		{
-			run: function()
-			{
-				popupTip.dismiss();
-				popupSettingsImage.dismiss();
-			}
-		}));
+		removeInfoItemUI();
 	}
 
 	// remove UI of the medical kit
 	if(previousItem == MEDICAL_KIT_ID)
 	{
-		currentActivity.runOnUiThread(new java.lang.Runnable(
-		{
-			run: function()
-			{
-				popupHealth.dismiss();
-			}
-		}));
+		removeHealButton();
 	}
 
 	// the current item is a gun?
 	if(isItemAGun(currentItem) && needsToLoadTheUI(currentItem, true))
 	{
 		if(!isItemAGun(previousItem) || !needsToLoadTheUI(previousItem, false))
-			shootAndSettingsButtons(true);
+			displayShootAndAimButtons(true);
 
 		// reset clicks and long clicks
 		resetRunnables();
@@ -1982,7 +1952,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		if(isItemAGun(previousItem))
 		{
 			// the item before was weapon, now it isn't
-			removeShootAndSettingsButtons();
+			removeShootAndAimButtons();
 		}
 	}
 
@@ -1990,13 +1960,13 @@ function changeCarriedItemHook(currentItem, previousItem)
 	if(currentItem == MEDICAL_KIT_ID)
 	{
 		//
-		medicalKitButton();
+		displayHealButton();
 	}
 
 	// grenade
 	if(currentItem == GRENADE.id)
 	{
-		shootAndSettingsButtons(false);
+		displayShootAndAimButtons(false);
 
 		// load click event
 		onClickRunnable = (new java.lang.Runnable(
@@ -2014,7 +1984,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// fragment
 	if(currentItem == FRAGMENT.id)
 	{
-		shootAndSettingsButtons(false);
+		displayShootAndAimButtons(false);
 
 		// load click event
 		onClickRunnable = (new java.lang.Runnable(
@@ -2032,7 +2002,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// molotov
 	if(currentItem == MOLOTOV.id)
 	{
-		shootAndSettingsButtons(false);
+		displayShootAndAimButtons(false);
 
 		// load click event
 		onClickRunnable = (new java.lang.Runnable(
@@ -2051,7 +2021,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	if(currentItem == INFO_ITEM_ID)
 	{
 		//
-		infoItemUI();
+		displayInfoItemUI();
 	}
 }
 
@@ -2097,7 +2067,7 @@ var ModTickFunctions = {
 
 	onTouchShooting: function()
 	{
-		if(shooting && shootingRunnable != null)
+		if(isShooting && shootingRunnable != null)
 		{
 			shootingRunnable.run();
 		} else
@@ -2301,7 +2271,7 @@ function addGunCraftingRecipe(id, howMany, recipe)
 function shootGrenadeWeapon(gun)
 {
 	var gunAccuracy;
-	if(aiming)
+	if(isAiming)
 		var gunAccuracy = gun.accuracy - 1;
 	else
 		var gunAccuracy = gun.accuracy;
@@ -2457,7 +2427,7 @@ function fragmentShit()
 function shoot(gun)
 {
 	var gunAccuracy;
-	if(aiming)
+	if(isAiming)
 	{
 		var gunAccuracy = gun.accuracy - 1;
 	} else
@@ -2748,13 +2718,13 @@ function onTouchWeaponShoot(event, gun, reload)
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
 	{
-		shooting = false;
+		isShooting = false;
 		showCloudParticle(gun.smoke);
 	} else
 	{
-		if(!shooting)
+		if(!isShooting)
 		{
-			shooting = true;
+			isShooting = true;
 			currentShotTicks = gun.fireRate;
 			if(reload)
 				onTouchShootingRunnableWithReload(gun);
@@ -2820,7 +2790,7 @@ function onTouchWithWaitWeaponShoot(event, gun, reload)
 		onTouchWithWaitWeaponButtonReleased(gun);
 	} else
 	{
-		if(!shooting && !isTouchingFireButtonGunsWithWait)
+		if(!isShooting && !isTouchingFireButtonGunsWithWait)
 		{
 			try
 			{
@@ -2840,7 +2810,7 @@ function onTouchWithWaitWeaponShoot(event, gun, reload)
 					{
 						if(isTouchingFireButtonGunsWithWait)
 						{
-							shooting = true;
+							isShooting = true;
 							gunSpinSound.start();
 							currentShotTicks = gun.fireRate;
 							if(reload)
@@ -2867,9 +2837,9 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 	isTouchingFireButtonGunsWithWait = false;
 	if(gunWarmupSound.isPlaying())
 		gunWarmupSound.stop();
-	if(shooting)
+	if(isShooting)
 		showCloudParticle(gun.smoke);
-	shooting = false;
+	isShooting = false;
 	try {
 		gunSpinSound.stop();
 		gunSpinSound.prepareAsync();
@@ -3095,7 +3065,7 @@ var Sound = {
 
 
 //########## SHOOT UI functions ##########
-function shootAndSettingsButtons(loadAimButton)
+function displayShootAndAimButtons(loadAimButton)
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
@@ -3123,9 +3093,9 @@ function shootAndSettingsButtons(loadAimButton)
 							if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
 							{
 								aimingGun = gun;
-								if(!aiming)
+								if(!isAiming)
 								{
-									aiming = true;
+									isAiming = true;
 									for(var ms = 1; ms < gun.zoomLevel; ms++)
 									{
 										new android.os.Handler().postDelayed(new java.lang.Runnable({
@@ -3141,19 +3111,19 @@ function shootAndSettingsButtons(loadAimButton)
 										{
 											zoomWithFov--;
 											ModPE.setFov(zoomWithFov);
-											aimImageLayer(aimingGun);
+											displayAimImageLayer(aimingGun);
 										}
 									}), gun.zoomLevel * 12);
 								} else
 								{
-									sightImage();
-									removeAiming();
+									displaySight();
+									removeAimAndImageLayer();
 								}
 							} else
 							{
-								if(!aiming)
+								if(!isAiming)
 								{
-									aiming = true;
+									isAiming = true;
 									for(var ms = 1; ms <= gun.zoomLevel; ms++)
 									{
 										new android.os.Handler().postDelayed(new java.lang.Runnable({
@@ -3166,7 +3136,7 @@ function shootAndSettingsButtons(loadAimButton)
 									}
 								} else
 								{
-									removeAiming();
+									removeAimAndImageLayer();
 								}
 							}
 
@@ -3190,11 +3160,11 @@ function shootAndSettingsButtons(loadAimButton)
 
 					popupAim = new android.widget.PopupWindow(layoutAim, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
 					popupAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.LEFT : android.view.Gravity.RIGHT) | android.view.Gravity.CENTER, 0, moveButtons);
+					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.LEFT : android.view.Gravity.RIGHT) | android.view.Gravity.CENTER, 0, pixelsOffsetButtons);
 				}
 
 
-				sightImage();
+				displaySight();
 
 
 				var layoutShot = new android.widget.RelativeLayout(currentActivity);
@@ -3216,23 +3186,9 @@ function shootAndSettingsButtons(loadAimButton)
 						return false;
 					}
 				});
-				shotText.setOnGenericMotionListener(new android.view.View.OnGenericMotionListener()
-				{
-					onGenericMotion: function(v, event)
-					{
-						return false;
-					}
-				});
 				shotText.setOnLongClickListener(new android.view.View.OnLongClickListener()
 				{
 					onLongClick: function(v)
-					{
-						return false;
-					}
-				});
-				shotText.setOnHoverListener(new android.view.View.OnHoverListener()
-				{
-					onHover: function(v, event)
 					{
 						return false;
 					}
@@ -3258,7 +3214,7 @@ function shootAndSettingsButtons(loadAimButton)
 				popupShot.setOutsideTouchable(false);
 				popupShot.setFocusable(false);
 				popupShot.setSplitTouchEnabled(true);
-				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.RIGHT : android.view.Gravity.LEFT) | android.view.Gravity.CENTER, 0, moveButtons);
+				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.RIGHT : android.view.Gravity.LEFT) | android.view.Gravity.CENTER, 0, pixelsOffsetButtons);
 
 
 				var layoutAmmo = new android.widget.RelativeLayout(currentActivity);
@@ -3297,7 +3253,7 @@ function shootAndSettingsButtons(loadAimButton)
 	}));
 }
 
-function removeShootAndSettingsButtons()
+function removeShootAndAimButtons()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
@@ -3330,7 +3286,7 @@ function resetRunnables()
 {
 	if(shootingRunnable != null)
 	{
-		shooting = false;
+		isShooting = false;
 		shootingRunnable = null;
 	}
 	if(onClickRunnable != null)
@@ -3468,7 +3424,7 @@ var Recoil = {
 
 
 //########## AIM functions ##########
-function sightImage()
+function displaySight()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
@@ -3476,7 +3432,7 @@ function sightImage()
 		{
 			try
 			{
-				if(displaySight)
+				if(shouldDisplaySight)
 				{
 					try {
 						popupSightImage.dismiss();
@@ -3508,15 +3464,15 @@ function sightImage()
 	}));
 }
 
-function removeAiming()
+function removeAimAndImageLayer()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
 		run: function()
 		{
-			if(aiming)
+			if(isAiming)
 			{
-				aiming = false;
+				isAiming = false;
 				var removeAiming = zoomWithFov;
 				for(var ms = 1; ms <= (72 - removeAiming); ms++)
 				{
@@ -3536,7 +3492,7 @@ function removeAiming()
 	}));
 }
 
-function aimImageLayer(gun)
+function displayAimImageLayer(gun)
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
@@ -3581,7 +3537,7 @@ function aimImageLayer(gun)
 					}
 				}
 
-				removeShootAndSettingsButtons();
+				removeShootAndAimButtons();
 
 				var layoutAiming = new android.widget.LinearLayout(currentActivity);
 				layoutAiming.setOrientation(android.widget.LinearLayout.VERTICAL);
@@ -3603,7 +3559,7 @@ function aimImageLayer(gun)
 				popupAiming.setHeight(displayHeight);
 				popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
 
-				shootAndSettingsButtons(true);
+				displayShootAndAimButtons(true);
 				if(shouldReload())
 					setAmmoTextFromGun(gun);
 				else
@@ -3935,7 +3891,7 @@ function shouldReload()
 
 
 //########## MED KIT functions ##########
-function medicalKitButton()
+function displayHealButton()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
 	{
@@ -4007,7 +3963,7 @@ function medicalKitButton()
 				popupHealth.setOutsideTouchable(false);
 				popupHealth.setFocusable(false);
 				popupHealth.setSplitTouchEnabled(true);
-				popupHealth.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, moveButtons);
+				popupHealth.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, pixelsOffsetButtons);
 			} catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -4015,11 +3971,24 @@ function medicalKitButton()
 		}
 	});
 }
+
+function removeHealButton()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			try {
+				popupHealth.dismiss();
+			} catch(e) {}
+		}
+	}));
+}
 //########## MED KIT functions - END ##########
 
 
 //########## INFO ITEM functions ##########
-function infoItemUI()
+function displayInfoItemUI()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
 	{
@@ -4194,6 +4163,22 @@ function getRandomTip()
 			return "Did you find the Easter Egg? No? You'll find a tip on one of these splash texts.";
 		}
 	}
+}
+
+function removeInfoItemUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			try {
+				popupSettingsImage.dismiss();
+			} catch(e) {}
+			try {
+				popupTip.dismiss();
+			} catch(e) {}
+		}
+	}));
 }
 //########## INFO ITEM functions - END ##########
 
@@ -5345,24 +5330,24 @@ function settingsUI()
 					maxY--;
 				var moveButtonsChooser = new android.widget.SeekBar(currentActivity);
 				moveButtonsChooser.setMax(maxY);
-				moveButtonsChooser.setProgress((-moveButtons) + (maxY / 2));
+				moveButtonsChooser.setProgress((-pixelsOffsetButtons) + (maxY / 2));
 				moveButtonsChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
 				{
 					onProgressChanged: function()
 					{
-						moveButtons = -(moveButtonsChooser.getProgress() - (maxY / 2));
-						moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+						pixelsOffsetButtons = -(moveButtonsChooser.getProgress() - (maxY / 2));
+						moveButtonsText1.setText("Y position: " + (-pixelsOffsetButtons) + " pixels");
 					},
 					onStopTrackingTouch: function()
 					{
-						ModPE.saveData("mButtons", moveButtons);
+						ModPE.saveData("mButtons", pixelsOffsetButtons);
 					}
 				});
 				moveButtonsChooser.setPadding(padding * 2, 0, padding * 2, 0);
 				layout.addView(moveButtonsChooser);
 
 				var moveButtonsText1 = new android.widget.TextView(currentActivity);
-				moveButtonsText1.setText("Y position: " + (-moveButtons) + " pixels");
+				moveButtonsText1.setText("Y position: " + (-pixelsOffsetButtons) + " pixels");
 				moveButtonsText1.setTextColor(android.graphics.Color.parseColor("#FFC0C0C0"));
 				moveButtonsText1.setPadding(padding * 2, 0, padding * 2, 0);
 				layout.addView(moveButtonsText1);
@@ -5430,15 +5415,15 @@ function settingsUI()
 				layout.addView(dividerText());
 
 				var switchSight = new android.widget.Switch(currentActivity);
-				switchSight.setChecked(displaySight);
+				switchSight.setChecked(shouldDisplaySight);
 				switchSight.setText("Display a little cross in the center of the screen");
 				switchSight.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				switchSight.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
 				{
 					onCheckedChanged: function()
 					{
-						displaySight = !displaySight;
-						ModPE.saveData("dSight", displaySight);
+						shouldDisplaySight = !shouldDisplaySight;
+						ModPE.saveData("dSight", shouldDisplaySight);
 						try {
 							popupSightImage.dismiss();
 						} catch(e) {}
