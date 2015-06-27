@@ -106,10 +106,13 @@ var deathWorkaround = false;
 var reloadInCreative = false;
 var instantReloadInCreative = false;
 
-// variables for guns
+// guns variables
 var ammoText;
 var isReloading = false;
 var reloadingGun;
+
+// grenades variables
+var infiniteGrenade = false;
 
 // sounds
 var reloadSound = new android.media.MediaPlayer();
@@ -1531,7 +1534,7 @@ function newLevel()
 	{
 		run: function()
 		{
-			getLatestVersionMod();
+			updateLatestVersionMod();
 			if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
 				updateAvailableUI();
 			else
@@ -1626,6 +1629,51 @@ function leaveGame()
 			} catch(e) {}
 		}
 	}));
+}
+
+function procCmd(text)
+{
+	var command = text.toLowerCase().split(" ");
+	switch(command[0])
+	{
+		case "swag-grenade":
+		case "swaggrenade":
+		case "swag_grenade":
+		{
+			if(infiniteGrenade)
+			{
+				infiniteGrenade = false;
+				clientMessage("Disabled swag.");
+			}
+			else
+			{
+				infiniteGrenade = true;
+				clientMessage("A crash may happen if you use a fragment grenade.");
+				clientMessage(ChatColor.RED + "Use at your own risk!");
+				clientMessage("For a better experience use it on a flat world.");
+			}
+			break;
+		}
+		case "swag":
+		{
+			if(command[1] == "grenade")
+			{
+				if(infiniteGrenade)
+				{
+					infiniteGrenade = false;
+					clientMessage("Disabled swag.");
+				}
+				else
+				{
+					infiniteGrenade = true;
+					clientMessage("A crash may happen if you use a fragment grenade.");
+					clientMessage(ChatColor.RED + "Use at your own risk!");
+					clientMessage("For a better experience use it on a flat world.");
+				}
+			}
+			break;
+		}
+	}
 }
 
 function useItem(x, y, z, itemId, blockId, side, itemDamage)
@@ -2246,10 +2294,16 @@ function addNewGun(gun)
 		Item.defineItem(gun.id, gun.texture, gun.textureNumber, gun.name, 1);
 	else
 		Item.defineItem(gun.id, gun.texture, 0, gun.name, 1);
-	addCraftingRecipe(gun.id, 1, gun.recipe);
+	addGunCraftingRecipe(gun.id, 1, gun.recipe);
 	Item.setMaxDamage(gun.id, gun.ammo);
 	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
 	Item.setVerticalRender(gun.id);
+}
+
+function addGunCraftingRecipe(id, howMany, recipe)
+{
+	// here add other items for crafting with the chosen letter.
+	Item.addShapedRecipe(id, howMany, 0, recipe, ["i", 265, 0, "r", 331, 0, "a", AMMO_ASSAULT_RIFLE_ID, 0, "b", AMMO_SUB_MACHINE_ID, 0, "c", AMMO_LIGHT_MACHINE_ID, 0, "d", AMMO_SNIPER_RIFLE_ID, 0, "e", AMMO_SHOTGUN_ID, 0, "f", AMMO_MACHINE_PISTOL_ID, 0, "g", AMMO_HANDGUN_ID, 0, "h", AMMO_LAUNCHER_ID, 0, "j", AMMO_MINIGUN_ID, 0]);
 }
 
 function shootGrenadeWeapon(gun)
@@ -2262,7 +2316,7 @@ function shootGrenadeWeapon(gun)
 
 	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
 	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-	var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+	var gunShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
 	if(gun.hasIncendiaryBullets)
 	{
@@ -2283,9 +2337,9 @@ function shootGrenadeHand(grenadeObject)
 {
 	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * grenadeObject.accuracy;
 	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * grenadeObject.accuracy;
-	var playerShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+	var playerShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
-	var handShootDir = lookDir(getYaw() + 30, getPitch());
+	var handShootDir = getDirection(getYaw() + 30, getPitch());
 
 	if(grenadeObject.explodeOnTouch)
 		var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 81);
@@ -2317,7 +2371,8 @@ function shootGrenadeHand(grenadeObject)
 	{
 		if(grenadeObject.id == FRAGMENT.id)
 		{
-			new android.os.Handler().postDelayed(new java.lang.Runnable({
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
 				run: function()
 				{
 					// push() put the object at the end so the first object ( [0] ) is the object that will explode
@@ -2335,19 +2390,23 @@ function shootGrenadeHand(grenadeObject)
 						Entity.setMobSkin(fragment, "mob/fraggrenade.png");
 						FRAGMENT.fragmentArray.push(new entityClass(fragment));
 
-						new android.os.Handler().postDelayed(new java.lang.Runnable({
+						new android.os.Handler().postDelayed(new java.lang.Runnable(
+						{
 							run: function()
 							{
-								//this was just for fun, to enable it comment all the code inside the Handler and uncomment the function
-								//fragmentShit();
-								var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
-								var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
-								var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
-								Entity.remove(FRAGMENT.fragmentArray[0].entity);
-								FRAGMENT.fragmentArray.splice(0, 1);
+								if(infiniteGrenade)
+								{
+									fragmentShit();
+								} else
+								{
+									var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
+									var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
+									var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
+									Entity.remove(FRAGMENT.fragmentArray[0].entity);
+									FRAGMENT.fragmentArray.splice(0, 1);
 
-								Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);
-
+									Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);
+								}
 							}
 						}), FRAGMENT.fragmentDelay);
 					}
@@ -2380,16 +2439,18 @@ function shootGrenadeHand(grenadeObject)
 
 function fragmentShit()
 {
-	/*var explosionX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
+	var explosionX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
 	var explosionY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
 	var explosionZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
 	Entity.remove(FRAGMENT.fragmentArray[0].entity);
 	FRAGMENT.fragmentArray.splice(0, 1);
 
-	for(var i = 0; i < FRAGMENT.howManyFragments; i++)
+	for(var i = 0; i < 2; i++)
 	{
-		var fragment = Level.spawnMob(explosionX, explosionY, explosionZ, 11);
+		var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
 		Entity.setHealth(fragment, 99999);
+		Entity.setRenderType(fragment, grenadeRenderType.renderType);
+		Entity.setMobSkin(fragment, "mob/fraggrenade.png");
 		FRAGMENT.fragmentArray.push(new entityClass(fragment));
 
 		new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
@@ -2398,7 +2459,7 @@ function fragmentShit()
 		}}), FRAGMENT.fragmentDelay);
 	}
 
-	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);*/
+	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
 }
 
 function shoot(gun)
@@ -2419,7 +2480,7 @@ function shoot(gun)
 	{
 		// multiple arrows
 
-		var playerDir = lookDir(getYaw(), getPitch());
+		var playerDir = getDirection(getYaw(), getPitch());
 		var bulletsPerShotForXY = gun.shotgunWidth / (gun.shotgunBulletsPerLineShot - 1) * 2;
 		for(var i = -gun.shotgunWidth; i <= gun.shotgunWidth; i += bulletsPerShotForXY)
 		{
@@ -2427,7 +2488,7 @@ function shoot(gun)
 			{
 				var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
 				var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-				var gunShootDir = lookDir(getYaw() + yawAccuracyValue + i, getPitch() + pitchAccuracyValue + j);
+				var gunShootDir = getDirection(getYaw() + yawAccuracyValue + i, getPitch() + pitchAccuracyValue + j);
 
 				if(gun.hasIceBullets)
 					var arrow = Level.spawnMob(getPlayerX() + (playerDir.x * 2), getPlayerY() + (playerDir.y * 2.5), getPlayerZ() + (playerDir.z * 2), 81);
@@ -2450,9 +2511,9 @@ function shoot(gun)
 
 			var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gun.accuracy;
 			var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gun.accuracy;
-			var playerShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+			var playerShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
-			var flameShootDir = lookDir(getYaw() + 45, getPitch());
+			var flameShootDir = getDirection(getYaw() + 45, getPitch());
 
 			var xDir;
 			var yDir;
@@ -2520,7 +2581,7 @@ function shoot(gun)
 
 			var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
 			var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-			var gunShootDir = lookDir(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+			var gunShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
 
 			if(gun.hasIceBullets)
 				var arrow = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 81);
@@ -2538,10 +2599,11 @@ function shoot(gun)
 
 function showCloudParticle(amount)
 {
-	new android.os.Handler().postDelayed(new java.lang.Runnable({
+	new android.os.Handler().postDelayed(new java.lang.Runnable(
+	{
 		run: function()
 		{
-			var gunDir = lookDir(getYaw() + 30, getPitch());
+			var gunDir = getDirection(getYaw() + 30, getPitch());
 			for(var i = 0; i < amount; i++)
 				Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
 		}
@@ -2632,12 +2694,6 @@ function setUpGunsWithDate()
 		guns.push(XMAS_MINIGUN);
 		guns.push(XMAS_SNIPER);
 	}
-}
-
-function shouldReload()
-{
-	// reload in survival, or in creative with reload option enabled
-	return reloadInCreative || Level.getGameMode() == GameMode.SURVIVAL;
 }
 //########## WEAPONS functions - END ##########
 
@@ -3031,7 +3087,7 @@ var Sound = {
 		} catch(err)
 		{
 			ModPE.showTipMessage(getLogText() + "Sounds not installed!");
-			ModPE.log(getLogText() + "Error in loadSoundPool: " + err);
+			ModPE.log(getLogText() + "Error in loadSoundPoolFromPath: " + err);
 		}
 	},
 
@@ -3650,7 +3706,7 @@ function reloadAmmo(gun)
 								{
 									Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
 									setAmmoTextFromGun(gun);
-									Player.removeItemFromInventory(ammoSlot, 1);
+									Player.removeItemsFromInventory(ammoSlot, 1);
 								}
 							}
 
@@ -3877,6 +3933,12 @@ function getAmmoName(id)
 		}
 	}
 }
+
+function shouldReload()
+{
+	// reload in survival, or in creative with reload option enabled
+	return reloadInCreative || Level.getGameMode() == GameMode.SURVIVAL;
+}
 //########## RELOAD GUN functions - END ##########
 
 
@@ -4082,7 +4144,7 @@ function getRandomTip()
 		}
 		case 6:
 		{
-			return "The damage of a bullet depends on his speed.";
+			return "The damage of a bullet to a mob depends on his speed.";
 		}
 		case 7:
 		{
@@ -4094,7 +4156,7 @@ function getRandomTip()
 		}
 		case 9:
 		{
-			return "Sounds are important. Always remember to install them correctly ;)";
+			return "This mod is compatible with the Portal 2 Mod!";
 		}
 		case 10:
 		{
@@ -4102,7 +4164,7 @@ function getRandomTip()
 		}
 		case 11:
 		{
-			return "Press the settings icon on the left, it is awesome.";
+			return "Press the settings icon on the left, there are awesome things inside.";
 		}
 		case 12:
 		{
@@ -4137,7 +4199,7 @@ function getRandomTip()
 		}
 		case 19:
 		{
-			return "Did you find the Easter Egg? No? Read all these splash texts, you'll find a tip.";
+			return "Did you find the Easter Egg? No? You'll find a tip on one of these splash texts.";
 		}
 	}
 }
@@ -4145,7 +4207,7 @@ function getRandomTip()
 
 
 //########## INTERNET functions ##########
-function getLatestVersionMod()
+function updateLatestVersionMod()
 {
 	try
 	{
@@ -4172,7 +4234,7 @@ function getLatestVersionMod()
 	} catch(err)
 	{
 		clientMessage("DesnoGuns Mod: Can't check for updates, please check your Internet connection.");
-		ModPE.log(getLogText() + "getLatestVersionMod(): caught an error: " + err);
+		ModPE.log(getLogText() + "updateLatestVersionMod(): caught an error: " + err);
 	}
 }
 //########## INTERNET functions - END ##########
@@ -4186,7 +4248,7 @@ function vector3d(x, y, z)
 	this.z = z;
 }
 
-function lookDir(yaw, pitch)
+function getDirection(yaw, pitch)
 {
 	var direction = new vector3d(0, 0, 0);
 	direction.y = -Math.sin(java.lang.Math.toRadians(pitch));
@@ -4246,7 +4308,7 @@ Player.getSlotOfItem = function(item, count)
 	return -1;
 }
 
-Player.removeItemFromInventory = function(slot, count)
+Player.removeItemsFromInventory = function(slot, count)
 {
 	if(Player.getInventorySlotCount(slot) > count)
 	{
@@ -4296,7 +4358,60 @@ function isFileEmpty(path)
 	else
 		return true;
 }
+
+function writeFileFromByteArray(byteArray, path)
+{
+	var file = new java.io.File(path);
+	if(file.exists())
+		file.delete();
+	file.createNewFile();
+	var stream = new java.io.FileOutputStream(file);
+	stream.write(byteArray);
+	stream.close();
+	byteArray = null;
+}
 //########## FILE functions - END ##########
+
+
+//########## IMAGE functions ##########
+function createImages()
+{
+	settingsPngDecoded = decodeImageFromBase64(settingsPng);
+	settingsPng = null;
+
+	sightPngDecoded = decodeImageFromBase64(sightPng);
+	sightPng = null;
+
+	backgroundDarkDirtDecoded = decodeImageFromBase64(backgroundDarkDirtPng);
+	backgroundDarkDirtScaled = scaleImageToDensity(backgroundDarkDirtDecoded);
+	background = new android.graphics.drawable.BitmapDrawable(backgroundDarkDirtScaled);
+	background.setTileModeXY(android.graphics.Shader.TileMode.REPEAT, android.graphics.Shader.TileMode.REPEAT);
+	backgroundDarkDirtPng = null;
+
+	barrettUIDecoded = decodeImageFromBase64(barrettUI);
+	barrettUI = null;
+	dragunovUIDecoded = decodeImageFromBase64(dragunovUI);
+	dragunovUI = null;
+	m21UIDecoded = decodeImageFromBase64(m21UI);
+	m21UI = null;
+	m40a3UIDecoded = decodeImageFromBase64(m40a3UI);
+	m40a3UI = null;
+	r700UIDecoded = decodeImageFromBase64(r700UI);
+	r700UI = null;
+}
+
+function decodeImageFromBase64(base64String)
+{
+	var byteArray = android.util.Base64.decode(base64String, 0);
+	return android.graphics.BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+}
+
+function scaleImageToDensity(image)
+{
+	//
+	return android.graphics.Bitmap.createScaledBitmap(image, Math.round(image.getWidth() * deviceDensity), Math.round(image.getHeight() * deviceDensity), false)
+}
+//########## IMAGE functions - END ##########
 
 
 //########## MISC functions ##########
@@ -4313,30 +4428,6 @@ function entityClass(entity)
 	this.previousX = 0;
 	this.previousY = 0;
 	this.previousZ = 0;
-}
-
-function addCraftingRecipe(id, howMany, recipe)
-{
-	// here add other items for crafting with the chosen letter.
-	Item.addShapedRecipe(id, howMany, 0, recipe, ["i", 265, 0, "r", 331, 0, "a", AMMO_ASSAULT_RIFLE_ID, 0, "b", AMMO_SUB_MACHINE_ID, 0, "c", AMMO_LIGHT_MACHINE_ID, 0, "d", AMMO_SNIPER_RIFLE_ID, 0, "e", AMMO_SHOTGUN_ID, 0, "f", AMMO_MACHINE_PISTOL_ID, 0, "g", AMMO_HANDGUN_ID, 0, "h", AMMO_LAUNCHER_ID, 0, "j", AMMO_MINIGUN_ID, 0]);
-}
-
-function writeFileFromByteArray(byteArray, path)
-{
-	var file = new java.io.File(path);
-	if(file.exists())
-		file.delete();
-	file.createNewFile();
-	var stream = new java.io.FileOutputStream(file);
-	stream.write(byteArray);
-	stream.close();
-	byteArray = null;
-}
-
-function decodeImageFromBase64(base64String)
-{
-	var byteArray = android.util.Base64.decode(base64String, 0);
-	return android.graphics.BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 }
 
 function stringToBoolean(string)
@@ -4429,45 +4520,13 @@ function getLogText()
 	//
 	return(TAG + ": ");
 }
-
-function createImages()
-{
-	settingsPngDecoded = decodeImageFromBase64(settingsPng);
-	settingsPng = null;
-
-	sightPngDecoded = decodeImageFromBase64(sightPng);
-	sightPng = null;
-
-	backgroundDarkDirtDecoded = decodeImageFromBase64(backgroundDarkDirtPng);
-	backgroundDarkDirtScaled = scaleImageToDensity(backgroundDarkDirtDecoded);
-	background = new android.graphics.drawable.BitmapDrawable(backgroundDarkDirtScaled);
-	background.setTileModeXY(android.graphics.Shader.TileMode.REPEAT, android.graphics.Shader.TileMode.REPEAT);
-	backgroundDarkDirtPng = null;
-
-	barrettUIDecoded = decodeImageFromBase64(barrettUI);
-	barrettUI = null;
-	dragunovUIDecoded = decodeImageFromBase64(dragunovUI);
-	dragunovUI = null;
-	m21UIDecoded = decodeImageFromBase64(m21UI);
-	m21UI = null;
-	m40a3UIDecoded = decodeImageFromBase64(m40a3UI);
-	m40a3UI = null;
-	r700UIDecoded = decodeImageFromBase64(r700UI);
-	r700UI = null;
-}
-
-function scaleImageToDensity(image)
-{
-	return android.graphics.Bitmap.createScaledBitmap(image, Math.round(image.getWidth() * deviceDensity), Math.round(image.getHeight() * deviceDensity), false)
-}
 //########## MISC functions - END ##########
 
 
-//########################################################################################################################################################
-// GUI functions
-//########################################################################################################################################################
+//########## UTILS OF UI functions ##########
+const MARGIN_HORIZONTAL_BIG = 16;
+const MARGIN_HORIZONTAL_SMALL = 4;
 
-//########## utils of UI functions ##########
 function dividerText()
 {
 	var dividerText = new android.widget.TextView(currentActivity);
@@ -4534,7 +4593,7 @@ function defaultLayout(title)
 	return layout;
 }
 
-function showLayout(layout)
+function defaultPopup(layout)
 {
 	var scroll = new android.widget.ScrollView(currentActivity);
 	scroll.addView(layout);
@@ -4542,7 +4601,6 @@ function showLayout(layout)
 	var popup = new android.app.Dialog(currentActivity);
 	popup.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
 	popup.setContentView(scroll);
-	popup.show();
 	return popup;
 }
 
@@ -4559,7 +4617,12 @@ function convertDpToPixel(dp)
 	//
 	return (dp * deviceDensity);
 }
-//########## utils of UI functions - END ##########
+//########## UTILS OF UI functions - END ##########
+
+
+//########################################################################################################################################################
+// UI functions
+//########################################################################################################################################################
 
 function infoDesnoGunsMod()
 {
@@ -4591,7 +4654,7 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(informationButton);
-				setMarginsLinearLayout(informationButton, 0, 4, 0, 4);
+				setMarginsLinearLayout(informationButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 				var settingsButton = MinecraftButton();
 				settingsButton.setText("Settings");
@@ -4604,7 +4667,7 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(settingsButton);
-				setMarginsLinearLayout(settingsButton, 0, 4, 0, 16);
+				setMarginsLinearLayout(settingsButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
 				var updatesButton = MinecraftButton();
 				updatesButton.setText("Check for updates");
@@ -4622,7 +4685,7 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(updatesButton);
-				setMarginsLinearLayout(updatesButton, 0, 4, 0, 4);
+				setMarginsLinearLayout(updatesButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 				var modThreadButton = MinecraftButton();
 				modThreadButton.setText("Visit the mod thread");
@@ -4635,7 +4698,7 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(modThreadButton);
-				setMarginsLinearLayout(modThreadButton, 0, 4, 0, 4);
+				setMarginsLinearLayout(modThreadButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 				var supportButton = MinecraftButton();
 				supportButton.setText("Support the developer");
@@ -4648,7 +4711,7 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(supportButton);
-				setMarginsLinearLayout(supportButton, 0, 4, 0, 16);
+				setMarginsLinearLayout(supportButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
 				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
@@ -4660,10 +4723,11 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(exitButton);
-				setMarginsLinearLayout(exitButton, 0, 4, 0, 4);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
-				var popup = showLayout(layout);
+				var popup = defaultPopup(layout);
+				popup.show();
 
 			} catch(err)
 			{
@@ -4681,21 +4745,12 @@ function informationUI()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
+				var layout;
+				layout = defaultLayout("Information");
 
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle("Information");
-
-				var button1 = new android.widget.Button(currentActivity);
-				button1.setText("View guns specifications");
-				button1.setOnClickListener(new android.view.View.OnClickListener()
+				var button = MinecraftButton();
+				button.setText("View guns specifications");
+				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function()
 					{
@@ -4703,11 +4758,12 @@ function informationUI()
 						popup.dismiss();
 					}
 				});
-				layout.addView(button1);
+				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button2 = new android.widget.Button(currentActivity);
-				button2.setText("Other items");
-				button2.setOnClickListener(new android.view.View.OnClickListener()
+				var button = MinecraftButton();
+				button.setText("Other items");
+				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function()
 					{
@@ -4715,11 +4771,10 @@ function informationUI()
 						popup.dismiss();
 					}
 				});
-				layout.addView(button2);
+				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
-				layout.addView(dividerText());
-
-				var backButton = new android.widget.Button(currentActivity);
+				var backButton = MinecraftButton();
 				backButton.setText("Back");
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4730,8 +4785,9 @@ function informationUI()
 					}
 				});
 				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4741,8 +4797,10 @@ function informationUI()
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -4761,19 +4819,10 @@ function informationGunsSpecifications()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
+				var layout;
+				layout = defaultLayout("Guns specifications");
 
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle("Guns specifications");
-
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_ASSAULT_RIFLE));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4784,8 +4833,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_SUB_MACHINE));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4796,8 +4846,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_LIGHT_MACHINE));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4808,8 +4859,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_SNIPER_RIFLE));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4820,8 +4872,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_SHOTGUN));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4832,8 +4885,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_MACHINE_PISTOL));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4844,8 +4898,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_HANDGUN));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4856,8 +4911,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_LAUNCHER));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4868,8 +4924,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button = new android.widget.Button(currentActivity);
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_MINIGUN));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4880,10 +4937,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
-				layout.addView(dividerText());
-
-				var backButton = new android.widget.Button(currentActivity);
+				var backButton = MinecraftButton();
 				backButton.setText("Back");
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4894,8 +4950,9 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -4905,8 +4962,10 @@ function informationGunsSpecifications()
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -4925,19 +4984,8 @@ function informationGunsSpecificationsForGunType(gunType)
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				layout.setMinimumWidth(displayWidth);
-				layout.setMinimumHeight(displayHeight);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle(getGunTypeName(gunType) + " specifications");
+				var layout;
+				layout = defaultLayout(getGunTypeName(gunType) + " specifications");
 
 				for(var i in guns)
 				{
@@ -5020,7 +5068,7 @@ function informationGunsSpecificationsForGunType(gunType)
 					}
 				}
 
-				var backButton = new android.widget.Button(currentActivity);
+				var backButton = MinecraftButton();
 				backButton.setText("Back");
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5031,8 +5079,9 @@ function informationGunsSpecificationsForGunType(gunType)
 					}
 				});
 				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5042,8 +5091,10 @@ function informationGunsSpecificationsForGunType(gunType)
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -5062,109 +5113,125 @@ function informationOtherItems()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
+				var layout;
+				layout = defaultLayout("Other items");
 
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle("Other items");
-
-				var text1 = new android.widget.TextView(currentActivity);
-				text1.setText(new android.text.Html.fromHtml("<b>Knife</b>: ID: " + KNIFE_ID));
-				layout.addView(text1);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Knife</b>: ID: " + KNIFE_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text2 = new android.widget.TextView(currentActivity);
-				text2.setText(new android.text.Html.fromHtml("<b>Parachute</b>: ID: " + PARACHUTE_ID));
-				layout.addView(text2);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Parachute</b>: ID: " + PARACHUTE_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text3 = new android.widget.TextView(currentActivity);
-				text3.setText(new android.text.Html.fromHtml("<b>Medical Kit</b>: ID: " + MEDICAL_KIT_ID));
-				layout.addView(text3);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Medical Kit</b>: ID: " + MEDICAL_KIT_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text4 = new android.widget.TextView(currentActivity);
-				text4.setText(new android.text.Html.fromHtml("<b>Grenade</b>: ID: " + GRENADE.id));
-				layout.addView(text4);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Grenade</b>: ID: " + GRENADE.id));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text5 = new android.widget.TextView(currentActivity);
-				text5.setText(new android.text.Html.fromHtml("<b>Fragment Grenade</b>: ID: " + FRAGMENT.id));
-				layout.addView(text5);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Fragment Grenade</b>: ID: " + FRAGMENT.id));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text6 = new android.widget.TextView(currentActivity);
-				text6.setText(new android.text.Html.fromHtml("<b>Molotov</b>: ID: " + MOLOTOV.id));
-				layout.addView(text6);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Molotov</b>: ID: " + MOLOTOV.id));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text7 = new android.widget.TextView(currentActivity);
-				text7.setText(new android.text.Html.fromHtml("<b>Assault Rifle Ammo</b>: ID: " + AMMO_ASSAULT_RIFLE_ID));
-				layout.addView(text7);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Assault Rifle Ammo</b>: ID: " + AMMO_ASSAULT_RIFLE_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text8 = new android.widget.TextView(currentActivity);
-				text8.setText(new android.text.Html.fromHtml("<b>Sub Machine Ammo</b>: ID: " + AMMO_SUB_MACHINE_ID));
-				layout.addView(text8);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Sub Machine Ammo</b>: ID: " + AMMO_SUB_MACHINE_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text9 = new android.widget.TextView(currentActivity);
-				text9.setText(new android.text.Html.fromHtml("<b>Light Machine Ammo</b>: ID: " + AMMO_LIGHT_MACHINE_ID));
-				layout.addView(text9);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Light Machine Ammo</b>: ID: " + AMMO_LIGHT_MACHINE_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text10 = new android.widget.TextView(currentActivity);
-				text10.setText(new android.text.Html.fromHtml("<b>Sniper Rifle Ammo</b>: ID: " + AMMO_SNIPER_RIFLE_ID));
-				layout.addView(text10);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Sniper Rifle Ammo</b>: ID: " + AMMO_SNIPER_RIFLE_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text11 = new android.widget.TextView(currentActivity);
-				text11.setText(new android.text.Html.fromHtml("<b>Shotgun Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
-				layout.addView(text11);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Shotgun Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text12 = new android.widget.TextView(currentActivity);
-				text12.setText(new android.text.Html.fromHtml("<b>Machine Pistol Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
-				layout.addView(text12);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Machine Pistol Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text13 = new android.widget.TextView(currentActivity);
-				text13.setText(new android.text.Html.fromHtml("<b>Handgun Ammo</b>: ID: " + AMMO_HANDGUN_ID));
-				layout.addView(text13);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Handgun Ammo</b>: ID: " + AMMO_HANDGUN_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text14 = new android.widget.TextView(currentActivity);
-				text14.setText(new android.text.Html.fromHtml("<b>Launcher Ammo</b>: ID: " + AMMO_LAUNCHER_ID));
-				layout.addView(text14);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Launcher Ammo</b>: ID: " + AMMO_LAUNCHER_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var text15 = new android.widget.TextView(currentActivity);
-				text15.setText(new android.text.Html.fromHtml("<b>Minigun Ammo</b>: ID: " + AMMO_MINIGUN_ID));
-				layout.addView(text15);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Minigun Ammo</b>: ID: " + AMMO_MINIGUN_ID));
+				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var backButton = new android.widget.Button(currentActivity);
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Helmet</b>: ID: " + JUGGERNAUT_HELMET_ID));
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Body</b>: ID: " + JUGGERNAUT_BODY_ID));
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Pants</b>: ID: " + JUGGERNAUT_PANTS_ID));
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = new android.widget.TextView(currentActivity);
+				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Boots</b>: ID: " + JUGGERNAUT_BOOTS_ID));
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+
+				var backButton = MinecraftButton();
 				backButton.setText("Back");
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5175,8 +5242,9 @@ function informationOtherItems()
 					}
 				});
 				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5186,8 +5254,10 @@ function informationOtherItems()
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -5206,17 +5276,10 @@ function settingsUI()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+				var layout;
+				layout = defaultLayout("Settings");
+
 				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, 0);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle("Settings");
 
 				var bg = android.graphics.drawable.GradientDrawable();
 				bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
@@ -5505,7 +5568,7 @@ function settingsUI()
 
 
 
-				var backButton = new android.widget.Button(currentActivity);
+				var backButton = MinecraftButton();
 				backButton.setText("Back");
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5516,8 +5579,9 @@ function settingsUI()
 					}
 				});
 				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5527,8 +5591,10 @@ function settingsUI()
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -5547,25 +5613,15 @@ function updateAvailableUI()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle(new android.text.Html.fromHtml("DesnoGuns Mod: new version"));
-				popup.setCanceledOnTouchOutside(false);
+				var layout;
+				layout = defaultLayout("DesnoGuns Mod: new version");
 
 				var updatesText = new android.widget.TextView(currentActivity);
 				updatesText.setText(new android.text.Html.fromHtml("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
 					"You can find a download link on the minecraftforum.net thread (press the button to visit it)."));
 				layout.addView(updatesText);
 
-				var threadButton = new android.widget.Button(currentActivity);
+				var threadButton = MinecraftButton();
 				threadButton.setText("Visit thread");
 				threadButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5576,8 +5632,9 @@ function updateAvailableUI()
 					}
 				});
 				layout.addView(threadButton);
+				setMarginsLinearLayout(threadButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5587,9 +5644,13 @@ function updateAvailableUI()
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
+				popup.setCanceledOnTouchOutside(false);
 				popup.show();
+
 			} catch(err)
 			{
 				clientMessage("Error: " + err);
@@ -5627,25 +5688,15 @@ function supportUI()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle("Support me");
+				var layout;
+				layout = defaultLayout("Support me");
 
 				var text = new android.widget.TextView(currentActivity);
 				text.setText(new android.text.Html.fromHtml("This mod was brought to you with love by Desno365 :)<br>Thank you for playing with it."));
 				layout.addView(text);
+				setMarginsLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				layout.addView(dividerText());
-
-				var button1 = new android.widget.Button(currentActivity);
+				var button1 = MinecraftButton();
 				button1.setText("Follow me on Twitter");
 				button1.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5660,8 +5711,9 @@ function supportUI()
 					}
 				});
 				layout.addView(button1);
+				setMarginsLinearLayout(button1, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var button2 = new android.widget.Button(currentActivity);
+				var button2 = MinecraftButton();
 				button2.setText("Subscribe to my YouTube channel");
 				button2.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5676,10 +5728,14 @@ function supportUI()
 					}
 				});
 				layout.addView(button2);
+				if(!isPro())
+					setMarginsLinearLayout(button2, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+				else
+					setMarginsLinearLayout(button2, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
 				if(!isPro())
 				{
-					var button3 = new android.widget.Button(currentActivity);
+					var button3 = MinecraftButton();
 					button3.setText("Get the Pro Key");
 					button3.setOnClickListener(new android.view.View.OnClickListener()
 					{
@@ -5690,11 +5746,10 @@ function supportUI()
 						}
 					});
 					layout.addView(button3);
+					setMarginsLinearLayout(button3, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 				}
 
-				layout.addView(dividerText());
-
-				var backButton = new android.widget.Button(currentActivity);
+				var backButton = MinecraftButton();
 				backButton.setText("Back");
 				backButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5705,8 +5760,9 @@ function supportUI()
 					}
 				});
 				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5716,8 +5772,10 @@ function supportUI()
 					}
 				});
 				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -5737,17 +5795,8 @@ function easterEggUI()
 		{
 			try
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-				var padding = Math.floor(8 * deviceDensity);
-				layout.setPadding(padding, padding, padding, padding);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle("I don't want to explode!");
+				var layout;
+				layout = defaultLayout("I don't want to explode!");
 
 				layout.addView(dividerText());
 
@@ -5760,54 +5809,66 @@ function easterEggUI()
 					inputText1.setEnabled(false);
 				layoutH.addView(inputText1);
 
-				var button1 = new android.widget.Button(currentActivity);
+				var button1 = MinecraftButton();
 				button1.setText("Ok");
 				button1.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function()
 					{
-						if(codeEE != null && codeEE != undefined && String(codeEE) == String(inputText1.getText()))
+						if(codeEE != null && codeEE != undefined)
 						{
-							Level.setTime(1000);
-							Level.setTime(10000);
-							Level.setTime(1000);
-							Level.setTile(xCoalEE, yCoalEE, zCoalEE, 0);
-							Level.setTile(xCoalEE, yCoalEE - 1, zCoalEE, 0);
-
-							popup.dismiss();
-							easterEgg = true;
-							unstuck = -1;
-							pigmen = [];
-							codeEE = null;
-
-							BARRETT_EXPLOSIVE.type = BUTTON_TYPE_ON_TOUCH;
-							BARRETT_EXPLOSIVE.ammo = 500;
-							BARRETT_EXPLOSIVE.recoil = 3;
-							BARRETT_EXPLOSIVE.fireRate = 3;
-							Item.setMaxDamage(BARRETT_EXPLOSIVE.id, 500);
-
-							if(Player.getCarriedItem() == BARRETT_EXPLOSIVE.id)
-								changeCarriedItemHook(BARRETT_EXPLOSIVE.id, BARRETT.id);
-
-							currentActivity.runOnUiThread(new java.lang.Runnable(
+							if(String(codeEE) == String(inputText1.getText()))
 							{
-								run: function()
+								Level.setTime(1000);
+								Level.setTime(10000);
+								Level.setTime(1000);
+								Level.setTile(xCoalEE, yCoalEE, zCoalEE, 0);
+								Level.setTile(xCoalEE, yCoalEE - 1, zCoalEE, 0);
+
+								popup.dismiss();
+								easterEgg = true;
+								unstuck = -1;
+								pigmen = [];
+								codeEE = null;
+
+								BARRETT_EXPLOSIVE.type = BUTTON_TYPE_ON_TOUCH;
+								BARRETT_EXPLOSIVE.ammo = 500;
+								BARRETT_EXPLOSIVE.recoil = 3;
+								BARRETT_EXPLOSIVE.fireRate = 3;
+								Item.setMaxDamage(BARRETT_EXPLOSIVE.id, 500);
+
+								if(Player.getCarriedItem() == BARRETT_EXPLOSIVE.id)
+									changeCarriedItemHook(BARRETT_EXPLOSIVE.id, BARRETT.id);
+
+								currentActivity.runOnUiThread(new java.lang.Runnable(
 								{
-									for(var ms = 0; ms < 60; ms++)
+									run: function()
 									{
-										new android.os.Handler().postDelayed(new java.lang.Runnable({
-											run: function()
-											{
-												ModPE.showTipMessage("§" + currentColorEE.toString(16) + "Easter Egg enabled!");
-												if(currentColorEE == 15)
-													currentColorEE = 0;
-												else
-													currentColorEE++;
-											}
-										}), ms * 250 + 1);
+										for(var ms = 0; ms < 60; ms++)
+										{
+											new android.os.Handler().postDelayed(new java.lang.Runnable({
+												run: function()
+												{
+													ModPE.showTipMessage("§" + currentColorEE.toString(16) + "Easter Egg enabled!");
+													if(currentColorEE == 15)
+														currentColorEE = 0;
+													else
+														currentColorEE++;
+												}
+											}), ms * 250 + 1);
+										}
 									}
-								}
-							}));
+								}));
+							} else
+							{
+								currentActivity.runOnUiThread(new java.lang.Runnable()
+								{
+									run: function()
+									{
+										android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("Wrong code!"), android.widget.Toast.LENGTH_SHORT).show();
+									}
+								});
+							}
 						}
 					}
 				});
@@ -5819,7 +5880,7 @@ function easterEggUI()
 
 				layout.addView(dividerText());
 
-				var button2 = new android.widget.Button(currentActivity);
+				var button2 = MinecraftButton();
 				button2.setText("Start wave");
 				button2.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5828,7 +5889,7 @@ function easterEggUI()
 						Level.setTime(10000);
 						for(var i = 0; i <= 20; i++)
 						{
-							var playerDir = lookDir(getYaw(), getPitch());
+							var playerDir = getDirection(getYaw(), getPitch());
 
 							pigmen.push(Level.spawnMob(getPlayerX() + (playerDir.x * 10), getPlayerY(), getPlayerZ() + (playerDir.z * 10), 36));
 
@@ -5843,7 +5904,7 @@ function easterEggUI()
 
 				layout.addView(dividerText());
 
-				var exitButton = new android.widget.Button(currentActivity);
+				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
 				exitButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -5855,6 +5916,7 @@ function easterEggUI()
 				layout.addView(exitButton);
 
 
+				var popup = defaultPopup(layout);
 				popup.show();
 
 			} catch(err)
@@ -5866,6 +5928,7 @@ function easterEggUI()
 }
 
 var textureUiShowed = false;
+// No Minecraft Layout because this UI can be showed at startup
 function pleaseInstallTextureUI()
 {
 	textureUiShowed = true;
