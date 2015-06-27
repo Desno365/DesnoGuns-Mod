@@ -19,7 +19,7 @@ const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
 //updates variables
-const CURRENT_VERSION = "r005";
+const CURRENT_VERSION = "r006";
 var latestVersion;
 
 //activity and other Android variables
@@ -4544,8 +4544,8 @@ function progressBarForInformation(value, max, invert, text)
 	progressBar.setIndeterminate(false);
 	progressBar.setMax(max);
 	progressBar.setProgress(Math.round(value));
+	progressBar.getProgressDrawable().setColorFilter(android.graphics.Color.parseColor("#7FFF7F"), android.graphics.PorterDuff.Mode.SRC_IN);
 	progressBar.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 3));
-
 
 	var text1 = new android.widget.TextView(currentActivity);
 	text1.setText(text);
@@ -4560,6 +4560,17 @@ function progressBarForInformation(value, max, invert, text)
 	layoutH.addView(progressBar);
 	layoutH.addView(text1);
 	return layoutH;
+}
+
+function defaultTextView(text)
+{
+	var textview = new android.widget.TextView(currentActivity);
+	textview.setText(new android.text.Html.fromHtml(text));
+	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
+	textview.setLineSpacing(convertDpToPixel(4), 1);
+	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
+	textview.setTextSize(12);
+	return textview;
 }
 
 function defaultLayout(title)
@@ -4638,10 +4649,9 @@ function infoDesnoGunsMod()
 				else
 					layout = defaultLayout("DesnoGuns Mod");
 
-				var text1 = new android.widget.TextView(currentActivity);
-				text1.setText(new android.text.Html.fromHtml("Welcome to the DesnoGuns Mod by Desno365!"));
-				layout.addView(text1);
-				setMarginsLinearLayout(text1, 0, 0, 0, 8);
+				var text = defaultTextView("Welcome to the DesnoGuns Mod by Desno365!");
+				layout.addView(text);
+				setMarginsLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
 				var informationButton = MinecraftButton();
 				informationButton.setText("Information");
@@ -5116,116 +5126,97 @@ function informationOtherItems()
 				var layout;
 				layout = defaultLayout("Other items");
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Knife</b>: ID: " + KNIFE_ID));
+				var textview = defaultTextView("<i>Knife</i>: ID: " + KNIFE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Parachute</b>: ID: " + PARACHUTE_ID));
+				var textview = defaultTextView("<i>Parachute</i>: ID: " + PARACHUTE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Medical Kit</b>: ID: " + MEDICAL_KIT_ID));
+				var textview = defaultTextView("<i>Medical Kit</i>: ID: " + MEDICAL_KIT_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Grenade</b>: ID: " + GRENADE.id));
+				var textview = defaultTextView("<i>Grenade</i>: ID: " + GRENADE.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Fragment Grenade</b>: ID: " + FRAGMENT.id));
+				var textview = defaultTextView("<i>Fragment Grenade</i>: ID: " + FRAGMENT.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Molotov</b>: ID: " + MOLOTOV.id));
+				var textview = defaultTextView("<i>Molotov</i>: ID: " + MOLOTOV.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Assault Rifle Ammo</b>: ID: " + AMMO_ASSAULT_RIFLE_ID));
+				var textview = defaultTextView("<i>Assault Rifle Ammo</i>: ID: " + AMMO_ASSAULT_RIFLE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Sub Machine Ammo</b>: ID: " + AMMO_SUB_MACHINE_ID));
+				var textview = defaultTextView("<i>Sub Machine Ammo</i>: ID: " + AMMO_SUB_MACHINE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Light Machine Ammo</b>: ID: " + AMMO_LIGHT_MACHINE_ID));
+				var textview = defaultTextView("<i>Light Machine Ammo</i>: ID: " + AMMO_LIGHT_MACHINE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Sniper Rifle Ammo</b>: ID: " + AMMO_SNIPER_RIFLE_ID));
+				var textview = defaultTextView("<i>Sniper Rifle Ammo</i>: ID: " + AMMO_SNIPER_RIFLE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Shotgun Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
+				var textview = defaultTextView("<i>Shotgun Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Machine Pistol Ammo</b>: ID: " + AMMO_SHOTGUN_ID));
+				var textview = defaultTextView("<i>Machine Pistol Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Handgun Ammo</b>: ID: " + AMMO_HANDGUN_ID));
+				var textview = defaultTextView("<i>Handgun Ammo</i>: ID: " + AMMO_HANDGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Launcher Ammo</b>: ID: " + AMMO_LAUNCHER_ID));
+				var textview = defaultTextView("<i>Launcher Ammo</i>: ID: " + AMMO_LAUNCHER_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Minigun Ammo</b>: ID: " + AMMO_MINIGUN_ID));
+				var textview = defaultTextView("<i>Minigun Ammo</i>: ID: " + AMMO_MINIGUN_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Helmet</b>: ID: " + JUGGERNAUT_HELMET_ID));
+				var textview = defaultTextView("<i>Juggernaut Helmet</i>: ID: " + JUGGERNAUT_HELMET_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Body</b>: ID: " + JUGGERNAUT_BODY_ID));
+				var textview = defaultTextView("<i>Juggernaut Body</i>: ID: " + JUGGERNAUT_BODY_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Pants</b>: ID: " + JUGGERNAUT_PANTS_ID));
+				var textview = defaultTextView("<i>Juggernaut Pants</i>: ID: " + JUGGERNAUT_PANTS_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
-				var textview = new android.widget.TextView(currentActivity);
-				textview.setText(new android.text.Html.fromHtml("<b>Juggernaut Boots</b>: ID: " + JUGGERNAUT_BOOTS_ID));
+				var textview = defaultTextView("<i>Juggernaut Boots</i>: ID: " + JUGGERNAUT_BOOTS_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
@@ -5616,10 +5607,10 @@ function updateAvailableUI()
 				var layout;
 				layout = defaultLayout("DesnoGuns Mod: new version");
 
-				var updatesText = new android.widget.TextView(currentActivity);
-				updatesText.setText(new android.text.Html.fromHtml("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
-					"You can find a download link on the minecraftforum.net thread (press the button to visit it)."));
+				var updatesText = defaultTextView("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
+					"You can find a download link on the minecraftforum.net thread (press the button to visit it).");
 				layout.addView(updatesText);
+				setMarginsLinearLayout(updatesText, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 				var threadButton = MinecraftButton();
 				threadButton.setText("Visit thread");
@@ -5691,8 +5682,7 @@ function supportUI()
 				var layout;
 				layout = defaultLayout("Support me");
 
-				var text = new android.widget.TextView(currentActivity);
-				text.setText(new android.text.Html.fromHtml("This mod was brought to you with love by Desno365 :)<br>Thank you for playing with it."));
+				var text = defaultTextView("This mod was brought to you with love by Desno365 :)<br>Thank you for playing with it.");
 				layout.addView(text);
 				setMarginsLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
@@ -6658,7 +6648,6 @@ new java.lang.Thread(new java.lang.Runnable()
 //########################################################################################################################################################
 // MINECRAFT BUTTON LIBRARY
 //########################################################################################################################################################
-
 
 // Library version: 1.2.1
 // Made by Dennis Motta, also known as Desno365
