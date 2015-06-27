@@ -3075,16 +3075,7 @@ function displayShootAndAimButtons(loadAimButton)
 			{
 				if(loadAimButton)
 				{
-					var layoutAim = new android.widget.RelativeLayout(currentActivity);
-					layoutAim.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
-					var aimBg = android.graphics.drawable.GradientDrawable();
-					aimBg.setColor(android.graphics.Color.TRANSPARENT);
-					aimBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-					aimBg.setStroke(1, android.graphics.Color.parseColor("#FFFFFFFF"));
-					var aimPadding = Math.floor(2 * deviceDensity);
-
-					var aimText = new android.widget.TextView(currentActivity);
+					var aimText = defaultColoredMinecraftButton("aim", "#FFFFFFFF");
 					aimText.setOnClickListener(new android.view.View.OnClickListener()
 					{
 						onClick: function(v)
@@ -3143,40 +3134,20 @@ function displayShootAndAimButtons(loadAimButton)
 							return false;
 						}
 					});
-					aimText.setGravity(android.view.Gravity.CENTER);
-					aimText.setText("aim");
-					aimText.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-					aimText.setPaintFlags(aimText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-					aimText.setTextSize(buttonsSize);
-					aimText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-					if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-						aimText.setShadowLayer(1, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-					else
-						aimText.setShadowLayer(0.0001, Math.round(aimText.getLineHeight() / 8), Math.round(aimText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-					aimText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-					aimText.setBackgroundDrawable(aimBg);
-					aimText.setPadding(aimPadding, aimPadding, aimPadding, aimPadding);
-					layoutAim.addView(aimText);
+					aimText.setSoundEffectsEnabled(true);
 
-					popupAim = new android.widget.PopupWindow(layoutAim, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+					popupAim = new android.widget.PopupWindow(aimText, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 					popupAim.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 					popupAim.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.LEFT : android.view.Gravity.RIGHT) | android.view.Gravity.CENTER, 0, pixelsOffsetButtons);
 				}
 
 
+
 				displaySight();
 
 
-				var layoutShot = new android.widget.RelativeLayout(currentActivity);
-				layoutShot.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
-				var shotBg = android.graphics.drawable.GradientDrawable();
-				shotBg.setColor(android.graphics.Color.TRANSPARENT);
-				shotBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-				shotBg.setStroke(1, android.graphics.Color.parseColor("#FFDE0000"));
-				var shotPadding = Math.floor(2 * deviceDensity);
-
-				shotText = new android.widget.TextView(currentActivity);
+				shotText = defaultColoredMinecraftButton("fire", "#FFDE0000");
 				shotText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -3193,34 +3164,17 @@ function displayShootAndAimButtons(loadAimButton)
 						return false;
 					}
 				});
-				shotText.setGravity(android.view.Gravity.CENTER);
-				shotText.setText("fire");
-				shotText.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-				shotText.setPaintFlags(shotText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-				shotText.setTextSize(buttonsSize);
-				shotText.setTextColor(android.graphics.Color.parseColor("#FFDE0000"));
-				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-					shotText.setShadowLayer(1, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-				else
-					shotText.setShadowLayer(0.0001, Math.round(shotText.getLineHeight() / 8), Math.round(shotText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-				shotText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-				shotText.setBackgroundDrawable(shotBg);
-				shotText.setPadding(shotPadding, shotPadding, shotPadding, shotPadding);
 				shotText.setSoundEffectsEnabled(false);
-				layoutShot.addView(shotText);
 
-				popupShot = new android.widget.PopupWindow(layoutShot, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupShot = new android.widget.PopupWindow(shotText, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupShot.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 				popupShot.setOutsideTouchable(false);
-				popupShot.setFocusable(false);
 				popupShot.setSplitTouchEnabled(true);
 				popupShot.showAtLocation(currentActivity.getWindow().getDecorView(), (switchedButtonsPosition ? android.view.Gravity.RIGHT : android.view.Gravity.LEFT) | android.view.Gravity.CENTER, 0, pixelsOffsetButtons);
 
 
-				var layoutAmmo = new android.widget.RelativeLayout(currentActivity);
-				layoutAmmo.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
-				ammoText = new android.widget.TextView(currentActivity);
+				ammoText = basicMinecraftTextView("null");
 				ammoText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -3230,19 +3184,11 @@ function displayShootAndAimButtons(loadAimButton)
 					}
 				});
 				ammoText.setGravity(android.view.Gravity.CENTER);
-				ammoText.setText("null");
-				ammoText.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-				ammoText.setPaintFlags(ammoText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 				ammoText.setTextSize(ammoTextSize);
 				ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-					ammoText.setShadowLayer(1, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-				else
-					ammoText.setShadowLayer(0.0001, Math.round(ammoText.getLineHeight() / 8), Math.round(ammoText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
 				ammoText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-				layoutAmmo.addView(ammoText);
 
-				popupAmmo = new android.widget.PopupWindow(layoutAmmo, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupAmmo = new android.widget.PopupWindow(ammoText, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupAmmo.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 				popupAmmo.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.BOTTOM, 0, 64 * deviceDensity);
 			} catch(err)
@@ -3899,16 +3845,7 @@ function displayHealButton()
 		{
 			try
 			{
-				var layoutHealth = new android.widget.RelativeLayout(currentActivity);
-				layoutHealth.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
-				var healthBg = android.graphics.drawable.GradientDrawable();
-				healthBg.setColor(android.graphics.Color.TRANSPARENT);
-				healthBg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-				healthBg.setStroke(1, android.graphics.Color.parseColor("#FF00DE00"));
-				var healthPadding = Math.floor(2 * deviceDensity);
-
-				healthText = new android.widget.TextView(currentActivity);
+				var healthText = defaultColoredMinecraftButton("heal", "#FF00DE00");
 				healthText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -3942,26 +3879,11 @@ function displayHealButton()
 						}
 					}
 				});
-				healthText.setGravity(android.view.Gravity.CENTER);
-				healthText.setText("Heal");
-				healthText.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-				healthText.setPaintFlags(healthText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-				healthText.setTextSize(buttonsSize);
-				healthText.setTextColor(android.graphics.Color.parseColor("#FF00DE00"));
-				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-					healthText.setShadowLayer(1, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-				else
-					healthText.setShadowLayer(0.0001, Math.round(healthText.getLineHeight() / 8), Math.round(healthText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-				healthText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-				healthText.setBackgroundDrawable(healthBg);
-				healthText.setPadding(healthPadding, healthPadding, healthPadding, healthPadding);
-				healthText.setSoundEffectsEnabled(false);
-				layoutHealth.addView(healthText);
+				healthText.setSoundEffectsEnabled(true);
 
-				popupHealth = new android.widget.PopupWindow(layoutHealth, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupHealth = new android.widget.PopupWindow(healthText, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupHealth.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 				popupHealth.setOutsideTouchable(false);
-				popupHealth.setFocusable(false);
 				popupHealth.setSplitTouchEnabled(true);
 				popupHealth.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, pixelsOffsetButtons);
 			} catch(err)
@@ -3996,15 +3918,6 @@ function displayInfoItemUI()
 		{
 			try
 			{
-				var settingsImageSquareLength = settingsPngDecoded.getHeight();
-				var settingsImageSquareLengthScaled = settingsImageSquareLength * deviceDensity * 0.3;
-				var matrix1 = new android.graphics.Matrix();
-				matrix1.postScale(settingsImageSquareLengthScaled / settingsImageSquareLength, settingsImageSquareLengthScaled / settingsImageSquareLength);
-				settingsPngScaled = new android.graphics.Bitmap.createBitmap(settingsPngDecoded, 0, 0, settingsImageSquareLength, settingsImageSquareLength, matrix1, true);
-
-				popupSettingsImage = new android.widget.PopupWindow();
-				var layoutSettingsImage = new android.widget.RelativeLayout(currentActivity);
-
 				var settingsImage = new android.widget.ImageView(currentActivity);
 				settingsImage.setImageBitmap(settingsPngScaled);
 				settingsImage.setOnClickListener(new android.view.View.OnClickListener({
@@ -4013,13 +3926,13 @@ function displayInfoItemUI()
 						infoDesnoGunsMod();
 					}
 				}));
-				layoutSettingsImage.addView(settingsImage);
 
-				popupSettingsImage.setContentView(layoutSettingsImage);
-				popupSettingsImage.setWidth(settingsImageSquareLengthScaled);
-				popupSettingsImage.setHeight(settingsImageSquareLengthScaled);
+				popupSettingsImage = new android.widget.PopupWindow(settingsImage, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupSettingsImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-				popupSettingsImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, 0, 0);
+				popupSettingsImage.setOutsideTouchable(false);
+				popupSettingsImage.setSplitTouchEnabled(true);
+				popupSettingsImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.LEFT | android.view.Gravity.CENTER, convertDpToPixel(4), 0);
+
 
 
 				var layoutTip = new android.widget.RelativeLayout(currentActivity);
@@ -4080,7 +3993,7 @@ function getRandomTip()
 		return "Happy new year!";
 	}
 
-	var random = Math.floor((Math.random() * 19) + 1);
+	var random = Math.floor((Math.random() * 20) + 1);
 	switch(random)
 	{
 		case 1:
@@ -4161,6 +4074,10 @@ function getRandomTip()
 		case 19:
 		{
 			return "Did you find the Easter Egg? No? You'll find a tip on one of these splash texts.";
+		}
+		case 20:
+		{
+			return "/swag grenade";
 		}
 	}
 }
@@ -4354,6 +4271,7 @@ function writeFileFromByteArray(byteArray, path)
 function createImages()
 {
 	settingsPngDecoded = decodeImageFromBase64(settingsPng);
+	settingsPngScaled = scaleImageToSize(settingsPngDecoded, settingsPngDecoded.getHeight() * deviceDensity * 0.3, settingsPngDecoded.getHeight() * deviceDensity * 0.3, true);
 	settingsPng = null;
 
 	sightPngDecoded = decodeImageFromBase64(sightPng);
@@ -4386,7 +4304,14 @@ function decodeImageFromBase64(base64String)
 function scaleImageToDensity(image)
 {
 	//
-	return android.graphics.Bitmap.createScaledBitmap(image, Math.round(image.getWidth() * deviceDensity), Math.round(image.getHeight() * deviceDensity), false)
+	return scaleImageToSize(image, Math.round(image.getWidth() * deviceDensity), Math.round(image.getHeight() * deviceDensity));
+}
+
+function scaleImageToSize(image, width, height, filter)
+{
+	if(filter == null)
+		filter = false;
+	return android.graphics.Bitmap.createScaledBitmap(image, Math.round(width), Math.round(height), filter);
 }
 //########## IMAGE functions - END ##########
 
@@ -4509,17 +4434,39 @@ function convertDpToPixel(dp)
 
 function basicMinecraftTextView(text) // TextView with just the Minecraft font
 {
+	var lineSpacing = convertDpToPixel(4);
+
 	var textview = new android.widget.TextView(currentActivity);
 	textview.setText(new android.text.Html.fromHtml(text));
 	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
 	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-	textview.setLineSpacing(convertDpToPixel(4), 1);
+	textview.setLineSpacing(lineSpacing, 1);
 	if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-		textview.setShadowLayer(1, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+		textview.setShadowLayer(1, Math.round((textview.getLineHeight() - lineSpacing) / 8), Math.round((textview.getLineHeight() - lineSpacing) / 8), android.graphics.Color.parseColor("#FF333333"));
 	else
-		textview.setShadowLayer(0.001, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+		textview.setShadowLayer(0.001, Math.round((textview.getLineHeight() - lineSpacing) / 8), Math.round((textview.getLineHeight() - lineSpacing) / 8), android.graphics.Color.parseColor("#FF333333"));
 
 	return textview;
+}
+
+function defaultColoredMinecraftButton(text, colorString)
+{
+	var padding = convertDpToPixel(4);
+
+	var bg = android.graphics.drawable.GradientDrawable();
+	bg.setColor(android.graphics.Color.TRANSPARENT);
+	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+	bg.setStroke(convertDpToPixel(1), android.graphics.Color.parseColor(colorString));
+
+	var coloredButton = basicMinecraftTextView(text);
+	coloredButton.setGravity(android.view.Gravity.CENTER);
+	coloredButton.setTextSize(buttonsSize);
+	coloredButton.setTextColor(android.graphics.Color.parseColor(colorString));
+	coloredButton.setBackgroundDrawable(bg);
+	coloredButton.setPadding(padding, padding, padding, padding);
+	coloredButton.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+
+	return coloredButton;
 }
 //########## UTILS OF UIs functions - END ##########
 
