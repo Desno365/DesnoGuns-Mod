@@ -2093,7 +2093,6 @@ var ModTickFunctions = {
 		}
 		previousCarriedItem = Player.getCarriedItem();
 		previousSlotId = Player.getSelectedSlotId();
-
 	},
 
 	onTouchShooting: function()
@@ -4516,30 +4515,13 @@ function getLogText()
 //########## MISC functions - END ##########
 
 
-//########################################################################################################################################################
-// UTILS OF UI functions
-//########################################################################################################################################################
-
-//########## GENERAL UTILS functions ##########
-const MARGIN_HORIZONTAL_BIG = 16;
-const MARGIN_HORIZONTAL_SMALL = 4;
-
-function setMarginsLinearLayout(view, left, top, right, bottom)
-{
-	var originalParams = view.getLayoutParams();
-	var newParams = new android.widget.LinearLayout.LayoutParams(originalParams);
-	newParams.setMargins(convertDpToPixel(left), convertDpToPixel(top), convertDpToPixel(right), convertDpToPixel(bottom));
-	view.setLayoutParams(newParams);
-}
-
+//########## UTILS OF UIs functions ##########
 function convertDpToPixel(dp)
 {
 	//
 	return Math.round(dp * deviceDensity);
 }
-//########## GENERAL UTILS functions - END ##########
 
-//########## TEXTEVIEWS functions ##########
 function basicMinecraftTextView(text) // TextView with just the Minecraft font
 {
 	var textview = new android.widget.TextView(currentActivity);
@@ -4554,37 +4536,24 @@ function basicMinecraftTextView(text) // TextView with just the Minecraft font
 
 	return textview;
 }
+//########## UTILS OF UIs functions - END ##########
 
-function defaultContentTextView(text) // TextView for contents (basicMinecraftTextView with little changes)
+
+//########################################################################################################################################################
+// Utils of popup's UI functions
+//########################################################################################################################################################
+
+const MARGIN_HORIZONTAL_BIG = 16;
+const MARGIN_HORIZONTAL_SMALL = 4;
+
+function setMarginsLinearLayout(view, left, top, right, bottom)
 {
-	var textview = basicMinecraftTextView(text);
-	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
-	textview.setTextSize(12);
-
-	return textview;
+	var originalParams = view.getLayoutParams();
+	var newParams = new android.widget.LinearLayout.LayoutParams(originalParams);
+	newParams.setMargins(convertDpToPixel(left), convertDpToPixel(top), convertDpToPixel(right), convertDpToPixel(bottom));
+	view.setLayoutParams(newParams);
 }
 
-function defaultSubTitle(subtitle) // TextView with Minecraft background
-{
-	var padding = convertDpToPixel(8);
-
-	var bg = android.graphics.drawable.GradientDrawable();
-	bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
-	bg.setColor(android.graphics.Color.parseColor("#FF736A6F"));
-	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
-
-	var title = basicMinecraftTextView(subtitle);
-	title.setTextColor(android.graphics.Color.WHITE);
-	title.setTextSize(16);
-	title.setBackgroundDrawable(bg);
-	title.setPadding(padding, padding, padding, padding);
-
-	return title;
-}
-//########## TEXTEVIEWS functions - END ##########
-
-//########## OTHER VIEWS OR VIEWGROUPS functions ##########
 function dividerText()
 {
 	var dividerText = new android.widget.TextView(currentActivity);
@@ -4618,6 +4587,34 @@ function progressBarForInformation(value, max, invert, text)
 	layoutH.addView(progressBar);
 	layoutH.addView(text1);
 	return layoutH;
+}
+
+function defaultContentTextView(text) // TextView for contents (basicMinecraftTextView with little changes)
+{
+	var textview = basicMinecraftTextView(text);
+	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
+	textview.setTextSize(12);
+
+	return textview;
+}
+
+function defaultSubTitle(subtitle) // TextView with Minecraft background
+{
+	var padding = convertDpToPixel(8);
+
+	var bg = android.graphics.drawable.GradientDrawable();
+	bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
+	bg.setColor(android.graphics.Color.parseColor("#FF736A6F"));
+	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
+
+	var title = basicMinecraftTextView(subtitle);
+	title.setTextColor(android.graphics.Color.WHITE);
+	title.setTextSize(16);
+	title.setBackgroundDrawable(bg);
+	title.setPadding(padding, padding, padding, padding);
+
+	return title;
 }
 
 function defaultLayout(title)
@@ -4654,11 +4651,10 @@ function defaultPopup(layout)
 	popup.setContentView(scroll);
 	return popup;
 }
-//########## OTHER VIEWS OR VIEWGROUPS functions - END ##########
 
 
 //########################################################################################################################################################
-// UI functions
+// Popup's UI functions
 //########################################################################################################################################################
 
 function infoDesnoGunsMod()
@@ -5976,7 +5972,7 @@ function pleaseInstallTextureUI()
 
 
 //########################################################################################################################################################
-// Render
+// Renders
 //########################################################################################################################################################
 
 // grenade render by Anti, thanks!
