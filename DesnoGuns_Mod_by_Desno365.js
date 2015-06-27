@@ -111,9 +111,6 @@ var ammoText;
 var isReloading = false;
 var reloadingGun;
 
-// grenades variables
-var infiniteGrenade = false;
-
 // sounds
 var reloadSound = new android.media.MediaPlayer();
 
@@ -1311,7 +1308,6 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"s s",
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
-Item.setVerticalRender(PARACHUTE_ID);
 
 const MEDICAL_KIT_ID = 434;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
@@ -1321,7 +1317,6 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
-Item.setVerticalRender(MEDICAL_KIT_ID);
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 440;
@@ -1402,8 +1397,8 @@ Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	" g ",
 	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
-Item.setVerticalRender(GRENADE.id);
 
+var infiniteGrenade = false;
 const FRAGMENT = {
 	id: 436,
 	grenadeSpeed: 2.1,
@@ -1421,7 +1416,6 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"   ",
 	"g g"], ["g", GRENADE.id, 0]);
 Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
-Item.setVerticalRender(FRAGMENT.id);
 
 const MOLOTOV = {
 	id: 437,
@@ -1438,7 +1432,6 @@ Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"gfg",
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
-Item.setVerticalRender(MOLOTOV.id);
 
 // info item
 const INFO_ITEM_ID = 438;
@@ -4523,10 +4516,75 @@ function getLogText()
 //########## MISC functions - END ##########
 
 
-//########## UTILS OF UI functions ##########
+//########################################################################################################################################################
+// UTILS OF UI functions
+//########################################################################################################################################################
+
+//########## GENERAL UTILS functions ##########
 const MARGIN_HORIZONTAL_BIG = 16;
 const MARGIN_HORIZONTAL_SMALL = 4;
 
+function setMarginsLinearLayout(view, left, top, right, bottom)
+{
+	var originalParams = view.getLayoutParams();
+	var newParams = new android.widget.LinearLayout.LayoutParams(originalParams);
+	newParams.setMargins(convertDpToPixel(left), convertDpToPixel(top), convertDpToPixel(right), convertDpToPixel(bottom));
+	view.setLayoutParams(newParams);
+}
+
+function convertDpToPixel(dp)
+{
+	//
+	return Math.round(dp * deviceDensity);
+}
+//########## GENERAL UTILS functions - END ##########
+
+//########## TEXTEVIEWS functions ##########
+function basicMinecraftTextView(text) // TextView with just the Minecraft font
+{
+	var textview = new android.widget.TextView(currentActivity);
+	textview.setText(new android.text.Html.fromHtml(text));
+	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
+	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+	textview.setLineSpacing(convertDpToPixel(4), 1);
+	if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
+		textview.setShadowLayer(1, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+	else
+		textview.setShadowLayer(0.001, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+
+	return textview;
+}
+
+function defaultContentTextView(text) // TextView for contents (basicMinecraftTextView with little changes)
+{
+	var textview = basicMinecraftTextView(text);
+	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
+	textview.setTextSize(12);
+
+	return textview;
+}
+
+function defaultSubTitle(subtitle) // TextView with Minecraft background
+{
+	var padding = convertDpToPixel(8);
+
+	var bg = android.graphics.drawable.GradientDrawable();
+	bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
+	bg.setColor(android.graphics.Color.parseColor("#FF736A6F"));
+	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
+
+	var title = basicMinecraftTextView(subtitle);
+	title.setTextColor(android.graphics.Color.WHITE);
+	title.setTextSize(16);
+	title.setBackgroundDrawable(bg);
+	title.setPadding(padding, padding, padding, padding);
+
+	return title;
+}
+//########## TEXTEVIEWS functions - END ##########
+
+//########## OTHER VIEWS OR VIEWGROUPS functions ##########
 function dividerText()
 {
 	var dividerText = new android.widget.TextView(currentActivity);
@@ -4560,49 +4618,6 @@ function progressBarForInformation(value, max, invert, text)
 	layoutH.addView(progressBar);
 	layoutH.addView(text1);
 	return layoutH;
-}
-
-function basicMinecraftTextView(text)
-{
-	var textview = new android.widget.TextView(currentActivity);
-	textview.setText(new android.text.Html.fromHtml(text));
-	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-	textview.setLineSpacing(convertDpToPixel(4), 1);
-	if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-		textview.setShadowLayer(1, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-	else
-		textview.setShadowLayer(0.001, Math.round(textview.getLineHeight() / 8), Math.round(textview.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-
-	return textview;
-}
-
-function defaultContentTextView(text)
-{
-	var textview = basicMinecraftTextView(text);
-	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
-	textview.setTextSize(12);
-
-	return textview;
-}
-
-function defaultSubTitle(subtitle)
-{
-	var padding = convertDpToPixel(8);
-
-	var bg = android.graphics.drawable.GradientDrawable();
-	bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
-	bg.setColor(android.graphics.Color.parseColor("#FF736A6F"));
-	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
-
-	var title = basicMinecraftTextView(subtitle);
-	title.setTextColor(android.graphics.Color.WHITE);
-	title.setTextSize(16);
-	title.setBackgroundDrawable(bg);
-	title.setPadding(padding, padding, padding, padding);
-
-	return title;
 }
 
 function defaultLayout(title)
@@ -4639,21 +4654,7 @@ function defaultPopup(layout)
 	popup.setContentView(scroll);
 	return popup;
 }
-
-function setMarginsLinearLayout(view, left, top, right, bottom)
-{
-	var originalParams = view.getLayoutParams();
-	var newParams = new android.widget.LinearLayout.LayoutParams(originalParams);
-	newParams.setMargins(convertDpToPixel(left), convertDpToPixel(top), convertDpToPixel(right), convertDpToPixel(bottom));
-	view.setLayoutParams(newParams);
-}
-
-function convertDpToPixel(dp)
-{
-	//
-	return Math.round(dp * deviceDensity);
-}
-//########## UTILS OF UI functions - END ##########
+//########## OTHER VIEWS OR VIEWGROUPS functions - END ##########
 
 
 //########################################################################################################################################################
