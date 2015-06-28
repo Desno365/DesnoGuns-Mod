@@ -131,6 +131,7 @@ const RECOIL = 3;
 
 // aiming variables
 var isAiming = false;
+var isDisplayingAimingAnimation = false;
 var zoomWithFov = 72;
 var aimingGun;
 
@@ -1762,7 +1763,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	isShooting = false;
 
 	// remove aiming if the user was aiming
-	removeAimAndImageLayer();
+	removeZoomAndAimImageLayer();
 
 	// stop reloading if necessary
 	stopReloading();
@@ -3113,57 +3114,7 @@ function displayShootAndAimButtons(loadAimButton)
 					{
 						onClick: function(v)
 						{
-							var gun = getGun(Player.getCarriedItem());
-							if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
-							{
-								aimingGun = gun;
-								if(!isAiming)
-								{
-									isAiming = true;
-									for(var ms = 1; ms < gun.zoomLevel; ms++)
-									{
-										new android.os.Handler().postDelayed(new java.lang.Runnable({
-											run: function()
-											{
-												zoomWithFov--;
-												ModPE.setFov(zoomWithFov);
-											}
-										}), ms * 12);
-									}
-									new android.os.Handler().postDelayed(new java.lang.Runnable({
-										run: function()
-										{
-											zoomWithFov--;
-											ModPE.setFov(zoomWithFov);
-											displayAimImageLayer(aimingGun);
-										}
-									}), gun.zoomLevel * 12);
-								} else
-								{
-									displaySight();
-									removeAimAndImageLayer();
-								}
-							} else
-							{
-								if(!isAiming)
-								{
-									isAiming = true;
-									for(var ms = 1; ms <= gun.zoomLevel; ms++)
-									{
-										new android.os.Handler().postDelayed(new java.lang.Runnable({
-											run: function()
-											{
-												zoomWithFov--;
-												ModPE.setFov(zoomWithFov);
-											}
-										}), ms * 12);
-									}
-								} else
-								{
-									removeAimAndImageLayer();
-								}
-							}
-
+							aim();
 							return false;
 						}
 					});
@@ -3438,30 +3389,126 @@ function displaySight()
 	}));
 }
 
-function removeAimAndImageLayer()
+function aim()
+{
+	if(!isDisplayingAimingAnimation)
+	{
+		var gun = getGun(Player.getCarriedItem());
+		if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
+		{
+			// Sniper Rifle
+
+			aimingGun = gun;
+			if(!isAiming)
+			{
+				isAiming = true;
+				isDisplayingAimingAnimation = true;
+
+				addZoomGradually(gun.zoomLevel - 1); // total steps = gun.zoomLevel - 1; total time: (gun.zoomLevel - 1) * 12
+
+				// last step of decreasing FOV
+				new android.os.Handler().postDelayed(new java.lang.Runnable( // executed 1 time. Total: gun.zoomLevel times
+				{
+					run: function()
+					{
+						zoomWithFov--;
+						ModPE.setFov(zoomWithFov);
+
+						displayAimImageLayer(aimingGun);
+						isDisplayingAimingAnimation = false;
+					}
+				}), gun.zoomLevel * 12);
+			} else
+			{
+				displaySight();
+				removeZoomAndAimImageLayer();
+			}
+		} else
+		{
+			// other gun
+
+			if(!isAiming)
+			{
+				isAiming = true;
+				isDisplayingAimingAnimation = true;
+
+				addZoomGradually(gun.zoomLevel - 1); // total steps = gun.zoomLevel - 1; total time: (gun.zoomLevel - 1) * 12
+
+				// last step of decreasing FOV
+				new android.os.Handler().postDelayed(new java.lang.Runnable( // executed 1 time. Total: gun.zoomLevel times
+				{
+					run: function()
+					{
+						zoomWithFov--;
+						ModPE.setFov(zoomWithFov);
+
+						isDisplayingAimingAnimation = false;
+					}
+				}), gun.zoomLevel * 12);
+			} else
+			{
+				removeZoomAndAimImageLayer();
+			}
+		}
+	}
+}
+
+function addZoomGradually(amount)
+{
+	for(var ms = 1; ms <= amount; ms++)
+	{
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				zoomWithFov--;
+				ModPE.setFov(zoomWithFov);
+			}
+		}), ms * 12);
+	}
+}
+
+function removeZoomAndAimImageLayer()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
 		run: function()
 		{
-			if(isAiming)
+			if(!isDisplayingAimingAnimation)
 			{
-				isAiming = false;
-				var removeAiming = zoomWithFov;
-				for(var ms = 1; ms <= (72 - removeAiming); ms++)
+				if(isAiming)
 				{
-					new android.os.Handler().postDelayed(new java.lang.Runnable({
+					isAiming = false;
+					isDisplayingAimingAnimation = true;
+					var removeAiming = zoomWithFov;
+
+					for(var ms = 1; ms < (72 - removeAiming); ms++)
+					{
+						new android.os.Handler().postDelayed(new java.lang.Runnable(
+						{
+							run: function()
+							{
+								zoomWithFov++;
+								ModPE.setFov(zoomWithFov);
+							}
+						}), ms * 12);
+					}
+
+					new android.os.Handler().postDelayed(new java.lang.Runnable(
+					{
 						run: function()
 						{
 							zoomWithFov++;
 							ModPE.setFov(zoomWithFov);
+
+							isDisplayingAimingAnimation = false;
 						}
-					}), ms * 12);
+					}), (72 - removeAiming) * 12);
 				}
+				try {
+					popupAiming.dismiss();
+				} catch(e) {}
 			}
-			try {
-				popupAiming.dismiss();
-			} catch(e) {}
 		}
 	}));
 }
