@@ -107,6 +107,9 @@ var deathWorkaround = false;
 var reloadInCreative = false;
 var instantReloadInCreative = false;
 
+// settings for audio
+var generalVolume = 1;
+
 // guns variables
 var ammoText;
 var isReloading = false;
@@ -1514,6 +1517,12 @@ function newLevel()
 	var aTSizeTest = ModPE.readData("aTSize");
 	if(aTSizeTest != "" && aTSizeTest != null && aTSizeTest != undefined)
 		ammoTextSize = parseFloat(aTSizeTest);
+
+	var generalVolumeTest = ModPE.readData("generalVolume");
+	if(generalVolumeTest != "" && generalVolumeTest != null && generalVolumeTest != undefined)
+		generalVolume = parseFloat(generalVolumeTest);
+	if(generalVolume < 0 || generalVolume > 1)
+		generalVolume = 1;
 
 	// load saved boolean settings
 	// getSavedBoolean(name, defaultValue, debug);
@@ -2943,6 +2952,9 @@ var Sound = {
 			}
 		}
 
+		// apply general volume
+		volume = volume * generalVolume;
+
 		// play sound
 		try
 		{
@@ -3069,6 +3081,7 @@ var Sound = {
 	{
 		try
 		{
+			volume = volume * generalVolume;
 			soundPool.play(soundID, volume, volume, 1, 0, 1.0);
 		} catch(e) { /* probably sounds not installed error */ }
 	}
@@ -3169,7 +3182,7 @@ function displayShootAndAimButtons(loadAimButton)
 
 				if(minecraftStyleForButtons)
 				{
-					shotText = MinecraftButton(buttonsSize);
+					shotText = MinecraftButton(buttonsSize, false);
 					shotText.setText("Fire");
 				} else
 				{
@@ -5427,6 +5440,45 @@ function settingsUI()
 				});
 				switchGunName.setPadding(padding, 0, padding, 0);
 				layout.addView(switchGunName);
+
+				layout.addView(dividerText());
+
+
+
+				var title = defaultSubTitle("Audio");
+				layout.addView(title);
+
+				layout.addView(dividerText());
+
+				var audioText = new android.widget.TextView(currentActivity);
+				audioText.setText("Set the sound volume of the mod (default is " + 10 + ")");
+				audioText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+				audioText.setPadding(padding, 0, padding, 0);
+				layout.addView(audioText);
+
+				var audioChooser = new android.widget.SeekBar(currentActivity);
+				audioChooser.setMax(10);
+				audioChooser.setProgress(generalVolume * 10);
+				audioChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+				{
+					onProgressChanged: function()
+					{
+						generalVolume = audioChooser.getProgress() / 10;
+						audioText1.setText("Volume: " + audioChooser.getProgress() + "/" + audioChooser.getMax());
+					},
+					onStopTrackingTouch: function()
+					{
+						ModPE.saveData("generalVolume", generalVolume);
+					}
+				});
+				audioChooser.setPadding(padding * 2, 0, padding * 2, 0);
+				layout.addView(audioChooser);
+
+				var audioText1 = new android.widget.TextView(currentActivity);
+				audioText1.setText("Volume: " + (generalVolume * 10) + "/" + audioChooser.getMax());
+				audioText1.setTextColor(android.graphics.Color.parseColor("#FFC0C0C0"));
+				audioText1.setPadding(padding * 2, 0, padding * 2, 0);
+				layout.addView(audioText1);
 
 				layout.addView(dividerText());
 
