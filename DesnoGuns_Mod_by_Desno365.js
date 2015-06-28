@@ -3174,7 +3174,7 @@ function displayShootAndAimButtons(loadAimButton)
 
 
 
-				ammoText = basicMinecraftTextView("null");
+				ammoText = basicMinecraftTextView("null", ammoTextSize);
 				ammoText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -3184,7 +3184,6 @@ function displayShootAndAimButtons(loadAimButton)
 					}
 				});
 				ammoText.setGravity(android.view.Gravity.CENTER);
-				ammoText.setTextSize(ammoTextSize);
 				ammoText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				ammoText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -3383,24 +3382,13 @@ function displaySight()
 					try {
 						popupSightImage.dismiss();
 					} catch(e) {}
-					var sightImageSquareLength = sightPngDecoded.getHeight();
-					var sightImageSquareLengthScaled = sightImageSquareLength * deviceDensity;
-					var matrix3 = new android.graphics.Matrix();
-					matrix3.postScale(sightImageSquareLengthScaled / sightImageSquareLength, sightImageSquareLengthScaled / sightImageSquareLength);
-					sightPngScaled = new android.graphics.Bitmap.createBitmap(sightPngDecoded, 0, 0, sightImageSquareLength, sightImageSquareLength, matrix3, false);
 
-					popupSightImage = new android.widget.PopupWindow();
-					var layoutSightImage = new android.widget.RelativeLayout(currentActivity);
+					var sightImageView = new android.widget.ImageView(currentActivity);
+					sightImageView.setImageBitmap(sightPngScaled);
 
-					var sightImage = new android.widget.ImageView(currentActivity);
-					sightImage.setImageBitmap(sightPngScaled);
-					layoutSightImage.addView(sightImage);
-
-					popupSightImage.setContentView(layoutSightImage);
-					popupSightImage.setWidth(sightImageSquareLengthScaled);
-					popupSightImage.setHeight(sightImageSquareLengthScaled);
+					popupSightImage = new android.widget.PopupWindow(sightImageView, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 					popupSightImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-					popupSightImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
+					popupSightImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, -convertDpToPixel(1), -convertDpToPixel(1));
 				}
 			} catch(err)
 			{
@@ -3485,22 +3473,17 @@ function displayAimImageLayer(gun)
 
 				removeShootAndAimButtons();
 
-				var layoutAiming = new android.widget.LinearLayout(currentActivity);
-				layoutAiming.setOrientation(android.widget.LinearLayout.VERTICAL);
-				layoutAiming.setFocusableInTouchMode(false);
-
-				var backgroundAimImage = new android.widget.ImageView(currentActivity);
-				backgroundAimImage.setImageBitmap(aimImage);
-				backgroundAimImage.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
-				backgroundAimImage.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-				layoutAiming.addView(backgroundAimImage);
+				var backgroundAimImageView = new android.widget.ImageView(currentActivity);
+				backgroundAimImageView.setImageBitmap(aimImage);
+				backgroundAimImageView.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+				backgroundAimImageView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 
 				popupAiming = new android.widget.PopupWindow();
-				popupAiming.setContentView(layoutAiming);
+				popupAiming.setContentView(backgroundAimImageView);
 				popupAiming.setOutsideTouchable(false);
 				popupAiming.setFocusable(false);
 				popupAiming.setTouchable(false);
-				popupAiming.setAnimationStyle(-1);
+				popupAiming.setAnimationStyle(android.R.style.Animation_Dialog);
 				popupAiming.setWidth(displayWidth);
 				popupAiming.setHeight(displayHeight);
 				popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
@@ -3935,10 +3918,7 @@ function displayInfoItemUI()
 
 
 
-				var layoutTip = new android.widget.RelativeLayout(currentActivity);
-				layoutTip.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-
-				var tipText = new android.widget.TextView(currentActivity);
+				var tipText = basicMinecraftTextView(getRandomTip(), 14);
 				tipText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -3948,19 +3928,11 @@ function displayInfoItemUI()
 					}
 				});
 				tipText.setGravity(android.view.Gravity.LEFT);
-				tipText.setText(getRandomTip());
-				tipText.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-				tipText.setPaintFlags(tipText.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-				tipText.setTextSize(14);
 				tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
-					tipText.setShadowLayer(1, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
-				else
-					tipText.setShadowLayer(0.0001, Math.round(tipText.getLineHeight() / 8), Math.round(tipText.getLineHeight() / 8), android.graphics.Color.parseColor("#FF333333"));
+				tipText.setPadding(convertDpToPixel(4), convertDpToPixel(4), convertDpToPixel(4), convertDpToPixel(4));
 				tipText.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-				layoutTip.addView(tipText);
 
-				popupTip = new android.widget.PopupWindow(layoutTip, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, false);
+				popupTip = new android.widget.PopupWindow(tipText, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupTip.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 				popupTip.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.CENTER, 0, -64 * deviceDensity);
 			} catch(err)
@@ -4275,6 +4247,7 @@ function createImages()
 	settingsPng = null;
 
 	sightPngDecoded = decodeImageFromBase64(sightPng);
+	sightPngScaled = scaleImageToDensity(sightPngDecoded);
 	sightPng = null;
 
 	backgroundDarkDirtDecoded = decodeImageFromBase64(backgroundDarkDirtPng);
@@ -4432,12 +4405,14 @@ function convertDpToPixel(dp)
 	return Math.round(dp * deviceDensity);
 }
 
-function basicMinecraftTextView(text) // TextView with just the Minecraft font
+function basicMinecraftTextView(text, textSize) // TextView with just the Minecraft font
 {
 	var lineSpacing = convertDpToPixel(4);
 
 	var textview = new android.widget.TextView(currentActivity);
 	textview.setText(new android.text.Html.fromHtml(text));
+	if(textSize != null)
+		textview.setTextSize(textSize);
 	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
 	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 	textview.setLineSpacing(lineSpacing, 1);
@@ -4458,9 +4433,8 @@ function defaultColoredMinecraftButton(text, colorString)
 	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
 	bg.setStroke(convertDpToPixel(1), android.graphics.Color.parseColor(colorString));
 
-	var coloredButton = basicMinecraftTextView(text);
+	var coloredButton = basicMinecraftTextView(text, buttonsSize);
 	coloredButton.setGravity(android.view.Gravity.CENTER);
-	coloredButton.setTextSize(buttonsSize);
 	coloredButton.setTextColor(android.graphics.Color.parseColor(colorString));
 	coloredButton.setBackgroundDrawable(bg);
 	coloredButton.setPadding(padding, padding, padding, padding);
@@ -4523,9 +4497,8 @@ function progressBarForInformation(value, max, invert, text)
 
 function defaultContentTextView(text) // TextView for contents (basicMinecraftTextView with little changes)
 {
-	var textview = basicMinecraftTextView(text);
+	var textview = basicMinecraftTextView(text, 12);
 	textview.setTextColor(android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextColor));
-	textview.setTextSize(12);
 
 	return textview;
 }
@@ -4540,9 +4513,8 @@ function defaultSubTitle(subtitle) // TextView with Minecraft background
 	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
 	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
 
-	var title = basicMinecraftTextView(subtitle);
+	var title = basicMinecraftTextView(subtitle, 16);
 	title.setTextColor(android.graphics.Color.WHITE);
-	title.setTextSize(16);
 	title.setBackgroundDrawable(bg);
 	title.setPadding(padding, padding, padding, padding);
 
@@ -4557,9 +4529,8 @@ function defaultLayout(title)
 	layout.setPadding(padding, padding, padding, padding);
 	layout.setBackgroundDrawable(background);
 
-	var titleTextView = basicMinecraftTextView(title);
+	var titleTextView = basicMinecraftTextView(title, 18);
 	titleTextView.setTextColor(android.graphics.Color.WHITE);
-	titleTextView.setTextSize(18);
 	titleTextView.setGravity(android.view.Gravity.CENTER);
 	layout.addView(titleTextView);
 	setMarginsLinearLayout(titleTextView, 0, 4, 0, 4);
