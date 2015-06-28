@@ -3570,7 +3570,7 @@ function displayAimImageLayer(gun)
 				popupAiming.setOutsideTouchable(false);
 				popupAiming.setFocusable(false);
 				popupAiming.setTouchable(false);
-				popupAiming.setAnimationStyle(android.R.style.Animation_Dialog);
+				popupAiming.setAnimationStyle(android.R.style.Animation_Translucent); // Animation_Activity, Animation_Dialog, Animation_Translucent, 
 				popupAiming.setWidth(displayWidth);
 				popupAiming.setHeight(displayHeight);
 				popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
