@@ -98,6 +98,7 @@ var pixelsOffsetButtons = 0;
 var shouldDisplaySight = true;
 var displayGunNameInAmmo = false;
 var switchedButtonsPosition = false;
+var minecraftStyleForButtons = false;
 
 // workaround for returning arrows variable
 var deathWorkaround = false;
@@ -1522,6 +1523,7 @@ function newLevel()
 	reloadInCreative = getSavedBoolean("rCreative", false);
 	instantReloadInCreative = getSavedBoolean("instReload", false);
 	switchedButtonsPosition = getSavedBoolean("sBPosition", false);
+	minecraftStyleForButtons = getSavedBoolean("sBStyle", false);
 
 	new java.lang.Thread(new java.lang.Runnable()
 	{
@@ -1811,6 +1813,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 				{
 					onTouch: function(v, event)
 					{
+						if(minecraftStyleForButtons)
+							MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 						return false;
 					}
 				});
@@ -1842,6 +1846,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
+								if(minecraftStyleForButtons)
+									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 								onTouchWeaponShoot(event, currentGun, true);
 								return false;
 							}
@@ -1859,6 +1865,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
+								if(minecraftStyleForButtons)
+									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 								onTouchWeaponShoot(event, currentGun, false);
 								return false;
 							}
@@ -1916,6 +1924,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
+								if(minecraftStyleForButtons)
+									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 								onTouchWithWaitWeaponShoot(event, currentGun, true);
 								return false;
 							}
@@ -1933,6 +1943,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 						{
 							onTouch: function(v, event)
 							{
+								if(minecraftStyleForButtons)
+									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 								onTouchWithWaitWeaponShoot(event, currentGun, false);
 								return false;
 							}
@@ -3075,7 +3087,15 @@ function displayShootAndAimButtons(loadAimButton)
 			{
 				if(loadAimButton)
 				{
-					var aimText = defaultColoredMinecraftButton("aim", "#FFFFFFFF");
+					var aimText;
+					if(minecraftStyleForButtons)
+					{
+						aimText = MinecraftButton(buttonsSize);
+						aimText.setText("Aim");
+					} else
+					{
+						aimText = defaultColoredMinecraftButton("aim", "#FFFFFFFF");
+					}
 					aimText.setOnClickListener(new android.view.View.OnClickListener()
 					{
 						onClick: function(v)
@@ -3147,7 +3167,14 @@ function displayShootAndAimButtons(loadAimButton)
 
 
 
-				shotText = defaultColoredMinecraftButton("fire", "#FFDE0000");
+				if(minecraftStyleForButtons)
+				{
+					shotText = MinecraftButton(buttonsSize);
+					shotText.setText("Fire");
+				} else
+				{
+					shotText = defaultColoredMinecraftButton("fire", "#FFDE0000");
+				}
 				shotText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -3511,6 +3538,8 @@ function displayAimImageLayer(gun)
 								{
 									onTouch: function(v, event)
 									{
+										if(minecraftStyleForButtons)
+											MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 										onTouchWeaponShoot(event, gun, true);
 										return false;
 									}
@@ -3528,6 +3557,8 @@ function displayAimImageLayer(gun)
 								{
 									onTouch: function(v, event)
 									{
+										if(minecraftStyleForButtons)
+											MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
 										onTouchWeaponShoot(event, gun, false);
 										return false;
 									}
@@ -3828,7 +3859,15 @@ function displayHealButton()
 		{
 			try
 			{
-				var healthText = defaultColoredMinecraftButton("heal", "#FF00DE00");
+				var healthText;
+				if(minecraftStyleForButtons)
+				{
+					healthText = MinecraftButton(buttonsSize);
+					healthText.setText("Heal");
+				} else
+				{
+					healthText = defaultColoredMinecraftButton("heal", "#FF00DE00");
+				}
 				healthText.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function(v)
@@ -5327,6 +5366,26 @@ function settingsUI()
 
 
 
+				var switchButtonsStyle = new android.widget.Switch(currentActivity);
+				switchButtonsStyle.setChecked(minecraftStyleForButtons);
+				switchButtonsStyle.setText("Enable Minecraft style for the \"fire\" and \"aim\" buttons");
+				switchButtonsStyle.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+				switchButtonsStyle.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+				{
+					onCheckedChanged: function()
+					{
+						minecraftStyleForButtons = !minecraftStyleForButtons;
+						ModPE.saveData("sBStyle", minecraftStyleForButtons);
+					}
+				});
+				switchButtonsStyle.setPadding(padding, 0, padding, 0);
+				layout.addView(switchButtonsStyle);
+
+				layout.addView(dividerText());
+
+
+
+
 				var title = defaultSubTitle("UI");
 				layout.addView(title);
 
@@ -5380,7 +5439,7 @@ function settingsUI()
 
 				var switchWorkaround = new android.widget.Switch(currentActivity);
 				switchWorkaround.setChecked(deathWorkaround);
-				switchWorkaround.setText("Activate workaround to prevent returning arrows while shooting (experimental)");
+				switchWorkaround.setText("Enable workaround to prevent returning arrows while shooting (experimental)");
 				switchWorkaround.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				switchWorkaround.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
 				{
@@ -6552,7 +6611,7 @@ new java.lang.Thread(new java.lang.Runnable()
 // MINECRAFT BUTTON LIBRARY
 //########################################################################################################################################################
 
-// Library version: 1.2.1
+// Library version: 1.2.2
 // Made by Dennis Motta, also known as Desno365
 // https://github.com/Desno365/Minecraft-Button-Library
 
@@ -6609,64 +6668,20 @@ MinecraftButtonLibrary.ProcessedResources.mcPressedNineDrawable = null;
 // LIBRARY
 //########################################################################################################################################################
 
-function MinecraftButton(enableSound)
+function MinecraftButton(textSize, enableSound)
 {
+	if(textSize == null)
+		textSize = MinecraftButtonLibrary.defaultButtonTextSize;
 	if(enableSound == null)
 		enableSound = true;
 
 	var button = new android.widget.Button(MinecraftButtonLibrary.context);
-	button.setTextSize(MinecraftButtonLibrary.defaultButtonTextSize);
+	button.setTextSize(textSize);
 	button.setOnTouchListener(new android.view.View.OnTouchListener()
 	{
 		onTouch: function(v, motionEvent)
 		{
-			var action = motionEvent.getActionMasked();
-			if(action == android.view.MotionEvent.ACTION_DOWN)
-			{
-				// button pressed
-				MinecraftButtonLibrary.changeToPressedState(v);
-			}
-			if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
-			{
-				// button released
-				MinecraftButtonLibrary.changeToNormalState(v);
-				
-				var rect = new android.graphics.Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-				if(rect.contains(v.getLeft() + motionEvent.getX(), v.getTop() + motionEvent.getY())) // detect if the event happens inside the view
-				{
-					// onClick will run soon
-
-					// play sound
-					if(enableSound)
-						Level.playSoundEnt(Player.getEntity(), "random.click", 100, 30);
-				}
-			}
-			if(action == android.view.MotionEvent.ACTION_MOVE)
-			{
-				var rect = new android.graphics.Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-				if(rect.contains(v.getLeft() + motionEvent.getX(), v.getTop() + motionEvent.getY())) // detect if the event happens inside the view
-				{
-					// pointer inside the view
-					if(v.getTag() == false)
-					{
-						// restore pressed state
-						button.setTag(true); // is pressed?
-
-						MinecraftButtonLibrary.changeToPressedState(v);
-					}
-				} else
-				{
-					// pointer outside the view
-					if(v.getTag() == true)
-					{
-						// restore pressed state
-						button.setTag(false); // is pressed?
-
-						MinecraftButtonLibrary.changeToNormalState(v);
-					}
-				}
-			}
-
+			MinecraftButtonLibrary.onTouch(v, motionEvent, enableSound);
 			return false;
 		}
 	});
@@ -6691,7 +6706,6 @@ function MinecraftButton(enableSound)
 }
 
 // ######### BUTTON UTILS functions #########
-
 MinecraftButtonLibrary.setButtonBackground = function(button, background)
 {
 	if (android.os.Build.VERSION.SDK_INT >= 16)
@@ -6705,6 +6719,56 @@ MinecraftButtonLibrary.convertDpToPixel = function(dp)
 	var density = MinecraftButtonLibrary.metrics.density;
 
 	return (dp * density);
+}
+
+MinecraftButtonLibrary.onTouch = function(v, motionEvent, enableSound)
+{
+	var action = motionEvent.getActionMasked();
+	if(action == android.view.MotionEvent.ACTION_DOWN)
+	{
+		// button pressed
+		MinecraftButtonLibrary.changeToPressedState(v);
+	}
+	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
+	{
+		// button released
+		MinecraftButtonLibrary.changeToNormalState(v);
+		
+		var rect = new android.graphics.Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+		if(rect.contains(v.getLeft() + motionEvent.getX(), v.getTop() + motionEvent.getY())) // detect if the event happens inside the view
+		{
+			// onClick will run soon
+
+			// play sound
+			if(enableSound)
+				Level.playSoundEnt(Player.getEntity(), "random.click", 100, 30);
+		}
+	}
+	if(action == android.view.MotionEvent.ACTION_MOVE)
+	{
+		var rect = new android.graphics.Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+		if(rect.contains(v.getLeft() + motionEvent.getX(), v.getTop() + motionEvent.getY())) // detect if the event happens inside the view
+		{
+			// pointer inside the view
+			if(v.getTag() == false)
+			{
+				// restore pressed state
+				v.setTag(true); // is pressed?
+
+				MinecraftButtonLibrary.changeToPressedState(v);
+			}
+		} else
+		{
+			// pointer outside the view
+			if(v.getTag() == true)
+			{
+				// restore pressed state
+				v.setTag(false); // is pressed?
+
+				MinecraftButtonLibrary.changeToNormalState(v);
+			}
+		}
+	}
 }
 
 MinecraftButtonLibrary.changeToNormalState = function(button)
@@ -6722,12 +6786,10 @@ MinecraftButtonLibrary.changeToPressedState = function(button)
 	// make the effect of a pressed button with padding
 	button.setPadding(MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding), MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding) + MinecraftButtonLibrary.convertDpToPixel(2), MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding), MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding) - MinecraftButtonLibrary.convertDpToPixel(2));
 }
-
 // ######### END - BUTTON UTILS functions #########
 
 
 // ######### CREATE NINE PATCH functions #########
-
 MinecraftButtonLibrary.createNinePatchDrawables = function()
 {
 	var mcButtonNormalBitmap = MinecraftButtonLibrary.getMinecraftButtonBitmap();
@@ -6818,12 +6880,10 @@ MinecraftButtonLibrary.decodeImageFromBase64 = function(base64String)
 	var byteArray = android.util.Base64.decode(base64String, 0);
 	return android.graphics.BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 }
-
 // ######### END - CREATE NINE PATCH functions #########
 
 
 // ######### CREATE TYPEFACE functions #########
-
 MinecraftButtonLibrary.createTypeface = function()
 {
 	MinecraftButtonLibrary.writeFileFromByteArray(android.util.Base64.decode(MinecraftButtonLibrary.Resources.base64Font, 0), MinecraftButtonLibrary.sdcard + "/minecraft.ttf");
@@ -6842,12 +6902,10 @@ MinecraftButtonLibrary.writeFileFromByteArray = function(byteArray, path)
 	stream.close();
 	byteArray = null;
 }
-
 // ######### END - CREATE TYPEFACE functions #########
 
 
 // ######### UTILS functions #########
-
 MinecraftButtonLibrary.removeResources = function()
 {
 	MinecraftButtonLibrary.Resources.minecraftButtonStateNormalLDPI = null;
@@ -6881,7 +6939,6 @@ MinecraftButtonLibrary.deleteFile = function(path)
 	if(file.isFile())
 		file.delete();
 }
-
 // ######### END - UTILS functions #########
 
 
