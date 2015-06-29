@@ -1410,7 +1410,7 @@ const FRAGMENT = {
 	grenadesExplosionRadius: 2,
 	grenadesArray: [],
 	fragmentArray: [],
-	howManyFragments: 4,
+	howManyFragments: 3,
 	fragmentDelay: 1000,
 	accuracy: 4,
 	delay: 4000
@@ -2423,6 +2423,8 @@ function shootGrenadeHand(grenadeObject)
 
 function fragmentShit()
 {
+	// different number of fragments and different delay
+	
 	var explosionX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
 	var explosionY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
 	var explosionZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
@@ -2440,7 +2442,7 @@ function fragmentShit()
 		new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
 		{
 			fragmentShit();
-		}}), FRAGMENT.fragmentDelay);
+		}}), FRAGMENT.fragmentDelay * 2);
 	}
 
 	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
