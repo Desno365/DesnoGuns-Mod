@@ -2337,12 +2337,12 @@ function shootGrenadeHand(grenadeObject)
 	setVelZ(grenade, playerShootDir.z * grenadeObject.grenadeSpeed);
 	if(grenadeObject.id == GRENADE.id)
 	{
-		Entity.setRenderType(grenade, grenadeRenderType.renderType);
+		Entity.setGrenadeRender(grenade);
 		Entity.setMobSkin(grenade, "mob/grenade.png");
 	}
 	if(grenadeObject.id == FRAGMENT.id)
 	{
-		Entity.setRenderType(grenade, grenadeRenderType.renderType);
+		Entity.setGrenadeRender(grenade);
 		Entity.setMobSkin(grenade, "mob/fraggrenade.png");
 	}
 
@@ -2370,7 +2370,7 @@ function shootGrenadeHand(grenadeObject)
 					{
 						var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
 						Entity.setHealth(fragment, 99999);
-						Entity.setRenderType(fragment, grenadeRenderType.renderType);
+						Entity.setGrenadeRender(fragment);
 						Entity.setMobSkin(fragment, "mob/fraggrenade.png");
 						FRAGMENT.fragmentArray.push(new entityClass(fragment));
 
@@ -2433,7 +2433,7 @@ function fragmentShit()
 	{
 		var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
 		Entity.setHealth(fragment, 99999);
-		Entity.setRenderType(fragment, grenadeRenderType.renderType);
+		Entity.setGrenadeRender(fragment);
 		Entity.setMobSkin(fragment, "mob/fraggrenade.png");
 		FRAGMENT.fragmentArray.push(new entityClass(fragment));
 
@@ -6052,9 +6052,9 @@ function addGrenadeRenderType(renderer)
 
 	body.clear();
 	body.setTextureOffset(0, 0);
-	body.addBox(2, 20, 2, 2, 4, 3);
+	body.addBox(-1, 20, -1.5, 2, 4, 3);
 	body.setTextureOffset(8, 0);
-	body.addBox(2.5, 20.5, 5, 1, 1, 1);
+	body.addBox(-0.5, 20.5, 1.5, 1, 1, 1);
 
 	rArm.clear();
 
@@ -6066,6 +6066,14 @@ function addGrenadeRenderType(renderer)
 }
 var grenadeRenderType = Renderer.createHumanoidRenderer();
 addGrenadeRenderType(grenadeRenderType);
+const GRENADE_RENDER_COLLISION_SIZE_XZ = 1/16 * 4;
+const GRENADE_RENDER_COLLISION_SIZE_Y = 1/16 * 4;
+
+Entity.setGrenadeRender = function(entity)
+{
+	Entity.setRenderType(entity, grenadeRenderType.renderType);
+	Entity.setCollisionSize(entity, GRENADE_RENDER_COLLISION_SIZE_XZ, GRENADE_RENDER_COLLISION_SIZE_Y);
+}
 
 
 //########################################################################################################################################################
