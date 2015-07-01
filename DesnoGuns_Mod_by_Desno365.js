@@ -118,6 +118,10 @@ var reloadingGun;
 // sounds
 var reloadSound = new android.media.MediaPlayer();
 
+// load on touch with wait gun sounds
+var gunWarmupSound = new android.media.MediaPlayer();
+var gunSpinSound = new android.media.MediaPlayer();
+
 // gun sounds
 const MAX_LOGARITHMIC_VOLUME = 50;
 var soundPool;
@@ -1287,10 +1291,6 @@ var guns = [AA12, INCENDIARY_GL, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSI
 setUpGunsWithDate();
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
 
-// load on touch with wait gun sounds
-var gunWarmupSound = new android.media.MediaPlayer();
-var gunSpinSound = new android.media.MediaPlayer();
-
 // other items (not guns)
 const KNIFE_ID = 432;
 const KNIFE_MAX_DAMAGE = 32;
@@ -1911,6 +1911,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 				gunSpinSound.reset();
 				gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.spinSound);
 				gunSpinSound.setLooping(true);
+				gunSpinSound.setVolume(generalVolume, generalVolume);
 				gunSpinSound.prepareAsync();
 			} catch(e) {
 				try {
@@ -1918,6 +1919,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 					gunSpinSound.reset();
 					gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.spinSound);
 					gunSpinSound.setLooping(true);
+					gunSpinSound.setVolume(generalVolume, generalVolume);
 					gunSpinSound.prepareAsync();
 				} catch(e) { /* sounds not installed */ }
 			}
@@ -2424,7 +2426,7 @@ function shootGrenadeHand(grenadeObject)
 function fragmentShit()
 {
 	// different number of fragments and different delay
-	
+
 	var explosionX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
 	var explosionY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
 	var explosionZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
@@ -2827,6 +2829,7 @@ function onTouchWithWaitWeaponShoot(event, gun, reload)
 				isTouchingFireButtonGunsWithWait = true;
 				gunWarmupSound.reset();
 				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + warmupSoundString);
+				gunWarmupSound.setVolume(generalVolume, generalVolume);
 				gunWarmupSound.prepare();
 				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 				{
@@ -2875,6 +2878,7 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 			gunSpinSound.reset();
 			gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.spinSound);
 			gunSpinSound.setLooping(true);
+			gunSpinSound.setVolume(generalVolume, generalVolume);
 			gunSpinSound.prepareAsync();
 		} catch(e) { /* sounds not installed */ }
 	}
@@ -3659,6 +3663,7 @@ function reloadAmmo(gun)
 
 					reloadSound.reset();
 					reloadSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.reloadSound);
+					reloadSound.setVolume(generalVolume, generalVolume);
 					reloadSound.prepare();
 					reloadSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 					{
@@ -3721,6 +3726,7 @@ function reloadAmmo(gun)
 
 					reloadSound.reset();
 					reloadSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.reloadSound);
+					reloadSound.setVolume(generalVolume, generalVolume);
 					reloadSound.prepare();
 					reloadSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
 					{
