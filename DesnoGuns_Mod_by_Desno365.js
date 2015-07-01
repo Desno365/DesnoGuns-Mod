@@ -4615,7 +4615,6 @@ function defaultSubTitle(subtitle) // TextView with Minecraft background
 	var padding = convertDpToPixel(8);
 
 	var bg = android.graphics.drawable.GradientDrawable();
-	bg.setOrientation(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT);
 	bg.setColor(android.graphics.Color.parseColor("#FF736A6F"));
 	bg.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
 	bg.setStroke(convertDpToPixel(2), android.graphics.Color.parseColor("#FF93898B"));
