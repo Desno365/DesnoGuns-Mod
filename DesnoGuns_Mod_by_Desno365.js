@@ -266,12 +266,14 @@ const CRAFTING_MINIGUN = [
 		"iri",
 		"iri"];
 
+// for new IDs: 3285-3299 (armors) / 3300-3319 (grenades) / 3320-3339 (other items) / 3340-3364 (ammo) / 3365 (info item) / 3366-3500 (guns)
+
 // weapons
 const MAGNUM44 = {
 	gunType: GUN_TYPE_HANDGUN,
 	type: BUTTON_TYPE_ON_CLICK,
 	name: ".44 Magnum",
-	id: 456,
+	id: 3366,
 	fireRate: 4,
 	recoil: 20,
 	bulletSpeed: SNIPER_BULLET_SPEED /* one shot one kill, yeah */ ,
@@ -1291,7 +1293,7 @@ var guns = [AA12, INCENDIARY_GL, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSI
 setUpGunsWithDate();
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
 
-// other items (not guns)
+// other items
 const KNIFE_ID = 432;
 const KNIFE_MAX_DAMAGE = 32;
 Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
@@ -1389,7 +1391,7 @@ Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
 
 // grenades
 const GRENADE = {
-	id: 435,
+	id: 3300,
 	grenadeSpeed: 2.1,
 	grenadesExplosionRadius: 4,
 	grenadesArray: [],
@@ -1405,7 +1407,7 @@ Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
 
 var infiniteGrenade = false;
 const FRAGMENT = {
-	id: 436,
+	id: 3301,
 	grenadeSpeed: 2.1,
 	grenadesExplosionRadius: 2,
 	grenadesArray: [],
@@ -1423,7 +1425,7 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
 
 const MOLOTOV = {
-	id: 437,
+	id: 3302,
 	grenadeSpeed: 1.5,
 	grenadesExplosionDiameter: 3,
 	explodeOnTouch: true,
@@ -1438,8 +1440,23 @@ Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
 
-// info item
-const INFO_ITEM_ID = 438;
+const SMOKE = {
+	id: 3303,
+	grenadeSpeed: 2.1,
+	grenadesArray: [],
+	smokeParticlesDiameter: 3,
+	accuracy: 4,
+	delay: 4000
+};
+Item.defineItem(SMOKE.id, "grenadesmoke", 0, "Smoke Grenade");
+Item.addShapedRecipe(SMOKE.id, 1, 0, [
+	" i ",
+	" z ",
+	" s "], ["z", 353, 0, "s", 12, 0, "i", 265, 0]); // z = sugar; s = sand; i = iron;
+Item.setCategory(SMOKE.id, ITEM_CATEGORY_TOOL);
+
+// info item - specific ID
+const INFO_ITEM_ID = 3365;
 Item.defineItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
 Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
 	"   ",
