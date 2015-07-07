@@ -306,7 +306,7 @@ const CRAFTING_MINIGUN = [
 
 		hasExplosiveBulletsOnTouch: boolean, // explode when the bullet touch the ground
 		hasExplosiveBulletsOnTime: boolean, // explode after a delay: bulletExplosionDelay
-		bulletExplosionDelay: int, // ms of delay, REQUIRED when using hasExplosiveBulletsOnTime
+		bulletsExplosionDelay: int, // ms of delay, REQUIRED when using hasExplosiveBulletsOnTime
 		bulletsExplosionRadius: int, // REQUIRED when using explosive bullets
 		bulletsArray: [], // array that contains all the explosive bullets, REQUIRED when using explosive bullets
 
@@ -497,7 +497,7 @@ const CROSSBOW_EXPLOSIVE = {
 	recoil: 11,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	hasExplosiveBulletsOnTime: true,
-	bulletExplosionDelay: 4000,
+	bulletsExplosionDelay: 4000,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
 	zoomLevel: ZOOM_ASSAULT,
@@ -1626,6 +1626,7 @@ function newLevel()
 	{
 		// crashes in survival
 		Player.addItemCreativeInv(INFO_ITEM_ID, 1);
+		Player.addItemCreativeInv(SMOKE.id, 1);
 		Player.addItemCreativeInv(MOLOTOV.id, 1);
 		Player.addItemCreativeInv(FRAGMENT.id, 1);
 		Player.addItemCreativeInv(GRENADE.id, 1);
