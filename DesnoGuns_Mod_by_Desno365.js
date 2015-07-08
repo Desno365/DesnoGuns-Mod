@@ -504,7 +504,7 @@ const CROSSBOW_EXPLOSIVE = {
 	zoomLevel: ZOOM_ASSAULT,
 	accuracy: 5,
 	hasAimImageLayer: true,
-	sound: "GrenadeLauncherShoot.ogg",
+	sound: "CrossbowShoot.wav",
 	reloadSound: "GrenadeLauncherReload.ogg",
 	texture: "crossbow",
 	ammo: 1,
@@ -523,7 +523,7 @@ const CROSSBOW = {
 	zoomLevel: ZOOM_ASSAULT,
 	accuracy: 5,
 	hasAimImageLayer: true,
-	sound: "GrenadeLauncherShoot.ogg",
+	sound: "CrossbowShoot.wav",
 	reloadSound: "GrenadeLauncherReload.ogg",
 	texture: "crossbow",
 	ammo: 1,
@@ -6325,6 +6325,9 @@ var SoundsInstaller = {
 			},
 			{
 				fileName: "benboncan_parachute.mp3"
+			},
+			{
+				fileName: "CrossbowShoot.wav"
 			},
 			{
 				fileName: "DesertEagleShoot.ogg"
