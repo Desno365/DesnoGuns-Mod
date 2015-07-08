@@ -33,6 +33,7 @@ const GameMode = {
 };
 const ITEM_CATEGORY_TOOL = 3; // 3 seems to be the category of the tools
 const VEL_Y_OFFSET = -0.07840000092983246;
+var isInGame = false;
 
 // textures variables
 var textureUiShowed = false;
@@ -1622,6 +1623,8 @@ function selectLevelHook()
 
 function newLevel()
 {
+	isInGame = true;
+
 	if(Level.getGameMode() == GameMode.CREATIVE)
 	{
 		// crashes in survival
@@ -1698,6 +1701,8 @@ function newLevel()
 
 function leaveGame()
 {
+	isInGame = false;
+
 	removeShootAndAimButtons();
 
 	displayedMessageNoSound = false;
@@ -1736,6 +1741,9 @@ function leaveGame()
 
 	// remove molotovs
 	MOLOTOV.grenadesArray = [];
+
+	// remove smoke grenades
+	SMOKE.grenadesArray = [];
 
 	// parachute
 	isParachuting = false;
@@ -2466,44 +2474,49 @@ function shootGrenadeHand(grenadeObject)
 			{
 				run: function()
 				{
-					// push() put the object at the end so the first object ( [0] ) is the object that will explode
-					var explosionX = Entity.getX(FRAGMENT.grenadesArray[0].entity);
-					var explosionY = Entity.getY(FRAGMENT.grenadesArray[0].entity);
-					var explosionZ = Entity.getZ(FRAGMENT.grenadesArray[0].entity);
-					Entity.remove(FRAGMENT.grenadesArray[0].entity);
-					FRAGMENT.grenadesArray.splice(0, 1);
-
-					for(var i = 0; i < FRAGMENT.howManyFragments; i++)
+					if(isInGame)
 					{
-						var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
-						Entity.setHealth(fragment, 99999);
-						Entity.setGrenadeRender(fragment);
-						Entity.setMobSkin(fragment, "mob/fraggrenade.png");
-						FRAGMENT.fragmentArray.push(new entityClass(fragment));
+						// push() put the object at the end so the first object ( [0] ) is the object that will explode
+						var explosionX = Entity.getX(FRAGMENT.grenadesArray[0].entity);
+						var explosionY = Entity.getY(FRAGMENT.grenadesArray[0].entity);
+						var explosionZ = Entity.getZ(FRAGMENT.grenadesArray[0].entity);
+						Entity.remove(FRAGMENT.grenadesArray[0].entity);
+						FRAGMENT.grenadesArray.splice(0, 1);
 
-						new android.os.Handler().postDelayed(new java.lang.Runnable(
+						for(var i = 0; i < FRAGMENT.howManyFragments; i++)
 						{
-							run: function()
+							var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
+							Entity.setHealth(fragment, 99999);
+							Entity.setGrenadeRender(fragment);
+							Entity.setMobSkin(fragment, "mob/fraggrenade.png");
+							FRAGMENT.fragmentArray.push(new entityClass(fragment));
+
+							new android.os.Handler().postDelayed(new java.lang.Runnable(
 							{
-								if(infiniteGrenade)
+								run: function()
 								{
-									fragmentShit();
-								} else
-								{
-									var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
-									var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
-									var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
-									Entity.remove(FRAGMENT.fragmentArray[0].entity);
-									FRAGMENT.fragmentArray.splice(0, 1);
+									if(isInGame)
+									{
+										if(infiniteGrenade)
+										{
+											fragmentShit();
+										} else
+										{
+											var fragmentX = Entity.getX(FRAGMENT.fragmentArray[0].entity);
+											var fragmentY = Entity.getY(FRAGMENT.fragmentArray[0].entity);
+											var fragmentZ = Entity.getZ(FRAGMENT.fragmentArray[0].entity);
+											Entity.remove(FRAGMENT.fragmentArray[0].entity);
+											FRAGMENT.fragmentArray.splice(0, 1);
 
-									Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);
+											Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);
+										}
+									}
 								}
-							}
-						}), FRAGMENT.fragmentDelay);
+							}), FRAGMENT.fragmentDelay);
+						}
+
+						Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
 					}
-
-					Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
-
 				}
 			}), grenadeObject.delay);
 		}
@@ -2513,15 +2526,17 @@ function shootGrenadeHand(grenadeObject)
 			new android.os.Handler().postDelayed(new java.lang.Runnable({
 				run: function()
 				{
-					// push() put the object at the end so the first object ( [0] ) is the object that will explode
-					var explosionX = Entity.getX(GRENADE.grenadesArray[0].entity);
-					var explosionY = Entity.getY(GRENADE.grenadesArray[0].entity);
-					var explosionZ = Entity.getZ(GRENADE.grenadesArray[0].entity);
-					Entity.remove(GRENADE.grenadesArray[0].entity);
-					GRENADE.grenadesArray.splice(0, 1);
+					if(isInGame)
+					{
+						// push() put the object at the end so the first object ( [0] ) is the object that will explode
+						var explosionX = Entity.getX(GRENADE.grenadesArray[0].entity);
+						var explosionY = Entity.getY(GRENADE.grenadesArray[0].entity);
+						var explosionZ = Entity.getZ(GRENADE.grenadesArray[0].entity);
+						Entity.remove(GRENADE.grenadesArray[0].entity);
+						GRENADE.grenadesArray.splice(0, 1);
 
-					Level.explode(explosionX, explosionY, explosionZ, GRENADE.grenadesExplosionRadius);
-
+						Level.explode(explosionX, explosionY, explosionZ, GRENADE.grenadesExplosionRadius);
+					}
 				}
 			}), grenadeObject.delay);
 		}
@@ -2546,10 +2561,16 @@ function fragmentShit()
 		Entity.setMobSkin(fragment, "mob/fraggrenade.png");
 		FRAGMENT.fragmentArray.push(new entityClass(fragment));
 
-		new android.os.Handler().postDelayed(new java.lang.Runnable({run: function()
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
 		{
-			fragmentShit();
-		}}), FRAGMENT.fragmentDelay * 2);
+			run: function()
+			{
+				if(isInGame)
+				{
+					fragmentShit();
+				}
+			}
+		}), FRAGMENT.fragmentDelay * 2);
 	}
 
 	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
@@ -2755,9 +2776,12 @@ function showCloudParticle(amount)
 		{
 			run: function()
 			{
-				var gunDir = getDirection(getYaw() + 30, getPitch());
-				for(var i = 0; i < amount; i++)
-					Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
+				if(isInGame)
+				{
+					var gunDir = getDirection(getYaw() + 30, getPitch());
+					for(var i = 0; i < amount; i++)
+						Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
+				}
 			}
 		}), 250);
 	}
@@ -3448,28 +3472,32 @@ var Recoil = {
 		{
 			run: function()
 			{
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar));
 					}
 				}), 1 * 6);
 
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
 					}
 				}), 2 * 6);
 
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
 					}
 				}), 3 * 6);
 
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
@@ -3489,7 +3517,8 @@ var Recoil = {
 			{
 				for(var ms = 1; ms <= 5; ms++)
 				{
-					new android.os.Handler().postDelayed(new java.lang.Runnable({
+					new android.os.Handler().postDelayed(new java.lang.Runnable(
+					{
 						run: function()
 						{
 							Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
@@ -3497,21 +3526,24 @@ var Recoil = {
 					}), ms * 7);
 				}
 
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
 					}
 				}), 6 * 7);
 
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.75));
 					}
 				}), 7 * 7);
 
-				new android.os.Handler().postDelayed(new java.lang.Runnable({
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
 					run: function()
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
@@ -6079,7 +6111,8 @@ function easterEggUI()
 									{
 										for(var ms = 0; ms < 60; ms++)
 										{
-											new android.os.Handler().postDelayed(new java.lang.Runnable({
+											new android.os.Handler().postDelayed(new java.lang.Runnable(
+											{
 												run: function()
 												{
 													ModPE.showTipMessage("§" + currentColorEE.toString(16) + "Easter Egg enabled!");
