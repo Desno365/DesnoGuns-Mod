@@ -505,8 +505,8 @@ const CROSSBOW_EXPLOSIVE = {
 	accuracy: 5,
 	hasAimImageLayer: true,
 	sound: "CrossbowShoot.wav",
-	reloadSound: "GrenadeLauncherReload.ogg",
-	texture: "crossbow",
+	reloadSound: "CrossbowReload.wav",
+	texture: "crossbowexplosive",
 	ammo: 1,
 	smoke: 0,
 	recipe: CRAFTING_LAUNCHER
@@ -524,7 +524,7 @@ const CROSSBOW = {
 	accuracy: 5,
 	hasAimImageLayer: true,
 	sound: "CrossbowShoot.wav",
-	reloadSound: "GrenadeLauncherReload.ogg",
+	reloadSound: "CrossbowReload.wav",
 	texture: "crossbow",
 	ammo: 1,
 	smoke: 0,
@@ -1978,12 +1978,13 @@ function changeCarriedItemHook(currentItem, previousItem)
 		if(currentGun.isFlamethrower)
 			flameTick = 2;
 
+		// load sounds for the gun
+		if(!currentGun.hasntShootingSound)
+			Sound.loadSoundPoolFromPath(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
+
 		// assault rifles, sub machine guns and light machine guns
 		if(currentGun.type == BUTTON_TYPE_ON_TOUCH)
 		{
-			// load sounds for the gun
-			Sound.loadSoundPoolFromPath(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
-
 			// load touch events
 			if(shouldReload())
 			{
@@ -2042,10 +2043,6 @@ function changeCarriedItemHook(currentItem, previousItem)
 		// guns with warmup
 		if(currentGun.type == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
 		{
-			// load shooting sound for the gun
-			if(!currentGun.hasntShootingSound)
-				Sound.loadSoundPoolFromPath(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
-
 			// load spin sound
 			try {
 				gunSpinSound.reset();
@@ -2901,7 +2898,7 @@ function onClickShootWithReload(gun)
 	} else
 	{
 		stopReloading();
-		Sound.playFromFileName(gun.sound);
+		Sound.playLoadedSoundPool();
 		shoot(gun);
 		damageCarriedGun(gun);
 		latestShotTime = java.lang.System.currentTimeMillis();
@@ -2912,7 +2909,7 @@ function onClickShootWithReload(gun)
 
 function onClickShootWithoutReload(gun)
 {
-	Sound.playFromFileName(gun.sound);
+	Sound.playLoadedSoundPool();
 	shoot(gun);
 	latestShotTime = java.lang.System.currentTimeMillis();
 	showCloudParticle(gun.smoke);
@@ -3269,6 +3266,9 @@ var Sound = {
 
 	playLoadedSoundPool: function(volume)
 	{
+		if(volume == null)
+			volume = 1.0;
+
 		try
 		{
 			volume = volume * generalVolume;
@@ -6339,6 +6339,9 @@ var SoundsInstaller = {
 				fileName: "EmptyGun.ogg"
 			},
 			{
+				fileName: "explosion-countdown.wav"
+			},
+			{
 				fileName: "fire-explosion.mp3"
 			},
 			{
@@ -6440,6 +6443,10 @@ var SoundsInstaller = {
 			},
 			{
 				fileName: "ColtReload.ogg",
+				fileDirectory: "reload"
+			},
+			{
+				fileName: "CrossbowReload.wav",
 				fileDirectory: "reload"
 			},
 			{
