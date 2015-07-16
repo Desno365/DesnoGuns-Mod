@@ -498,7 +498,7 @@ const CROSSBOW_EXPLOSIVE = {
 	recoil: 11,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	hasExplosiveBulletsOnTime: true,
-	bulletsExplosionDelay: 4000,
+	bulletsExplosionDelay: 3350,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
 	zoomLevel: ZOOM_ASSAULT,
@@ -1410,7 +1410,7 @@ const INCENDIARY_GL = {
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
 var guns = [AA12, INCENDIARY_GL, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 setUpGunsWithDate();
-var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
+var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
 
 // other items
 const KNIFE_ID = 432;
@@ -1716,6 +1716,18 @@ function leaveGame()
 		soundPool = null;
 		soundID = null;
 	} catch(e) { /* soundPool was already released */ }
+	try {
+		sound1.reset();
+		sound1 = null;
+	} catch(e) { }
+	try {
+		sound2.reset();
+		sound2 = null;
+	} catch(e) { }
+	try {
+		sound3.reset();
+		sound3 = null;
+	} catch(e) { }
 
 	// fire button variables
 	currentShotTicks = 0;
@@ -1888,10 +1900,13 @@ function entityRemovedHook(entity)
 	// remove explosive bullets
 	for(var i in explosiveWeapons)
 	{
-		for(var j in explosiveWeapons[i].bulletsArray)
+		if(!explosiveWeapons[i].hasExplosiveBulletsOnTime) // bullets on time shouldn't be removed from the array when the entity gets removed from the game
 		{
-			if(entity == explosiveWeapons[i].bulletsArray[j].entity)
-				explosiveWeapons[i].bulletsArray.splice(j, 1);
+			for(var j in explosiveWeapons[i].bulletsArray)
+			{
+				if(entity == explosiveWeapons[i].bulletsArray[j].entity)
+					explosiveWeapons[i].bulletsArray.splice(j, 1);
+			}
 		}
 	}
 }
@@ -2244,26 +2259,45 @@ var ModTickFunctions = {
 		{
 			for(var j in explosiveWeapons[i].bulletsArray)
 			{
-				var arrow = explosiveWeapons[i].bulletsArray[j];
-				var xArrow = Entity.getX(arrow.entity);
-				var yArrow = Entity.getY(arrow.entity);
-				var zArrow = Entity.getZ(arrow.entity);
-				if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow)
+				if(explosiveWeapons[i].hasExplosiveBulletsOnTouch)
 				{
-					Level.explode(xArrow, yArrow, zArrow, explosiveWeapons[i].bulletsExplosionRadius);
-
-					Entity.remove(arrow.entity);
-					explosiveWeapons[i].bulletsArray.splice(j, 1);
-				} else
-				{
-					if(xArrow == 0 && yArrow == 0 && zArrow == 0)
+					var arrow = explosiveWeapons[i].bulletsArray[j];
+					var xArrow = Entity.getX(arrow.entity);
+					var yArrow = Entity.getY(arrow.entity);
+					var zArrow = Entity.getZ(arrow.entity);
+					if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow)
 					{
-						// the arrow hit an entity
-						Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, explosiveWeapons[i].bulletsExplosionRadius);
+						Level.explode(xArrow, yArrow, zArrow, explosiveWeapons[i].bulletsExplosionRadius);
 
+						Entity.remove(arrow.entity);
 						explosiveWeapons[i].bulletsArray.splice(j, 1);
 					} else
 					{
+						if(xArrow == 0 && yArrow == 0 && zArrow == 0)
+						{
+							// the arrow hit an entity
+							Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, explosiveWeapons[i].bulletsExplosionRadius);
+
+							explosiveWeapons[i].bulletsArray.splice(j, 1);
+						} else
+						{
+							arrow.previousX = xArrow;
+							arrow.previousY = yArrow;
+							arrow.previousZ = zArrow;
+						}
+					}
+				}
+
+				if(explosiveWeapons[i].hasExplosiveBulletsOnTime)
+				{
+					var arrow = explosiveWeapons[i].bulletsArray[j];
+					var xArrow = Entity.getX(arrow.entity);
+					var yArrow = Entity.getY(arrow.entity);
+					var zArrow = Entity.getZ(arrow.entity);
+
+					if(xArrow != 0 && yArrow != 0 && zArrow != 0)
+					{
+						// save the last position of the arrow, needed if the arrow is removed before it explodes
 						arrow.previousX = xArrow;
 						arrow.previousY = yArrow;
 						arrow.previousZ = zArrow;
@@ -2471,7 +2505,7 @@ function shootGrenadeHand(grenadeObject)
 			{
 				run: function()
 				{
-					if(isInGame)
+					if(isInGame && FRAGMENT.grenadesArray.length > 0)
 					{
 						// push() put the object at the end so the first object ( [0] ) is the object that will explode
 						var explosionX = Entity.getX(FRAGMENT.grenadesArray[0].entity);
@@ -2492,7 +2526,7 @@ function shootGrenadeHand(grenadeObject)
 							{
 								run: function()
 								{
-									if(isInGame)
+									if(isInGame && FRAGMENT.fragmentArray.length > 0)
 									{
 										if(infiniteGrenade)
 										{
@@ -2520,10 +2554,11 @@ function shootGrenadeHand(grenadeObject)
 
 		if(grenadeObject.id == GRENADE.id)
 		{
-			new android.os.Handler().postDelayed(new java.lang.Runnable({
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
 				run: function()
 				{
-					if(isInGame)
+					if(isInGame && GRENADE.grenadesArray.length > 0)
 					{
 						// push() put the object at the end so the first object ( [0] ) is the object that will explode
 						var explosionX = Entity.getX(GRENADE.grenadesArray[0].entity);
@@ -2562,7 +2597,7 @@ function fragmentShit()
 		{
 			run: function()
 			{
-				if(isInGame)
+				if(isInGame && FRAGMENT.fragmentArray.length > 0)
 				{
 					fragmentShit();
 				}
@@ -2731,7 +2766,33 @@ function shootSingleBullet(gun)
 
 	if(gun.hasExplosiveBulletsOnTime)
 	{
-		// TODO
+		Sound.playFromFileName("explosion-countdown.wav");
+
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				if(isInGame && gun.bulletsArray.length > 0) // gun.bulletsArray.length > 0 fix a crash that happens when the player shoot an explosive bullet, exit the world and re-enter in the world
+				{
+					// TODO check x y z == 0; if yes then use .x .y .z of Entity class that are put in modTick
+					var explosionX = Entity.getX(gun.bulletsArray[0].entity);
+					var explosionY = Entity.getY(gun.bulletsArray[0].entity);
+					var explosionZ = Entity.getZ(gun.bulletsArray[0].entity);
+
+					if(explosionX == 0 && explosionY == 0 && explosionZ == 0)
+					{
+						// arrow hit an entity
+						Entity.remove(gun.bulletsArray[0].entity);
+						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+					} else
+					{
+						Entity.remove(gun.bulletsArray[0].entity);
+						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+					}
+					gun.bulletsArray.splice(0, 1);
+				}
+			}
+		}), gun.bulletsExplosionDelay);
 	}
 }
 
