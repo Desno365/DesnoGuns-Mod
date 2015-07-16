@@ -274,8 +274,88 @@ const CRAFTING_MINIGUN = [
 		" j ",
 		"iri",
 		"iri"];
+const CRAFTING_CROSSBOW = [
+		" is",
+		"|rs",
+		" is"];
+const CRAFTING_CROSSBOW_EXPLOSIVE = [
+		" is",
+		"krs",
+		" is"];
 
 // for new IDs: 3285-3299 (armors) / 3300-3319 (grenades) / 3320-3339 (other items) / 3340-3364 (ammo) / 3365 (info item) / 3366-3500 (guns)
+
+// ammo
+const AMMO_ASSAULT_RIFLE_ID = 3340;
+Item.defineItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
+Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
+	" i ",
+	" g ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_SUB_MACHINE_ID = 3341;
+Item.defineItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
+Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
+	" i ",
+	" g ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_LIGHT_MACHINE_ID = 3342;
+Item.defineItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
+Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
+	"i i",
+	"g g",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_SNIPER_RIFLE_ID = 3343;
+Item.defineItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
+Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
+	" i ",
+	" g ",
+	" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_SHOTGUN_ID = 3344;
+Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
+Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
+	"   ",
+	" i ",
+	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_MACHINE_PISTOL_ID = 3345;
+Item.defineItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
+Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
+	" i ",
+	" g ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_HANDGUN_ID = 3346;
+Item.defineItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
+Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
+	"   ",
+	" i ",
+	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_LAUNCHER_ID = 3347;
+Item.defineItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
+Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
+	"g g",
+	" g ",
+	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_MINIGUN_ID = 3348;
+Item.defineItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
+Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
+	"i i",
+	"grg",
+	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+const AMMO_ARROW_EXPLOSIVE_ID = 3349;
+Item.defineItem(AMMO_ARROW_EXPLOSIVE_ID, "ammoarrowexplosive", 0, "Explosive Arrow");
+Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
+	" g ",
+	" g ",
+	" a "], ["a", 262, 0, "g", 289, 0]); // a = arrow; g = gunpowder;
+
 
 // all possible gun variables
 /*
@@ -494,7 +574,7 @@ const CROSSBOW_EXPLOSIVE = {
 	type: BUTTON_TYPE_ON_CLICK,
 	name: "Crossbow Explosive",
 	id: 3367,
-	fireRate: 10,
+	fireRate: 14,
 	recoil: 11,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	hasExplosiveBulletsOnTime: true,
@@ -508,8 +588,9 @@ const CROSSBOW_EXPLOSIVE = {
 	reloadSound: "CrossbowReload.wav",
 	texture: "crossbowexplosive",
 	ammo: 1,
+	ammunitionID: AMMO_ARROW_EXPLOSIVE_ID,
 	smoke: 0,
-	recipe: CRAFTING_LAUNCHER
+	recipe: CRAFTING_CROSSBOW_EXPLOSIVE
 };
 
 const CROSSBOW = {
@@ -517,7 +598,7 @@ const CROSSBOW = {
 	type: BUTTON_TYPE_ON_CLICK,
 	name: "Crossbow",
 	id: 3368,
-	fireRate: 10,
+	fireRate: 14,
 	recoil: 11,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	zoomLevel: ZOOM_ASSAULT,
@@ -527,8 +608,9 @@ const CROSSBOW = {
 	reloadSound: "CrossbowReload.wav",
 	texture: "crossbow",
 	ammo: 1,
+	ammunitionID: 262, // 262 = arrow
 	smoke: 0,
-	recipe: CRAFTING_LAUNCHER
+	recipe: CRAFTING_CROSSBOW
 };
 
 const DESERT_EAGLE = {
@@ -1413,7 +1495,7 @@ setUpGunsWithDate();
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
 
 // other items
-const KNIFE_ID = 432;
+const KNIFE_ID = 3320;
 const KNIFE_MAX_DAMAGE = 32;
 Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
 Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
@@ -1425,7 +1507,7 @@ Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
 Item.setVerticalRender(KNIFE_ID);
 
 var isParachuting = false;
-const PARACHUTE_ID = 433;
+const PARACHUTE_ID = 3321;
 const PARACHUTE_MAX_DAMAGE = 10;
 Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute");
 Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
@@ -1435,7 +1517,7 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
 
-const MEDICAL_KIT_ID = 434;
+const MEDICAL_KIT_ID = 3322;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
 Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
 Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
@@ -1443,70 +1525,6 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
-
-// ammo
-const AMMO_ASSAULT_RIFLE_ID = 440;
-Item.defineItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
-Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
-	" i ",
-	" g ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_SUB_MACHINE_ID = 441;
-Item.defineItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
-Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
-	" i ",
-	" g ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_LIGHT_MACHINE_ID = 442;
-Item.defineItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
-Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
-	"i i",
-	"g g",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_SNIPER_RIFLE_ID = 443;
-Item.defineItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
-Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
-	" i ",
-	" g ",
-	" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_SHOTGUN_ID = 444;
-Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
-Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
-	"   ",
-	" i ",
-	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_MACHINE_PISTOL_ID = 445;
-Item.defineItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
-Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
-	" i ",
-	" g ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_HANDGUN_ID = 446;
-Item.defineItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
-Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
-	"   ",
-	" i ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_LAUNCHER_ID = 447;
-Item.defineItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
-Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
-	"g g",
-	" g ",
-	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
-const AMMO_MINIGUN_ID = 448;
-Item.defineItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
-Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
-	"i i",
-	"grg",
-	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 
 // grenades
 const GRENADE = {
@@ -2460,7 +2478,7 @@ function addNewGun(gun)
 function addGunCraftingRecipe(id, howMany, recipe)
 {
 	// here add other items for crafting with the chosen letter.
-	Item.addShapedRecipe(id, howMany, 0, recipe, ["i", 265, 0, "r", 331, 0, "a", AMMO_ASSAULT_RIFLE_ID, 0, "b", AMMO_SUB_MACHINE_ID, 0, "c", AMMO_LIGHT_MACHINE_ID, 0, "d", AMMO_SNIPER_RIFLE_ID, 0, "e", AMMO_SHOTGUN_ID, 0, "f", AMMO_MACHINE_PISTOL_ID, 0, "g", AMMO_HANDGUN_ID, 0, "h", AMMO_LAUNCHER_ID, 0, "j", AMMO_MINIGUN_ID, 0]);
+	Item.addShapedRecipe(id, howMany, 0, recipe, ["i", 265, 0, "r", 331, 0, "s", 287 /*string*/, 0, "|", 262 /*arrow*/, 0, "a", AMMO_ASSAULT_RIFLE_ID, 0, "b", AMMO_SUB_MACHINE_ID, 0, "c", AMMO_LIGHT_MACHINE_ID, 0, "d", AMMO_SNIPER_RIFLE_ID, 0, "e", AMMO_SHOTGUN_ID, 0, "f", AMMO_MACHINE_PISTOL_ID, 0, "g", AMMO_HANDGUN_ID, 0, "h", AMMO_LAUNCHER_ID, 0, "j", AMMO_MINIGUN_ID, 0,  "k", AMMO_ARROW_EXPLOSIVE_ID, 0]);
 }
 
 function shootGrenadeHand(grenadeObject)
@@ -3911,7 +3929,7 @@ function reloadAmmo(gun)
 		if(Player.getCarriedItemData() != 0)
 		{
 			if(slot == -1)
-				clientMessage("You don't have one " + getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
+				clientMessage("You don't have one " + Item.getName(getAmmoId(gun), 0, false) + " in your inventory.");
 			else
 			{
 				try
@@ -3934,7 +3952,7 @@ function reloadAmmo(gun)
 							{
 								var ammoSlot = Player.getSlotOfItem(getAmmoId(reloadingGun));
 								if(ammoSlot == -1)
-									clientMessage("You don't have one " + getAmmoName(getAmmoId(gun)) + " ammo in your inventory.");
+									clientMessage("You don't have one " + Item.getName(getAmmoId(gun), 0, false) + " ammo in your inventory.");
 								else
 								{
 									Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
@@ -4076,94 +4094,54 @@ function damageCarriedGun(gun)
 
 function getAmmoId(gun)
 {
-	switch(gun.gunType)
+	if(gun.ammunitionID != null)
 	{
-		case GUN_TYPE_ASSAULT_RIFLE:
-		{
-			return AMMO_ASSAULT_RIFLE_ID;
-		}
-		case GUN_TYPE_SUB_MACHINE:
-		{
-			return AMMO_SUB_MACHINE_ID;
-		}
-		case GUN_TYPE_LIGHT_MACHINE:
-		{
-			return AMMO_LIGHT_MACHINE_ID;
-		}
-		case GUN_TYPE_SNIPER_RIFLE:
-		{
-			return AMMO_SNIPER_RIFLE_ID;
-		}
-		case GUN_TYPE_SHOTGUN:
-		{
-			return AMMO_SHOTGUN_ID;
-		}
-		case GUN_TYPE_MACHINE_PISTOL:
-		{
-			return AMMO_MACHINE_PISTOL_ID;
-		}
-		case GUN_TYPE_HANDGUN:
-		{
-			return AMMO_HANDGUN_ID;
-		}
-		case GUN_TYPE_LAUNCHER:
-		{
-			return AMMO_LAUNCHER_ID;
-		}
-		case GUN_TYPE_MINIGUN:
-		{
-			return AMMO_MINIGUN_ID;
-		}
-		default:
-		{
-			clientMessage("Error in getAmmoId()");
-		}
+		return gun.ammunitionID;
 	}
-}
-
-function getAmmoName(id)
-{
-	switch(id)
+	else
 	{
-		case AMMO_ASSAULT_RIFLE_ID:
+		switch(gun.gunType)
 		{
-			return "Assault Rifle Ammo";
-		}
-		case AMMO_SUB_MACHINE_ID:
-		{
-			return "Sub Machine Ammo";
-		}
-		case AMMO_LIGHT_MACHINE_ID:
-		{
-			return "Light Machine Ammo";
-		}
-		case AMMO_SNIPER_RIFLE_ID:
-		{
-			return "Sniper Rifle Ammo";
-		}
-		case AMMO_SHOTGUN_ID:
-		{
-			return "Shotgun Ammo";
-		}
-		case AMMO_MACHINE_PISTOL_ID:
-		{
-			return "Machine Pistol Ammo";
-		}
-		case AMMO_HANDGUN_ID:
-		{
-			return "Handgun Ammo";
-		}
-		case AMMO_LAUNCHER_ID:
-		{
-			return "Launcher Ammo";
-		}
-		case AMMO_MINIGUN_ID:
-		{
-			return "Minigun Ammo";
-		}
-		default:
-		{
-			clientMessage("Error in getAmmoName()");
+			case GUN_TYPE_ASSAULT_RIFLE:
+			{
+				return AMMO_ASSAULT_RIFLE_ID;
+			}
+			case GUN_TYPE_SUB_MACHINE:
+			{
+				return AMMO_SUB_MACHINE_ID;
+			}
+			case GUN_TYPE_LIGHT_MACHINE:
+			{
+				return AMMO_LIGHT_MACHINE_ID;
+			}
+			case GUN_TYPE_SNIPER_RIFLE:
+			{
+				return AMMO_SNIPER_RIFLE_ID;
+			}
+			case GUN_TYPE_SHOTGUN:
+			{
+				return AMMO_SHOTGUN_ID;
+			}
+			case GUN_TYPE_MACHINE_PISTOL:
+			{
+				return AMMO_MACHINE_PISTOL_ID;
+			}
+			case GUN_TYPE_HANDGUN:
+			{
+				return AMMO_HANDGUN_ID;
+			}
+			case GUN_TYPE_LAUNCHER:
+			{
+				return AMMO_LAUNCHER_ID;
+			}
+			case GUN_TYPE_MINIGUN:
+			{
+				return AMMO_MINIGUN_ID;
+			}
+			default:
+			{
+				clientMessage("Error in getAmmoId() with gunType " + gun.gunType);
+			}
 		}
 	}
 }
