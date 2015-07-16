@@ -1581,9 +1581,8 @@ const SMOKE = {
 	id: 3303,
 	grenadeSpeed: 2.1,
 	grenadesArray: [],
-	smokeParticlesDiameter: 3,
 	accuracy: 4,
-	delay: 4000
+	delay: 10000
 };
 Item.defineItem(SMOKE.id, "grenadesmoke", 0, "Smoke Grenade");
 Item.addShapedRecipe(SMOKE.id, 1, 0, [
@@ -1962,7 +1961,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	}
 
 	// remove shooting UI of grenades and molotov
-	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id)
+	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id || previousItem == SMOKE.id)
 	{
 		//
 		removeShootAndAimButtons();
@@ -2211,6 +2210,24 @@ function changeCarriedItemHook(currentItem, previousItem)
 		setAmmoText(" ");
 	}
 
+	// smoke grenade
+	if(currentItem == SMOKE.id)
+	{
+		displayShootAndAimButtons(false);
+
+		// load click event
+		onClickRunnable = (new java.lang.Runnable(
+		{
+			run: function()
+			{
+				shootGrenadeHand(SMOKE);
+				if(Level.getGameMode() == GameMode.SURVIVAL)
+					Player.decreaseByOneCarriedItem();
+			}
+		}));
+		setAmmoText(" ");
+	}
+
 	// DesnoGuns info
 	if(currentItem == INFO_ITEM_ID)
 	{
@@ -2230,6 +2247,8 @@ function modTick()
 	incendiaryGrenadeLauncher();
 
 	ModTickFunctions.molotov();
+
+	ModTickFunctions.smokeGrenade();
 	
 	ModTickFunctions.parachute();
 	
@@ -2377,6 +2396,31 @@ var ModTickFunctions = {
 		}
 	},
 
+	smokeGrenade: function()
+	{
+		for(var i in SMOKE.grenadesArray)
+		{
+			for(var j = 0; j < 10; j++)
+			{
+				var randomYaw = Math.floor(Math.random() * 360);
+				var randomPitch = Math.floor((Math.random() * 225) + 120);
+				var dir = getDirection(randomYaw, randomPitch);
+
+				var distance = Math.random() * 0.8 + 1.8;
+				var x = Entity.getX(SMOKE.grenadesArray[i].entity) + (dir.x * distance);
+				var y = Entity.getY(SMOKE.grenadesArray[i].entity) + (dir.y * (distance - 0.5));
+				var z = Entity.getZ(SMOKE.grenadesArray[i].entity) + (dir.z * distance);
+
+				var speed = Math.random() * 0.08 + 0.02;
+				var randomOffset = Math.random() - 0.5;
+				Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+				var speed = Math.random() * 0.08 + 0.02;
+				var randomOffset = Math.random() - 0.5;
+				Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+			}
+		}
+	},
+
 	parachute: function()
 	{
 		if(Player.getCarriedItem() == PARACHUTE_ID)
@@ -2499,7 +2543,7 @@ function shootGrenadeHand(grenadeObject)
 	setVelX(grenade, playerShootDir.x * grenadeObject.grenadeSpeed);
 	setVelY(grenade, playerShootDir.y * grenadeObject.grenadeSpeed);
 	setVelZ(grenade, playerShootDir.z * grenadeObject.grenadeSpeed);
-	if(grenadeObject.id == GRENADE.id)
+	if(grenadeObject.id == GRENADE.id || grenadeObject.id == SMOKE.id)
 	{
 		Entity.setGrenadeRender(grenade);
 		Entity.setMobSkin(grenade, "mob/grenade.png");
@@ -2589,6 +2633,23 @@ function shootGrenadeHand(grenadeObject)
 					}
 				}
 			}), grenadeObject.delay);
+		}
+
+		if(grenadeObject.id == SMOKE.id)
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
+				run: function()
+				{
+					if(isInGame && SMOKE.grenadesArray.length > 0)
+					{
+						Entity.remove(SMOKE.grenadesArray[0].entity);
+						SMOKE.grenadesArray.splice(0, 1);
+					}
+				}
+			}), grenadeObject.delay);
+
+			Sound.playFromFileName("smoke-grenade.mp3");
 		}
 	}
 }
@@ -2695,9 +2756,9 @@ function shootFlamethrower(gun)
 	yDir = Player.getY() + (playerShootDir.y * 0.75) - 0.3;
 	zDir = Player.getZ() + (playerShootDir.z * 0.75) + flameShootDir.z;
 
-	Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 	Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 	// first flame tick
@@ -2718,9 +2779,9 @@ function shootFlamethrower(gun)
 		}
 	}
 
-	Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 	Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 	flameTick += 0.5;
@@ -2736,9 +2797,9 @@ function shootFlamethrower(gun)
 	if(tile == 0 || tile == 31) // 31 grass
 		Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
 
-	Level.addParticle(5, xDir + Math.random - 0.5, yDir, zDir + Math.random - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 	Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir - Math.random + 0.5, yDir, zDir - Math.random + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 	flameTick += 0.5;
@@ -3246,7 +3307,7 @@ var Sound = {
 					}
 				});
 				sound1.start();
-				return; // END
+				return 1; // END
 			}
 			if(sound2 == null)
 			{
@@ -3270,7 +3331,7 @@ var Sound = {
 					}
 				});
 				sound2.start();
-				return; // END
+				return 2; // END
 			}
 			if(sound3 == null)
 			{
@@ -3294,7 +3355,7 @@ var Sound = {
 					}
 				});
 				sound3.start();
-				return; // END
+				return 3; // END
 			} else
 			{
 				if(DEBUG1)
@@ -3317,7 +3378,7 @@ var Sound = {
 					}
 				});
 				sound1.start();
-				return; // END
+				return 1; // END
 			}
 		} catch(err)
 		{
@@ -6575,6 +6636,9 @@ var SoundsInstaller = {
 			},
 			{
 				fileName: "SIGP226Shoot.ogg"
+			},
+			{
+				fileName: "smoke-grenade.mp3"
 			},
 			{
 				fileName: "SkorpionShoot.ogg"
