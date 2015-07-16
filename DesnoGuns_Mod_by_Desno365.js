@@ -34,6 +34,7 @@ const GameMode = {
 const ITEM_CATEGORY_TOOL = 3; // 3 seems to be the category of the tools
 const VEL_Y_OFFSET = -0.07840000092983246;
 var isInGame = false;
+var players;
 
 // textures variables
 var textureUiShowed = false;
@@ -373,6 +374,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		texture: String,
 		textureNumber: String, // if 0 can be omitted
 		ammo: int, // number of bullets in the ammo
+		ammunitionID: int,
 		smoke: int, // number of particles when shooting, if 0 can be omitted
 		recipe: CRAFTING_SNIPER_RIFLE // crafting recipe
 
@@ -1719,6 +1721,7 @@ function newLevel()
 function leaveGame()
 {
 	isInGame = false;
+	players = [];
 
 	removeShootAndAimButtons();
 
@@ -2402,21 +2405,41 @@ var ModTickFunctions = {
 		{
 			for(var j = 0; j < 10; j++)
 			{
-				var randomYaw = Math.floor(Math.random() * 360);
-				var randomPitch = Math.floor((Math.random() * 225) + 120);
-				var dir = getDirection(randomYaw, randomPitch);
+				if(SMOKE.grenadesArray.length > 0)
+				{
+					var randomYaw = Math.floor(Math.random() * 360);
+					var randomPitch = Math.floor((Math.random() * 225) + 120);
+					var dir = getDirection(randomYaw, randomPitch);
 
-				var distance = Math.random() * 0.8 + 1.8;
-				var x = Entity.getX(SMOKE.grenadesArray[i].entity) + (dir.x * distance);
-				var y = Entity.getY(SMOKE.grenadesArray[i].entity) + (dir.y * (distance - 0.5));
-				var z = Entity.getZ(SMOKE.grenadesArray[i].entity) + (dir.z * distance);
+					var distance = Math.random() * 0.8 + 1.8;
+					var x = Entity.getX(SMOKE.grenadesArray[i].entity) + (dir.x * distance);
+					var y = Entity.getY(SMOKE.grenadesArray[i].entity) + (dir.y * (distance - 0.5));
+					var z = Entity.getZ(SMOKE.grenadesArray[i].entity) + (dir.z * distance);
 
-				var speed = Math.random() * 0.08 + 0.02;
-				var randomOffset = Math.random() - 0.5;
-				Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
-				var speed = Math.random() * 0.08 + 0.02;
-				var randomOffset = Math.random() - 0.5;
-				Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+					var speed = Math.random() * 0.08 + 0.02;
+					var randomOffset = Math.random() - 0.5;
+					Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+					var speed = Math.random() * 0.08 + 0.02;
+					var randomOffset = Math.random() - 0.5;
+					Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+				}
+			}
+
+			if(SMOKE.grenadesArray.length > 0)
+			{
+				SMOKE.grenadesArray[i].effectsTick++;
+				if(SMOKE.grenadesArray[i].effectsTick >= 10)
+				{
+					for(var j in players)
+					{
+						if(checkProximity(SMOKE.grenadesArray[i].entity, players[j], 5))
+						{
+							Entity.addEffect(players[j], MobEffect.movementSlowdown, 100, 1, false, false);
+							Entity.addEffect(players[j], MobEffect.weakness, 100, 1, false, false);
+						}
+					}
+					SMOKE.grenadesArray[i].effectsTick = 0;
+				}
 			}
 		}
 	},
@@ -2557,7 +2580,10 @@ function shootGrenadeHand(grenadeObject)
 	if(grenadeObject.isWithFire)
 		Entity.setFireTicks(grenade, 1000);
 
-	grenadeObject.grenadesArray.push(new entityClass(grenade));
+	if(grenadeObject.id == SMOKE.id)
+		grenadeObject.grenadesArray.push(new smokeGrenadeClass(grenade));
+	else
+		grenadeObject.grenadesArray.push(new entityClass(grenade));
 
 	if(!grenadeObject.explodeOnTouch)
 	{
@@ -2643,11 +2669,23 @@ function shootGrenadeHand(grenadeObject)
 				{
 					if(isInGame && SMOKE.grenadesArray.length > 0)
 					{
-						Entity.remove(SMOKE.grenadesArray[0].entity);
+						var entity = SMOKE.grenadesArray[0].entity;
 						SMOKE.grenadesArray.splice(0, 1);
+						Entity.remove(entity);
 					}
 				}
 			}), grenadeObject.delay);
+
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
+				run: function()
+				{
+					if(isInGame && SMOKE.grenadesArray.length > 0)
+					{
+						players = Server.getAllPlayers();
+					}
+				}
+			}), 1);
 
 			Sound.playFromFileName("smoke-grenade.mp3");
 		}
@@ -2685,6 +2723,16 @@ function fragmentShit()
 	}
 
 	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
+}
+
+function smokeGrenadeClass(entity)
+{
+	this.entity = entity;
+	this.previousX = 0;
+	this.previousY = 0;
+	this.previousZ = 0;
+
+	this.effectsTick = 0;
 }
 
 function shoot(gun)
@@ -4715,6 +4763,20 @@ function entityClass(entity)
 	this.previousX = 0;
 	this.previousY = 0;
 	this.previousZ = 0;
+}
+
+function checkProximity(entity1, entity2, distanceXZ, distanceY)
+{
+	if(distanceY == null)
+		distanceY = distanceXZ;
+
+	if(!(Math.abs(Entity.getX(entity1) - Entity.getX(entity2)) <= distanceXZ))
+		return false;
+	if(!(Math.abs(Entity.getY(entity1) - Entity.getY(entity2)) <= distanceY))
+		return false;
+	if(!(Math.abs(Entity.getZ(entity1) - Entity.getZ(entity2)) <= distanceXZ))
+		return false;
+	return true;
 }
 
 function stringToBoolean(string)
