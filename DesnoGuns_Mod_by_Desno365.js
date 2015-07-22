@@ -1528,6 +1528,17 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
 
+const RIOT_SHIELD_ID = 3323;
+const RIOT_SHIELD_MAX_DAMAGE = 2400;
+Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
+Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
+Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
+	" g ",
+	" i ",
+	" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
+Item.setCategory(RIOT_SHIELD_ID, ITEM_CATEGORY_TOOL);
+Item.setVerticalRender(RIOT_SHIELD_ID);
+
 // grenades
 const GRENADE = {
 	id: 3300,
@@ -1973,12 +1984,14 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// remove UI of the info item
 	if(previousItem == INFO_ITEM_ID)
 	{
+		//
 		removeInfoItemUI();
 	}
 
 	// remove UI of the medical kit
 	if(previousItem == MEDICAL_KIT_ID)
 	{
+		//
 		removeHealButton();
 	}
 
@@ -2254,6 +2267,8 @@ function modTick()
 	ModTickFunctions.smokeGrenade();
 	
 	ModTickFunctions.parachute();
+
+	ModTickFunctions.riotShield();
 	
 	ModTickFunctions.unstuckPigmenEE();
 
@@ -2498,6 +2513,17 @@ var ModTickFunctions = {
 		{
 			// thanks to Anti for this line of code, it works better than making the player riding a chicken (that was my idea)
 			Entity.setVelY(Player.getEntity(), -0.10);
+		}
+	},
+
+	riotShield: function()
+	{
+		if(Player.getCarriedItem() == RIOT_SHIELD_ID)
+		{
+			Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 3, false, false);
+			Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, 4, 0, false, false);
+
+			Player.damageCarriedItem();
 		}
 	},
 
@@ -4587,6 +4613,8 @@ Player.damageCarriedItem = function()
 		maxDamage = PARACHUTE_MAX_DAMAGE;
 	if(Player.getCarriedItem() == MEDICAL_KIT_ID)
 		maxDamage = MEDICAL_KIT_MAX_RESTORABLE_HEALTH;
+	if(Player.getCarriedItem() == RIOT_SHIELD_ID)
+		maxDamage = RIOT_SHIELD_MAX_DAMAGE;
 
 	if(Player.getCarriedItemData() < maxDamage)
 		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
@@ -5539,6 +5567,11 @@ function informationOtherItems()
 
 				layout.addView(dividerText());
 
+				var textview = defaultContentTextView("<i>Riot Shield</i>: ID: " + RIOT_SHIELD_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
 				var textview = defaultContentTextView("<i>Grenade</i>: ID: " + GRENADE.id);
 				layout.addView(textview);
 
@@ -5550,6 +5583,11 @@ function informationOtherItems()
 				layout.addView(dividerText());
 
 				var textview = defaultContentTextView("<i>Molotov</i>: ID: " + MOLOTOV.id);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Smoke Grenade</i>: ID: " + SMOKE.id);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
