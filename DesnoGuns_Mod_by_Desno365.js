@@ -1499,6 +1499,13 @@ var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINI
 // other items
 const KNIFE_ID = 3320;
 const KNIFE_MAX_DAMAGE = 32;
+const KNIFE_SOUND_STAB = {
+	startingFrom: 1,
+	endingAt: 2,
+	startText: "knife_stab",
+	endText: ".mp3"
+};
+const KNIFE_MOB_DAMAGE = 20;
 Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
 Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
 Item.addShapedRecipe(KNIFE_ID, 1, 0, [
@@ -1529,7 +1536,8 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
 
 const RIOT_SHIELD_ID = 3323;
-const RIOT_SHIELD_MAX_DAMAGE = 2400;
+const RIOT_SHIELD_MAX_DAMAGE = 3072;
+const RIOT_SHIELD_MOB_DAMAGE = 1;
 Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
 Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
 Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
@@ -1595,7 +1603,8 @@ const SMOKE = {
 	grenadeSpeed: 2.1,
 	grenadesArray: [],
 	accuracy: 4,
-	delay: 10000
+	delay: 10000,
+	smokeParticle: 4
 };
 Item.defineItem(SMOKE.id, "grenadesmoke", 0, "Smoke Grenade");
 Item.addShapedRecipe(SMOKE.id, 1, 0, [
@@ -1665,6 +1674,7 @@ function newLevel()
 		Player.addItemCreativeInv(GRENADE.id, 1);
 		Player.addItemCreativeInv(PARACHUTE_ID, 1);
 		Player.addItemCreativeInv(KNIFE_ID, 1);
+		Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
 
 		for(var i in guns)
 			Player.addItemCreativeInv(guns[i].id, 1);
@@ -1856,6 +1866,11 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 		return;
 	}
 
+	if(itemId == KNIFE_ID)
+	{
+		Sound.playFromFileName("knife_on_blocks.mp3");
+	}
+
 	// easter egg
 	if(blockId == 173) // 173 block of coal
 	{
@@ -1883,13 +1898,34 @@ function attackHook(attacker, victim)
 		// knife
 		if(Player.getCarriedItem() == KNIFE_ID && Entity.getHealth(victim) != 0)
 		{
-			Sound.playFromFileName("knife.mp3");
-			var health = Entity.getHealth(victim) - 20;
+			Sound.playFromFileName(createRandomString(KNIFE_SOUND_STAB));
+
+			var health = Entity.getHealth(victim) - KNIFE_MOB_DAMAGE;
 			if(health < 1)
 				health = 1;
 			Entity.setHealth(victim, health);
+
 			if(Level.getGameMode() == GameMode.SURVIVAL)
 				Player.damageCarriedItem();
+		}
+
+		// riot shield
+		if(Player.getCarriedItem() == RIOT_SHIELD_ID && Entity.getHealth(victim) != 0)
+		{
+			Sound.playFromFileName("riot_shield_attack.mp3");
+
+			var health = Entity.getHealth(victim) - RIOT_SHIELD_MOB_DAMAGE;
+			if(health < 1)
+				health = 1;
+			Entity.setHealth(victim, health);
+
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+			{
+				for(var i = 0; i < 20; i++)
+				{
+					Player.damageCarriedItem();
+				}
+			}
 		}
 	}
 }
@@ -2418,29 +2454,32 @@ var ModTickFunctions = {
 	{
 		for(var i in SMOKE.grenadesArray)
 		{
-			for(var j = 0; j < 10; j++)
+			for(var j = 0; j < 9; j++)
 			{
-				if(SMOKE.grenadesArray.length > 0)
+				if(SMOKE.grenadesArray[i] != null)
 				{
-					var randomYaw = Math.floor(Math.random() * 360);
-					var randomPitch = Math.floor((Math.random() * 225) + 120);
-					var dir = getDirection(randomYaw, randomPitch);
+					var entity = SMOKE.grenadesArray[i].entity;
+					var speed;
+					var randomOffset;
+
+					var dir = getDirection(Math.floor(Math.random() * 360), Math.floor((Math.random() * 225) + 120)); // getDirection(randomYaw, randomPitch);
 
 					var distance = Math.random() * 0.8 + 1.8;
-					var x = Entity.getX(SMOKE.grenadesArray[i].entity) + (dir.x * distance);
-					var y = Entity.getY(SMOKE.grenadesArray[i].entity) + (dir.y * (distance - 0.5));
-					var z = Entity.getZ(SMOKE.grenadesArray[i].entity) + (dir.z * distance);
+					var x = Entity.getX(entity) + (dir.x * distance);
+					var y = Entity.getY(entity) + (dir.y * (distance - 0.5)); // -0.5 to make it not a perfect sphere and add a "gravity" effect
+					var z = Entity.getZ(entity) + (dir.z * distance);
 
-					var speed = Math.random() * 0.08 + 0.02;
-					var randomOffset = Math.random() - 0.5;
-					Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
-					var speed = Math.random() * 0.08 + 0.02;
-					var randomOffset = Math.random() - 0.5;
-					Level.addParticle(4, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+					speed = Math.random() * 0.08 + 0.02;
+					randomOffset = Math.random() - 0.5;
+					Level.addParticle(SMOKE.smokeParticle, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
+					
+					speed = Math.random() * 0.08 + 0.02;
+					randomOffset = Math.random() - 0.5;
+					Level.addParticle(SMOKE.smokeParticle, x + randomOffset, y + randomOffset, z + randomOffset, dir.x * speed, dir.y * speed * 0.8, dir.z * speed, 1);
 				}
 			}
 
-			if(SMOKE.grenadesArray.length > 0)
+			if(SMOKE.grenadesArray[i] != null)
 			{
 				SMOKE.grenadesArray[i].effectsTick++;
 				if(SMOKE.grenadesArray[i].effectsTick >= 10)
@@ -2523,7 +2562,8 @@ var ModTickFunctions = {
 			Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 3, false, false);
 			Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, 4, 0, false, false);
 
-			Player.damageCarriedItem();
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
 		}
 	},
 
@@ -2753,12 +2793,9 @@ function fragmentShit()
 
 function smokeGrenadeClass(entity)
 {
-	this.entity = entity;
-	this.previousX = 0;
-	this.previousY = 0;
-	this.previousZ = 0;
-
-	this.effectsTick = 0;
+	var smokeObject = new entityClass(entity);
+	smokeObject.effectsTick = 0;
+	return smokeObject;
 }
 
 function shoot(gun)
@@ -6497,7 +6534,7 @@ Entity.setGrenadeRender = function(entity)
 var SoundsInstaller = {
 	sounds:
 	{
-		version: 2,
+		version: 3,
 		soundArray: [
 			// { fileName: "", file: "" },
 			// { fileName: "", fileDirectory: "", file: "" },
@@ -6569,7 +6606,13 @@ var SoundsInstaller = {
 				fileName: "ignite_flamethrower3.ogg"
 			},
 			{
-				fileName: "knife.mp3"
+				fileName: "knife_on_blocks.mp3"
+			},
+			{
+				fileName: "knife_stab1.mp3"
+			},
+			{
+				fileName: "knife_stab2.mp3"
 			},
 			{
 				fileName: "L96Shoot.ogg"
@@ -6724,6 +6767,9 @@ var SoundsInstaller = {
 			{
 				fileName: "W1200Reload.ogg",
 				fileDirectory: "reload"
+			},
+			{
+				fileName: "riot_shield_attack.mp3"
 			},
 			{
 				fileName: "RPD_and_M60E4_and_RPKShoot.ogg"
