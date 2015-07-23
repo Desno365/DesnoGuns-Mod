@@ -2868,7 +2868,6 @@ function shootFlamethrower(gun)
 	zDir = Player.getZ() + (playerShootDir.z * 0.75) + flameShootDir.z;
 
 	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
@@ -2891,7 +2890,6 @@ function shootFlamethrower(gun)
 	}
 
 	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
@@ -2909,7 +2907,6 @@ function shootFlamethrower(gun)
 		Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
 
 	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir, yDir, zDir, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
