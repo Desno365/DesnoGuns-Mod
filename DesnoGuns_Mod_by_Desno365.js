@@ -4586,7 +4586,7 @@ function getRandomTip()
 		}
 		case 9:
 		{
-			return "This mod is compatible with the Portal 2 Mod!";
+			return "This mod is compatible with the Portal 2 Mod by Desno365!";
 		}
 		case 10:
 		{
