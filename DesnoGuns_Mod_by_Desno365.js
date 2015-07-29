@@ -4508,10 +4508,12 @@ function displayInfoItemUI()
 				{
 					onClick: function(v)
 					{
-						v.setText(getRandomTip());
+						v.setText(new android.text.Html.fromHtml(getRandomTip()));
 						return false;
 					}
 				});
+				tipText.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
+				tipText.setLinkTextColor(android.graphics.Color.parseColor("#FFFBFF97"));
 				tipText.setGravity(android.view.Gravity.LEFT);
 				tipText.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 				tipText.setPadding(convertDpToPixel(4), convertDpToPixel(4), convertDpToPixel(4), convertDpToPixel(4));
@@ -4550,7 +4552,7 @@ function getRandomTip()
 		return "Happy new year!";
 	}
 
-	var random = Math.floor((Math.random() * 20) + 1);
+	var random = Math.floor((Math.random() * 21) + 1);
 	switch(random)
 	{
 		case 1:
@@ -4635,6 +4637,13 @@ function getRandomTip()
 		case 20:
 		{
 			return "/swag grenade";
+		}
+		case 21:
+		{
+			if(isPro())
+				return "If you like the pro features consider leaving a good review on the Play Store: <a href=\"https://play.google.com/store/apps/details?id=com.desno365.desnogunsmodkey\">DesnoGuns Mod Pro Key</a>.";
+			else
+				return "Get notifications when a new version of one of my mod is released, download the <a href=\"https://play.google.com/store/apps/details?id=com.desno365.mods\">Desno365's Mods app</a> now!";
 		}
 	}
 }
