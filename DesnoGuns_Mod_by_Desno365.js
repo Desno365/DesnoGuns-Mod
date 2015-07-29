@@ -19,7 +19,7 @@ const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
 //updates variables
-const CURRENT_VERSION = "r006";
+const CURRENT_VERSION = "r007";
 var latestVersion;
 
 //activity and other Android variables
@@ -4058,7 +4058,8 @@ function displayAimImageLayer(gun)
 				popupAiming.setHeight(displayHeight);
 				popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
 
-				displayManualZoom(gun);
+				if(gun.hasManualZoom)
+					displayManualZoom(gun);
 
 				displayShootAndAimButtons(true);
 				if(shouldReload())
@@ -5091,7 +5092,6 @@ function progressBarForInformation(value, max, invert, text)
 	progressBar.setIndeterminate(false);
 	progressBar.setMax(max);
 	progressBar.setProgress(Math.round(value));
-	progressBar.getProgressDrawable().setColorFilter(android.graphics.Color.parseColor("#7FFF7F"), android.graphics.PorterDuff.Mode.SRC_IN);
 	progressBar.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 3));
 
 	var text1 = new android.widget.TextView(currentActivity);
