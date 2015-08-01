@@ -1159,26 +1159,6 @@ const MP5 = {
 	recipe: CRAFTING_SUB_MACHINE
 };
 
-const MSR = {
-	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
-	name: "MSR",
-	id: 3369,
-	fireRate: 12,
-	recoil: 22,
-	bulletSpeed: SNIPER_BULLET_SPEED,
-	zoomLevel: ZOOM_SNIPER,
-	accuracy: 2,
-	hasAimImageLayer: true,
-	hasManualZoom: true,
-	sound: "MSRShoot.mp3",
-	reloadSound: "BARReload.ogg",
-	texture: "msr",
-	ammo: 5,
-	smoke: 1,
-	recipe: CRAFTING_SNIPER_RIFLE
-};
-
 const MTAR = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	type: BUTTON_TYPE_ON_TOUCH,
@@ -1509,6 +1489,26 @@ const INCENDIARY_GL = {
 	ammo: 6,
 	smoke: 0,
 	recipe: CRAFTING_LAUNCHER
+};
+
+const MSR = {
+	gunType: GUN_TYPE_SNIPER_RIFLE,
+	type: BUTTON_TYPE_ON_CLICK,
+	name: "MSR",
+	id: 3369,
+	fireRate: 12,
+	recoil: 22,
+	bulletSpeed: SNIPER_BULLET_SPEED,
+	zoomLevel: ZOOM_SNIPER,
+	accuracy: 2,
+	hasAimImageLayer: true,
+	hasManualZoom: true,
+	sound: "MSRShoot.mp3",
+	reloadSound: "BARReload.ogg",
+	texture: "msr",
+	ammo: 5,
+	smoke: 1,
+	recipe: CRAFTING_SNIPER_RIFLE
 };
 
 // all the guns in a single array.
@@ -6818,6 +6818,9 @@ var SoundsInstaller = {
 			},
 			{
 				fileName: "MP5Shoot.ogg"
+			},
+			{
+				fileName: "MSRShoot.mp3"
 			},
 			{
 				fileName: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg"
