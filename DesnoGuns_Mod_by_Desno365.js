@@ -19,7 +19,7 @@ const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
 //updates variables
-const CURRENT_VERSION = "r007";
+const CURRENT_VERSION = "r008";
 var latestVersion;
 
 //activity and other Android variables
@@ -195,6 +195,7 @@ Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmo
 {
 	try
 	{
+		//Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
 		Item.defineArmor(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType);
 	}catch(e)
 	{
@@ -1740,20 +1741,23 @@ function newLevel()
 				updateAvailableUI();
 			else
 			{
-				if(!isPro())
+				if(latestVersion != undefined) // if == undefined there was an error
 				{
-					currentActivity.runOnUiThread(new java.lang.Runnable() {
-						run: function() {
-							android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: You have the latest version."), 0).show();
-						}
-					});
-				} else
-				{
-					currentActivity.runOnUiThread(new java.lang.Runnable() {
-						run: function() {
-							android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns Pro</b>: You have the latest version."), 0).show();
-						}
-					});
+					if(!isPro())
+					{
+						currentActivity.runOnUiThread(new java.lang.Runnable() {
+							run: function() {
+								android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: You have the latest version."), 0).show();
+							}
+						});
+					} else
+					{
+						currentActivity.runOnUiThread(new java.lang.Runnable() {
+							run: function() {
+								android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns Pro</b>: You have the latest version."), 0).show();
+							}
+						});
+					}
 				}
 			}
 		}
@@ -2564,7 +2568,7 @@ var ModTickFunctions = {
 					//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
 					Entity.removeAllEffects(Player.getEntity());
 
-					//Player.damageCarriedItem(); // TODO fix
+					//Player.damageCarriedItem(); // TODO fix: the item is not carried
 					//Player.damageItemInInventory(item)
 				}
 			}
@@ -7328,6 +7332,7 @@ function removeSoundsInstaller()
 	SoundsInstaller = null;
 }
 
+
 //########################################################################################################################################################
 // Things to do at startup
 //########################################################################################################################################################
@@ -7358,6 +7363,7 @@ new java.lang.Thread(new java.lang.Runnable()
 		}
 	}
 }).start();
+
 
 //########################################################################################################################################################
 // MINECRAFT BUTTON LIBRARY
