@@ -4746,7 +4746,7 @@ Player.damageCarriedItem = function()
 		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
 	else
 	{
-		Level.playSoundEnt(Player.getEntity(), "random.break", 100, 30);
+		Level.playSoundEnt(Player.getEntity(), "random.break", 100, 0);
 		if(Player.getCarriedItemCount() == 1)
 			Player.clearInventorySlot(Player.getSelectedSlotId());
 		else
@@ -7507,7 +7507,7 @@ MinecraftButtonLibrary.onTouch = function(v, motionEvent, enableSound)
 
 			// play sound
 			if(enableSound)
-				Level.playSoundEnt(Player.getEntity(), "random.click", 100, 30);
+				Level.playSoundEnt(Player.getEntity(), "random.click", 100, 0);
 		}
 	}
 	if(action == android.view.MotionEvent.ACTION_MOVE)
