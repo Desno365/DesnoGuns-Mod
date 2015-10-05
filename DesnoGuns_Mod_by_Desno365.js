@@ -45,6 +45,12 @@ currentActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 var displayHeight = metrics.heightPixels;
 var displayWidth = metrics.widthPixels;
 var deviceDensity = metrics.density;
+if(displayHeight > displayWidth) // fix auto-rotation disabled bug
+{
+	var x = displayHeight;
+	displayHeight = displayWidth;
+	displayWidth = x;
+}
 metrics = null;
 
 //tip messages displayed variables
@@ -4935,6 +4941,8 @@ function checkProximity(entity1, entity2, distanceXZ, distanceY)
 
 function stringToBoolean(string)
 {
+	if(typeof string != "string")
+		string = String(string);
 	switch(string.toLowerCase())
 	{
 		case "true":
