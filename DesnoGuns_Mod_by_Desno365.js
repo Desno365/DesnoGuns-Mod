@@ -2473,7 +2473,7 @@ var ModTickFunctions = {
 				MOLOTOV.grenadesArray.splice(i, 1);
 			} else
 			{
-				Level.addParticle(5, xGrenade, yGrenade, zGrenade, 0, 0, 0, 1);
+				Level.addParticle(ParticleType.flame, xGrenade, yGrenade, zGrenade, 0, 0, 0, 1);
 				grenade.previousX = xGrenade;
 				grenade.previousY = yGrenade;
 				grenade.previousZ = zGrenade;
@@ -2898,8 +2898,8 @@ function shootFlamethrower(gun)
 	yDir = Player.getY() + (playerShootDir.y * 0.75) - 0.3;
 	zDir = Player.getZ() + (playerShootDir.z * 0.75) + flameShootDir.z;
 
-	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 	// first flame tick
@@ -2920,8 +2920,8 @@ function shootFlamethrower(gun)
 		}
 	}
 
-	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 	flameTick += 0.5;
@@ -2937,8 +2937,8 @@ function shootFlamethrower(gun)
 	if(tile == 0 || tile == 31) // 31 grass
 		Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
 
-	Level.addParticle(5, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(5, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
 
 
 	flameTick += 0.5;
