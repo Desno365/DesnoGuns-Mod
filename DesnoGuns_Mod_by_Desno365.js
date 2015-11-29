@@ -449,7 +449,7 @@ const AK47 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	type: BUTTON_TYPE_ON_TOUCH,
 	name: "AK47",
-	id: 460,
+	id: 3370,
 	fireRate: 3,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
@@ -467,7 +467,7 @@ const AK74 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	type: BUTTON_TYPE_ON_TOUCH,
 	name: "AK74",
-	id: 461,
+	id: 3371,
 	fireRate: 3,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
@@ -485,7 +485,7 @@ const AT4 = {
 	gunType: GUN_TYPE_LAUNCHER,
 	type: BUTTON_TYPE_ON_CLICK,
 	name: "AT4",
-	id: 462,
+	id: 3372,
 	fireRate: 10,
 	recoil: 10,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
@@ -506,7 +506,7 @@ const AUG = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	type: BUTTON_TYPE_ON_TOUCH,
 	name: "AUG",
-	id: 463,
+	id: 3373,
 	fireRate: 3,
 	recoil: 2.5,
 	bulletSpeed: 6.8,
@@ -565,7 +565,7 @@ const BIZON = {
 	gunType: GUN_TYPE_SUB_MACHINE,
 	type: BUTTON_TYPE_ON_TOUCH,
 	name: "Bizon",
-	id: 466,
+	id: 3374,
 	fireRate: 2,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
@@ -2618,7 +2618,7 @@ var ModTickFunctions = {
 function isItemAGun(itemId)
 {
 	//
-	return(itemId >= 460 && itemId <= 512) || (itemId >= 3366 && itemId <= 3369);
+	return(itemId >= 460 && itemId <= 512) || (itemId >= 3366 && itemId <= 3374);
 }
 
 function addNewGun(gun)
