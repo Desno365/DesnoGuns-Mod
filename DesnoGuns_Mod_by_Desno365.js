@@ -1524,6 +1524,16 @@ var guns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EX
 setUpGunsWithDate();
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
 
+// info item
+const INFO_ITEM_ID = 3365;
+Item.defineItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
+Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
+	"   ",
+	" w ",
+	"   "], ["w", 17, 0]);
+Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(INFO_ITEM_ID, 1);
+
 // other items
 const KNIFE_ID = 3320;
 const KNIFE_MAX_DAMAGE = 32;
@@ -1540,8 +1550,22 @@ Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 	" i ",
 	" i ",
 	" i "], ["i", 265, 0]);
-Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
 Item.setVerticalRender(KNIFE_ID);
+Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(KNIFE_ID, 1);
+
+const RIOT_SHIELD_ID = 3323;
+const RIOT_SHIELD_MAX_DAMAGE = 3072;
+const RIOT_SHIELD_MOB_DAMAGE = 1;
+Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
+Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
+Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
+	" g ",
+	" i ",
+	" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
+Item.setVerticalRender(RIOT_SHIELD_ID);
+Item.setCategory(RIOT_SHIELD_ID, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
 
 var isParachuting = false;
 const PARACHUTE_ID = 3321;
@@ -1553,6 +1577,7 @@ Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 	"s s",
 	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
 Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(PARACHUTE_ID, 1);
 
 const MEDICAL_KIT_ID = 3322;
 const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
@@ -1562,18 +1587,6 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 	" m ",
 	"ama",
 	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
-
-const RIOT_SHIELD_ID = 3323;
-const RIOT_SHIELD_MAX_DAMAGE = 3072;
-const RIOT_SHIELD_MOB_DAMAGE = 1;
-Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
-Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
-Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
-	" g ",
-	" i ",
-	" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
-Item.setCategory(RIOT_SHIELD_ID, ITEM_CATEGORY_TOOL);
-Item.setVerticalRender(RIOT_SHIELD_ID);
 
 // grenades
 const GRENADE = {
@@ -1590,6 +1603,7 @@ Item.addShapedRecipe(GRENADE.id, 1, 0, [
 	" g ",
 	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(GRENADE.id, 1);
 
 var infiniteGrenade = false;
 const FRAGMENT = {
@@ -1609,6 +1623,7 @@ Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
 	"   ",
 	"g g"], ["g", GRENADE.id, 0]);
 Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(FRAGMENT.id, 1);
 
 const MOLOTOV = {
 	id: 3302,
@@ -1625,6 +1640,7 @@ Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
 	"gfg",
 	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
 Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(MOLOTOV.id, 1);
 
 const SMOKE = {
 	id: 3303,
@@ -1640,15 +1656,8 @@ Item.addShapedRecipe(SMOKE.id, 1, 0, [
 	" z ",
 	" s "], ["z", 353, 0, "s", 12, 0, "i", 265, 0]); // z = sugar; s = sand; i = iron;
 Item.setCategory(SMOKE.id, ITEM_CATEGORY_TOOL);
+Player.addItemCreativeInv(SMOKE.id, 1);
 
-// info item
-const INFO_ITEM_ID = 3365;
-Item.defineItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
-Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
-Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
 
 // armors
 //Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
@@ -1691,22 +1700,6 @@ function selectLevelHook()
 function newLevel()
 {
 	isInGame = true;
-
-	if(Level.getGameMode() == GameMode.CREATIVE)
-	{
-		// crashes in survival
-		Player.addItemCreativeInv(INFO_ITEM_ID, 1);
-		Player.addItemCreativeInv(SMOKE.id, 1);
-		Player.addItemCreativeInv(MOLOTOV.id, 1);
-		Player.addItemCreativeInv(FRAGMENT.id, 1);
-		Player.addItemCreativeInv(GRENADE.id, 1);
-		Player.addItemCreativeInv(PARACHUTE_ID, 1);
-		Player.addItemCreativeInv(KNIFE_ID, 1);
-		Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
-
-		for(var i in guns)
-			Player.addItemCreativeInv(guns[i].id, 1);
-	}
 
 	refreshIsPro();
 
@@ -2636,8 +2629,9 @@ function addNewGun(gun)
 		Item.defineItem(gun.id, gun.texture, 0, gun.name, 1);
 	addGunCraftingRecipe(gun.id, 1, gun.recipe);
 	Item.setMaxDamage(gun.id, gun.ammo);
-	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
 	Item.setVerticalRender(gun.id);
+	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(gun.id, 1);
 }
 
 function addGunCraftingRecipe(id, howMany, recipe)
