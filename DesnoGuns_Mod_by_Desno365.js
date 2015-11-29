@@ -2521,6 +2521,7 @@ var ModTickFunctions = {
 						{
 							Entity.addEffect(players[j], MobEffect.movementSlowdown, 100, 1, false, false);
 							Entity.addEffect(players[j], MobEffect.weakness, 100, 1, false, false);
+							Entity.addEffect(players[j], MobEffect.blindness, 40, 0, false, false);
 						}
 					}
 					SMOKE.grenadesArray[i].effectsTick = 0;
