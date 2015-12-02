@@ -7478,7 +7478,7 @@ new java.lang.Thread(new java.lang.Runnable()
 // MINECRAFT BUTTON LIBRARY
 //########################################################################################################################################################
 
-// Library version: 1.2.3
+// Library version: 1.2.5
 // Made by Dennis Motta, also known as Desno365
 // https://github.com/Desno365/Minecraft-Button-Library
 
@@ -7564,19 +7564,27 @@ function MinecraftButton(textSize, enableSound, customTextColor)
 	button.setGravity(android.view.Gravity.CENTER);
 	button.setTextColor(android.graphics.Color.parseColor(customTextColor));
 	button.setPadding(MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding), MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding), MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding), MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonPadding));
-	button.setLineSpacing(MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing), 1);
-	// apply custom font with shadow
-	button.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-	button.setPaintFlags(button.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-	if (android.os.Build.VERSION.SDK_INT >= 19) // KitKat
-		button.setShadowLayer(1, Math.round((button.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), Math.round((button.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextShadowColor));
-	else
-		button.setShadowLayer(0.0001, Math.round((button.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), Math.round((button.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextShadowColor));
+	MinecraftButtonLibrary.addMinecraftStyleToTextView(button);
 
 	return button;
 }
 
 // ######### BUTTON UTILS functions #########
+MinecraftButtonLibrary.addMinecraftStyleToTextView = function(textview)
+{
+	// works also for subclasses of TextView
+	// you must set the text size before calling this function!
+
+	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
+	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
+	textview.setLineSpacing(MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing), 1);
+	if (android.os.Build.VERSION.SDK_INT >= 19) // KitKat
+		textview.setShadowLayer(1, Math.round((textview.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), Math.round((textview.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextShadowColor));
+	else
+		textview.setShadowLayer(0.0001, Math.round((textview.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), Math.round((textview.getLineHeight() - MinecraftButtonLibrary.convertDpToPixel(MinecraftButtonLibrary.defaultButtonTextLineSpacing)) / 8), android.graphics.Color.parseColor(MinecraftButtonLibrary.defaultButtonTextShadowColor));
+
+}
+
 MinecraftButtonLibrary.setButtonBackground = function(button, background)
 {
 	if (android.os.Build.VERSION.SDK_INT >= 16)
@@ -7594,6 +7602,11 @@ MinecraftButtonLibrary.convertDpToPixel = function(dp)
 
 MinecraftButtonLibrary.onTouch = function(v, motionEvent, enableSound, customTextColor)
 {
+	if(enableSound == null)
+		enableSound = true;
+	if(customTextColor == null)
+		customTextColor = MinecraftButtonLibrary.defaultButtonTextColor;
+	
 	var action = motionEvent.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_DOWN)
 	{
