@@ -19,7 +19,7 @@ const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
 // updates variables
-const CURRENT_VERSION = "r008";
+const CURRENT_VERSION = "r009";
 var latestVersion;
 
 //activity and other Android variables
