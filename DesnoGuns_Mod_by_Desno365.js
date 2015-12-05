@@ -2380,7 +2380,7 @@ var ModTickFunctions = {
 					var xArrow = Entity.getX(arrow.entity);
 					var yArrow = Entity.getY(arrow.entity);
 					var zArrow = Entity.getZ(arrow.entity);
-					if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow)
+					if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow && Entity.getVelY(arrow.entity) == 0)
 					{
 						Level.explode(xArrow, yArrow, zArrow, explosiveWeapons[i].bulletsExplosionRadius);
 
