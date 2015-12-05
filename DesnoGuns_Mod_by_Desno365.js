@@ -392,6 +392,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		isShotgun: boolean,
 		shotgunBullets: int,
 		shotgunDegreesSpread: float,
+		shotgunWait: int,
 
 		hasIceBullets: boolean,
 
@@ -399,6 +400,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		hasExplosiveBulletsOnTime: boolean, // explode after a delay: bulletExplosionDelay
 		bulletsExplosionDelay: int, // ms of delay, REQUIRED when using hasExplosiveBulletsOnTime
 		bulletsExplosionRadius: int, // REQUIRED when using explosive bullets
+		hasExplosiveBulletsSmokeTrail: boolean,
 		bulletsArray: [], // array that contains all the explosive bullets, REQUIRED when using explosive bullets
 
 		isGrenadeLauncher: boolean,
@@ -490,6 +492,7 @@ const AT4 = {
 	recoil: 10,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
 	hasExplosiveBulletsOnTouch: true,
+	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
 	accuracy: 3.5,
@@ -995,6 +998,7 @@ const M72LAW = {
 	recoil: 13,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
 	hasExplosiveBulletsOnTouch: true,
+	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
 	accuracy: 3.5,
@@ -1191,21 +1195,22 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	id: 3375,
 	fireRate: 10,
 	recoil: 22,
-	bulletSpeed: BAZOOKA_BULLET_SPEED,
+	bulletSpeed: BAZOOKA_BULLET_SPEED - 0.3,
 	isShotgun: true,
 	shotgunBullets: 4,
 	shotgunDegreesSpread: 6,
 	shotgunWait: 20,
 	hasExplosiveBulletsOnTouch: true,
+	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 2,
 	bulletsArray: [],
 	accuracy: 5,
-	zoomLevel: ZOOM_BAZOOKA - 0.6,
+	zoomLevel: ZOOM_BAZOOKA,
 	sound: "MultipleRocketLauncherShoot.mp3",
 	reloadSound: "BazookaReload.ogg",
 	texture: "m72law",
 	ammo: 1,
-	smoke: 5,
+	smoke: 4,
 	recipe: CRAFTING_LAUNCHER
 };
 
@@ -1294,6 +1299,7 @@ const RPG = {
 	recoil: 25,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
 	hasExplosiveBulletsOnTouch: true,
+	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
 	accuracy: 15,
@@ -2424,6 +2430,9 @@ var ModTickFunctions = {
 							arrow.previousX = xArrow;
 							arrow.previousY = yArrow;
 							arrow.previousZ = zArrow;
+
+							if(explosiveWeapons[i].hasExplosiveBulletsSmokeTrail)
+								Level.addParticle(4, xArrow, yArrow, zArrow, Entity.getVelX(arrow.entity) / 2, Entity.getVelY(arrow.entity) / 2, Entity.getVelZ(arrow.entity) / 2, 1);
 						}
 					}
 				}
@@ -2441,6 +2450,9 @@ var ModTickFunctions = {
 						arrow.previousX = xArrow;
 						arrow.previousY = yArrow;
 						arrow.previousZ = zArrow;
+
+						if(explosiveWeapons[i].hasExplosiveBulletsSmokeTrail)
+							Level.addParticle(4, xArrow, yArrow, zArrow, Entity.getVelX(arrow.entity) / 2, Entity.getVelY(arrow.entity) / 2, Entity.getVelZ(arrow.entity) / 2, 1);
 					}
 				}
 			}
