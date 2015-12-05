@@ -216,7 +216,7 @@ Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmo
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
 const ASSAULT_BULLET_SPEED = 5.9;
-const BAZOOKA_BULLET_SPEED = 4.2;
+const BAZOOKA_BULLET_SPEED = 3.9;
 const PISTOL_BULLET_SPEED = 5.1;
 const SHOTGUN_BULLET_SPEED = 3.9;
 const GRENADE_LAUNCHER_BULLET_SPEED = 2.4;
@@ -495,7 +495,7 @@ const AT4 = {
 	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
-	accuracy: 3.5,
+	accuracy: 5,
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 	reloadSound: "BazookaReload.ogg",
@@ -1001,7 +1001,7 @@ const M72LAW = {
 	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
-	accuracy: 3.5,
+	accuracy: 5,
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 	reloadSound: "BazookaReload.ogg",
@@ -1040,7 +1040,7 @@ const M1014 = {
 	isShotgun: true,
 	shotgunBullets: 8,
 	shotgunDegreesSpread: 3,
-	accuracy: 10,
+	accuracy: 12,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "M1014Shoot.ogg",
 	reloadSound: "M1014Reload.ogg",
@@ -1060,8 +1060,8 @@ const M1887 = {
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	isShotgun: true,
 	shotgunBullets: 8,
-	shotgunDegreesSpread: 4,
-	accuracy: 10,
+	shotgunDegreesSpread: 5,
+	accuracy: 15,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "M1887Shoot.ogg",
 	reloadSound: "M1887Reload.ogg",
@@ -1198,7 +1198,7 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	bulletSpeed: BAZOOKA_BULLET_SPEED - 0.3,
 	isShotgun: true,
 	shotgunBullets: 4,
-	shotgunDegreesSpread: 6,
+	shotgunDegreesSpread: 8,
 	shotgunWait: 20,
 	hasExplosiveBulletsOnTouch: true,
 	hasExplosiveBulletsSmokeTrail: true,
@@ -1208,7 +1208,7 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "MultipleRocketLauncherShoot.mp3",
 	reloadSound: "BazookaReload.ogg",
-	texture: "m72law",
+	texture: "multiplerocketlauncher",
 	ammo: 1,
 	smoke: 4,
 	recipe: CRAFTING_LAUNCHER
@@ -1302,7 +1302,7 @@ const RPG = {
 	hasExplosiveBulletsSmokeTrail: true,
 	bulletsExplosionRadius: 4,
 	bulletsArray: [],
-	accuracy: 15,
+	accuracy: 10,
 	zoomLevel: ZOOM_BAZOOKA,
 	sound: "RPGShoot.ogg",
 	reloadSound: "BazookaReload.ogg",
@@ -1395,7 +1395,7 @@ const SPAS = {
 	isShotgun: true,
 	shotgunBullets: 7,
 	shotgunDegreesSpread: 2,
-	accuracy: 25,
+	accuracy: 11,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "W1200_and_SPASShoot.ogg",
 	reloadSound: "W1200Reload.ogg",
