@@ -2618,7 +2618,7 @@ var ModTickFunctions = {
 function isItemAGun(itemId)
 {
 	//
-	return(itemId >= 460 && itemId <= 512) || (itemId >= 3366 && itemId <= 3374);
+	return(itemId >= 464 && itemId <= 465) || (itemId >= 467 && itemId <= 512) || (itemId >= 3366 && itemId <= 3374);
 }
 
 function addNewGun(gun)
