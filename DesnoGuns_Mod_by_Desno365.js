@@ -375,7 +375,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		id: int,
 		fireRate: int,
 		recoil: int,
-		bulletSpeed: int,
+		bulletSpeed: float,
 		zoomLevel: int,
 		accuracy: int,
 		hasAimImageLayer: boolean, // show image when aiming
@@ -390,8 +390,8 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		isFlamethrower: boolean,
 
 		isShotgun: boolean,
-		shotgunWidth: int,
-		shotgunBulletsPerLineShot: int,
+		shotgunBullets: int,
+		shotgunDegreesSpread: float,
 
 		hasIceBullets: boolean,
 
@@ -1034,8 +1034,8 @@ const M1014 = {
 	recoil: 10,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	isShotgun: true,
-	shotgunWidth: 2,
-	shotgunBulletsPerLineShot: 3,
+	shotgunBullets: 8,
+	shotgunDegreesSpread: 3,
 	accuracy: 10,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "M1014Shoot.ogg",
@@ -1055,8 +1055,8 @@ const M1887 = {
 	recoil: 18,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	isShotgun: true,
-	shotgunWidth: 3,
-	shotgunBulletsPerLineShot: 3,
+	shotgunBullets: 8,
+	shotgunDegreesSpread: 4,
 	accuracy: 10,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "M1887Shoot.ogg",
@@ -1184,6 +1184,31 @@ const MTAR = {
 	recipe: CRAFTING_ASSAULT_RIFLE
 };
 
+const MULTIPLE_ROCKET_LAUNCHER = {
+	gunType: GUN_TYPE_LAUNCHER,
+	type: BUTTON_TYPE_ON_CLICK,
+	name: "Multiple Rocket Launcher",
+	id: 3375,
+	fireRate: 10,
+	recoil: 22,
+	bulletSpeed: BAZOOKA_BULLET_SPEED,
+	isShotgun: true,
+	shotgunBullets: 4,
+	shotgunDegreesSpread: 6,
+	shotgunWait: 20,
+	hasExplosiveBulletsOnTouch: true,
+	bulletsExplosionRadius: 2,
+	bulletsArray: [],
+	accuracy: 5,
+	zoomLevel: ZOOM_BAZOOKA - 0.6,
+	sound: "MultipleRocketLauncherShoot.mp3",
+	reloadSound: "BazookaReload.ogg",
+	texture: "m72law",
+	ammo: 1,
+	smoke: 5,
+	recipe: CRAFTING_LAUNCHER
+};
+
 const P90 = {
 	gunType: GUN_TYPE_SUB_MACHINE,
 	type: BUTTON_TYPE_ON_TOUCH,
@@ -1230,8 +1255,8 @@ const R870 = {
 	recoil: 19,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	isShotgun: true,
-	shotgunWidth: 3,
-	shotgunBulletsPerLineShot: 3,
+	shotgunBullets: 8,
+	shotgunDegreesSpread: 3,
 	accuracy: 11,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "R870Shoot.ogg",
@@ -1362,8 +1387,8 @@ const SPAS = {
 	recoil: 22,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	isShotgun: true,
-	shotgunWidth: 3,
-	shotgunBulletsPerLineShot: 3,
+	shotgunBullets: 7,
+	shotgunDegreesSpread: 2,
 	accuracy: 25,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "W1200_and_SPASShoot.ogg",
@@ -1401,8 +1426,8 @@ const W1200 = {
 	recoil: 17,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	isShotgun: true,
-	shotgunWidth: 3,
-	shotgunBulletsPerLineShot: 3,
+	shotgunBullets: 8,
+	shotgunDegreesSpread: 3,
 	accuracy: 11,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "W1200_and_SPASShoot.ogg",
@@ -1464,8 +1489,8 @@ const AA12 = {
 	recoil: 10,
 	bulletSpeed: SHOTGUN_BULLET_SPEED + 1,
 	isShotgun: true,
-	shotgunWidth: 2,
-	shotgunBulletsPerLineShot: 3,
+	shotgunBullets: 6,
+	shotgunDegreesSpread: 3,
 	accuracy: 10,
 	zoomLevel: ZOOM_SHOTGUN,
 	sound: "AA-12Shoot.ogg",
@@ -1520,9 +1545,9 @@ const MSR = {
 
 // all the guns in a single array.
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
-var guns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
+var guns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 setUpGunsWithDate();
-var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, RPG];
+var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, MULTIPLE_ROCKET_LAUNCHER, RPG];
 
 // info item
 const INFO_ITEM_ID = 3365;
@@ -2618,7 +2643,7 @@ var ModTickFunctions = {
 function isItemAGun(itemId)
 {
 	//
-	return(itemId >= 464 && itemId <= 465) || (itemId >= 467 && itemId <= 512) || (itemId >= 3366 && itemId <= 3374);
+	return(itemId >= 464 && itemId <= 465) || (itemId >= 467 && itemId <= 512) || (itemId >= 3366 && itemId <= 3375);
 }
 
 function addNewGun(gun)
@@ -2851,24 +2876,51 @@ function shootShotgun(gun)
 {
 	// multiple arrows
 
-	var gunAccuracy = getDefaultAccuracy(gun);
-
-	var playerDir = getDirection(getYaw(), getPitch());
-	var bulletsPerShotForXY = gun.shotgunWidth / (gun.shotgunBulletsPerLineShot - 1) * 2;
-	for(var i = -gun.shotgunWidth; i <= gun.shotgunWidth; i += bulletsPerShotForXY)
+	for(var i = 0; i < gun.shotgunBullets; i++)
 	{
-		for(var j = -gun.shotgunWidth; j <= gun.shotgunWidth; j += bulletsPerShotForXY)
+		if(gun.shotgunWait > 0)
 		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
+				run: function()
+				{
+					if(isInGame)
+					{
+						var gunAccuracy = getDefaultAccuracy(gun);
+
+						var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+						var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+
+						var yawAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
+						var pitchAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
+
+						var gunShootDir = getDirection(getYaw() + yawAccuracyValue + yawAccuracyShotgun, getPitch() + pitchAccuracyValue + pitchAccuracyShotgun);
+
+						var arrow = shootBullet(gun, gunShootDir);
+
+						if(gun.hasExplosiveBulletsOnTouch || gun.hasExplosiveBulletsOnTime)
+							gun.bulletsArray.push(new entityClass(arrow));
+					}
+				}
+			}), i * gun.shotgunWait);
+		} else
+		{
+			var gunAccuracy = getDefaultAccuracy(gun);
+
 			var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
 			var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-			var gunShootDir = getDirection(getYaw() + yawAccuracyValue + i, getPitch() + pitchAccuracyValue + j);
 
-			var arrow = shootBullet(gun, playerDir, gunShootDir);
+			var yawAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
+			var pitchAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
 
-			if(gun.hasExplosiveBulletsOnTouch)
+			var gunShootDir = getDirection(getYaw() + yawAccuracyValue + yawAccuracyShotgun, getPitch() + pitchAccuracyValue + pitchAccuracyShotgun);
+
+			var arrow = shootBullet(gun, gunShootDir);
+
+			if(gun.hasExplosiveBulletsOnTouch || gun.hasExplosiveBulletsOnTime)
 				gun.bulletsArray.push(new entityClass(arrow));
+			}
 		}
-	}
 }
 
 function shootFlamethrower(gun)
@@ -6807,7 +6859,7 @@ Entity.setGrenadeRender = function(entity)
 var SoundsInstaller = {
 	sounds:
 	{
-		version: 3,
+		version: 4,
 		soundArray: [
 			// { fileName: "", file: "" },
 			// { fileName: "", fileDirectory: "", file: "" },
@@ -6934,6 +6986,9 @@ var SoundsInstaller = {
 			},
 			{
 				fileName: "MSRShoot.mp3"
+			},
+			{
+				fileName: "MultipleRocketLauncherShoot.mp3"
 			},
 			{
 				fileName: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg"
