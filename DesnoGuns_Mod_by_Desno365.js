@@ -19,7 +19,7 @@ const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
 // updates variables
-const CURRENT_VERSION = "r010";
+const CURRENT_VERSION = "r011";
 var latestVersion;
 
 //activity and other Android variables
@@ -2689,7 +2689,7 @@ function shootGrenadeHand(grenadeObject)
 		var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 81);
 	else
 	{
-		var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 11);
+		var grenade = Level.spawnMob(getPlayerX() + (handShootDir.x * 2), getPlayerY() + (handShootDir.y * 2.5), getPlayerZ() + (handShootDir.z * 2), 10);
 		Entity.setHealth(grenade, 99999);
 	}
 	setVelX(grenade, playerShootDir.x * grenadeObject.grenadeSpeed);
@@ -2733,7 +2733,7 @@ function shootGrenadeHand(grenadeObject)
 
 						for(var i = 0; i < FRAGMENT.howManyFragments; i++)
 						{
-							var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
+							var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 10);
 							Entity.setHealth(fragment, 99999);
 							Entity.setGrenadeRender(fragment);
 							Entity.setMobSkin(fragment, "mob/fraggrenade.png");
@@ -2833,7 +2833,7 @@ function fragmentShit()
 
 	for(var i = 0; i < 2; i++)
 	{
-		var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 11);
+		var fragment = Level.spawnMob(explosionX + ((Math.random() * 2) - 1), explosionY + ((Math.random() * 2) - 1), explosionZ + ((Math.random() * 2) - 1), 10);
 		Entity.setHealth(fragment, 99999);
 		Entity.setGrenadeRender(fragment);
 		Entity.setMobSkin(fragment, "mob/fraggrenade.png");
@@ -6836,7 +6836,7 @@ function addGrenadeRenderType(renderer)
 	var rLeg = model.getPart("rightLeg");
 	var lLeg = model.getPart("leftLeg");
 
-	head.clear();
+	/*head.clear(); crash in 0.13.1
 
 	body.clear();
 	body.setTextureOffset(0, 0);
@@ -6850,7 +6850,7 @@ function addGrenadeRenderType(renderer)
 
 	rLeg.clear();
 
-	lLeg.clear();
+	lLeg.clear();*/
 }
 var grenadeRenderType = Renderer.createHumanoidRenderer();
 addGrenadeRenderType(grenadeRenderType);
@@ -6859,7 +6859,7 @@ const GRENADE_RENDER_COLLISION_SIZE_Y = 1/16 * 4;
 
 Entity.setGrenadeRender = function(entity)
 {
-	Entity.setRenderType(entity, grenadeRenderType.renderType);
+	//Entity.setRenderType(entity, grenadeRenderType.renderType);
 	Entity.setCollisionSize(entity, GRENADE_RENDER_COLLISION_SIZE_XZ, GRENADE_RENDER_COLLISION_SIZE_Y);
 }
 
