@@ -370,7 +370,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 /*
 	const GUN = {
 		gunType: int,
-		type: int, // button type
+		buttonType: int, // button type
 		name: String,
 		id: int,
 		fireRate: int,
@@ -431,7 +431,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 // weapons
 const MAGNUM44 = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: ".44 Magnum",
 	id: 3366,
 	fireRate: 4,
@@ -449,7 +449,7 @@ const MAGNUM44 = {
 
 const AK47 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "AK47",
 	id: 3370,
 	fireRate: 3,
@@ -467,7 +467,7 @@ const AK47 = {
 
 const AK74 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "AK74",
 	id: 3371,
 	fireRate: 3,
@@ -485,7 +485,7 @@ const AK74 = {
 
 const AT4 = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "AT4",
 	id: 3372,
 	fireRate: 10,
@@ -507,7 +507,7 @@ const AT4 = {
 
 const AUG = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "AUG",
 	id: 3373,
 	fireRate: 3,
@@ -525,7 +525,7 @@ const AUG = {
 
 const BARRETT_EXPLOSIVE = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Barrett Explosive",
 	id: 464,
 	fireRate: 12,
@@ -547,7 +547,7 @@ const BARRETT_EXPLOSIVE = {
 
 const BARRETT = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Barrett",
 	id: 465,
 	fireRate: 12,
@@ -566,7 +566,7 @@ const BARRETT = {
 
 const BIZON = {
 	gunType: GUN_TYPE_SUB_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "Bizon",
 	id: 3374,
 	fireRate: 2,
@@ -584,7 +584,7 @@ const BIZON = {
 
 const CROSSBOW_EXPLOSIVE = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Crossbow Explosive",
 	id: 3367,
 	fireRate: 14,
@@ -608,7 +608,7 @@ const CROSSBOW_EXPLOSIVE = {
 
 const CROSSBOW = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Crossbow",
 	id: 3368,
 	fireRate: 14,
@@ -628,7 +628,7 @@ const CROSSBOW = {
 
 const DESERT_EAGLE = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Desert Eagle",
 	id: 467,
 	fireRate: 1,
@@ -646,7 +646,7 @@ const DESERT_EAGLE = {
 
 const DESERT_EAGLE_GOLD = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Desert Eagle Gold",
 	id: 468,
 	fireRate: 1,
@@ -664,7 +664,7 @@ const DESERT_EAGLE_GOLD = {
 
 const DRAGUNOV = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Dragunov",
 	id: 469,
 	fireRate: 8,
@@ -683,13 +683,12 @@ const DRAGUNOV = {
 
 const FLAMETHROWER = {
 	gunType: GUN_TYPE_MINIGUN,
-	type: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
+	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
 	name: "Flamethrower",
 	id: 508,
 	fireRate: 1,
 	recoil: 0.5,
 	isFlamethrower: true,
-	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 5.5,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	hasRandomWarmupSound: true,
@@ -711,7 +710,7 @@ const FLAMETHROWER = {
 
 const FNSCAR = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "FNSCAR",
 	id: 470,
 	fireRate: 3,
@@ -729,7 +728,7 @@ const FNSCAR = {
 
 const G3 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "G3",
 	id: 471,
 	fireRate: 2,
@@ -747,7 +746,7 @@ const G3 = {
 
 const G36 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "G36",
 	id: 472,
 	fireRate: 3,
@@ -765,7 +764,7 @@ const G36 = {
 
 const GL1 = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "GL1",
 	id: 473,
 	fireRate: 10,
@@ -786,7 +785,7 @@ const GL1 = {
 
 const GL6 = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "GL6",
 	id: 474,
 	fireRate: 1,
@@ -807,7 +806,7 @@ const GL6 = {
 
 const GLOCK = {
 	gunType: GUN_TYPE_MACHINE_PISTOL,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "Glock",
 	id: 475,
 	fireRate: 3,
@@ -825,7 +824,7 @@ const GLOCK = {
 
 const L86 = {
 	gunType: GUN_TYPE_LIGHT_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "L86",
 	id: 476,
 	fireRate: 3,
@@ -843,7 +842,7 @@ const L86 = {
 
 const L96 = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "L96",
 	id: 477,
 	fireRate: 26,
@@ -862,7 +861,7 @@ const L96 = {
 
 const M9 = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M9",
 	id: 478,
 	fireRate: 1,
@@ -880,7 +879,7 @@ const M9 = {
 
 const M14 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M14",
 	id: 479,
 	fireRate: 1,
@@ -898,7 +897,7 @@ const M14 = {
 
 const M16A4 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "M16A4",
 	id: 480,
 	fireRate: 3,
@@ -916,7 +915,7 @@ const M16A4 = {
 
 const M21 = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M21",
 	id: 481,
 	fireRate: 10,
@@ -935,7 +934,7 @@ const M21 = {
 
 const M40A3_ICE = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M40A3 Ice",
 	id: 482,
 	fireRate: 10,
@@ -954,7 +953,7 @@ const M40A3_ICE = {
 
 const M40A3 = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M40A3",
 	id: 483,
 	fireRate: 10,
@@ -973,7 +972,7 @@ const M40A3 = {
 
 const M60E4 = {
 	gunType: GUN_TYPE_LIGHT_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "M60E4",
 	id: 484,
 	fireRate: 3,
@@ -991,7 +990,7 @@ const M60E4 = {
 
 const M72LAW = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M72LAW",
 	id: 485,
 	fireRate: 10,
@@ -1013,7 +1012,7 @@ const M72LAW = {
 
 const M249 = {
 	gunType: GUN_TYPE_LIGHT_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "M249",
 	id: 486,
 	fireRate: 3,
@@ -1031,7 +1030,7 @@ const M249 = {
 
 const M1014 = {
 	gunType: GUN_TYPE_SHOTGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "M1014",
 	id: 487,
 	fireRate: 18,
@@ -1052,7 +1051,7 @@ const M1014 = {
 
 const M1887 = {
 	gunType: GUN_TYPE_SHOTGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Model 1887",
 	id: 488,
 	fireRate: 20,
@@ -1073,7 +1072,7 @@ const M1887 = {
 
 const MAKAROV = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Makarov",
 	id: 489,
 	fireRate: 1,
@@ -1091,7 +1090,7 @@ const MAKAROV = {
 
 const MINIGUN_EXPLOSIVE = {
 	gunType: GUN_TYPE_MINIGUN,
-	type: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
+	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
 	name: "Minigun Explosive",
 	id: 511,
 	fireRate: 3,
@@ -1115,7 +1114,7 @@ const MINIGUN_EXPLOSIVE = {
 
 const MINIGUN = {
 	gunType: GUN_TYPE_MINIGUN,
-	type: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
+	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
 	name: "Minigun",
 	id: 490,
 	fireRate: 1,
@@ -1136,7 +1135,7 @@ const MINIGUN = {
 
 const MINI_UZI = {
 	gunType: GUN_TYPE_MACHINE_PISTOL,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "Mini-Uzi",
 	id: 491,
 	fireRate: 2,
@@ -1154,7 +1153,7 @@ const MINI_UZI = {
 
 const MP5 = {
 	gunType: GUN_TYPE_SUB_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "MP5",
 	id: 492,
 	fireRate: 3,
@@ -1172,7 +1171,7 @@ const MP5 = {
 
 const MTAR = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "MTAR",
 	id: 493,
 	fireRate: 3,
@@ -1190,7 +1189,7 @@ const MTAR = {
 
 const MULTIPLE_ROCKET_LAUNCHER = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Multiple Rocket Launcher",
 	id: 3375,
 	fireRate: 10,
@@ -1216,7 +1215,7 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 
 const P90 = {
 	gunType: GUN_TYPE_SUB_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "P90",
 	id: 494,
 	fireRate: 2,
@@ -1234,7 +1233,7 @@ const P90 = {
 
 const R700 = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "R700",
 	id: 495,
 	fireRate: 20,
@@ -1253,7 +1252,7 @@ const R700 = {
 
 const R870 = {
 	gunType: GUN_TYPE_SHOTGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Remington 870",
 	id: 496,
 	fireRate: 15,
@@ -1274,7 +1273,7 @@ const R870 = {
 
 const RPD = {
 	gunType: GUN_TYPE_LIGHT_MACHINE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "RPD",
 	id: 497,
 	fireRate: 3,
@@ -1292,7 +1291,7 @@ const RPD = {
 
 const RPG = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "RPG",
 	id: 498,
 	fireRate: 10,
@@ -1314,7 +1313,7 @@ const RPG = {
 
 const RPK = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "RPK",
 	id: 499,
 	fireRate: 3,
@@ -1332,7 +1331,7 @@ const RPK = {
 
 const SG550 = {
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "SG550",
 	id: 500,
 	fireRate: 5,
@@ -1350,7 +1349,7 @@ const SG550 = {
 
 const SIGP226 = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "SIGP226",
 	id: 501,
 	fireRate: 1,
@@ -1368,7 +1367,7 @@ const SIGP226 = {
 
 const SKORPION = {
 	gunType: GUN_TYPE_MACHINE_PISTOL,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "Skorpion",
 	id: 502,
 	fireRate: 3,
@@ -1386,7 +1385,7 @@ const SKORPION = {
 
 const SPAS = {
 	gunType: GUN_TYPE_SHOTGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "SPAS-12",
 	id: 503,
 	fireRate: 15,
@@ -1407,7 +1406,7 @@ const SPAS = {
 
 const USP = {
 	gunType: GUN_TYPE_HANDGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "USP",
 	id: 504,
 	fireRate: 1,
@@ -1425,7 +1424,7 @@ const USP = {
 
 const W1200 = {
 	gunType: GUN_TYPE_SHOTGUN,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "W1200",
 	id: 505,
 	fireRate: 15,
@@ -1446,7 +1445,7 @@ const W1200 = {
 
 const XMAS_MINIGUN = {
 	gunType: GUN_TYPE_MINIGUN,
-	type: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
+	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
 	name: "X-Mas Minigun",
 	id: 506,
 	fireRate: 2,
@@ -1468,7 +1467,7 @@ const XMAS_MINIGUN = {
 
 const XMAS_SNIPER = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "X-Mas Sniper",
 	id: 507,
 	fireRate: 5,
@@ -1488,7 +1487,7 @@ const XMAS_SNIPER = {
 
 const AA12 = {
 	gunType: GUN_TYPE_SHOTGUN,
-	type: BUTTON_TYPE_ON_TOUCH,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
 	name: "AA-12",
 	id: 509,
 	fireRate: 5,
@@ -1509,7 +1508,7 @@ const AA12 = {
 
 const INCENDIARY_GL = {
 	gunType: GUN_TYPE_LAUNCHER,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "Incendiary Grenade Launcher",
 	id: 510,
 	fireRate: 5,
@@ -1531,7 +1530,7 @@ const INCENDIARY_GL = {
 
 const MSR = {
 	gunType: GUN_TYPE_SNIPER_RIFLE,
-	type: BUTTON_TYPE_ON_CLICK,
+	buttonType: BUTTON_TYPE_ON_CLICK,
 	name: "MSR",
 	id: 3369,
 	fireRate: 12,
@@ -1551,9 +1550,11 @@ const MSR = {
 
 // all the guns in a single array.
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
-var guns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
+var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 setUpGunsWithDate();
 var explosiveWeapons = [AT4, BARRETT_EXPLOSIVE, CROSSBOW_EXPLOSIVE, M72LAW, MINIGUN_EXPLOSIVE, MULTIPLE_ROCKET_LAUNCHER, RPG];
+var allGuns = [];
+allGuns.push.apply(allGuns, defaultGuns);
 
 // info item
 const INFO_ITEM_ID = 3365;
@@ -2122,7 +2123,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 			Sound.loadSoundPoolFromPath(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
 
 		// assault rifles, sub machine guns and light machine guns
-		if(currentGun.type == BUTTON_TYPE_ON_TOUCH)
+		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH)
 		{
 			// load touch events
 			if(shouldReload())
@@ -2167,7 +2168,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		}
 
 		// single shot weapons
-		if(currentGun.type == BUTTON_TYPE_ON_CLICK)
+		if(currentGun.buttonType == BUTTON_TYPE_ON_CLICK)
 		{
 			// load click event
 			onClickRunnable = (new java.lang.Runnable(
@@ -2180,7 +2181,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		}
 
 		// guns with warmup
-		if(currentGun.type == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
 		{
 			// load spin sound
 			try {
@@ -2651,15 +2652,204 @@ var ModTickFunctions = {
 // Added functions (No GUI and No render)
 //########################################################################################################################################################
 
-//########## WEAPONS functions ##########
-function isItemAGun(itemId)
+//########## LOAD WEAPONS functions ##########
+var loadedAddons = [];
+
+function loadWeaponsFromAddons()
 {
-	//
-	return(itemId >= 464 && itemId <= 465) || (itemId >= 467 && itemId <= 512) || (itemId >= 3366 && itemId <= 3375);
+	var arrobject = [];
+	net.zhuoweizhang.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsHook", arrobject);
+}
+
+function loadWeaponsCallback(weaponsArray, addonName, addonDescription)
+{
+	if(addonName == null)
+		addonName = "No Name";
+	if(addonDescription == null)
+		addonDescription = "No Description";
+
+	if(canAddonBeLoaded(weaponsArray))
+	{
+		// everything is ok with the addon, add the guns in the game
+		loadedAddons.push(new addonClass(weaponsArray, addonName, addonDescription));
+	}
+
+	print("\"" + addonName + "\" addon contains " + weaponsArray.length + "weapons. " + addonDescription);
+}
+
+function canAddonBeLoaded(weaponsArray)
+{
+	for(var i in weaponsArray)
+	{
+		if(weaponsArray[i].weaponType == "gun")
+		{
+			var result = canGunBeLoaded(weaponsArray[i]);
+			if(result != "yes")
+			{
+				// error in the addon
+				print("The addon can't be loaded: " + result); // TODO better
+
+				return false;
+
+			}
+		}
+	}
+
+	return true;
+}
+
+function canGunBeLoaded(gun)
+{
+	if(gun.name == null)
+		return "You must set a name for every gun you add.";
+
+	var defaultError = "Error in gun.name \"" + gun.name + "\": ";
+
+	if(getGunTypeIdFromString(gun.gunType) == "error")
+		return defaultError + gun.gunType + " is not a known gunType."
+
+	if(getButtonTypeIdFromString(gun.buttonType) == "error")
+		return defaultError + gun.buttonType + " is not a known buttonType."
+
+	if(gun.id == null)
+		return defaultError + "gun.id is not specified.";
+	if(gun.id < 256 || gun.id > 4095)
+		return defaultError + "gun.id must be > 255 and < 4096.";
+
+	if(gun.fireRate == null)
+		return defaultError + "gun.fireRate is not specified.";
+	if(gun.fireRate < 1)
+		return defaultError + "gun.fireRate must be > 1.";
+
+	if(gun.recoil == null)
+		return defaultError + "gun.recoil is not specified.";
+	if(gun.recoil <= 0)
+		return defaultError + "gun.recoil must be > 0.";
+
+	if(gun.bulletSpeed == null && gun.isFlamethrower != true)
+		return defaultError + "gun.bulletSpeed is not specified.";
+	if(gun.bulletSpeed <= 0)
+		return defaultError + "gun.bulletSpeed must be > 0.";
+
+	if(gun.zoomLevel == null)
+		return defaultError + "gun.zoomLevel is not specified.";
+	if(gun.zoomLevel <= 0 || gun.zoomLevel >= 68)
+		return defaultError + "gun.zoomLevel must be > 0 and < 68.";
+
+	if(gun.accuracy == null)
+		return defaultError + "gun.accuracy is not specified.";
+	if(gun.accuracy <= 0 || gun.accuracy >= 45)
+		return defaultError + "gun.zoomLevel must be > 0 and < 45.";
+
+	if(gun.texture == null)
+		return defaultError + "gun.texture is not specified.";
+
+	if(gun.ammo == null)
+		return defaultError + "gun.ammo is not specified.";
+	if(gun.ammo <= 0)
+		return defaultError + "gun.ammo must be > 0.";
+
+	if(gun.smoke != null && gun.smoke < 0)
+		return defaultError + "gun.smoke must be > or = 0.";
+
+	if(gun.isShotgun == true && gun.shotgunBullets < 2)
+		return defaultError + "gun.shotgunBullets must be > 1.";
+
+	if(gun.isShotgun == true && gun.shotgunDegreesSpread < 0)
+		return defaultError + "gun.shotgunDegreesSpread must be > or = 0.";
+
+	return "yes";
+}
+
+function getGunTypeIdFromString(gunType)
+{
+	if(typeof gunType == "string")
+		gunType = gunType.toLowerCase();
+	else
+		return "error";
+
+	if(gunType == "assault_rifle")
+		return GUN_TYPE_ASSAULT_RIFLE;
+	if(gunType == "sub_machine")
+		return GUN_TYPE_SUB_MACHINE;
+	if(gunType == "light_machine")
+		return GUN_TYPE_LIGHT_MACHINE;
+	if(gunType == "sniper_rifle")
+		return GUN_TYPE_SNIPER_RIFLE;
+	if(gunType == "shotgun")
+		return GUN_TYPE_SHOTGUN;
+	if(gunType == "machine_pistol")
+		return GUN_TYPE_MACHINE_PISTOL;
+	if(gunType == "handgun")
+		return GUN_TYPE_HANDGUN;
+	if(gunType == "launcher")
+		return GUN_TYPE_LAUNCHER;
+	if(gunType == "minigun")
+		return GUN_TYPE_MINIGUN;
+
+	return "error";
+}
+
+function getButtonTypeIdFromString(buttonType)
+{
+	if(typeof buttonType == "string")
+		buttonType = buttonType.toLowerCase();
+	else
+		return "error";
+
+	if(buttonType == "on_click")
+		return BUTTON_TYPE_ON_CLICK;
+	if(buttonType == "on_touch")
+		return BUTTON_TYPE_ON_TOUCH;
+	if(buttonType == "on_touch_with_wait")
+		return BUTTON_TYPE_ON_TOUCH_WITH_WAIT;
+
+	return "error";
+}
+
+function addonClass(weaponsArray, addonName, addonDescription)
+{
+	this.name = addonName;
+	this.description = addonDescription;
+	this.weaponsArray = weaponsArray;
+}
+
+function addLoadedAddonsInGame()
+{
+	for(var i in loadedAddons)
+	{
+		for(var j in loadedAddons[i].weaponsArray)
+		{
+			var weapon = loadedAddons[i].weaponsArray[j];
+			if(weapon.weaponType == "gun")
+			{
+				if(!(isItemAGun(weapon.id) || isItemAnIdTheModAlreadyUse(weapon.id))) // check if the id of this new gun isn't already present in the allGuns array
+				{
+					// this id isn't already used, we can add it safely to the game
+					var gun = weapon;
+					gun = convertGunsStringsInIds(gun);
+					addNewGun(gun);
+				}
+			}
+		}
+	}
+}
+
+function convertGunsStringsInIds(gun)
+{
+	// at this point we are already sure there aren't any errors in gunType and buttonType, they can be safely converted
+	gun.gunType = getGunTypeIdFromString(gun.gunType);
+	gun.buttonType = getButtonTypeIdFromString(gun.buttonType);
+
+	return gun;
 }
 
 function addNewGun(gun)
 {
+	// add gun to the main array
+	allGuns.push(gun);
+
+	// create gun
 	if(gun.textureNumber > 0)
 		Item.defineItem(gun.id, gun.texture, gun.textureNumber, gun.name, 1);
 	else
@@ -2675,6 +2865,42 @@ function addGunCraftingRecipe(id, howMany, recipe)
 {
 	// here add other items for crafting with the chosen letter.
 	Item.addShapedRecipe(id, howMany, 0, recipe, ["i", 265, 0, "r", 331, 0, "s", 287 /*string*/, 0, "|", 262 /*arrow*/, 0, "a", AMMO_ASSAULT_RIFLE_ID, 0, "b", AMMO_SUB_MACHINE_ID, 0, "c", AMMO_LIGHT_MACHINE_ID, 0, "d", AMMO_SNIPER_RIFLE_ID, 0, "e", AMMO_SHOTGUN_ID, 0, "f", AMMO_MACHINE_PISTOL_ID, 0, "g", AMMO_HANDGUN_ID, 0, "h", AMMO_LAUNCHER_ID, 0, "j", AMMO_MINIGUN_ID, 0,  "k", AMMO_ARROW_EXPLOSIVE_ID, 0]);
+}
+//########## LOAD WEAPONS functions - END ##########
+
+
+//########## WEAPONS functions ##########
+function isItemAGun(itemId)
+{
+	//
+	//return(itemId >= 464 && itemId <= 465) || (itemId >= 467 && itemId <= 512) || (itemId >= 3366 && itemId <= 3375);
+	for(var i in allGuns)
+	{
+		if(allGuns[i].id == itemId)
+			return true;
+	}
+	return false;
+}
+
+function isItemADefaultGun(itemId)
+{
+	for(var i in defaultGuns)
+	{
+		if(itemId == defaultGuns[i].id)
+			return true;
+	}
+	return false;
+}
+
+function isItemAnIdTheModAlreadyUse(itemId)
+{
+	if(isItemADefaultGun(itemId))
+		return true;
+
+	if(itemId == INFO_ITEM_ID)
+		return true;
+
+	// TODO
 }
 
 function shootGrenadeHand(grenadeObject)
@@ -3126,17 +3352,17 @@ function getGun(id)
 {
 	var currentGun = 0;
 	findTheGun:
-	for(var i in guns)
+	for(var i in allGuns)
 	{
-		if(id == guns[i].id)
+		if(id == allGuns[i].id)
 		{
-			currentGun = guns[i];
+			currentGun = allGuns[i];
 			break findTheGun;
 		}
 	}
 	if(currentGun == 0)
 	{
-		clientMessage("Error: gun not found in getGun()");
+		clientMessage("Error: gun not found in getGun(): " + id);
 		currentGun = AK47;
 	}
 	return currentGun;
@@ -3196,15 +3422,15 @@ function setUpGunsWithDate()
 		// winter after Xmas period
 		XMAS_SNIPER.name = "Winter Sniper";
 		XMAS_MINIGUN.name = "Winter Minigun";
-		guns.push(XMAS_MINIGUN);
-		guns.push(XMAS_SNIPER);
+		defaultGuns.push(XMAS_MINIGUN);
+		defaultGuns.push(XMAS_SNIPER);
 	}
 
 	if(month == java.util.Calendar.DECEMBER || (day <= 6 && month == java.util.Calendar.JANUARY))
 	{
 		// Xmas period
-		guns.push(XMAS_MINIGUN);
-		guns.push(XMAS_SNIPER);
+		defaultGuns.push(XMAS_MINIGUN);
+		defaultGuns.push(XMAS_SNIPER);
 	}
 }
 //########## WEAPONS functions - END ##########
@@ -3770,7 +3996,7 @@ var Recoil = {
 	{
 		if(gun.fireRate < 2)
 		{
-			if(gun.type == BUTTON_TYPE_ON_CLICK)
+			if(gun.buttonType == BUTTON_TYPE_ON_CLICK)
 			{
 				Recoil.makeLessTimedRecoil(gun);
 				return;
@@ -4139,7 +4365,7 @@ function displayAimImageLayer(gun)
 					popupSightImage.dismiss();
 				} catch(e) {}
 
-				if(gun.type == BUTTON_TYPE_ON_TOUCH)
+				if(gun.buttonType == BUTTON_TYPE_ON_TOUCH)
 				{
 					// load touch events
 					if(shouldReload())
@@ -5722,27 +5948,27 @@ function informationGunsSpecificationsForGunType(gunType)
 				var layout;
 				layout = defaultLayout(getGunTypeName(gunType) + " specifications");
 
-				for(var i in guns)
+				for(var i in allGuns)
 				{
-					if(guns[i].gunType == gunType)
+					if(allGuns[i].gunType == gunType)
 					{
 						var text1 = new android.widget.TextView(currentActivity);
-						text1.setText(new android.text.Html.fromHtml("<b>" + guns[i].name + "</b> (ID: " + guns[i].id + ")"));
+						text1.setText(new android.text.Html.fromHtml("<b>" + allGuns[i].name + "</b> (ID: " + allGuns[i].id + ")"));
 						layout.addView(text1);
 
 						var text = new android.widget.TextView(currentActivity);
-						text.setText(getGunTypeName(guns[i].gunType));
+						text.setText(getGunTypeName(allGuns[i].gunType));
 						text.setGravity(android.view.Gravity.RIGHT);
 						text.setTextSize(12);
 						layout.addView(text);
 
 
-						if(guns[i].ammo != 1)
+						if(allGuns[i].ammo != 1)
 						{
 							var text2 = new android.widget.TextView(currentActivity);
 							text2.setText("Fire rate");
 							layout.addView(text2);
-							if(guns[i].fireRate == 1 && guns[i].type == BUTTON_TYPE_ON_CLICK)
+							if(allGuns[i].fireRate == 1 && allGuns[i].buttonType == BUTTON_TYPE_ON_CLICK)
 							{
 								var text2_1 = new android.widget.TextView(currentActivity);
 								text2_1.setText("Shoot one bullet every time the user clicks the \"fire\" button");
@@ -5750,7 +5976,7 @@ function informationGunsSpecificationsForGunType(gunType)
 								layout.addView(text2_1);
 							} else
 							{
-								layout.addView(progressBarForInformation(guns[i].fireRate, 20, true, (guns[i].fireRate / 20) + " second(s)"));
+								layout.addView(progressBarForInformation(allGuns[i].fireRate, 20, true, (allGuns[i].fireRate / 20) + " second(s)"));
 							}
 						}
 
@@ -5759,44 +5985,44 @@ function informationGunsSpecificationsForGunType(gunType)
 						text7.setText("Recoil");
 						layout.addView(text7);
 
-						layout.addView(progressBarForInformation(guns[i].recoil, 30, true, (61 - (guns[i].recoil * 2)) + "/60"));
+						layout.addView(progressBarForInformation(allGuns[i].recoil, 30, true, (61 - (allGuns[i].recoil * 2)) + "/60"));
 
 
 						var text3 = new android.widget.TextView(currentActivity);
 						text3.setText("Accuracy");
 						layout.addView(text3);
 
-						layout.addView(progressBarForInformation(guns[i].accuracy, SPAS.accuracy, true, (51 - guns[i].accuracy) + "/50"));
+						layout.addView(progressBarForInformation(allGuns[i].accuracy, SPAS.accuracy, true, (51 - allGuns[i].accuracy) + "/50"));
 
 
 						var text4 = new android.widget.TextView(currentActivity);
 						text4.setText("Zoom level (when aiming)");
 						layout.addView(text4);
 
-						layout.addView(progressBarForInformation(guns[i].zoomLevel, ZOOM_SNIPER, false, guns[i].zoomLevel + " FOV"));
+						layout.addView(progressBarForInformation(allGuns[i].zoomLevel, ZOOM_SNIPER, false, allGuns[i].zoomLevel + " FOV"));
 
 
 						var text7 = new android.widget.TextView(currentActivity);
 						text7.setText("Bullet speed");
 						layout.addView(text7);
 
-						layout.addView(progressBarForInformation(guns[i].bulletSpeed * 10, 100, false, guns[i].bulletSpeed * 10 + "/100"));
+						layout.addView(progressBarForInformation(allGuns[i].bulletSpeed * 10, 100, false, allGuns[i].bulletSpeed * 10 + "/100"));
 
 
 						var text5 = new android.widget.TextView(currentActivity);
 						text5.setText("Ammo");
 						layout.addView(text5);
 
-						layout.addView(progressBarForInformation(guns[i].ammo, 125, false, guns[i].ammo.toString()));
+						layout.addView(progressBarForInformation(allGuns[i].ammo, 125, false, allGuns[i].ammo.toString()));
 
 
-						if(guns[i].hasExplosiveBulletsOnTouch || guns[i].hasExplosiveBulletsOnTime)
+						if(allGuns[i].hasExplosiveBulletsOnTouch || allGuns[i].hasExplosiveBulletsOnTime)
 						{
 							var text6 = new android.widget.TextView(currentActivity);
 							text6.setText("Explosion radius");
 							layout.addView(text6);
 
-							layout.addView(progressBarForInformation(guns[i].bulletsExplosionRadius, 5, false, guns[i].bulletsExplosionRadius + "/10"));;
+							layout.addView(progressBarForInformation(allGuns[i].bulletsExplosionRadius, 5, false, allGuns[i].bulletsExplosionRadius + "/10"));;
 						}
 
 						layout.addView(dividerText());
@@ -6670,7 +6896,7 @@ function easterEggUI()
 								pigmen = [];
 								codeEE = null;
 
-								BARRETT_EXPLOSIVE.type = BUTTON_TYPE_ON_TOUCH;
+								BARRETT_EXPLOSIVE.buttonType = BUTTON_TYPE_ON_TOUCH;
 								BARRETT_EXPLOSIVE.ammo = 500;
 								BARRETT_EXPLOSIVE.recoil = 3;
 								BARRETT_EXPLOSIVE.fireRate = 3;
@@ -7513,13 +7739,10 @@ function removeSoundsInstaller()
 // Things to do at startup
 //########################################################################################################################################################
 
-// add guns
-for(var i in guns)
+// add mod guns
+for(var i in defaultGuns)
 {
-	addNewGun(guns[i]);
-
-	if(!isItemAGun(guns[i].id))
-		throw getLogText() + "Not a gun: " + guns[i].name + ", " + guns[i].id + ".";
+	addNewGun(defaultGuns[i]);
 }
 
 // check sounds
@@ -7539,6 +7762,29 @@ new java.lang.Thread(new java.lang.Runnable()
 		}
 	}
 }).start();
+
+// load weapons from addons
+currentActivity.runOnUiThread(new java.lang.Runnable(
+{
+	run: function()
+	{
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				loadWeaponsFromAddons();
+
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
+					run: function()
+					{
+						addLoadedAddonsInGame();
+					}
+				}), 250);
+			}
+		}), 500);
+	}
+}));
 
 
 //########################################################################################################################################################
