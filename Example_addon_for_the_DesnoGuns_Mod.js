@@ -22,10 +22,6 @@ var ADDON_WEAPONS = [
 		texture: "44magnum",
 		ammo: 6,
 		smoke: 1,
-		recipe: [
-		" g ",
-		"iri",
-		"iri"],
 	},
 
 	{
@@ -44,10 +40,6 @@ var ADDON_WEAPONS = [
 		texture: "ak47",
 		ammo: 30,
 		smoke: 1,
-		recipe: [
-		" a ",
-		"iri",
-		"iri"],
 	},
 ];
 
@@ -60,7 +52,7 @@ var ADDON_WEAPONS = [
 		gunType: string, // the type of the gun, can be... TODO
 		buttonType: string, // how the mod manages the click of the "fire" button, can be "on_click": the gun shoot every time you click; "on_touch": when you click the "fire" button the gun continues to shoot until you release it; "on_touch_with_wait": it's a special on_touch type, it is like on_touch but the gun needs some time to load before shooting.
 		name: string, // the name of the gun.
-		id: int, // the unique id of the gun, must be a number > 256 and < 4096.
+		id: int, // the unique id of the gun, must be a number > 512 and < 4096.
 		fireRate: int, // an integer number > or = 1, it represents how many ticks (1/20 of a seconds) the gun has to wait before shooting another bullet.
 		recoil: float, // a number > 0, the higher this number is the more recoil the gun will have.
 		bulletSpeed: float, // a number > 0, this is the speed of the bullet. P.S.: this is not necessary with a flamethrower.
@@ -72,7 +64,8 @@ var ADDON_WEAPONS = [
 		ammo: int, // an integer number > 0, it represents the number of bullets in the ammo.
 		ammunitionID: int, // here you can set a custom id for the ammunition used when reloading the gun. If you delete this variable the mod will use the default ammunition id of the gunType.
 		smoke: int, // number of particles spawned after the gun has stopped shooting, if 0 can be deleted
-		recipe: TODO, // crafting recipe
+		recipeShape: TODO, //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
+		recipeDescription: TODO //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
 
 		// BEHAVIOR
 		isFlamethrower: boolean, // when true makes the gun act like a flamethrower. P.S.: if you enable it you also have to set the fireRate to 1!
@@ -92,7 +85,6 @@ var ADDON_WEAPONS = [
 
 		isGrenadeLauncher: boolean, // TODO
 		grenadeExplosionRadius: int,
-		grenadesArray: [], // array that contains all the grenades, REQUIRED when using isGrenadeLauncher
 		hasIncendiaryBullets: boolean,
 
 		// SOUNDS
@@ -117,8 +109,5 @@ var ADDON_WEAPONS = [
 
 
 // Don't delete or modify this function! It is called by the DesnoGuns Mod to load all your guns.
-function loadWeaponsHook()
-{
-	var arrobject = [ADDON_WEAPONS, ADDON_NAME, ADDON_DESCRIPTION];
-	net.zhuoweizhang.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsCallback", arrobject);
-}
+function loadWeaponsHook() { var arrobject = [ADDON_WEAPONS, ADDON_NAME, ADDON_DESCRIPTION]; net.zhuoweizhang.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsCallback", arrobject); }
+
