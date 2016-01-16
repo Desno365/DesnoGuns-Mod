@@ -74,6 +74,7 @@ var ADDON_WEAPONS = [
 
 		// options with shotType = "normal" or "shotgun"
 		hasParticleTrail: boolean, // display a trail of particles behind the bullet
+		particleTrailDistance: int, // the higher this number is the less distance particles will have between them and the player
 		particleTrailId: int, // the id
 
 		// options with shotType = "shotgun"
