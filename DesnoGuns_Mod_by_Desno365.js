@@ -213,6 +213,22 @@ Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmo
 	}
 }
 
+// guns types
+const GUN_TYPE_ASSAULT_RIFLE = 1;
+const GUN_TYPE_SUB_MACHINE = 2;
+const GUN_TYPE_LIGHT_MACHINE = 3;
+const GUN_TYPE_SNIPER_RIFLE = 4;
+const GUN_TYPE_SHOTGUN = 5;
+const GUN_TYPE_MACHINE_PISTOL = 6;
+const GUN_TYPE_HANDGUN = 7;
+const GUN_TYPE_LAUNCHER = 8;
+const GUN_TYPE_MINIGUN = 9;
+
+// button types
+const BUTTON_TYPE_ON_TOUCH = 1;
+const BUTTON_TYPE_ON_CLICK = 2;
+const BUTTON_TYPE_ON_TOUCH_WITH_WAIT = 3;
+
 // bullet speed
 const SNIPER_BULLET_SPEED = 9.9;
 const ASSAULT_BULLET_SPEED = 5.9;
@@ -230,21 +246,20 @@ const ZOOM_SHOTGUN = 15;
 const ZOOM_GRENADE_LAUNCHER = 10;
 const ZOOM_PISTOL = 13;
 
-// guns type
-const GUN_TYPE_ASSAULT_RIFLE = 1;
-const GUN_TYPE_SUB_MACHINE = 2;
-const GUN_TYPE_LIGHT_MACHINE = 3;
-const GUN_TYPE_SNIPER_RIFLE = 4;
-const GUN_TYPE_SHOTGUN = 5;
-const GUN_TYPE_MACHINE_PISTOL = 6;
-const GUN_TYPE_HANDGUN = 7;
-const GUN_TYPE_LAUNCHER = 8;
-const GUN_TYPE_MINIGUN = 9;
+// shot types
+const SHOT_TYPE_NORMAL = 1;
+const SHOT_TYPE_SHOTGUN = 2;
+const SHOT_TYPE_FLAMETHROWER = 3;
 
-// button type
-const BUTTON_TYPE_ON_TOUCH = 1;
-const BUTTON_TYPE_ON_CLICK = 2;
-const BUTTON_TYPE_ON_TOUCH_WITH_WAIT = 3;
+// bullet types
+const BULLET_TYPE_NORMAL = 1;
+const BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH = 2;
+const BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME = 3;
+const BULLET_TYPE_TNT = 4;
+const BULLET_TYPE_SNOWBALL = 5;
+const BULLET_TYPE_INCENDIARY_SNOWBALL = 6;
+const BULLET_TYPE_CUSTOM_ENTITY = 7;
+
 
 // for new IDs: 3285-3299 (armors) / 3300-3319 (grenades) / 3320-3339 (other items) / 3340-3364 (ammo) / 3365 (info item) / 3366-3500 (guns)
 
@@ -358,7 +373,6 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		bulletsArray: [], // array that contains all the explosive bullets, REQUIRED when using explosive bullets
 
 		isGrenadeLauncher: boolean,
-		grenadeExplosionRadius: int,
 		grenadesArray: [], // array that contains all the grenades, REQUIRED when using isGrenadeLauncher
 		hasIncendiaryBullets: boolean,
 
@@ -384,9 +398,9 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 
 // weapons
 const MAGNUM44 = {
+	name: ".44 Magnum",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: ".44 Magnum",
 	id: 3366,
 	fireRate: 4,
 	recoil: 20,
@@ -397,7 +411,10 @@ const MAGNUM44 = {
 	reloadSound: "GL6Reload.ogg",
 	texture: "44magnum",
 	ammo: 6,
-	smoke: 1
+	smoke: 1,
+
+	shotType: SHOT_TYPE_NORMAL,
+	bulletType: BULLET_TYPE_NORMAL
 };
 
 const AK47 = {
@@ -715,7 +732,6 @@ const GL1 = {
 	recoil: 12,
 	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED,
 	isGrenadeLauncher: true,
-	grenadeExplosionRadius: 4,
 	accuracy: 10,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	sound: "GrenadeLauncherShoot.ogg",
@@ -734,7 +750,6 @@ const GL6 = {
 	recoil: 8,
 	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED,
 	isGrenadeLauncher: true,
-	grenadeExplosionRadius: 4,
 	accuracy: 15,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	sound: "GrenadeLauncherShoot.ogg",
@@ -3068,267 +3083,6 @@ function smokeGrenadeClass(entity)
 	return smokeObject;
 }
 
-function shoot(gun)
-{
-	if(gun.isShotgun)
-	{
-		shootShotgun(gun);
-	}
-
-	if(gun.isFlamethrower)
-	{
-		shootFlamethrower(gun);
-	}
-
-	if(gun.isGrenadeLauncher)
-	{
-		shootGrenadeWeapon(gun);
-	}
-
-	if(!(gun.isShotgun || gun.isFlamethrower || gun.isGrenadeLauncher)) // not shotgun and not flamethrower
-	{
-		shootSingleBullet(gun);
-	}
-}
-
-function shootShotgun(gun)
-{
-	// multiple arrows
-
-	for(var i = 0; i < gun.shotgunBullets; i++)
-	{
-		if(gun.shotgunWait > 0)
-		{
-			new android.os.Handler().postDelayed(new java.lang.Runnable(
-			{
-				run: function()
-				{
-					if(isInGame)
-					{
-						var gunAccuracy = getDefaultAccuracy(gun);
-
-						var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-						var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-
-						var yawAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
-						var pitchAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
-
-						var gunShootDir = getDirection(getYaw() + yawAccuracyValue + yawAccuracyShotgun, getPitch() + pitchAccuracyValue + pitchAccuracyShotgun);
-
-						var arrow = shootBullet(gun, gunShootDir);
-
-						if(gun.hasExplosiveBulletsOnTouch || gun.hasExplosiveBulletsOnTime)
-							gun.bulletsArray.push(new entityClass(arrow));
-					}
-				}
-			}), i * gun.shotgunWait);
-		} else
-		{
-			var gunAccuracy = getDefaultAccuracy(gun);
-
-			var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-			var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-
-			var yawAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
-			var pitchAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
-
-			var gunShootDir = getDirection(getYaw() + yawAccuracyValue + yawAccuracyShotgun, getPitch() + pitchAccuracyValue + pitchAccuracyShotgun);
-
-			var arrow = shootBullet(gun, gunShootDir);
-
-			if(gun.hasExplosiveBulletsOnTouch || gun.hasExplosiveBulletsOnTime)
-				gun.bulletsArray.push(new entityClass(arrow));
-			}
-		}
-}
-
-function shootFlamethrower(gun)
-{
-	// fire
-
-	var gunAccuracy = getDefaultAccuracy(gun);
-
-	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gun.accuracy;
-	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gun.accuracy;
-	var playerShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
-
-	var flameShootDir = getDirection(getYaw() + 45, getPitch());
-
-	var xDir;
-	var yDir;
-	var zDir;
-	var tile;
-
-	// particles near the player
-	xDir = Player.getX() + (playerShootDir.x * 0.75) + flameShootDir.x;
-	yDir = Player.getY() + (playerShootDir.y * 0.75) - 0.3;
-	zDir = Player.getZ() + (playerShootDir.z * 0.75) + flameShootDir.z;
-
-	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-
-
-	// first flame tick
-	xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
-	yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
-	zDir = Player.getZ() + (playerShootDir.z * flameTick) + flameShootDir.z;
-
-	tile = Level.getTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir));
-
-	if(tile == 0 || tile == 31) // 31 grass
-	{
-		if(flameTick > 5)
-		{
-			Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
-		} else
-		{
-			Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
-		}
-	}
-
-	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-
-
-	flameTick += 0.5;
-
-
-	// second flame tick
-	xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
-	yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
-	zDir = Player.getZ() + (playerShootDir.z * flameTick) + flameShootDir.z;
-
-	tile = Level.getTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir));
-
-	if(tile == 0 || tile == 31) // 31 grass
-		Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
-
-	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
-
-
-	flameTick += 0.5;
-
-	if(flameTick > 10)
-		flameTick = 2;
-}
-
-function shootGrenadeWeapon(gun)
-{
-	var gunAccuracy = getDefaultAccuracy(gun);
-
-	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-	var gunShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
-
-	if(gun.hasIncendiaryBullets)
-		var grenade = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 81);
-	else
-		var grenade = Level.spawnMob(getPlayerX() + (gunShootDir.x * 2), getPlayerY() + (gunShootDir.y * 2.5), getPlayerZ() + (gunShootDir.z * 2), 65);
-	setVelX(grenade, gunShootDir.x * gun.bulletSpeed);
-	setVelY(grenade, gunShootDir.y * gun.bulletSpeed);
-	setVelZ(grenade, gunShootDir.z * gun.bulletSpeed);
-
-	if(gun.hasIncendiaryBullets)
-		gun.bulletsArray.push(new entityClass(grenade));
-}
-
-function shootSingleBullet(gun)
-{
-	// a single arrow
-
-	var gunAccuracy = getDefaultAccuracy(gun);
-
-	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-	var gunShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
-
-	var arrow = shootBullet(gun, gunShootDir);
-
-	if(gun.hasExplosiveBulletsOnTouch || gun.hasExplosiveBulletsOnTime)
-		gun.bulletsArray.push(new entityClass(arrow));
-
-	if(gun.hasExplosiveBulletsOnTime)
-	{
-		Sound.playFromFileName("explosion-countdown.wav");
-
-		new android.os.Handler().postDelayed(new java.lang.Runnable(
-		{
-			run: function()
-			{
-				if(isInGame && gun.bulletsArray.length > 0) // gun.bulletsArray.length > 0 fix a crash that happens when the player shoot an explosive bullet, exit the world and re-enter in the world
-				{
-					// TODO check x y z == 0; if yes then use .x .y .z of Entity class that are put in modTick
-					var explosionX = Entity.getX(gun.bulletsArray[0].entity);
-					var explosionY = Entity.getY(gun.bulletsArray[0].entity);
-					var explosionZ = Entity.getZ(gun.bulletsArray[0].entity);
-
-					if(explosionX == 0 && explosionY == 0 && explosionZ == 0)
-					{
-						// arrow hit an entity
-						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
-					} else
-					{
-						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
-					}
-					gun.bulletsArray.splice(0, 1);
-				}
-			}
-		}), gun.bulletsExplosionDelay);
-	}
-}
-
-function shootBullet(gun, playerDir, arrowDir)
-{
-	if(arrowDir == null)
-		arrowDir = playerDir;
-
-	if(gun.hasIceBullets)
-		var arrow = Level.spawnMob(getPlayerX() + (playerDir.x * 2), getPlayerY() + (playerDir.y * 2.5), getPlayerZ() + (playerDir.z * 2), 81);
-	else
-		var arrow = Level.spawnMob(getPlayerX() + (playerDir.x * 2), getPlayerY() + (playerDir.y * 2.5), getPlayerZ() + (playerDir.z * 2), 80);
-	setVelX(arrow, arrowDir.x * gun.bulletSpeed);
-	setVelY(arrow, arrowDir.y * gun.bulletSpeed);
-	setVelZ(arrow, arrowDir.z * gun.bulletSpeed);
-
-	return arrow;
-}
-
-function getDefaultAccuracy(gun)
-{
-	if(isAiming)
-	{
-		return gun.accuracy - 1;
-	} else
-	{
-		if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
-			return gun.accuracy + 25;
-		else
-			return gun.accuracy;
-	}
-}
-
-function showCloudParticle(amount)
-{
-	if(amount > 0)
-	{
-		new android.os.Handler().postDelayed(new java.lang.Runnable(
-		{
-			run: function()
-			{
-				if(isInGame)
-				{
-					var gunDir = getDirection(getYaw() + 30, getPitch());
-					for(var i = 0; i < amount; i++)
-						Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
-				}
-			}
-		}), 250);
-	}
-}
-
 function getGun(id)
 {
 	var currentGun = 0;
@@ -3415,6 +3169,285 @@ function setUpGunsWithDate()
 	}
 }
 //########## WEAPONS functions - END ##########
+
+
+//########## SHOOT WITH GUNS functions ##########
+function shoot(gun)
+{
+	if(gun.shotType == SHOT_TYPE_NORMAL)
+	{
+		shootSingleBullet(gun);
+		return;
+	}
+
+	if(gun.shotType == SHOT_TYPE_SHOTGUN)
+	{
+		shootShotgun(gun);
+		return;
+	}
+
+	if(gun.shotType == SHOT_TYPE_FLAMETHROWER)
+	{
+		shootFlamethrower(gun);
+		return;
+	}
+
+	clientMessage("Something went wrong in shoot() with " + gun.name);
+}
+
+function shootSingleBullet(gun)
+{
+	// a single bullet
+
+	var gunAccuracy = getDefaultAccuracy(gun);
+
+	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+
+	var gunShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+	var bullet = shootEntity(gun, getEntityIdForBulletType(gun), gunShootDir);
+
+	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+		gun.bulletsArray.push(new entityClass(bullet));
+
+	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
+	{
+		Sound.playFromFileName("explosion-countdown.wav");
+
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				if(isInGame && gun.bulletsArray.length > 0) // gun.bulletsArray.length > 0 fix a crash that happens when the player shoot an explosive bullet, exit the world and re-enter in the world
+				{
+					var explosionX = Entity.getX(gun.bulletsArray[0].entity);
+					var explosionY = Entity.getY(gun.bulletsArray[0].entity);
+					var explosionZ = Entity.getZ(gun.bulletsArray[0].entity);
+
+					if(explosionX == 0 && explosionY == 0 && explosionZ == 0)
+					{
+						// arrow hit an entity
+						Entity.remove(gun.bulletsArray[0].entity);
+						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+					} else
+					{
+						Entity.remove(gun.bulletsArray[0].entity);
+						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+					}
+					gun.bulletsArray.splice(0, 1);
+				}
+			}
+		}), gun.bulletsExplosionDelay);
+	}
+}
+
+function shootShotgun(gun)
+{
+	// multiple arrows
+
+	for(var i = 0; i < gun.shotgunBullets; i++)
+	{
+		if(gun.shotgunWait > 0)
+		{
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
+				run: function()
+				{
+					if(isInGame)
+					{
+						shootSingleShotgunBullet(gun);
+					}
+				}
+			}), i * gun.shotgunWait);
+		} else
+		{
+			shootSingleShotgunBullet(gun);
+		}
+	}
+
+	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
+		Sound.playFromFileName("explosion-countdown.wav");
+}
+
+function shootSingleShotgunBullet(gun)
+{
+	// a single bullet but with yaw and pitch accuracy of the shotgun
+
+	var gunAccuracy = getDefaultAccuracy(gun);
+
+	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+
+	var yawAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
+	var pitchAccuracyShotgun = ((Math.random() * gun.shotgunDegreesSpread) - (gun.shotgunDegreesSpread / 2));
+
+	var gunShootDir = getDirection(getYaw() + yawAccuracyValue + yawAccuracyShotgun, getPitch() + pitchAccuracyValue + pitchAccuracyShotgun);
+
+	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+		gun.bulletsArray.push(new entityClass(bullet));
+
+	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
+	{
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				if(isInGame && gun.bulletsArray.length > 0) // gun.bulletsArray.length > 0 fix a crash that happens when the player shoot an explosive bullet, exit the world and re-enter in the world
+				{
+					var explosionX = Entity.getX(gun.bulletsArray[0].entity);
+					var explosionY = Entity.getY(gun.bulletsArray[0].entity);
+					var explosionZ = Entity.getZ(gun.bulletsArray[0].entity);
+
+					if(explosionX == 0 && explosionY == 0 && explosionZ == 0)
+					{
+						// arrow hit an entity
+						Entity.remove(gun.bulletsArray[0].entity);
+						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+					} else
+					{
+						Entity.remove(gun.bulletsArray[0].entity);
+						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+					}
+					gun.bulletsArray.splice(0, 1);
+				}
+			}
+		}), gun.bulletsExplosionDelay);
+	}
+}
+
+function shootFlamethrower(gun)
+{
+	// fire
+
+	var gunAccuracy = getDefaultAccuracy(gun);
+
+	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gun.accuracy;
+	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gun.accuracy;
+	var playerShootDir = getDirection(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+	var flameShootDir = getDirection(getYaw() + 45, getPitch());
+
+	var xDir;
+	var yDir;
+	var zDir;
+	var tile;
+
+	// particles near the player
+	xDir = Player.getX() + (playerShootDir.x * 0.75) + flameShootDir.x;
+	yDir = Player.getY() + (playerShootDir.y * 0.75) - 0.3;
+	zDir = Player.getZ() + (playerShootDir.z * 0.75) + flameShootDir.z;
+
+	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+
+
+	// first flame tick
+	xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
+	yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
+	zDir = Player.getZ() + (playerShootDir.z * flameTick) + flameShootDir.z;
+
+	tile = Level.getTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir));
+
+	if(tile == 0 || tile == 31) // 31 grass
+	{
+		if(flameTick > 5)
+		{
+			Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
+		} else
+		{
+			Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
+		}
+	}
+
+	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+
+
+	flameTick += 0.5;
+
+
+	// second flame tick
+	xDir = Player.getX() + (playerShootDir.x * flameTick) + flameShootDir.x;
+	yDir = Player.getY() + (playerShootDir.y * flameTick) - 0.3;
+	zDir = Player.getZ() + (playerShootDir.z * flameTick) + flameShootDir.z;
+
+	tile = Level.getTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir));
+
+	if(tile == 0 || tile == 31) // 31 grass
+		Level.setTile(Math.floor(xDir), Math.floor(yDir), Math.floor(zDir), 51);
+
+	Level.addParticle(ParticleType.flame, xDir + Math.random() - 0.5, yDir, zDir + Math.random() - 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+	Level.addParticle(ParticleType.flame, xDir - Math.random() + 0.5, yDir, zDir - Math.random() + 0.5, playerShootDir.x * 0.05, playerShootDir.y * 0.05, playerShootDir.z * 0.05, 1);
+
+
+	flameTick += 0.5;
+
+	if(flameTick > 10)
+		flameTick = 2;
+}
+
+function shootEntity(gun, entityId, playerDir, arrowDir)
+{
+	if(arrowDir == null)
+		arrowDir = playerDir;
+
+	var bullet = Level.spawnMob(getPlayerX() + (playerDir.x * 2), getPlayerY() + (playerDir.y * 2.5), getPlayerZ() + (playerDir.z * 2), entityId);
+	setVelX(bullet, arrowDir.x * gun.bulletSpeed);
+	setVelY(bullet, arrowDir.y * gun.bulletSpeed);
+	setVelZ(bullet, arrowDir.z * gun.bulletSpeed);
+
+	return bullet;
+}
+
+function getDefaultAccuracy(gun)
+{
+	if(isAiming)
+	{
+		return gun.accuracy - 1;
+	} else
+	{
+		if(gun.gunType == GUN_TYPE_SNIPER_RIFLE)
+			return gun.accuracy + 25;
+		else
+			return gun.accuracy;
+	}
+}
+
+function getEntityIdForBulletType(gun)
+{
+	if(gun.bulletType == BULLET_TYPE_NORMAL || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
+		return 80;
+
+	if(gun.bulletType == BULLET_TYPE_TNT)
+		return 65;
+
+	if(gun.bulletType == BULLET_TYPE_SNOWBALL || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+		return 81;
+
+	if(gun.bulletType == BULLET_TYPE_CUSTOM_ENTITY)
+		return gun.customBulletId;
+}
+
+function showCloudParticle(amount)
+{
+	if(amount > 0)
+	{
+		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				if(isInGame)
+				{
+					var gunDir = getDirection(getYaw() + 30, getPitch());
+					for(var i = 0; i < amount; i++)
+						Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
+				}
+			}
+		}), 250);
+	}
+}
+//########## SHOOT WITH GUNS functions - END ##########
 
 
 //########## ON CLICK GUNS functions ##########

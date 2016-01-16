@@ -49,15 +49,15 @@ var ADDON_WEAPONS = [
 	{
 		// all possible variables for a gun
 		weaponType: "gun", // must be gun
+		name: string, // the name of the gun.
 		gunType: string, // the type of the gun, can be... TODO
 		buttonType: string, // how the mod manages the click of the "fire" button, can be "on_click": the gun shoot every time you click; "on_touch": when you click the "fire" button the gun continues to shoot until you release it; "on_touch_with_wait": it's a special on_touch type, it is like on_touch but the gun needs some time to load before shooting.
-		name: string, // the name of the gun.
 		id: int, // the unique id of the gun, must be a number > 512 and < 4096.
 		fireRate: int, // an integer number > or = 1, it represents how many ticks (1/20 of a seconds) the gun has to wait before shooting another bullet.
 		recoil: float, // a number > 0, the higher this number is the more recoil the gun will have.
 		bulletSpeed: float, // a number > 0, this is the speed of the bullet. P.S.: this is not necessary with a flamethrower.
-		zoomLevel: int, // an integer number > 0 and < 68, the higher this number is the more zoom the gun will have when aiming.
 		accuracy: int, // a number > 0 and < 45, the higher this number is the less accuracy the gun will have.
+		zoomLevel: int, // an integer number > 0 and < 68, the higher this number is the more zoom the gun will have when aiming.
 		hasAimImageLayer: boolean, // show image when aiming, usually sniper rifles has this image.
 		texture: String, // the name of the texture this gun uses.
 		textureNumber: int, // the texture number of the texture, if you are using a custom texture you can delete this variable since this variable is only useful when using textures already present in Minecraft.
@@ -68,24 +68,26 @@ var ADDON_WEAPONS = [
 		recipeDescription: TODO //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
 
 		// BEHAVIOR
-		isFlamethrower: boolean, // when true makes the gun act like a flamethrower. P.S.: if you enable it you also have to set the fireRate to 1!
+		shotType: string,
+		bulletType: string, // only with normal or shotgun types, not with flamethrower
+		customBulletId: int, //  *! advanced variable, only for experts, if you don't understand what it does just delete it !* entity id of the bullet
 
-		isShotgun: boolean, // when true makes the gun act like a shotgun.
-		shotgunBullets: int, // REQUIRED only when isShotgun: true, number of bullets the gun will shoot
-		shotgunDegreesSpread: float, // REQUIRED only when isShotgun: true, represents the width of the shotgun cone in degrees (it basically acts like an accuracy). Must be > or = 0.
+		// options with shotType = "normal" or "shotgun"
+		hasParticleTrail: boolean, // display a trail of particles behind the bullet
+		particleTrailId: int, // the id
+
+		// options with shotType = "shotgun"
+		shotgunBullets: int, // number of bullets the gun will shoot
+		shotgunDegreesSpread: float, // represents the width of the shotgun cone in degrees (it basically acts like an accuracy). Must be > or = 0.
 		shotgunWait: int, // *! advanced variable, only for experts, if you don't understand what it does just delete it !* it represents the number of milliseconds to wait before shooting the next bullet of the shotgun. If you want the shotgun bullets to be shot all at the same time just delete this variable
 
-		hasIceBullets: boolean, // when true shoots snowballs instead of arrows
+		// options with bulletType = "normal_explosive_on_time"
+		bulletsExplosionDelay: int, // the milliseconds of delay before exploding
+		bulletsExplosionRadius: int, // the radius of the explosion
 
-		hasExplosiveBulletsOnTime: boolean, // when true the bullet will explode after a delay: the bulletExplosionDelay
-		bulletsExplosionDelay: int, // REQUIRED when using hasExplosiveBulletsOnTime, it represents the milliseconds of delay before exploding
-		hasExplosiveBulletsOnTouch: boolean, // when true the bullet will explode when it touches the ground
-		bulletsExplosionRadius: int, // REQUIRED when using any type of explosive bullets
+		// options with bulletType = "normal_explosive_on_touch"
+		bulletsExplosionRadius: int, // the radius of the explosion
 		hasExplosiveBulletsSmokeTrail: boolean, // when true these bullets will have a smoke trail behind them
-
-		isGrenadeLauncher: boolean, // TODO
-		grenadeExplosionRadius: int,
-		hasIncendiaryBullets: boolean,
 
 		// SOUNDS
 		hasntShootingSound: boolean,
