@@ -398,6 +398,7 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 
 // weapons
 const MAGNUM44 = {
+	weaponType: "gun",
 	name: ".44 Magnum",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
@@ -407,104 +408,114 @@ const MAGNUM44 = {
 	bulletSpeed: SNIPER_BULLET_SPEED /* one shot one kill, yeah */ ,
 	accuracy: 6,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "44Magnum.mp3",
-	reloadSound: "GL6Reload.ogg",
 	texture: "44magnum",
 	ammo: 6,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "44Magnum.mp3",
+	reloadSound: "GL6Reload.ogg",
 };
 
 const AK47 = {
+	weaponType: "gun",
+	name: "AK47",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "AK47",
 	id: 3370,
 	fireRate: 3,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 5,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "AK47Shoot.ogg",
-	reloadSound: "MP44Reload.ogg",
 	texture: "ak47",
 	ammo: 30,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "AK47Shoot.ogg",
+	reloadSound: "MP44Reload.ogg",
 };
 
 const AK74 = {
+	weaponType: "gun",
+	name: "AK74",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "AK74",
 	id: 3371,
 	fireRate: 3,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 4,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "AK74Shoot.ogg",
-	reloadSound: "MP40Reload.ogg",
 	texture: "ak74",
 	ammo: 30,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "AK74Shoot.ogg",
+	reloadSound: "MP40Reload.ogg",
 };
 
 const AT4 = {
+	weaponType: "gun",
+	name: "AT4",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "AT4",
 	id: 3372,
 	fireRate: 10,
 	recoil: 10,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
 	accuracy: 5,
 	zoomLevel: ZOOM_BAZOOKA,
-	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-	reloadSound: "BazookaReload.ogg",
 	texture: "at4",
 	ammo: 1,
 	smoke: 4,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 4
+	bulletsExplosionRadius: 4,
+	// SOUNDS
+	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
+	reloadSound: "BazookaReload.ogg",
 };
 
 const AUG = {
+	weaponType: "gun",
+	name: "AUG",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "AUG",
 	id: 3373,
 	fireRate: 3,
 	recoil: 2.5,
 	bulletSpeed: 6.8,
 	accuracy: 3,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
-	reloadSound: "MP44Reload.ogg",
 	texture: "aug",
 	ammo: 42,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
+	reloadSound: "MP44Reload.ogg",
 };
 
 const BARRETT_EXPLOSIVE = {
+	weaponType: "gun",
+	name: "Barrett Explosive",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Barrett Explosive",
 	id: 464,
 	fireRate: 12,
 	recoil: 25,
@@ -512,21 +523,23 @@ const BARRETT_EXPLOSIVE = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 3,
 	hasAimImageLayer: true,
-	sound: "BarrettShoot.ogg",
-	reloadSound: "BARReload.ogg",
 	texture: "barrettexplosive",
 	ammo: 10,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 2
+	bulletsExplosionRadius: 2,
+	// SOUNDS
+	sound: "BarrettShoot.ogg",
+	reloadSound: "BARReload.ogg",
 };
 
 const BARRETT = {
+	weaponType: "gun",
+	name: "Barrett",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Barrett",
 	id: 465,
 	fireRate: 12,
 	recoil: 25,
@@ -534,40 +547,44 @@ const BARRETT = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "BarrettShoot.ogg",
-	reloadSound: "BARReload.ogg",
 	texture: "barrett",
 	ammo: 10,
 	smoke: 2,
-	
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "BarrettShoot.ogg",
+	reloadSound: "BARReload.ogg",
 };
 
 const BIZON = {
+	weaponType: "gun",
+	name: "Bizon",
 	gunType: GUN_TYPE_SUB_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "Bizon",
 	id: 3374,
 	fireRate: 2,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 3,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	reloadSound: "MP40Reload.ogg",
 	texture: "bizon",
 	ammo: 53,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	reloadSound: "MP40Reload.ogg",
 };
 
 const CROSSBOW_EXPLOSIVE = {
+	weaponType: "gun",
+	name: "Crossbow Explosive",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Crossbow Explosive",
 	id: 3367,
 	fireRate: 14,
 	recoil: 11,
@@ -575,8 +592,6 @@ const CROSSBOW_EXPLOSIVE = {
 	zoomLevel: ZOOM_ASSAULT,
 	accuracy: 5,
 	hasAimImageLayer: true,
-	sound: "CrossbowShoot.wav",
-	reloadSound: "CrossbowReload.wav",
 	texture: "crossbowexplosive",
 	ammo: 1,
 	ammunitionID: AMMO_ARROW_EXPLOSIVE_ID,
@@ -586,17 +601,21 @@ const CROSSBOW_EXPLOSIVE = {
 		"ers",
 		" is"],
 	recipeDescription: ["i", 265, 0, "r", 331, 0, "s", 287 /*string*/, 0, "e", AMMO_ARROW_EXPLOSIVE_ID, 0],
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME,
 	bulletsExplosionDelay: 3350,
-	bulletsExplosionRadius: 4
+	bulletsExplosionRadius: 4,
+	// SOUNDS
+	sound: "CrossbowShoot.wav",
+	reloadSound: "CrossbowReload.wav",
 };
 
 const CROSSBOW = {
+	weaponType: "gun",
+	name: "Crossbow",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Crossbow",
 	id: 3368,
 	fireRate: 14,
 	recoil: 11,
@@ -604,8 +623,6 @@ const CROSSBOW = {
 	zoomLevel: ZOOM_ASSAULT,
 	accuracy: 5,
 	hasAimImageLayer: true,
-	sound: "CrossbowShoot.wav",
-	reloadSound: "CrossbowReload.wav",
 	texture: "crossbow",
 	ammo: 1,
 	ammunitionID: 262, // 262 = arrow
@@ -615,55 +632,63 @@ const CROSSBOW = {
 		"ars",
 		" is"],
 	recipeDescription: ["i", 265, 0, "r", 331, 0, "s", 287 /*string*/, 0, "a", 262 /*arrow*/, 0],
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "CrossbowShoot.wav",
+	reloadSound: "CrossbowReload.wav",
 };
 
 const DESERT_EAGLE = {
+	weaponType: "gun",
+	name: "Desert Eagle",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Desert Eagle",
 	id: 467,
 	fireRate: 1,
 	recoil: 4,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 6,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "DesertEagleShoot.ogg",
-	reloadSound: "LugerReload.ogg",
 	texture: "deserteagle",
 	ammo: 7,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "DesertEagleShoot.ogg",
+	reloadSound: "LugerReload.ogg",
 };
 
 const DESERT_EAGLE_GOLD = {
+	weaponType: "gun",
+	name: "Desert Eagle Gold",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Desert Eagle Gold",
 	id: 468,
 	fireRate: 1,
 	recoil: 4,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 5,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "DesertEagleShoot.ogg",
-	reloadSound: "LugerReload.ogg",
 	texture: "deserteaglegold",
 	ammo: 7,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "DesertEagleShoot.ogg",
+	reloadSound: "LugerReload.ogg",
 };
 
 const DRAGUNOV = {
+	weaponType: "gun",
+	name: "Dragunov",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Dragunov",
 	id: 469,
 	fireRate: 8,
 	recoil: 23,
@@ -671,25 +696,33 @@ const DRAGUNOV = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "DragunovShoot.ogg",
-	reloadSound: "BARReload.ogg",
 	texture: "dragunov",
 	ammo: 10,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "DragunovShoot.ogg",
+	reloadSound: "BARReload.ogg",
 };
 
 const FLAMETHROWER = {
+	weaponType: "gun",
+	name: "Flamethrower",
 	gunType: GUN_TYPE_MINIGUN,
 	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name: "Flamethrower",
 	id: 508,
 	fireRate: 1,
 	recoil: 0.5,
 	accuracy: 5.5,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
+	texture: "flamethrower",
+	ammo: 750,
+	smoke: 3,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_FLAMETHROWER,
+	// SOUNDS
 	hasRandomWarmupSound: true,
 	warmupSound: {
 		startingFrom: 1,
@@ -701,157 +734,167 @@ const FLAMETHROWER = {
 	spinSound: "flamethrower.mp3",
 	hasntCooldownSound: true,
 	reloadSound: "BrowningReload.ogg",
-	texture: "flamethrower",
-	ammo: 750,
-	smoke: 3,
-
-	shotType: SHOT_TYPE_FLAMETHROWER
 };
 
 const FNSCAR = {
+	weaponType: "gun",
+	name: "FNSCAR",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "FNSCAR",
 	id: 470,
 	fireRate: 3,
 	recoil: 1.5,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 3,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
-	reloadSound: "MP44Reload.ogg",
 	texture: "fnscar",
 	ammo: 20,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
+	reloadSound: "MP44Reload.ogg",
 };
 
 const G3 = {
+	weaponType: "gun",
+	name: "G3",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "G3",
 	id: 471,
 	fireRate: 2,
 	recoil: 2,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	reloadSound: "ThompsonReload.ogg",
 	texture: "g3",
 	ammo: 20,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	reloadSound: "ThompsonReload.ogg",
 };
 
 const G36 = {
+	weaponType: "gun",
+	name: "G36",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "G36",
 	id: 472,
 	fireRate: 3,
 	recoil: 2,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "G36Shoot.ogg",
-	reloadSound: "MP40Reload.ogg",
 	texture: "g36",
 	ammo: 30,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "G36Shoot.ogg",
+	reloadSound: "MP40Reload.ogg",
 };
 
 const GL1 = {
+	weaponType: "gun",
+	name: "GL1",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "GL1",
 	id: 473,
 	fireRate: 10,
 	recoil: 12,
 	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED,
 	accuracy: 10,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
-	sound: "GrenadeLauncherShoot.ogg",
-	reloadSound: "GrenadeLauncherReload.ogg",
 	texture: "gl1",
 	ammo: 1,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_TNT
+	bulletType: BULLET_TYPE_TNT,
+	// SOUNDS
+	sound: "GrenadeLauncherShoot.ogg",
+	reloadSound: "GrenadeLauncherReload.ogg",
 };
 
 const GL6 = {
+	weaponType: "gun",
+	name: "GL6",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "GL6",
 	id: 474,
 	fireRate: 1,
 	recoil: 8,
 	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED,
 	accuracy: 15,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
-	sound: "GrenadeLauncherShoot.ogg",
-	reloadSound: "GL6Reload.ogg",
 	texture: "gl6",
 	ammo: 6,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_TNT
+	bulletType: BULLET_TYPE_TNT,
+	// SOUNDS
+	sound: "GrenadeLauncherShoot.ogg",
+	reloadSound: "GL6Reload.ogg",
 };
 
 const GLOCK = {
+	weaponType: "gun",
+	name: "Glock",
 	gunType: GUN_TYPE_MACHINE_PISTOL,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "Glock",
 	id: 475,
 	fireRate: 3,
 	recoil: 2,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "GlockShoot.ogg",
-	reloadSound: "ColtReload.ogg",
 	texture: "glock",
 	ammo: 31,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "GlockShoot.ogg",
+	reloadSound: "ColtReload.ogg",
 };
 
 const L86 = {
+	weaponType: "gun",
+	name: "L86",
 	gunType: GUN_TYPE_LIGHT_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "L86",
 	id: 476,
 	fireRate: 3,
 	recoil: 5,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 4,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "M249_and_L86Shoot.ogg",
-	reloadSound: "BrowningReload.ogg",
 	texture: "l86",
 	ammo: 100,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M249_and_L86Shoot.ogg",
+	reloadSound: "BrowningReload.ogg",
 };
 
 const L96 = {
+	weaponType: "gun",
+	name: "L96",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "L96",
 	id: 477,
 	fireRate: 26,
 	recoil: 14,
@@ -859,80 +902,88 @@ const L96 = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "L96Shoot.ogg",
-	reloadSound: "BARReload.ogg",
 	texture: "l96",
 	ammo: 10,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "L96Shoot.ogg",
+	reloadSound: "BARReload.ogg",
 };
 
 const M9 = {
+	weaponType: "gun",
+	name: "M9",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M9",
 	id: 478,
 	fireRate: 1,
 	recoil: 1,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 8,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "M9Shoot.ogg",
-	reloadSound: "ColtReload.ogg",
 	texture: "m9",
 	ammo: 15,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M9Shoot.ogg",
+	reloadSound: "ColtReload.ogg",
 };
 
 const M14 = {
+	weaponType: "gun",
+	name: "M14",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M14",
 	id: 479,
 	fireRate: 1,
 	recoil: 4,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	zoomLevel: ZOOM_ASSAULT,
 	accuracy: 2,
-	sound: "M14_and_M16A4Shoot.ogg",
-	reloadSound: "BARReload.ogg",
 	texture: "m14",
 	ammo: 20,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M14_and_M16A4Shoot.ogg",
+	reloadSound: "BARReload.ogg",
 };
 
 const M16A4 = {
+	weaponType: "gun",
+	name: "M16A4",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "M16A4",
 	id: 480,
 	fireRate: 3,
 	recoil: 2,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "M14_and_M16A4Shoot.ogg",
-	reloadSound: "MP44Reload.ogg",
 	texture: "m16a4",
 	ammo: 30,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M14_and_M16A4Shoot.ogg",
+	reloadSound: "MP44Reload.ogg",
 };
 
 const M21 = {
+	weaponType: "gun",
+	name: "M21",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M21",
 	id: 481,
 	fireRate: 10,
 	recoil: 18,
@@ -940,20 +991,22 @@ const M21 = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "M21Shoot.ogg",
-	reloadSound: "BARReload.ogg",
 	texture: "m21",
 	ammo: 10,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M21Shoot.ogg",
+	reloadSound: "BARReload.ogg",
 };
 
 const M40A3_ICE = {
+	weaponType: "gun",
+	name: "M40A3 Ice",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M40A3 Ice",
 	id: 482,
 	fireRate: 10,
 	recoil: 23,
@@ -961,20 +1014,22 @@ const M40A3_ICE = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "R700_and_M40A3Shoot.ogg",
-	reloadSound: "SpringfieldReload.ogg",
 	texture: "m40a3ice",
 	ammo: 5,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "R700_and_M40A3Shoot.ogg",
+	reloadSound: "SpringfieldReload.ogg",
 };
 
 const M40A3 = {
+	weaponType: "gun",
+	name: "M40A3",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M40A3",
 	id: 483,
 	fireRate: 10,
 	recoil: 23,
@@ -982,267 +1037,289 @@ const M40A3 = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "R700_and_M40A3Shoot.ogg",
-	reloadSound: "SpringfieldReload.ogg",
 	texture: "m40a3",
 	ammo: 5,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "R700_and_M40A3Shoot.ogg",
+	reloadSound: "SpringfieldReload.ogg",
 };
 
 const M60E4 = {
+	weaponType: "gun",
+	name: "M60E4",
 	gunType: GUN_TYPE_LIGHT_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "M60E4",
 	id: 484,
 	fireRate: 3,
 	recoil: 6,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 3.5,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
-	reloadSound: "BrowningReload.ogg",
 	texture: "m60e4",
 	ammo: 100,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
+	reloadSound: "BrowningReload.ogg",
 };
 
 const M72LAW = {
+	weaponType: "gun",
+	name: "M72LAW",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M72LAW",
 	id: 485,
 	fireRate: 10,
 	recoil: 13,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
 	accuracy: 5,
 	zoomLevel: ZOOM_BAZOOKA,
-	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-	reloadSound: "BazookaReload.ogg",
 	texture: "m72law",
 	ammo: 1,
 	smoke: 4,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 4
+	bulletsExplosionRadius: 4,
+	// SOUNDS
+	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
+	reloadSound: "BazookaReload.ogg",
 };
 
 const M249 = {
+	weaponType: "gun",
+	name: "M249",
 	gunType: GUN_TYPE_LIGHT_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "M249",
 	id: 486,
 	fireRate: 3,
 	recoil: 6,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 3.5,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "M249_and_L86Shoot.ogg",
-	reloadSound: "BrowningReload.ogg",
 	texture: "m249",
 	ammo: 100,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M249_and_L86Shoot.ogg",
+	reloadSound: "BrowningReload.ogg",
 };
 
 const M1014 = {
+	weaponType: "gun",
+	name: "M1014",
 	gunType: GUN_TYPE_SHOTGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "M1014",
 	id: 487,
 	fireRate: 18,
 	recoil: 10,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	accuracy: 12,
 	zoomLevel: ZOOM_SHOTGUN,
-	sound: "M1014Shoot.ogg",
-	reloadSound: "M1014Reload.ogg",
 	texture: "m1014",
 	ammo: 4,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 8,
 	shotgunDegreesSpread: 3,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M1014Shoot.ogg",
+	reloadSound: "M1014Reload.ogg",
 };
 
 const M1887 = {
+	weaponType: "gun",
+	name: "Model 1887",
 	gunType: GUN_TYPE_SHOTGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Model 1887",
 	id: 488,
 	fireRate: 20,
 	recoil: 18,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	accuracy: 15,
 	zoomLevel: ZOOM_SHOTGUN,
-	sound: "M1887Shoot.ogg",
-	reloadSound: "M1887Reload.ogg",
 	texture: "m1887",
 	ammo: 5,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 8,
 	shotgunDegreesSpread: 5,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "M1887Shoot.ogg",
+	reloadSound: "M1887Reload.ogg",
 };
 
 const MAKAROV = {
+	weaponType: "gun",
+	name: "Makarov",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Makarov",
 	id: 489,
 	fireRate: 1,
 	recoil: 2.5,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 8,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "MakarovShoot.ogg",
-	reloadSound: "ColtReload.ogg",
 	texture: "makarov",
 	ammo: 8,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "MakarovShoot.ogg",
+	reloadSound: "ColtReload.ogg",
 };
 
 const MINIGUN_EXPLOSIVE = {
+	weaponType: "gun",
+	name: "Minigun Explosive",
 	gunType: GUN_TYPE_MINIGUN,
 	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name: "Minigun Explosive",
 	id: 511,
 	fireRate: 3,
 	recoil: 2,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 5.5,
 	zoomLevel: ZOOM_ASSAULT,
+	texture: "minigunexplosive",
+	ammo: 250,
+	smoke: 3,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_NORMAL,
+	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
+	bulletsExplosionRadius: 2,
+	// SOUNDS
 	warmupSound: "MinigunWarmup.ogg",
 	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
 	spinSound: "MinigunSpin.ogg",
 	cooldownSound: "MinigunCooldown.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "minigunexplosive",
-	ammo: 250,
-	smoke: 3,
-
-	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 2
 };
 
 const MINIGUN = {
+	weaponType: "gun",
+	name: "Minigun",
 	gunType: GUN_TYPE_MINIGUN,
 	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name: "Minigun",
 	id: 490,
 	fireRate: 1,
 	recoil: 1,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 5.5,
 	zoomLevel: ZOOM_ASSAULT,
+	texture: "minigun",
+	ammo: 500,
+	smoke: 3,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_NORMAL,
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
 	warmupSound: "MinigunWarmup.ogg",
 	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
 	spinSound: "MinigunSpin.ogg",
 	cooldownSound: "MinigunCooldown.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "minigun",
-	ammo: 500,
-	smoke: 3,
-
-	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
 };
 
 const MINI_UZI = {
+	weaponType: "gun",
+	name: "Mini-Uzi",
 	gunType: GUN_TYPE_MACHINE_PISTOL,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "Mini-Uzi",
 	id: 491,
 	fireRate: 2,
 	recoil: 3,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "MiniUziShoot.ogg",
-	reloadSound: "ColtReload.ogg",
 	texture: "miniuzi",
 	ammo: 32,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "MiniUziShoot.ogg",
+	reloadSound: "ColtReload.ogg",
 };
 
 const MP5 = {
+	weaponType: "gun",
+	name: "MP5",
 	gunType: GUN_TYPE_SUB_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "MP5",
 	id: 492,
 	fireRate: 3,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "MP5Shoot.ogg",
-	reloadSound: "StenReload.ogg",
 	texture: "mp5",
 	ammo: 30,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "MP5Shoot.ogg",
+	reloadSound: "StenReload.ogg",
 };
 
 const MTAR = {
+	weaponType: "gun",
+	name: "MTAR",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "MTAR",
 	id: 493,
 	fireRate: 3,
 	recoil: 3,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 3,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
-	reloadSound: "MP44Reload.ogg",
 	texture: "mtar",
 	ammo: 30,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
+	reloadSound: "MP44Reload.ogg",
 };
 
 const MULTIPLE_ROCKET_LAUNCHER = {
+	weaponType: "gun",
+	name: "Multiple Rocket Launcher",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Multiple Rocket Launcher",
 	id: 3375,
 	fireRate: 10,
 	recoil: 22,
 	bulletSpeed: BAZOOKA_BULLET_SPEED - 0.3,
 	accuracy: 5,
 	zoomLevel: ZOOM_BAZOOKA,
-	sound: "MultipleRocketLauncherShoot.mp3",
-	reloadSound: "BazookaReload.ogg",
 	texture: "multiplerocketlauncher",
 	ammo: 1,
 	smoke: 4,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 4,
 	shotgunDegreesSpread: 8,
@@ -1252,32 +1329,38 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 2,
+	// SOUNDS
+	sound: "MultipleRocketLauncherShoot.mp3",
+	reloadSound: "BazookaReload.ogg",
 };
 
 const P90 = {
+	weaponType: "gun",
+	name: "P90",
 	gunType: GUN_TYPE_SUB_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "P90",
 	id: 494,
 	fireRate: 2,
 	recoil: 2,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	reloadSound: "DP28Reload.ogg",
 	texture: "p90",
 	ammo: 50,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	reloadSound: "DP28Reload.ogg",
 };
 
 const R700 = {
+	weaponType: "gun",
+	name: "R700",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "R700",
 	id: 495,
 	fireRate: 20,
 	recoil: 25,
@@ -1285,253 +1368,277 @@ const R700 = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "R700_and_M40A3Shoot.ogg",
-	reloadSound: "SpringfieldReload.ogg",
 	texture: "r700",
 	ammo: 4,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "R700_and_M40A3Shoot.ogg",
+	reloadSound: "SpringfieldReload.ogg",
 };
 
 const R870 = {
+	weaponType: "gun",
+	name: "Remington 870",
 	gunType: GUN_TYPE_SHOTGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Remington 870",
 	id: 496,
 	fireRate: 15,
 	recoil: 19,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	accuracy: 11,
 	zoomLevel: ZOOM_SHOTGUN,
-	sound: "R870Shoot.ogg",
-	reloadSound: "W1200Reload.ogg",
 	texture: "r870",
 	ammo: 7,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 8,
 	shotgunDegreesSpread: 3,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "R870Shoot.ogg",
+	reloadSound: "W1200Reload.ogg",
 };
 
 const RPD = {
+	weaponType: "gun",
+	name: "RPD",
 	gunType: GUN_TYPE_LIGHT_MACHINE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "RPD",
 	id: 497,
 	fireRate: 3,
 	recoil: 5.5,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 4,
 	zoomLevel: ZOOM_MACHINE,
-	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
-	reloadSound: "MG42Reload.ogg",
 	texture: "rpd",
 	ammo: 100,
 	smoke: 2,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
+	reloadSound: "MG42Reload.ogg",
 };
 
 const RPG = {
+	weaponType: "gun",
+	name: "RPG",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "RPG",
 	id: 498,
 	fireRate: 10,
 	recoil: 25,
 	bulletSpeed: BAZOOKA_BULLET_SPEED,
 	accuracy: 10,
 	zoomLevel: ZOOM_BAZOOKA,
-	sound: "RPGShoot.ogg",
-	reloadSound: "BazookaReload.ogg",
 	texture: "rpg",
 	ammo: 1,
 	smoke: 4,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 4
+	bulletsExplosionRadius: 4,
+	// SOUNDS
+	sound: "RPGShoot.ogg",
+	reloadSound: "BazookaReload.ogg",
 };
 
 const RPK = {
+	weaponType: "gun",
+	name: "RPK",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "RPK",
 	id: 499,
 	fireRate: 3,
 	recoil: 3.5,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 4,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
-	reloadSound: "MG42Reload.ogg",
 	texture: "rpk",
 	ammo: 40,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
+	reloadSound: "MG42Reload.ogg",
 };
 
 const SG550 = {
+	weaponType: "gun",
+	name: "SG550",
 	gunType: GUN_TYPE_ASSAULT_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "SG550",
 	id: 500,
 	fireRate: 5,
 	recoil: 2.5,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_ASSAULT,
-	sound: "SG550Shoot.ogg",
-	reloadSound: "MP44Reload.ogg",
 	texture: "sg550",
 	ammo: 20,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "SG550Shoot.ogg",
+	reloadSound: "MP44Reload.ogg",
 };
 
 const SIGP226 = {
+	weaponType: "gun",
+	name: "SIGP226",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "SIGP226",
 	id: 501,
 	fireRate: 1,
 	recoil: 3,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 6,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "SIGP226Shoot.ogg",
-	reloadSound: "LugerReload.ogg",
 	texture: "sigp226",
 	ammo: 10,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "SIGP226Shoot.ogg",
+	reloadSound: "LugerReload.ogg",
 };
 
 const SKORPION = {
+	weaponType: "gun",
+	name: "Skorpion",
 	gunType: GUN_TYPE_MACHINE_PISTOL,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "Skorpion",
 	id: 502,
 	fireRate: 3,
 	recoil: 1.5,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "SkorpionShoot.ogg",
-	reloadSound: "StenReload.ogg",
 	texture: "skorpion",
 	ammo: 20,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "SkorpionShoot.ogg",
+	reloadSound: "StenReload.ogg",
 };
 
 const SPAS = {
+	weaponType: "gun",
+	name: "SPAS-12",
 	gunType: GUN_TYPE_SHOTGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "SPAS-12",
 	id: 503,
 	fireRate: 15,
 	recoil: 22,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	accuracy: 11,
 	zoomLevel: ZOOM_SHOTGUN,
-	sound: "W1200_and_SPASShoot.ogg",
-	reloadSound: "W1200Reload.ogg",
 	texture: "spas",
 	ammo: 7,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 7,
 	shotgunDegreesSpread: 2,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "W1200_and_SPASShoot.ogg",
+	reloadSound: "W1200Reload.ogg",
 };
 
 const USP = {
+	weaponType: "gun",
+	name: "USP",
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "USP",
 	id: 504,
 	fireRate: 1,
 	recoil: 1,
 	bulletSpeed: PISTOL_BULLET_SPEED,
 	accuracy: 8,
 	zoomLevel: ZOOM_PISTOL,
-	sound: "USPShoot.ogg",
-	reloadSound: "TT33Reload.ogg",
 	texture: "usp",
 	ammo: 10,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "USPShoot.ogg",
+	reloadSound: "TT33Reload.ogg",
 };
 
 const W1200 = {
+	weaponType: "gun",
+	name: "W1200",
 	gunType: GUN_TYPE_SHOTGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "W1200",
 	id: 505,
 	fireRate: 15,
 	recoil: 17,
 	bulletSpeed: SHOTGUN_BULLET_SPEED,
 	accuracy: 11,
 	zoomLevel: ZOOM_SHOTGUN,
-	sound: "W1200_and_SPASShoot.ogg",
-	reloadSound: "W1200Reload.ogg",
 	texture: "w1200",
 	ammo: 7,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 8,
 	shotgunDegreesSpread: 3,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "W1200_and_SPASShoot.ogg",
+	reloadSound: "W1200Reload.ogg",
 };
 
 const XMAS_MINIGUN = {
+	weaponType: "gun",
+	name: "X-Mas Minigun",
 	gunType: GUN_TYPE_MINIGUN,
 	buttonType: BUTTON_TYPE_ON_TOUCH_WITH_WAIT,
-	name: "X-Mas Minigun",
 	id: 506,
 	fireRate: 2,
 	recoil: 1,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 4,
 	zoomLevel: ZOOM_ASSAULT,
+	texture: "xmasminigun",
+	ammo: 500,
+	smoke: 3,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_NORMAL,
+	bulletType: BULLET_TYPE_SNOWBALL,
+	// SOUNDS
 	warmupSound: "MinigunWarmup.ogg",
 	sound: "bell.mp3",
 	spinSound: "MinigunSpin.ogg",
 	cooldownSound: "MinigunCooldown.ogg",
 	reloadSound: "BrowningReload.ogg",
-	texture: "xmasminigun",
-	ammo: 500,
-	smoke: 3,
-
-	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_SNOWBALL
 };
 
 const XMAS_SNIPER = {
+	weaponType: "gun",
+	name: "X-Mas Sniper",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "X-Mas Sniper",
 	id: 507,
 	fireRate: 5,
 	recoil: 5,
@@ -1539,65 +1646,71 @@ const XMAS_SNIPER = {
 	zoomLevel: ZOOM_SNIPER,
 	accuracy: 2,
 	hasAimImageLayer: true,
-	sound: "bell.mp3",
-	reloadSound: "SpringfieldReload.ogg",
 	texture: "xmassniper",
 	ammo: 5,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_SNOWBALL
+	bulletType: BULLET_TYPE_SNOWBALL,
+	// SOUNDS
+	sound: "bell.mp3",
+	reloadSound: "SpringfieldReload.ogg",
 };
 
 const AA12 = {
+	weaponType: "gun",
+	name: "AA-12",
 	gunType: GUN_TYPE_SHOTGUN,
 	buttonType: BUTTON_TYPE_ON_TOUCH,
-	name: "AA-12",
 	id: 509,
 	fireRate: 5,
 	recoil: 10,
 	bulletSpeed: SHOTGUN_BULLET_SPEED + 0.9,
 	accuracy: 10,
 	zoomLevel: ZOOM_SHOTGUN,
-	sound: "AA-12Shoot.ogg",
-	reloadSound: "PPSHReload.ogg",
 	texture: "aa12",
 	ammo: 8,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_SHOTGUN,
 	shotgunBullets: 6,
 	shotgunDegreesSpread: 3,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "AA-12Shoot.ogg",
+	reloadSound: "PPSHReload.ogg",
 };
 
 const INCENDIARY_GL = {
+	weaponType: "gun",
+	name: "Incendiary Grenade Launcher",
 	gunType: GUN_TYPE_LAUNCHER,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "Incendiary Grenade Launcher",
 	id: 510,
 	fireRate: 5,
 	recoil: 10,
 	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED - 0.6,
 	accuracy: 15,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
-	sound: "GrenadeLauncherShoot.ogg",
-	reloadSound: "GL6Reload.ogg",
 	texture: "glincendiary",
 	ammo: 6,
 	smoke: 0,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 99,
 	particleTrailId: ParticleType.flame,
 	bulletType: BULLET_TYPE_INCENDIARY_SNOWBALL,
-	grenadesExplosionDiameter: 4
+	grenadesExplosionDiameter: 4,
+	// SOUNDS
+	sound: "GrenadeLauncherShoot.ogg",
+	reloadSound: "GL6Reload.ogg",
 };
 
 const MSR = {
+	weaponType: "gun",
+	name: "MSR",
 	gunType: GUN_TYPE_SNIPER_RIFLE,
 	buttonType: BUTTON_TYPE_ON_CLICK,
-	name: "MSR",
 	id: 3369,
 	fireRate: 12,
 	recoil: 22,
@@ -1606,14 +1719,15 @@ const MSR = {
 	accuracy: 2,
 	hasAimImageLayer: true,
 	hasManualZoom: true,
-	sound: "MSRShoot.mp3",
-	reloadSound: "BARReload.ogg",
 	texture: "msr",
 	ammo: 5,
 	smoke: 1,
-
+	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "MSRShoot.mp3",
+	reloadSound: "BARReload.ogg",
 };
 
 // all the guns in a single array.
@@ -2471,7 +2585,6 @@ var ModTickFunctions = {
 		{
 			for(var j in allGuns[i].bulletsArray)
 			{
-				ModPE.showTipMessage("some bullets here");
 				if(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH)
 				{
 					var arrow = allGuns[i].bulletsArray[j];
@@ -2865,29 +2978,31 @@ function canGunBeLoaded(gun)
 	var defaultError = "Error in gun.name \"" + gun.name + "\": ";
 
 	if(getGunTypeIdFromString(gun.gunType) == "error")
-		return defaultError + gun.gunType + " is not a known gunType."
+		return defaultError + gun.gunType + " is not a known gunType.";
 
 	if(getButtonTypeIdFromString(gun.buttonType) == "error")
-		return defaultError + gun.buttonType + " is not a known buttonType."
+		return defaultError + gun.buttonType + " is not a known buttonType.";
 
 	if(gun.id == null)
 		return defaultError + "gun.id is not specified.";
-	if(gun.id < 512 || gun.id > 4095)
-		return defaultError + "gun.id must be > 255 and < 4096.";
+	if(gun.id <= 512 || gun.id >= 4096)
+		return defaultError + "gun.id must be > 512 and < 4096.";
+	if(isItemAnIdTheModAlreadyUse(gun.id))
+		return defaultError + "gun.id is already used in the mod.";
 
 	if(gun.fireRate == null)
 		return defaultError + "gun.fireRate is not specified.";
 	if(gun.fireRate < 1)
-		return defaultError + "gun.fireRate must be > 1.";
+		return defaultError + "gun.fireRate must be > or = 1.";
 
 	if(gun.recoil == null)
 		return defaultError + "gun.recoil is not specified.";
 	if(gun.recoil <= 0)
 		return defaultError + "gun.recoil must be > 0.";
 
-	if(gun.bulletSpeed == null && gun.isFlamethrower != true)
+	if(gun.bulletSpeed == null && getShotTypeIdFromString(gun.shotType) != SHOT_TYPE_FLAMETHROWER)
 		return defaultError + "gun.bulletSpeed is not specified.";
-	if(gun.bulletSpeed <= 0)
+	if(gun.bulletSpeed <= 0 && getShotTypeIdFromString(gun.shotType) != SHOT_TYPE_FLAMETHROWER)
 		return defaultError + "gun.bulletSpeed must be > 0.";
 
 	if(gun.zoomLevel == null)
@@ -2911,11 +3026,45 @@ function canGunBeLoaded(gun)
 	if(gun.smoke != null && gun.smoke < 0)
 		return defaultError + "gun.smoke must be > or = 0.";
 
-	if(gun.isShotgun == true && gun.shotgunBullets < 2)
-		return defaultError + "gun.shotgunBullets must be > 1.";
+	if(gun.recipeShape != null && gun.recipeShape.length != 3)
+		return defaultError + "gun.recipeShape must be an array with 3 strings.";
 
-	if(gun.isShotgun == true && gun.shotgunDegreesSpread < 0)
-		return defaultError + "gun.shotgunDegreesSpread must be > or = 0.";
+	if(gun.recipeDescription != null && gun.recipeDescription.length % 3 != 0)
+		return defaultError + "gun.recipeDescription doesn't seem to be well formatted.";
+
+	// BEHAVIOR
+
+	if(getShotTypeIdFromString(gun.shotType) == "error")
+		return defaultError + gun.shotType + " is not a known shotType.";
+
+	if(getBulletTypeIdFromString(gun.bulletType) == "error" && getShotTypeIdFromString(gun.shotType) != SHOT_TYPE_FLAMETHROWER)
+		return defaultError + gun.bulletType + " is not a known bulletType.";
+
+	if(getBulletTypeIdFromString(gun.bulletType) == BULLET_TYPE_CUSTOM_ENTITY && !(gun.customBulletId > 0))
+		return defaultError + gun.customBulletId + " must be > 0 when using the \"custom\" bulletType.";
+
+	if(gun.particleTrailDistance != null && gun.particleTrailDistance <= 0)
+		return defaultError + "gun.particleTrailDistance must be > 0.";
+
+	if(gun.particleTrailId != null && gun.particleTrailId <= 0)
+		return defaultError + "gun.particleTrailId must be > 0.";
+
+	if(getShotTypeIdFromString(gun.shotType) == SHOT_TYPE_SHOTGUN && !(gun.shotgunBullets > 0))
+		return defaultError + "gun.shotgunBullets must be > 0.";
+
+	if(getShotTypeIdFromString(gun.shotType) == SHOT_TYPE_SHOTGUN && !(gun.shotgunDegreesSpread > 0))
+		return defaultError + "gun.shotgunDegreesSpread must be > 0.";
+
+	if(getBulletTypeIdFromString(gun.bulletType) == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME && !(gun.bulletsExplosionDelay > 0))
+		return defaultError + "gun.bulletsExplosionDelay must be > 0.";
+
+	if(getBulletTypeIdFromString(gun.bulletType) == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME && !(gun.bulletsExplosionRadius > 0))
+		return defaultError + "gun.bulletsExplosionRadius must be > 0.";
+
+	if(getBulletTypeIdFromString(gun.bulletType) == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH && !(gun.bulletsExplosionRadius > 0))
+		return defaultError + "gun.bulletsExplosionRadius must be > 0.";
+
+	// SOUNDS
 
 	return "yes";
 }
@@ -2966,11 +3115,51 @@ function getButtonTypeIdFromString(buttonType)
 	return "error";
 }
 
-function addonClass(weaponsArray, addonName, addonDescription)
+function getShotTypeIdFromString(shotType)
+{
+	if(typeof shotType == "string")
+		shotType = shotType.toLowerCase();
+	else
+		return "error";
+
+	if(shotType == "normal")
+		return SHOT_TYPE_NORMAL;
+	if(shotType == "shotgun")
+		return SHOT_TYPE_SHOTGUN;
+	if(shotType == "flamethrower")
+		return SHOT_TYPE_FLAMETHROWER;
+
+	return "error";
+}
+
+function getBulletTypeIdFromString(bulletType)
+{
+	if(typeof bulletType == "string")
+		bulletType = bulletType.toLowerCase();
+	else
+		return "error";
+
+	if(bulletType == "normal")
+		return BULLET_TYPE_NORMAL;
+	if(bulletType == "normal_explosive_on_touch")
+		return BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH;
+	if(bulletType == "normal_explosive_on_time")
+		return BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME;
+	if(bulletType == "tnt")
+		return BULLET_TYPE_TNT;
+	if(bulletType == "snowball")
+		return BULLET_TYPE_SNOWBALL;
+	if(bulletType == "custom")
+		return BULLET_TYPE_CUSTOM_ENTITY;
+
+	return "error";
+}
+
+function addonClass(array, addonName, addonDescription)
 {
 	this.name = addonName;
 	this.description = addonDescription;
-	this.weaponsArray = weaponsArray;
+	this.weaponsArray = array;
 }
 //########## LOAD ADDONS functions - END ##########
 
@@ -3003,6 +3192,8 @@ function convertGunsStringsInIds(gun)
 	// at this point we are already sure there aren't any errors in gunType and buttonType, they can be safely converted
 	gun.gunType = getGunTypeIdFromString(gun.gunType);
 	gun.buttonType = getButtonTypeIdFromString(gun.buttonType);
+	gun.shotType = getShotTypeIdFromString(gun.shotType);
+	gun.bulletType = getBulletTypeIdFromString(gun.bulletType);
 
 	return gun;
 }
