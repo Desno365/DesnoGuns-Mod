@@ -3737,6 +3737,9 @@ function shootSingleBullet(gun)
 
 	var bullet = shootEntity(gun, getEntityIdForBulletType(gun), gunShootDir);
 
+	if(gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+		Entity.setFireTicks(bullet, 1000);
+
 	if(gun.hasParticleTrail || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
 		gun.bulletsArray.push(new entityClass(bullet));
 
@@ -3814,6 +3817,9 @@ function shootSingleShotgunBullet(gun)
 	var gunShootDir = getDirection(getYaw() + yawAccuracyValue + yawAccuracyShotgun, getPitch() + pitchAccuracyValue + pitchAccuracyShotgun);
 
 	var bullet = shootEntity(gun, getEntityIdForBulletType(gun), gunShootDir);
+
+	if(gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+		Entity.setFireTicks(bullet, 1000);
 
 	if(gun.hasParticleTrail || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
 		gun.bulletsArray.push(new entityClass(bullet));
