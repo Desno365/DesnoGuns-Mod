@@ -191,8 +191,7 @@ Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
 	}catch(e)
 	{
 		// user hasn't installed the texture pack
-		if(!textureUiShowed)
-			pleaseInstallTextureUI();
+		texturePackNotIntsalledWarningUI();
 
 		ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
 	}
@@ -206,8 +205,7 @@ Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmo
 	}catch(e)
 	{
 		// user hasn't installed the texture pack
-		if(!textureUiShowed)
-			pleaseInstallTextureUI();
+		texturePackNotIntsalledWarningUI();
 
 		Item.defineArmor(id, "skull_zombie", 0, name, "armor/chain_2.png", damageReduceAmount, maxDamage, armorType);
 	}
@@ -2955,19 +2953,25 @@ function loadWeaponsCallback(weaponsArray, addonName, addonDescription)
 
 function canAddonBeLoaded(weaponsArray)
 {
-	for(var i in weaponsArray)
+	if(Array.isArray(weaponsArray))
 	{
-		if(weaponsArray[i].weaponType == "gun")
+		for(var i in weaponsArray)
 		{
-			var result = canGunBeLoaded(weaponsArray[i]);
-			if(result != "yes")
+			if(weaponsArray[i].weaponType == "gun")
 			{
-				return result;
+				var result = canGunBeLoaded(weaponsArray[i]);
+				if(result != "yes")
+				{
+					return result;
+				}
 			}
 		}
-	}
 
-	return "yes";
+		return "yes";
+	} else
+	{
+		return "The addon hasn't passed to the mod an array of weapons.";
+	}
 }
 
 function canGunBeLoaded(gun)
@@ -3178,9 +3182,8 @@ function addLoadedAddonsInGame()
 				if(!(isItemAGun(weapon.id) || isItemAnIdTheModAlreadyUse(weapon.id))) // check if the id of this new gun isn't already present in the allGuns array
 				{
 					// this id isn't already used, we can add it safely to the game
-					var gun = weapon;
-					gun = convertGunsStringsInIds(gun);
-					addNewGun(gun);
+					var gun = convertGunsStringsInIds(weapon);
+					addNewGunFromAddon(gun, loadedAddons[i].name);
 				}
 			}
 		}
@@ -3190,12 +3193,56 @@ function addLoadedAddonsInGame()
 function convertGunsStringsInIds(gun)
 {
 	// at this point we are already sure there aren't any errors in gunType and buttonType, they can be safely converted
-	gun.gunType = getGunTypeIdFromString(gun.gunType);
-	gun.buttonType = getButtonTypeIdFromString(gun.buttonType);
-	gun.shotType = getShotTypeIdFromString(gun.shotType);
-	gun.bulletType = getBulletTypeIdFromString(gun.bulletType);
 
-	return gun;
+	// the gun object is a reference to the object in the addon, we don't want to modify it directly
+	var newGun = JSON.parse(JSON.stringify(gun)); // http://stackoverflow.com/questions/18359093/how-to-copy-javascript-object-to-new-variable-not-by-reference
+
+	newGun.gunType = getGunTypeIdFromString(newGun.gunType);
+	newGun.buttonType = getButtonTypeIdFromString(newGun.buttonType);
+	newGun.shotType = getShotTypeIdFromString(newGun.shotType);
+	newGun.bulletType = getBulletTypeIdFromString(newGun.bulletType);
+
+	// remove pro features
+	newGun.hasManualZoom = false;
+	if(newGun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+		newGun.bulletType = BULLET_TYPE_NORMAL;
+
+	return newGun;
+}
+
+function addNewGunFromAddon(gun, addonName)
+{
+	// add gun to the main array
+	allGuns.push(new gunClass(gun));
+
+	// create gun
+	if(gun.textureNumber > 0)
+	{
+		try
+		{
+			ModPE.setItem(gun.id, gun.texture, gun.textureNumber, gun.name, 1);
+		} catch(e)
+		{
+			ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
+			texturePackNotIntsalledWarningUI("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
+		}	
+	}
+	else
+	{
+		try
+		{
+			ModPE.setItem(gun.id, gun.texture, 0, gun.name, 1);
+		} catch(e)
+		{
+			ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
+			texturePackNotIntsalledWarningUI("Seems that you haven't installed the \"" + addonName + "\" texture pack.<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
+		}	
+	}
+	addGunCraftingRecipe(gun);
+	Item.setMaxDamage(gun.id, gun.ammo);
+	Item.setVerticalRender(gun.id);
+	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(gun.id, 1);
 }
 //########## LOADED ADDONS MANAGING functions - END ##########
 
@@ -5659,6 +5706,38 @@ function createRandomString(randomObject)
 	return(randomObject.startText + random + randomObject.endText);
 }
 
+function cloneObject(obj)
+{
+	var copy;
+
+	// Handle the 3 simple types, and null or undefined
+	if (null == obj || "object" != typeof obj) return obj;
+
+	// Handle Array
+	if(obj instanceof Array)
+	{
+		copy = [];
+		for (var i = 0, len = obj.length; i < len; i++) {
+			copy[i] = cloneObject(obj[i]);
+		}
+		return copy;
+	}
+
+	// Handle Object
+	if(obj instanceof Object)
+	{
+		copy = {};
+		for (var attr in obj)
+		{
+			if (obj.hasOwnProperty(attr))
+				copy[attr] = cloneObject(obj[attr]);
+		}
+		return copy;
+	}
+
+	return obj;
+}
+
 function entityClass(entity)
 {
 	this.entity = entity;
@@ -7502,55 +7581,63 @@ function addonErrorUI(addonName, error)
 }
 
 // No Minecraft Layout because this UI can be showed at startup
-function pleaseInstallTextureUI()
+function texturePackNotIntsalledWarningUI(customMessage)
 {
-	textureUiShowed = true;
-	currentActivity.runOnUiThread(new java.lang.Runnable()
+	if(!textureUiShowed)
 	{
-		run: function()
+		textureUiShowed = true;
+
+		// custom message (used with addons)
+		if(customMessage == null)
+			customMessage = "Seems that you haven't installed the DesnoGuns texture pack.<br><br>Please install the texture pack of the mod and <b>restart BlockLauncher</b> to enjoy all the features of the DesnoGuns Mod.";
+
+		currentActivity.runOnUiThread(new java.lang.Runnable()
 		{
-			try
+			run: function()
 			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				var padding = convertDpToPixel(8);
-				layout.setPadding(padding, padding, padding, padding);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle(new android.text.Html.fromHtml("Texture not installed"));
-				popup.setCanceledOnTouchOutside(false);
-
-				var text = new android.widget.TextView(currentActivity);
-				text.setText(new android.text.Html.fromHtml("Seems that you haven't installed the DesnoGuns texture pack.<br><br>Please install the Texture Pack of the mod and <b>restart BlockLauncher</b> to enjoy all the features of the DesnoGuns Mod."));
-				layout.addView(text);
-
-				layout.addView(dividerText());
-
-				var exitButton = new android.widget.Button(currentActivity);
-				exitButton.setText("OK");
-				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				try
 				{
-					onClick: function()
+					var layout = new android.widget.LinearLayout(currentActivity);
+					var padding = convertDpToPixel(8);
+					layout.setPadding(padding, padding, padding, padding);
+					layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+					var scroll = new android.widget.ScrollView(currentActivity);
+					scroll.addView(layout);
+
+					var popup = new android.app.Dialog(currentActivity);
+					popup.setContentView(scroll);
+					popup.setTitle(new android.text.Html.fromHtml("Texture not installed"));
+					popup.setCanceledOnTouchOutside(false);
+
+					var text = new android.widget.TextView(currentActivity);
+					text.setText(new android.text.Html.fromHtml(customMessage));
+					layout.addView(text);
+
+					layout.addView(dividerText());
+
+					var exitButton = new android.widget.Button(currentActivity);
+					exitButton.setText("OK");
+					exitButton.setOnClickListener(new android.view.View.OnClickListener()
 					{
-						textureUiShowed = false;
-						popup.dismiss();
-					}
-				});
-				layout.addView(exitButton);
+						onClick: function()
+						{
+							textureUiShowed = false;
+							popup.dismiss();
+						}
+					});
+					layout.addView(exitButton);
 
 
-				showImmersivePopup(popup);
+					showImmersivePopup(popup);
 
-			} catch(err)
-			{
-				print("Error: " + err);
+				} catch(err)
+				{
+					print("Error: " + err);
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 

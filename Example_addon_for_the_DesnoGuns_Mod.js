@@ -17,7 +17,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 9.9 /* one shot one kill, yeah */ ,
 		accuracy: 6,
 		zoomLevel: 13,
-		texture: "44magnum",
+		texture: "44magnumjg",
 		ammo: 6,
 		smoke: 1,
 		// BEHAVIOR
