@@ -17,7 +17,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 9.9 /* one shot one kill, yeah */ ,
 		accuracy: 6,
 		zoomLevel: 13,
-		texture: "44magnumjg",
+		texture: "44magnum",
 		ammo: 6,
 		smoke: 1,
 		// BEHAVIOR
@@ -1287,8 +1287,8 @@ var ADDON_WEAPONS = [
 		ammo: int, // an integer number > 0, it represents the number of bullets in the ammo.
 		ammunitionID: int, // here you can set a custom id for the ammunition used when reloading the gun. If you delete this variable the mod will use the default ammunition id of the gunType.
 		smoke: int, // number of particles spawned after the gun has stopped shooting, if 0 can be deleted
-		recipeShape: TODO, //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
-		recipeDescription: TODO //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
+		recipeShape: array, //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
+		recipeDescription: array, //  *! advanced variable, only for experts, if you don't understand what it does just delete it !*
 
 		// BEHAVIOR
 		shotType: string, // can be "normal", "shotgun", "flamethrower"
@@ -1330,6 +1330,8 @@ var ADDON_WEAPONS = [
 		hasntCooldownSound: boolean,
 		cooldownSound: String,
 	}
+
+	// Please don't delete this reference from your addon, it can be useful for other people.
 */
 
 

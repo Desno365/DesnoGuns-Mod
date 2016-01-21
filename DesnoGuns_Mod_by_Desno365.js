@@ -1733,7 +1733,6 @@ const MSR = {
 var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 setUpGunsWithDate();
 var allGuns = [];
-allGuns.push.apply(allGuns, defaultGuns);
 
 // info item
 const INFO_ITEM_ID = 3365;
@@ -3381,10 +3380,52 @@ function isItemAnIdTheModAlreadyUse(itemId)
 	if(isItemADefaultGun(itemId))
 		return true;
 
+	if(itemId == AMMO_ASSAULT_RIFLE_ID || itemId == AMMO_SUB_MACHINE_ID || itemId == AMMO_LIGHT_MACHINE_ID || itemId == AMMO_SNIPER_RIFLE_ID || itemId == AMMO_MACHINE_PISTOL_ID || itemId == AMMO_SHOTGUN_ID || itemId == AMMO_HANDGUN_ID || itemId == AMMO_LAUNCHER_ID || itemId == AMMO_MINIGUN_ID || itemId == AMMO_ARROW_EXPLOSIVE_ID)
+		return true;
+
+
 	if(itemId == INFO_ITEM_ID)
 		return true;
 
-	// TODO
+	if(itemId == KNIFE_ID)
+		return true;
+
+	if(itemId == RIOT_SHIELD_ID)
+		return true;
+
+	if(itemId == PARACHUTE_ID)
+		return true;
+
+	if(itemId == MEDICAL_KIT_ID)
+		return true;
+
+
+	if(itemId == GRENADE.id)
+		return true;
+
+	if(itemId == FRAGMENT.id)
+		return true;
+
+	if(itemId == MOLOTOV.id)
+		return true;
+
+	if(itemId == SMOKE.id)
+		return true;
+
+
+	if(itemId == JUGGERNAUT_HELMET_ID)
+		return true;
+
+	if(itemId == JUGGERNAUT_BODY_ID)
+		return true;
+
+	if(itemId == JUGGERNAUT_PANTS_ID)
+		return true;
+
+	if(itemId == JUGGERNAUT_BOOTS_ID)
+		return true;
+
+	return false;
 }
 
 function shootGrenadeHand(grenadeObject)
@@ -6030,6 +6071,7 @@ function progressBarForInformation(value, max, invert, text)
 	text1.setText(text);
 	text1.setGravity(android.view.Gravity.LEFT);
 	text1.setTextSize(12);
+	text1.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 	text1.setPadding(Math.floor(8 * deviceDensity), 0, Math.floor(8 * deviceDensity), 0);
 	text1.setLayoutParams(new android.widget.LinearLayout.LayoutParams(0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
@@ -6488,28 +6530,33 @@ function informationGunsSpecificationsForGunType(gunType)
 				{
 					if(allGuns[i].gunType == gunType)
 					{
-						var text1 = new android.widget.TextView(currentActivity);
-						text1.setText(new android.text.Html.fromHtml("<b>" + allGuns[i].name + "</b> (ID: " + allGuns[i].id + ")"));
-						layout.addView(text1);
+						var text = new android.widget.TextView(currentActivity);
+						text.setText(new android.text.Html.fromHtml("<b>" + allGuns[i].name + "</b> (ID: " + allGuns[i].id + ")"));
+						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+						layout.addView(text);
 
 						var text = new android.widget.TextView(currentActivity);
 						text.setText(getGunTypeName(allGuns[i].gunType));
 						text.setGravity(android.view.Gravity.RIGHT);
 						text.setTextSize(12);
+						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
 
 						if(allGuns[i].ammo != 1)
 						{
-							var text2 = new android.widget.TextView(currentActivity);
-							text2.setText("Fire rate");
-							layout.addView(text2);
+							var text = new android.widget.TextView(currentActivity);
+							text.setText("Fire rate");
+							text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+							layout.addView(text);
+
 							if(allGuns[i].fireRate == 1 && allGuns[i].buttonType == BUTTON_TYPE_ON_CLICK)
 							{
-								var text2_1 = new android.widget.TextView(currentActivity);
-								text2_1.setText("Shoot one bullet every time the user clicks the \"fire\" button");
-								text2_1.setTextSize(12);
-								layout.addView(text2_1);
+								var text = new android.widget.TextView(currentActivity);
+								text.setText("Shoot one bullet every time the user clicks the \"fire\" button");
+								text.setTextSize(12);
+								text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+								layout.addView(text);
 							} else
 							{
 								layout.addView(progressBarForInformation(allGuns[i].fireRate, 20, true, (allGuns[i].fireRate / 20) + " second(s)"));
@@ -6517,46 +6564,55 @@ function informationGunsSpecificationsForGunType(gunType)
 						}
 
 
-						var text7 = new android.widget.TextView(currentActivity);
-						text7.setText("Recoil");
-						layout.addView(text7);
+						var text = new android.widget.TextView(currentActivity);
+						text.setText("Recoil");
+						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+						layout.addView(text);
 
 						layout.addView(progressBarForInformation(allGuns[i].recoil, 30, true, (61 - (allGuns[i].recoil * 2)) + "/60"));
 
 
-						var text3 = new android.widget.TextView(currentActivity);
-						text3.setText("Accuracy");
-						layout.addView(text3);
+						var text = new android.widget.TextView(currentActivity);
+						text.setText("Accuracy");
+						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+						layout.addView(text);
 
 						layout.addView(progressBarForInformation(allGuns[i].accuracy, SPAS.accuracy, true, (51 - allGuns[i].accuracy) + "/50"));
 
 
-						var text4 = new android.widget.TextView(currentActivity);
-						text4.setText("Zoom level (when aiming)");
-						layout.addView(text4);
+						var text = new android.widget.TextView(currentActivity);
+						text.setText("Zoom level (when aiming)");
+						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+						layout.addView(text);
 
 						layout.addView(progressBarForInformation(allGuns[i].zoomLevel, ZOOM_SNIPER, false, allGuns[i].zoomLevel + " FOV"));
 
 
-						var text7 = new android.widget.TextView(currentActivity);
-						text7.setText("Bullet speed");
-						layout.addView(text7);
+						if(allGuns[i].shotType != SHOT_TYPE_FLAMETHROWER)
+						{
+							var text = new android.widget.TextView(currentActivity);
+							text.setText("Bullet speed");
+							text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+							layout.addView(text);
 
-						layout.addView(progressBarForInformation(allGuns[i].bulletSpeed * 10, 100, false, allGuns[i].bulletSpeed * 10 + "/100"));
+							layout.addView(progressBarForInformation(allGuns[i].bulletSpeed * 10, 100, false, allGuns[i].bulletSpeed * 10 + "/100"));
+						}
+						
 
-
-						var text5 = new android.widget.TextView(currentActivity);
-						text5.setText("Ammo");
-						layout.addView(text5);
+						var text = new android.widget.TextView(currentActivity);
+						text.setText("Ammo");
+						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+						layout.addView(text);
 
 						layout.addView(progressBarForInformation(allGuns[i].ammo, 125, false, allGuns[i].ammo.toString()));
 
 
 						if(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 						{
-							var text6 = new android.widget.TextView(currentActivity);
-							text6.setText("Explosion radius");
-							layout.addView(text6);
+							var text = new android.widget.TextView(currentActivity);
+							text.setText("Explosion radius");
+							text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+							layout.addView(text);
 
 							layout.addView(progressBarForInformation(allGuns[i].bulletsExplosionRadius, 5, false, allGuns[i].bulletsExplosionRadius + "/10"));;
 						}
@@ -6564,6 +6620,7 @@ function informationGunsSpecificationsForGunType(gunType)
 						layout.addView(dividerText());
 					}
 				}
+
 
 				var backButton = MinecraftButton();
 				backButton.setText("Back");
