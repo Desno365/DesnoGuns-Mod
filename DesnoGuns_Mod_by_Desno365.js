@@ -1401,6 +1401,33 @@ const R870 = {
 	reloadSound: "W1200Reload.ogg",
 };
 
+const RAYGUN = {
+	weaponType: "gun",
+	name: "Ray Gun",
+	gunType: GUN_TYPE_HANDGUN,
+	buttonType: BUTTON_TYPE_ON_CLICK,
+	id: 3376,
+	fireRate: 5,
+	recoil: 20,
+	bulletSpeed: ASSAULT_BULLET_SPEED,
+	accuracy: 2,
+	zoomLevel: ZOOM_PISTOL,
+	texture: "raygun",
+	ammo: 20,
+	smoke: 1,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_SHOTGUN,
+	shotgunBullets: 2, // with double tap
+	shotgunDegreesSpread: 0.5,
+	hasParticleTrail: true,
+	particleTrailDistance: 9,
+	particleTrailId: ParticleType.redstone,
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "RayGunShoot.mp3",
+	reloadSound: "RayGunReload.mp3",
+};
+
 const RPD = {
 	weaponType: "gun",
 	name: "RPD",
@@ -1730,7 +1757,7 @@ const MSR = {
 
 // all the guns in a single array.
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
-var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
+var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 setUpGunsWithDate();
 var allGuns = [];
 
@@ -3355,8 +3382,6 @@ function gunClass(gun)
 //########## WEAPONS functions ##########
 function isItemAGun(itemId)
 {
-	//
-	//return(itemId >= 464 && itemId <= 465) || (itemId >= 467 && itemId <= 512) || (itemId >= 3366 && itemId <= 3375);
 	for(var i in allGuns)
 	{
 		if(allGuns[i].id == itemId)
