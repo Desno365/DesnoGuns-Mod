@@ -2627,8 +2627,9 @@ var ModTickFunctions = {
 					{
 						if(xArrow == 0 && yArrow == 0 && zArrow == 0)
 						{
-							// arrow hit an entity
-							Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, allGuns[i].bulletsExplosionRadius);
+							// arrow hit an entity, the previous position may be near the player, we need to check it
+							if(!checkProximityOfPoints(arrow.previousX, arrow.previousY, arrow.previousZ, Player.getX(), Player.getY(), Player.getZ(), 5))
+								Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, allGuns[i].bulletsExplosionRadius);
 
 							allGuns[i].bulletsArray.splice(j, 1);
 						} else
