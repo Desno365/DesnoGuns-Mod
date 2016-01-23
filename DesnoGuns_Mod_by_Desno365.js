@@ -5871,6 +5871,22 @@ function checkProximity(entity1, entity2, distanceXZ, distanceY)
 		return false;
 	if(!(Math.abs(Entity.getZ(entity1) - Entity.getZ(entity2)) <= distanceXZ))
 		return false;
+
+	return true;
+}
+
+function checkProximityOfPoints(x1, y1, z1, x2, y2, z2, distanceXZ, distanceY)
+{
+	if(distanceY == null)
+		distanceY = distanceXZ;
+
+	if(!(Math.abs(x1 - x2) <= distanceXZ))
+		return false;
+	if(!(Math.abs(y1 - y2) <= distanceY))
+		return false;
+	if(!(Math.abs(z1 - z2) <= distanceXZ))
+		return false;
+
 	return true;
 }
 
