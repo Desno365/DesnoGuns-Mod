@@ -259,7 +259,11 @@ const BULLET_TYPE_INCENDIARY_SNOWBALL = 6;
 const BULLET_TYPE_CUSTOM_ENTITY = 7;
 
 
-// for new IDs: 3285-3299 (armors) / 3300-3319 (grenades) / 3320-3339 (other items) / 3340-3364 (ammo) / 3365 (info item) / 3366-3500 (guns)
+// for new IDs: 3285-3299 (armors) / 3300-3319 (grenades) / 3320-3339 (other items) / 3340-3364 (ammo) / 3365 (info item) / 3366-3479 (guns) / 3480-3499 (addons tabs)
+
+// addons tabs
+const TABS_STARTING_ID = 3480;
+const TABS_ENDING_ID = 3499;
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 3340;
@@ -2547,6 +2551,13 @@ function changeCarriedItemHook(currentItem, previousItem)
 		//
 		displayInfoItemUI();
 	}
+
+	// addons tabs items
+	if(currentItem >= TABS_STARTING_ID && currentItem <= TABS_ENDING_ID)
+	{
+		//
+		clientMessage("All the weapons after this item were added by " + loadedAddons[currentItem - TABS_STARTING_ID].name);
+	}
 }
 
 function modTick()
@@ -3217,6 +3228,10 @@ function addLoadedAddonsInGame()
 
 	for(var i in loadedAddons)
 	{
+		// add tab
+		addNewTab(i);
+
+		// add guns
 		for(var j in loadedAddons[i].weaponsArray)
 		{
 			var weapon = loadedAddons[i].weaponsArray[j];
@@ -3276,6 +3291,15 @@ function convertGunsStringsInIds(gun)
 		newGun.bulletType = BULLET_TYPE_NORMAL;
 
 	return newGun;
+}
+
+function addNewTab(index)
+{
+	var id = TABS_STARTING_ID + parseInt(index);
+
+	Item.defineItem(id, "transparent", 0, loadedAddons[index].name, 1);
+	Item.setCategory(id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(id, 1);
 }
 
 function addNewGunFromAddon(gun, addonName)
@@ -3446,6 +3470,11 @@ function isItemAnIdTheModAlreadyUse(itemId)
 {
 	if(isItemADefaultGun(itemId))
 		return true;
+
+
+	if(itemId >= TABS_STARTING_ID && itemId <= TABS_ENDING_ID)
+		return true;
+
 
 	if(itemId == AMMO_ASSAULT_RIFLE_ID || itemId == AMMO_SUB_MACHINE_ID || itemId == AMMO_LIGHT_MACHINE_ID || itemId == AMMO_SNIPER_RIFLE_ID || itemId == AMMO_MACHINE_PISTOL_ID || itemId == AMMO_SHOTGUN_ID || itemId == AMMO_HANDGUN_ID || itemId == AMMO_LAUNCHER_ID || itemId == AMMO_MINIGUN_ID || itemId == AMMO_ARROW_EXPLOSIVE_ID)
 		return true;

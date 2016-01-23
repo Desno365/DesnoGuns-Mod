@@ -1317,7 +1317,7 @@ var ADDON_WEAPONS = [
 		sound: String, // sound when shooting
 		reloadSound: String, // sound when reloading
 
-		// SOUNDS only for type "on_touch"_WITH_WAIT
+		// SOUNDS only for type "on_touch_with_wait"
 		hasRandomWarmupSound: boolean, // true if there are multiple possible warm-up sounds
 		warmupSound: { // this form must be used only if hasRandomWarmupSound false, this random structure creates a string like this startText + number + endText
 			startingFrom: int,
