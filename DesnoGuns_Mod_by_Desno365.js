@@ -1408,7 +1408,7 @@ const RAYGUN = {
 	buttonType: BUTTON_TYPE_ON_CLICK,
 	id: 3376,
 	fireRate: 5,
-	recoil: 20,
+	recoil: 12,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2,
 	zoomLevel: ZOOM_PISTOL,
@@ -3197,7 +3197,23 @@ function addonClass(array, addonName, addonDescription)
 //########## LOADED ADDONS MANAGING functions ##########
 function addLoadedAddonsInGame()
 {
-	print("Loaded " + loadedAddons.length + " addons");
+	// put a limit on the number of addons
+	if(isPro())
+		loadedAddons = limitLoadedAddonsArray(loadedAddons, 20);
+	else
+	{
+		if(loadedAddons.length > 2)
+		{
+			loadedAddons = limitLoadedAddonsArray(loadedAddons, 2);
+
+			currentActivity.runOnUiThread(new java.lang.Runnable() {
+				run: function() {
+					android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: You can't have more than 2 addons enabled without the Pro Key."), 1).show();
+				}
+			});
+		}
+	}
+
 	for(var i in loadedAddons)
 	{
 		for(var j in loadedAddons[i].weaponsArray)
@@ -3213,6 +3229,31 @@ function addLoadedAddonsInGame()
 				}
 			}
 		}
+	}
+
+	if(loadedAddons.length > 0)
+	{
+		currentActivity.runOnUiThread(new java.lang.Runnable() {
+			run: function() {
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: " + loadedAddons.length + " addons enabled!"), 0).show();
+			}
+		});
+	}
+}
+
+function limitLoadedAddonsArray(array, limit)
+{
+	if(array.length > limit)
+	{
+		var newArray = [];
+		for(var i = 0; i < limit; i++)
+		{
+			newArray[i] = array[i];
+		}
+		return newArray;
+	} else
+	{
+		return array;
 	}
 }
 
