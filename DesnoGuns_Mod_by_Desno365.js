@@ -7921,6 +7921,9 @@ var SoundsInstaller = {
 				fileName: "R870Shoot.ogg"
 			},
 			{
+				fileName: "RayGunShoot.mp3"
+			},
+			{
 				fileName: "BARReload.ogg",
 				fileDirectory: "reload"
 			},
@@ -7994,6 +7997,10 @@ var SoundsInstaller = {
 			},
 			{
 				fileName: "PPSHReload.ogg",
+				fileDirectory: "reload"
+			},
+			{
+				fileName: "RayGunReload.mp3",
 				fileDirectory: "reload"
 			},
 			{
