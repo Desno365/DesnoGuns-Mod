@@ -3251,7 +3251,7 @@ function addLoadedAddonsInGame()
 	{
 		currentActivity.runOnUiThread(new java.lang.Runnable() {
 			run: function() {
-				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: " + loadedAddons.length + " addons enabled!"), 0).show();
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: " + loadedAddons.length + " addon" + ((loadedAddons.length > 1) ? "s" : "") + " enabled!"), 0).show();
 			}
 		});
 	}
@@ -3297,7 +3297,7 @@ function addNewTab(index)
 {
 	var id = TABS_STARTING_ID + parseInt(index);
 
-	Item.defineItem(id, "transparent", 0, loadedAddons[index].name, 1);
+	Item.defineItem(id, "transparent", 0, loadedAddons[index].name + " Divider", 1);
 	Item.setCategory(id, ITEM_CATEGORY_TOOL);
 	Player.addItemCreativeInv(id, 1);
 }
@@ -6853,7 +6853,7 @@ function informationOtherItems()
 
 				layout.addView(dividerText());
 
-				var textview = defaultContentTextView("<i>Machine Pistol Ammo</i>: ID: " + AMMO_SHOTGUN_ID);
+				var textview = defaultContentTextView("<i>Machine Pistol Ammo</i>: ID: " + AMMO_MACHINE_PISTOL_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
