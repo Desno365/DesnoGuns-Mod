@@ -2555,8 +2555,8 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// addons tabs items
 	if(currentItem >= TABS_STARTING_ID && currentItem <= TABS_ENDING_ID)
 	{
-		//
-		clientMessage("All the weapons after this item were added by " + loadedAddons[currentItem - TABS_STARTING_ID].name);
+		if(loadedAddons.length > (currentItem - TABS_STARTING_ID))
+			clientMessage("All the weapons after this item were added by \"" + loadedAddons[currentItem - TABS_STARTING_ID].name + "\"");
 	}
 }
 
@@ -3211,7 +3211,10 @@ function addLoadedAddonsInGame()
 {
 	// put a limit on the number of addons
 	if(isPro())
+	{
+		//
 		loadedAddons = limitLoadedAddonsArray(loadedAddons, 20);
+	}
 	else
 	{
 		if(loadedAddons.length > 2)
@@ -3237,16 +3240,25 @@ function addLoadedAddonsInGame()
 			var weapon = loadedAddons[i].weaponsArray[j];
 			if(weapon.weaponType == "gun")
 			{
-				if(!(isItemAGun(weapon.id) || isItemAnIdTheModAlreadyUse(weapon.id))) // check if the id of this new gun isn't already present in the allGuns array
+				if(!isItemAGun(weapon.id)) // check if the id of this new gun isn't already present in the allGuns array
 				{
 					// this id isn't already used, we can add it safely to the game
 					var gun = convertGunsStringsInIds(weapon);
 					addNewGunFromAddon(gun, loadedAddons[i].name);
+				} else
+				{
+					// the id of this new weapon is already used in another addon (the id was already checked for mod's ids)
+					currentActivity.runOnUiThread(new java.lang.Runnable() {
+						run: function() {
+							android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: \"" + weapon.name + "\" of \"" + loadedAddons[i].name + "\" wasn't added because the id was already used by another addon."), 1).show();
+						}
+					});
 				}
 			}
 		}
 	}
 
+	// show the user how many addons have been enabled
 	if(loadedAddons.length > 0)
 	{
 		currentActivity.runOnUiThread(new java.lang.Runnable() {
@@ -3295,7 +3307,7 @@ function convertGunsStringsInIds(gun)
 
 function addNewTab(index)
 {
-	var id = TABS_STARTING_ID + parseInt(index);
+	var id = (TABS_STARTING_ID + parseInt(index));
 
 	Item.defineItem(id, "transparent", 0, loadedAddons[index].name + " Divider", 1);
 	Item.setCategory(id, ITEM_CATEGORY_TOOL);
@@ -5160,7 +5172,9 @@ function reloadAmmo(gun)
 				}
 			}
 		}
-	} else
+	}
+
+	if(Level.getGameMode() == GameMode.CREATIVE)
 	{
 		// gamemode creative
 		if(Player.getCarriedItemData() != 0)
@@ -6323,7 +6337,21 @@ function infoDesnoGunsMod()
 					}
 				});
 				layout.addView(settingsButton);
-				setMarginsLinearLayout(settingsButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+				setMarginsLinearLayout(settingsButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var addonsButton = MinecraftButton();
+				addonsButton.setText("Addons");
+				addonsButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						addonsUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(addonsButton);
+				setMarginsLinearLayout(addonsButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+
 
 				var updatesButton = MinecraftButton();
 				updatesButton.setText("Check for updates");
@@ -6369,6 +6397,7 @@ function infoDesnoGunsMod()
 				});
 				layout.addView(supportButton);
 				setMarginsLinearLayout(supportButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+
 
 				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
@@ -7275,6 +7304,166 @@ function settingsUI()
 					onClick: function()
 					{
 						infoDesnoGunsMod();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var exitButton = MinecraftButton();
+				exitButton.setText("Close");
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+
+				var popup = defaultPopup(layout);
+				showImmersivePopup(popup);
+
+			} catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
+
+function addonsUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout;
+				layout = defaultLayout("Addons");
+
+				var button = MinecraftButton();
+				button.setText("Install an addon");
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("http://desno365.github.io/minecraft/desnoguns-mod/")); // TODO
+						currentActivity.startActivity(intentBrowser);
+					}
+				});
+				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var button = MinecraftButton();
+				button.setText("Enabled addons");
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						enabledAddonsUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+				setMarginsLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+
+				var backButton = MinecraftButton();
+				backButton.setText("Back");
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						infoDesnoGunsMod();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				setMarginsLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var exitButton = MinecraftButton();
+				exitButton.setText("Close");
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+
+				var popup = defaultPopup(layout);
+				showImmersivePopup(popup);
+
+			} catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
+
+function enabledAddonsUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout;
+				layout = defaultLayout("Enabled addons");
+
+				var padding = convertDpToPixel(8);
+
+
+				for(var i in loadedAddons)
+				{
+					var title = defaultSubTitle(loadedAddons[i].name);
+					layout.addView(title);
+
+					layout.addView(dividerText());
+
+					var textview = defaultContentTextView(loadedAddons[i].description + "<br><br>");
+					textview.setPadding(padding, 0, padding, 0);
+					layout.addView(textview);
+				}
+
+				// 0 addons enabled
+				if(loadedAddons.length == 0)
+				{
+					layout.addView(dividerText());
+
+					var textview = defaultContentTextView("You don't have any addon enabled.");
+					layout.addView(textview);
+
+					layout.addView(dividerText());
+				}
+
+				// one or more addons enabled without the pro version
+				if(loadedAddons.length >= 1 && (!isPro()))
+				{
+					var textview = defaultContentTextView("Buy the <a href=\"https://play.google.com/store/apps/details?id=com.desno365.desnogunsmodkey\">DesnoGuns Mod Pro Key</a> to enable more than 2 addons simultaneously.<br>");
+					textview.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
+					textview.setTextSize(11);
+					layout.addView(textview);
+				}
+
+
+				var backButton = MinecraftButton();
+				backButton.setText("Back");
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						addonsUI();
 						popup.dismiss();
 					}
 				});
