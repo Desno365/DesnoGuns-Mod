@@ -4764,10 +4764,18 @@ function onAimClick()
 					zoomWithFov--;
 					ModPE.setFov(zoomWithFov);
 
-					if(weapon.hasAimImageLayer)
-						showAimImageLayerFromWeapon(weapon);
+					if(weapon.id == Player.getCarriedItem()) // check if the player hasn't changed is item while zooming
+					{
+						if(weapon.hasAimImageLayer)
+							showAimImageLayerFromWeapon(weapon);
 
-					isDisplayingAimingAnimation = false;
+						isDisplayingAimingAnimation = false;
+					} else
+					{
+						isDisplayingAimingAnimation = false;
+						
+						removeZoomAndAimImageLayer();
+					}
 				}
 			}), weapon.zoomLevel * 12);
 		} else
