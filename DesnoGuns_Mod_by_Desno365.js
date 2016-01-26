@@ -2331,7 +2331,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		var currentGun = getGun(currentItem);
 
 		if(!isItemAGun(previousItem) || !needsToLoadTheUI(previousItem, false)) // load fire and aim buttons if necessary
-			displayShootAndAimButtons(currentGun);
+			displayShootAndAimButtons();
 
 		// reset clicks and long clicks
 		resetRunnables();
@@ -3748,9 +3748,22 @@ function smokeGrenadeClass(entity)
 	return smokeObject;
 }
 
+function getWeaponObject(id)
+{
+	if(isItemAGun(id))
+		return getGun(id);
+
+	if(id == BINOCULARS.id)
+		return BINOCULARS;
+
+	if(id == ZOOM_BINOCULARS.id)
+		return ZOOM_BINOCULARS;
+}
+
 function getGun(id)
 {
-	var currentGun = 0;
+	var currentGun = -1;
+
 	findTheGun:
 	for(var i in allGuns)
 	{
@@ -3760,11 +3773,14 @@ function getGun(id)
 			break findTheGun;
 		}
 	}
-	if(currentGun == 0)
+
+	// gun not found
+	if(currentGun == -1)
 	{
 		clientMessage("Error: gun not found in getGun(): " + id);
 		currentGun = AK47;
 	}
+
 	return currentGun;
 }
 
@@ -4531,11 +4547,11 @@ var Sound = {
 
 
 //########## SHOOT UI functions ##########
-function displayShootAndAimButtons(weapon)
+function displayShootAndAimButtons()
 {
 	displayShootButton();
 
-	displayAimButton(weapon);
+	displayAimButton();
 }
 
 function displayShootButton()
@@ -4639,7 +4655,7 @@ function displaySight()
 	}
 }
 
-function displayAimButton(weapon)
+function displayAimButton()
 {
 	// weapon must be an object with zoomLevel and optional hasAimImageLayer
 
@@ -4662,7 +4678,7 @@ function displayAimButton(weapon)
 				{
 					onClick: function(v)
 					{
-						onAimClick(weapon);
+						onAimClick();
 						return false;
 					}
 				});
@@ -4725,8 +4741,10 @@ function resetRunnables()
 
 
 //########## AIM functions ##########
-function onAimClick(weapon)
+function onAimClick()
 {
+	var weapon = getWeaponObject(Player.getCarriedItem());
+
 	if(!isDisplayingAimingAnimation) // if is currently zooming in or out don't do anything
 	{
 		if(!isAiming)
@@ -4841,7 +4859,7 @@ function showAimImageLayerFromGun(gun)
 				if(gun.hasManualZoom)
 					displayManualZoom(gun);
 
-				displayShootAndAimButtons(gun);
+				displayShootAndAimButtons();
 				if(shouldReload())
 					setAmmoTextFromGun(gun);
 				else
