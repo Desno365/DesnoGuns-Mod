@@ -1832,7 +1832,7 @@ Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 
 const BINOCULARS = {
 	id: 3324,
-	zoomLevel: 33,
+	zoomLevel: 51,
 	hasAimImageLayer: true,
 };
 Item.defineItem(BINOCULARS.id, "binoculars", 0, "Binoculars");
@@ -1845,7 +1845,7 @@ Player.addItemCreativeInv(BINOCULARS.id, 1);
 
 const ZOOM_BINOCULARS = {
 	id: 3325,
-	zoomLevel: 38,
+	zoomLevel: 51,
 	hasAimImageLayer: true,
 	hasManualZoom: true,
 };
@@ -2304,7 +2304,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	}
 
 	// remove shooting UI of grenades and molotov
-	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id || previousItem == SMOKE.id)
+	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id || previousItem == SMOKE.id || previousItem == BINOCULARS.id || previousItem == ZOOM_BINOCULARS.id)
 	{
 		//
 		removeShootAndAimButtons();
@@ -2481,10 +2481,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		}
 
 		// set ammo text
-		if(shouldReload())
-			setAmmoTextFromGun(currentGun);
-		else
-			setAmmoText(" ");
+		updateAmmoText(currentGun)
 	} else
 	{
 		if(isItemAGun(previousItem))
@@ -2571,6 +2568,11 @@ function changeCarriedItemHook(currentItem, previousItem)
 			}
 		}));
 		setAmmoText(" ");
+	}
+
+	if(currentItem == BINOCULARS.id || currentItem == ZOOM_BINOCULARS.id)
+	{
+		displayAimButton();
 	}
 
 	// DesnoGuns info
@@ -4763,15 +4765,16 @@ function onAimClick()
 					ModPE.setFov(zoomWithFov);
 
 					if(weapon.hasAimImageLayer)
-						showAimImageLayerFromGun(weapon);
+						showAimImageLayerFromWeapon(weapon);
 
 					isDisplayingAimingAnimation = false;
 				}
 			}), weapon.zoomLevel * 12);
 		} else
 		{
-			if(weapon.hasAimImageLayer)
+			if(weapon.hasAimImageLayer && isItemAGun(weapon.id)) // restore the sight after aiming with an image layer (the image layer removed the sight)
 				displaySight();
+
 			removeZoomAndAimImageLayer();
 		}
 	}
@@ -4839,9 +4842,11 @@ function removeZoomAndAimImageLayer()
 		}
 	}));
 }
+//########## AIM functions - END ##########
 
 
-function showAimImageLayerFromGun(gun)
+//########## IMAGE LAYER FOR AIM functions ##########
+function showAimImageLayerFromWeapon(weapon)
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
@@ -4853,63 +4858,72 @@ function showAimImageLayerFromGun(gun)
 				removeShootAndAimButtons();
 
 				// display actual layer
-				displayAimImageLayerPopup(getAimImageFromId(gun.id));
+				displayAimImageLayerPopup(getAimImageFromId(weapon.id));
 
 
-				if(gun.hasManualZoom)
-					displayManualZoom(gun);
+				if(weapon.hasManualZoom)
+					displayManualZoom(weapon);
 
-				displayShootAndAimButtons();
-				if(shouldReload())
-					setAmmoTextFromGun(gun);
-				else
-					setAmmoText(" ");
-				try {
-					popupSightImage.dismiss();
-				} catch(e) {}
-
-				if(gun.buttonType == BUTTON_TYPE_ON_TOUCH)
+				if(isItemAGun(weapon.id))
 				{
-					// load touch events
-					if(shouldReload())
+					// display both fire and aim buttons
+					displayShootAndAimButtons();
+
+					// restore ammo text
+					updateAmmoText(weapon);
+
+					// remove sight image, we already have the image layer but we need to restore it later
+					try {
+						popupSightImage.dismiss();
+					} catch(e) {}
+
+					if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
 					{
-						// survival or creative with reload option enabled
-						currentActivity.runOnUiThread(new java.lang.Runnable(
+						// load touch events
+						if(shouldReload())
 						{
-							run: function()
+							// survival or creative with reload option enabled
+							currentActivity.runOnUiThread(new java.lang.Runnable(
 							{
-								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+								run: function()
 								{
-									onTouch: function(v, event)
+									shotText.setOnTouchListener(new android.view.View.OnTouchListener()
 									{
-										if(minecraftStyleForButtons)
-											MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-										onTouchWeaponShoot(event, gun, true);
-										return false;
-									}
-								});
-							}
-						}));
-					} else
-					{
-						// creative with reload option disabled
-						currentActivity.runOnUiThread(new java.lang.Runnable(
+										onTouch: function(v, event)
+										{
+											if(minecraftStyleForButtons)
+												MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+											onTouchWeaponShoot(event, weapon, true);
+											return false;
+										}
+									});
+								}
+							}));
+						} else
 						{
-							run: function()
+							// creative with reload option disabled
+							currentActivity.runOnUiThread(new java.lang.Runnable(
 							{
-								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+								run: function()
 								{
-									onTouch: function(v, event)
+									shotText.setOnTouchListener(new android.view.View.OnTouchListener()
 									{
-										if(minecraftStyleForButtons)
-											MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-										onTouchWeaponShoot(event, gun, false);
-										return false;
-									}
-								});
-							}
-						}));
+										onTouch: function(v, event)
+										{
+											if(minecraftStyleForButtons)
+												MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+											onTouchWeaponShoot(event, weapon, false);
+											return false;
+										}
+									});
+								}
+							}));
+						}
 					}
+				} else
+				{
+					// is not a gun, we don't want to display the fire button and related things (sight, ammo)
+					displayAimButton();
 				}
 			} catch(err)
 			{
@@ -5025,7 +5039,7 @@ function displayManualZoom(weapon)
 		}
 	}));
 }
-//########## AIM functions - END ##########
+//########## IMAGE LAYER FOR AIM functions - END ##########
 
 
 //########## RECOIL functions ##########
@@ -5304,6 +5318,14 @@ function stopReloading()
 		isReloading = false;
 		ModPE.showTipMessage("Ammo reload interrupted.");
 	}
+}
+
+function updateAmmoText(currentGun)
+{
+	if(shouldReload())
+		setAmmoTextFromGun(currentGun);
+	else
+		setAmmoText(" ");
 }
 
 function setAmmoTextFromGun(gun)
@@ -8798,7 +8820,7 @@ currentActivity.runOnUiThread(new java.lang.Runnable(
 					}
 				}), 250); // this time should be enough for the mod to load all the addons 
 			}
-		}), 500); // this time should be enough for BlockLuancher to load all the other scripts
+		}), 750); // this time should be enough for BlockLuancher to load all the other scripts
 	}
 }));
 
