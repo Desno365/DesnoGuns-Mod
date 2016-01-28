@@ -3538,6 +3538,12 @@ function isItemAnIdTheModAlreadyUse(itemId)
 	if(itemId == MEDICAL_KIT_ID)
 		return true;
 
+	if(itemId == BINOCULARS.id)
+		return true;
+
+	if(itemId == ZOOM_BINOCULARS.id)
+		return true;
+
 
 	if(itemId == GRENADE.id)
 		return true;

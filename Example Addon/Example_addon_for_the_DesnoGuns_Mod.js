@@ -17,7 +17,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 9.9 /* one shot one kill, yeah */ ,
 		accuracy: 6,
 		zoomLevel: 13,
-		texture: "custom_44magnum",
+		texture: "44magnum",
 		ammo: 6,
 		smoke: 1,
 		// BEHAVIOR
@@ -39,7 +39,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 5,
 		zoomLevel: 23,
-		texture: "custom_ak47",
+		texture: "ak47",
 		ammo: 30,
 		smoke: 1,
 		// BEHAVIOR
@@ -62,7 +62,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 40,
 		accuracy: 3,
 		hasAimImageLayer: true,
-		texture: "custom_barrettexplosive",
+		texture: "barrettexplosive",
 		ammo: 10,
 		smoke: 2,
 		// BEHAVIOR
@@ -86,7 +86,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 40,
 		accuracy: 2,
 		hasAimImageLayer: true,
-		texture: "custom_barrett",
+		texture: "barrett",
 		ammo: 10,
 		smoke: 2,
 		// BEHAVIOR
@@ -108,7 +108,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 3,
 		zoomLevel: 18,
-		texture: "custom_bizon",
+		texture: "bizon",
 		ammo: 53,
 		smoke: 1,
 		// BEHAVIOR
@@ -131,7 +131,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 23,
 		accuracy: 5,
 		hasAimImageLayer: true,
-		texture: "custom_crossbowexplosive",
+		texture: "crossbowexplosive",
 		ammo: 1,
 		ammunitionID: 3349 /* ammo arrow explosive */,
 		smoke: 0,
@@ -162,7 +162,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 23,
 		accuracy: 5,
 		hasAimImageLayer: true,
-		texture: "custom_crossbow",
+		texture: "crossbow",
 		ammo: 1,
 		ammunitionID: 262, // 262 = arrow
 		smoke: 0,
@@ -189,7 +189,7 @@ var ADDON_WEAPONS = [
 		recoil: 0.5,
 		accuracy: 5.5,
 		zoomLevel: 10,
-		texture: "custom_flamethrower",
+		texture: "flamethrower",
 		ammo: 750,
 		smoke: 3,
 		// BEHAVIOR
@@ -219,7 +219,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 2.5,
 		zoomLevel: 23,
-		texture: "custom_g3",
+		texture: "g3",
 		ammo: 20,
 		smoke: 1,
 		// BEHAVIOR
@@ -241,7 +241,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 2.4,
 		accuracy: 10,
 		zoomLevel: 10,
-		texture: "custom_gl1",
+		texture: "gl1",
 		ammo: 1,
 		smoke: 0,
 		// BEHAVIOR
@@ -263,7 +263,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 2.4,
 		accuracy: 15,
 		zoomLevel: 10,
-		texture: "custom_gl6",
+		texture: "gl6",
 		ammo: 6,
 		smoke: 0,
 		// BEHAVIOR
@@ -285,7 +285,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.1,
 		accuracy: 2.5,
 		zoomLevel: 13,
-		texture: "custom_glock",
+		texture: "glock",
 		ammo: 31,
 		smoke: 1,
 		// BEHAVIOR
@@ -307,7 +307,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 4,
 		zoomLevel: 18,
-		texture: "custom_l86",
+		texture: "l86",
 		ammo: 100,
 		smoke: 2,
 		// BEHAVIOR
@@ -329,7 +329,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		zoomLevel: 23,
 		accuracy: 2,
-		texture: "custom_m14",
+		texture: "m14",
 		ammo: 20,
 		smoke: 0,
 		// BEHAVIOR
@@ -351,7 +351,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 3.9,
 		accuracy: 5,
 		zoomLevel: 12,
-		texture: "custom_m72law",
+		texture: "m72law",
 		ammo: 1,
 		smoke: 4,
 		// BEHAVIOR
@@ -377,7 +377,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 3.5,
 		zoomLevel: 18,
-		texture: "custom_m249",
+		texture: "m249",
 		ammo: 100,
 		smoke: 2,
 		// BEHAVIOR
@@ -399,7 +399,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 3.9,
 		accuracy: 12,
 		zoomLevel: 15,
-		texture: "custom_m1014",
+		texture: "m1014",
 		ammo: 4,
 		smoke: 1,
 		// BEHAVIOR
@@ -423,7 +423,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 3.9,
 		accuracy: 15,
 		zoomLevel: 15,
-		texture: "custom_m1887",
+		texture: "m1887",
 		ammo: 5,
 		smoke: 1,
 		// BEHAVIOR
@@ -447,7 +447,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 5.5,
 		zoomLevel: 23,
-		texture: "custom_minigunexplosive",
+		texture: "minigunexplosive",
 		ammo: 250,
 		smoke: 3,
 		// BEHAVIOR
@@ -473,7 +473,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 5.5,
 		zoomLevel: 23,
-		texture: "custom_minigun",
+		texture: "minigun",
 		ammo: 500,
 		smoke: 3,
 		// BEHAVIOR
@@ -498,7 +498,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 3.9 - 0.3,
 		accuracy: 5,
 		zoomLevel: 12,
-		texture: "custom_multiplerocketlauncher",
+		texture: "multiplerocketlauncher",
 		ammo: 1,
 		smoke: 4,
 		// BEHAVIOR
@@ -527,7 +527,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 2.5,
 		zoomLevel: 18,
-		texture: "custom_p90",
+		texture: "p90",
 		ammo: 50,
 		smoke: 2,
 		// BEHAVIOR
@@ -550,7 +550,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 40,
 		accuracy: 2,
 		hasAimImageLayer: true,
-		texture: "custom_r700",
+		texture: "r700",
 		ammo: 4,
 		smoke: 1,
 		// BEHAVIOR
@@ -566,13 +566,13 @@ var ADDON_WEAPONS = [
 		name: "Ray Gun",
 		gunType: "handgun",
 		buttonType: "on_click",
-		id: 3523,
+		id: 3323,
 		fireRate: 5,
 		recoil: 12,
 		bulletSpeed: 5.9,
 		accuracy: 2,
 		zoomLevel: 13,
-		texture: "custom_raygun",
+		texture: "raygun",
 		ammo: 20,
 		smoke: 1,
 		// BEHAVIOR
@@ -599,7 +599,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 3.9,
 		accuracy: 10,
 		zoomLevel: 12,
-		texture: "custom_rpg",
+		texture: "rpg",
 		ammo: 1,
 		smoke: 4,
 		// BEHAVIOR
@@ -625,7 +625,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 2.5,
 		zoomLevel: 23,
-		texture: "custom_sg550",
+		texture: "sg550",
 		ammo: 20,
 		smoke: 1,
 		// BEHAVIOR
@@ -647,7 +647,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.1,
 		accuracy: 6,
 		zoomLevel: 13,
-		texture: "custom_sigp226",
+		texture: "sigp226",
 		ammo: 10,
 		smoke: 0,
 		// BEHAVIOR
@@ -669,7 +669,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 3.9,
 		accuracy: 11,
 		zoomLevel: 15,
-		texture: "custom_spas",
+		texture: "spas",
 		ammo: 7,
 		smoke: 1,
 		// BEHAVIOR
@@ -693,7 +693,7 @@ var ADDON_WEAPONS = [
 		bulletSpeed: 5.9,
 		accuracy: 4,
 		zoomLevel: 23,
-		texture: "custom_xmasminigun",
+		texture: "xmasminigun",
 		ammo: 500,
 		smoke: 3,
 		// BEHAVIOR
@@ -719,7 +719,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 40,
 		accuracy: 2,
 		hasAimImageLayer: true,
-		texture: "custom_xmassniper",
+		texture: "xmassniper",
 		ammo: 5,
 		// BEHAVIOR
 		shotType: "normal",
