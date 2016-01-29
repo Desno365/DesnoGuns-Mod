@@ -563,7 +563,7 @@ var ADDON_WEAPONS = [
 
 	{
 		weaponType: "gun",
-		name: "Ray Gun",
+		name: "Custom Ray Gun",
 		gunType: "handgun",
 		buttonType: "on_click",
 		id: 3523,
