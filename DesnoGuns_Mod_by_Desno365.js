@@ -14,7 +14,7 @@ SOFTWARE.
 
 /* ******* DesnoGuns Mod by Desno365 ******* */
 
-const DEBUG1 = false; // debug: loading boolean saved at startup; sounds correctly installed; Sound.playFromFileName function (start and finish)
+const DEBUG1 = false; // debug: loading boolean saved at startup; sounds correctly installed; Sound.playFromPath function (start and finish)
 const DEBUG2 = false;
 const TAG = "DesnoGuns";
 
@@ -418,8 +418,8 @@ const MAGNUM44 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "44Magnum.mp3",
-	reloadSound: "GL6Reload.ogg",
+	sound: "desnoguns/44Magnum.mp3",
+	reloadSound: "desnoguns/reload/GL6Reload.ogg",
 };
 
 const AK47 = {
@@ -440,8 +440,8 @@ const AK47 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "AK47Shoot.ogg",
-	reloadSound: "MP44Reload.ogg",
+	sound: "desnoguns/AK47Shoot.ogg",
+	reloadSound: "desnoguns/reload/MP44Reload.ogg",
 };
 
 const AK74 = {
@@ -462,8 +462,8 @@ const AK74 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "AK74Shoot.ogg",
-	reloadSound: "MP40Reload.ogg",
+	sound: "desnoguns/AK74Shoot.ogg",
+	reloadSound: "desnoguns/reload/MP40Reload.ogg",
 };
 
 const AT4 = {
@@ -488,8 +488,8 @@ const AT4 = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
-	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-	reloadSound: "BazookaReload.ogg",
+	sound: "desnoguns/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.ogg",
 };
 
 const AUG = {
@@ -510,8 +510,8 @@ const AUG = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
-	reloadSound: "MP44Reload.ogg",
+	sound: "desnoguns/FNSCAR_and_AUG_and_MTARShoot.ogg",
+	reloadSound: "desnoguns/reload/MP44Reload.ogg",
 };
 
 const BARRETT_EXPLOSIVE = {
@@ -534,8 +534,8 @@ const BARRETT_EXPLOSIVE = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 2,
 	// SOUNDS
-	sound: "BarrettShoot.ogg",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/BarrettShoot.ogg",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 const BARRETT = {
@@ -557,8 +557,8 @@ const BARRETT = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "BarrettShoot.ogg",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/BarrettShoot.ogg",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 const BIZON = {
@@ -579,8 +579,8 @@ const BIZON = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	reloadSound: "MP40Reload.ogg",
+	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	reloadSound: "desnoguns/reload/MP40Reload.ogg",
 };
 
 const CROSSBOW_EXPLOSIVE = {
@@ -610,8 +610,8 @@ const CROSSBOW_EXPLOSIVE = {
 	bulletsExplosionDelay: 3350,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
-	sound: "CrossbowShoot.wav",
-	reloadSound: "CrossbowReload.wav",
+	sound: "desnoguns/CrossbowShoot.wav",
+	reloadSound: "desnoguns/reload/CrossbowReload.wav",
 };
 
 const CROSSBOW = {
@@ -639,8 +639,8 @@ const CROSSBOW = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "CrossbowShoot.wav",
-	reloadSound: "CrossbowReload.wav",
+	sound: "desnoguns/CrossbowShoot.wav",
+	reloadSound: "desnoguns/reload/CrossbowReload.wav",
 };
 
 const DESERT_EAGLE = {
@@ -661,8 +661,8 @@ const DESERT_EAGLE = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "DesertEagleShoot.ogg",
-	reloadSound: "LugerReload.ogg",
+	sound: "desnoguns/DesertEagleShoot.ogg",
+	reloadSound: "desnoguns/reload/LugerReload.ogg",
 };
 
 const DESERT_EAGLE_GOLD = {
@@ -683,8 +683,8 @@ const DESERT_EAGLE_GOLD = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "DesertEagleShoot.ogg",
-	reloadSound: "LugerReload.ogg",
+	sound: "desnoguns/DesertEagleShoot.ogg",
+	reloadSound: "desnoguns/reload/LugerReload.ogg",
 };
 
 const DRAGUNOV = {
@@ -706,8 +706,8 @@ const DRAGUNOV = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "DragunovShoot.ogg",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/DragunovShoot.ogg",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 const FLAMETHROWER = {
@@ -730,13 +730,13 @@ const FLAMETHROWER = {
 	warmupSound: {
 		startingFrom: 1,
 		endingAt: 3,
-		startText: "ignite_flamethrower",
+		startText: "desnoguns/ignite_flamethrower",
 		endText: ".ogg"
 	},
 	hasntShootingSound: true,
-	spinSound: "flamethrower.mp3",
+	spinSound: "desnoguns/flamethrower.mp3",
 	hasntCooldownSound: true,
-	reloadSound: "BrowningReload.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const FNSCAR = {
@@ -757,8 +757,8 @@ const FNSCAR = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
-	reloadSound: "MP44Reload.ogg",
+	sound: "desnoguns/FNSCAR_and_AUG_and_MTARShoot.ogg",
+	reloadSound: "desnoguns/reload/MP44Reload.ogg",
 };
 
 const G3 = {
@@ -779,8 +779,8 @@ const G3 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	reloadSound: "ThompsonReload.ogg",
+	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	reloadSound: "desnoguns/reload/ThompsonReload.ogg",
 };
 
 const G36 = {
@@ -801,8 +801,8 @@ const G36 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "G36Shoot.ogg",
-	reloadSound: "MP40Reload.ogg",
+	sound: "desnoguns/G36Shoot.ogg",
+	reloadSound: "desnoguns/reload/MP40Reload.ogg",
 };
 
 const GL1 = {
@@ -823,8 +823,8 @@ const GL1 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_TNT,
 	// SOUNDS
-	sound: "GrenadeLauncherShoot.ogg",
-	reloadSound: "GrenadeLauncherReload.ogg",
+	sound: "desnoguns/GrenadeLauncherShoot.ogg",
+	reloadSound: "desnoguns/reload/GrenadeLauncherReload.ogg",
 };
 
 const GL6 = {
@@ -845,8 +845,8 @@ const GL6 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_TNT,
 	// SOUNDS
-	sound: "GrenadeLauncherShoot.ogg",
-	reloadSound: "GL6Reload.ogg",
+	sound: "desnoguns/GrenadeLauncherShoot.ogg",
+	reloadSound: "desnoguns/reload/GL6Reload.ogg",
 };
 
 const GLOCK = {
@@ -867,8 +867,8 @@ const GLOCK = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "GlockShoot.ogg",
-	reloadSound: "ColtReload.ogg",
+	sound: "desnoguns/GlockShoot.ogg",
+	reloadSound: "desnoguns/reload/ColtReload.ogg",
 };
 
 const L86 = {
@@ -889,8 +889,8 @@ const L86 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M249_and_L86Shoot.ogg",
-	reloadSound: "BrowningReload.ogg",
+	sound: "desnoguns/M249_and_L86Shoot.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const L96 = {
@@ -912,8 +912,8 @@ const L96 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "L96Shoot.ogg",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/L96Shoot.ogg",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 const M9 = {
@@ -934,8 +934,8 @@ const M9 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M9Shoot.ogg",
-	reloadSound: "ColtReload.ogg",
+	sound: "desnoguns/M9Shoot.ogg",
+	reloadSound: "desnoguns/reload/ColtReload.ogg",
 };
 
 const M14 = {
@@ -956,8 +956,8 @@ const M14 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M14_and_M16A4Shoot.ogg",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/M14_and_M16A4Shoot.ogg",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 const M16A4 = {
@@ -978,8 +978,8 @@ const M16A4 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M14_and_M16A4Shoot.ogg",
-	reloadSound: "MP44Reload.ogg",
+	sound: "desnoguns/M14_and_M16A4Shoot.ogg",
+	reloadSound: "desnoguns/reload/MP44Reload.ogg",
 };
 
 const M21 = {
@@ -1001,8 +1001,8 @@ const M21 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M21Shoot.ogg",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/M21Shoot.ogg",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 const M40A3_ICE = {
@@ -1024,8 +1024,8 @@ const M40A3_ICE = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "R700_and_M40A3Shoot.ogg",
-	reloadSound: "SpringfieldReload.ogg",
+	sound: "desnoguns/R700_and_M40A3Shoot.ogg",
+	reloadSound: "desnoguns/reload/SpringfieldReload.ogg",
 };
 
 const M40A3 = {
@@ -1047,8 +1047,8 @@ const M40A3 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "R700_and_M40A3Shoot.ogg",
-	reloadSound: "SpringfieldReload.ogg",
+	sound: "desnoguns/R700_and_M40A3Shoot.ogg",
+	reloadSound: "desnoguns/reload/SpringfieldReload.ogg",
 };
 
 const M60E4 = {
@@ -1069,8 +1069,8 @@ const M60E4 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
-	reloadSound: "BrowningReload.ogg",
+	sound: "desnoguns/RPD_and_M60E4_and_RPKShoot.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const M72LAW = {
@@ -1095,8 +1095,8 @@ const M72LAW = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
-	sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-	reloadSound: "BazookaReload.ogg",
+	sound: "desnoguns/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.ogg",
 };
 
 const M249 = {
@@ -1117,8 +1117,8 @@ const M249 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M249_and_L86Shoot.ogg",
-	reloadSound: "BrowningReload.ogg",
+	sound: "desnoguns/M249_and_L86Shoot.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const M1014 = {
@@ -1141,8 +1141,8 @@ const M1014 = {
 	shotgunDegreesSpread: 3,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M1014Shoot.ogg",
-	reloadSound: "M1014Reload.ogg",
+	sound: "desnoguns/M1014Shoot.ogg",
+	reloadSound: "desnoguns/reload/M1014Reload.ogg",
 };
 
 const M1887 = {
@@ -1165,8 +1165,8 @@ const M1887 = {
 	shotgunDegreesSpread: 5,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "M1887Shoot.ogg",
-	reloadSound: "M1887Reload.ogg",
+	sound: "desnoguns/M1887Shoot.ogg",
+	reloadSound: "desnoguns/reload/M1887Reload.ogg",
 };
 
 const MAKAROV = {
@@ -1187,8 +1187,8 @@ const MAKAROV = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "MakarovShoot.ogg",
-	reloadSound: "ColtReload.ogg",
+	sound: "desnoguns/MakarovShoot.ogg",
+	reloadSound: "desnoguns/reload/ColtReload.ogg",
 };
 
 const MINIGUN_EXPLOSIVE = {
@@ -1210,11 +1210,11 @@ const MINIGUN_EXPLOSIVE = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 2,
 	// SOUNDS
-	warmupSound: "MinigunWarmup.ogg",
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	spinSound: "MinigunSpin.ogg",
-	cooldownSound: "MinigunCooldown.ogg",
-	reloadSound: "BrowningReload.ogg",
+	warmupSound: "desnoguns/MinigunWarmup.ogg",
+	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	spinSound: "desnoguns/MinigunSpin.ogg",
+	cooldownSound: "desnoguns/MinigunCooldown.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const MINIGUN = {
@@ -1235,11 +1235,11 @@ const MINIGUN = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	warmupSound: "MinigunWarmup.ogg",
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	spinSound: "MinigunSpin.ogg",
-	cooldownSound: "MinigunCooldown.ogg",
-	reloadSound: "BrowningReload.ogg",
+	warmupSound: "desnoguns/MinigunWarmup.ogg",
+	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	spinSound: "desnoguns/MinigunSpin.ogg",
+	cooldownSound: "desnoguns/MinigunCooldown.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const MINI_UZI = {
@@ -1260,8 +1260,8 @@ const MINI_UZI = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "MiniUziShoot.ogg",
-	reloadSound: "ColtReload.ogg",
+	sound: "desnoguns/MiniUziShoot.ogg",
+	reloadSound: "desnoguns/reload/ColtReload.ogg",
 };
 
 const MP5 = {
@@ -1282,8 +1282,8 @@ const MP5 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "MP5Shoot.ogg",
-	reloadSound: "StenReload.ogg",
+	sound: "desnoguns/MP5Shoot.ogg",
+	reloadSound: "desnoguns/reload/StenReload.ogg",
 };
 
 const MTAR = {
@@ -1304,8 +1304,8 @@ const MTAR = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "FNSCAR_and_AUG_and_MTARShoot.ogg",
-	reloadSound: "MP44Reload.ogg",
+	sound: "desnoguns/FNSCAR_and_AUG_and_MTARShoot.ogg",
+	reloadSound: "desnoguns/reload/MP44Reload.ogg",
 };
 
 const MULTIPLE_ROCKET_LAUNCHER = {
@@ -1333,8 +1333,8 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 2,
 	// SOUNDS
-	sound: "MultipleRocketLauncherShoot.mp3",
-	reloadSound: "BazookaReload.ogg",
+	sound: "desnoguns/MultipleRocketLauncherShoot.mp3",
+	reloadSound: "desnoguns/reload/BazookaReload.ogg",
 };
 
 const P90 = {
@@ -1355,8 +1355,8 @@ const P90 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	reloadSound: "DP28Reload.ogg",
+	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+	reloadSound: "desnoguns/reload/DP28Reload.ogg",
 };
 
 const R700 = {
@@ -1378,8 +1378,8 @@ const R700 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "R700_and_M40A3Shoot.ogg",
-	reloadSound: "SpringfieldReload.ogg",
+	sound: "desnoguns/R700_and_M40A3Shoot.ogg",
+	reloadSound: "desnoguns/reload/SpringfieldReload.ogg",
 };
 
 const R870 = {
@@ -1402,8 +1402,8 @@ const R870 = {
 	shotgunDegreesSpread: 3,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "R870Shoot.ogg",
-	reloadSound: "W1200Reload.ogg",
+	sound: "desnoguns/R870Shoot.ogg",
+	reloadSound: "desnoguns/reload/W1200Reload.ogg",
 };
 
 const RAYGUN = {
@@ -1429,8 +1429,8 @@ const RAYGUN = {
 	particleTrailId: ParticleType.redstone,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "RayGunShoot.mp3",
-	reloadSound: "RayGunReload.mp3",
+	sound: "desnoguns/RayGunShoot.mp3",
+	reloadSound: "desnoguns/reload/RayGunReload.mp3",
 };
 
 const RPD = {
@@ -1451,8 +1451,8 @@ const RPD = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
-	reloadSound: "MG42Reload.ogg",
+	sound: "desnoguns/RPD_and_M60E4_and_RPKShoot.ogg",
+	reloadSound: "desnoguns/reload/MG42Reload.ogg",
 };
 
 const RPG = {
@@ -1477,8 +1477,8 @@ const RPG = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
-	sound: "RPGShoot.ogg",
-	reloadSound: "BazookaReload.ogg",
+	sound: "desnoguns/RPGShoot.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.ogg",
 };
 
 const RPK = {
@@ -1499,8 +1499,8 @@ const RPK = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "RPD_and_M60E4_and_RPKShoot.ogg",
-	reloadSound: "MG42Reload.ogg",
+	sound: "desnoguns/RPD_and_M60E4_and_RPKShoot.ogg",
+	reloadSound: "desnoguns/reload/MG42Reload.ogg",
 };
 
 const SG550 = {
@@ -1521,8 +1521,8 @@ const SG550 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "SG550Shoot.ogg",
-	reloadSound: "MP44Reload.ogg",
+	sound: "desnoguns/SG550Shoot.ogg",
+	reloadSound: "desnoguns/reload/MP44Reload.ogg",
 };
 
 const SIGP226 = {
@@ -1543,8 +1543,8 @@ const SIGP226 = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "SIGP226Shoot.ogg",
-	reloadSound: "LugerReload.ogg",
+	sound: "desnoguns/SIGP226Shoot.ogg",
+	reloadSound: "desnoguns/reload/LugerReload.ogg",
 };
 
 const SKORPION = {
@@ -1565,8 +1565,8 @@ const SKORPION = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "SkorpionShoot.ogg",
-	reloadSound: "StenReload.ogg",
+	sound: "desnoguns/SkorpionShoot.ogg",
+	reloadSound: "desnoguns/reload/StenReload.ogg",
 };
 
 const SPAS = {
@@ -1589,8 +1589,8 @@ const SPAS = {
 	shotgunDegreesSpread: 2,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "W1200_and_SPASShoot.ogg",
-	reloadSound: "W1200Reload.ogg",
+	sound: "desnoguns/W1200_and_SPASShoot.ogg",
+	reloadSound: "desnoguns/reload/W1200Reload.ogg",
 };
 
 const USP = {
@@ -1611,8 +1611,8 @@ const USP = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "USPShoot.ogg",
-	reloadSound: "TT33Reload.ogg",
+	sound: "desnoguns/USPShoot.ogg",
+	reloadSound: "desnoguns/reload/TT33Reload.ogg",
 };
 
 const W1200 = {
@@ -1635,8 +1635,8 @@ const W1200 = {
 	shotgunDegreesSpread: 3,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "W1200_and_SPASShoot.ogg",
-	reloadSound: "W1200Reload.ogg",
+	sound: "desnoguns/W1200_and_SPASShoot.ogg",
+	reloadSound: "desnoguns/reload/W1200Reload.ogg",
 };
 
 const XMAS_MINIGUN = {
@@ -1657,11 +1657,11 @@ const XMAS_MINIGUN = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_SNOWBALL,
 	// SOUNDS
-	warmupSound: "MinigunWarmup.ogg",
-	sound: "bell.mp3",
-	spinSound: "MinigunSpin.ogg",
-	cooldownSound: "MinigunCooldown.ogg",
-	reloadSound: "BrowningReload.ogg",
+	warmupSound: "desnoguns/MinigunWarmup.ogg",
+	sound: "desnoguns/bell.mp3",
+	spinSound: "desnoguns/MinigunSpin.ogg",
+	cooldownSound: "desnoguns/MinigunCooldown.ogg",
+	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
 const XMAS_SNIPER = {
@@ -1682,8 +1682,8 @@ const XMAS_SNIPER = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_SNOWBALL,
 	// SOUNDS
-	sound: "bell.mp3",
-	reloadSound: "SpringfieldReload.ogg",
+	sound: "desnoguns/bell.mp3",
+	reloadSound: "desnoguns/reload/SpringfieldReload.ogg",
 };
 
 const AA12 = {
@@ -1706,8 +1706,8 @@ const AA12 = {
 	shotgunDegreesSpread: 3,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "AA-12Shoot.ogg",
-	reloadSound: "PPSHReload.ogg",
+	sound: "desnoguns/AA-12Shoot.ogg",
+	reloadSound: "desnoguns/reload/PPSHReload.ogg",
 };
 
 const INCENDIARY_GL = {
@@ -1732,8 +1732,8 @@ const INCENDIARY_GL = {
 	bulletType: BULLET_TYPE_INCENDIARY_SNOWBALL,
 	grenadesExplosionDiameter: 4,
 	// SOUNDS
-	sound: "GrenadeLauncherShoot.ogg",
-	reloadSound: "GL6Reload.ogg",
+	sound: "desnoguns/GrenadeLauncherShoot.ogg",
+	reloadSound: "desnoguns/reload/GL6Reload.ogg",
 };
 
 const MSR = {
@@ -1756,8 +1756,8 @@ const MSR = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	sound: "MSRShoot.mp3",
-	reloadSound: "BARReload.ogg",
+	sound: "desnoguns/MSRShoot.mp3",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
 };
 
 // all the guns in a single array.
@@ -1782,7 +1782,7 @@ const KNIFE_MAX_DAMAGE = 32;
 const KNIFE_SOUND_STAB = {
 	startingFrom: 1,
 	endingAt: 2,
-	startText: "knife_stab",
+	startText: "desnoguns/knife_stab",
 	endText: ".mp3"
 };
 const KNIFE_MOB_DAMAGE = 20;
@@ -2165,7 +2165,7 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 
 	if(itemId == KNIFE_ID)
 	{
-		Sound.playFromFileName("knife_on_blocks.mp3");
+		Sound.playFromPath(Sound.getOriginalPath("desnoguns/knife_on_blocks.mp3"));
 	}
 
 	// easter egg
@@ -2195,7 +2195,7 @@ function attackHook(attacker, victim)
 		// knife
 		if(Player.getCarriedItem() == KNIFE_ID && Entity.getHealth(victim) != 0)
 		{
-			Sound.playFromFileName(createRandomString(KNIFE_SOUND_STAB));
+			Sound.playFromPath(Sound.getOriginalPath(createRandomString(KNIFE_SOUND_STAB)));
 
 			var health = Entity.getHealth(victim) - KNIFE_MOB_DAMAGE;
 			if(health < 1)
@@ -2209,7 +2209,7 @@ function attackHook(attacker, victim)
 		// riot shield
 		if(Player.getCarriedItem() == RIOT_SHIELD_ID && Entity.getHealth(victim) != 0)
 		{
-			Sound.playFromFileName("riot_shield_attack.mp3");
+			Sound.playFromPath(Sound.getOriginalPath("desnoguns/riot_shield_attack.mp3"));
 
 			var health = Entity.getHealth(victim) - RIOT_SHIELD_MOB_DAMAGE;
 			if(health < 1)
@@ -2361,7 +2361,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 
 		// load sounds for the gun
 		if(!currentGun.hasntShootingSound)
-			Sound.loadSoundPoolFromPath(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.sound);
+			Sound.loadSoundPoolFromPath(Sound.getOriginalPath(currentGun.sound));
 
 		// assault rifles, sub machine guns and light machine guns
 		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH)
@@ -2427,7 +2427,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 			// load spin sound
 			try {
 				gunSpinSound.reset();
-				gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.spinSound);
+				gunSpinSound.setDataSource(Sound.getOriginalPath(currentGun.spinSound));
 				gunSpinSound.setLooping(true);
 				gunSpinSound.setVolume(generalVolume, generalVolume);
 				gunSpinSound.prepareAsync();
@@ -2435,7 +2435,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 				try {
 					// try again, maybe we had a weird sound error
 					gunSpinSound.reset();
-					gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + currentGun.spinSound);
+					gunSpinSound.setDataSource(Sound.getOriginalPath(currentGun.spinSound));
 					gunSpinSound.setLooping(true);
 					gunSpinSound.setVolume(generalVolume, generalVolume);
 					gunSpinSound.prepareAsync();
@@ -2737,7 +2737,7 @@ var ModTickFunctions = {
 							}
 						}
 
-						Sound.playFromFileName("fire-explosion.mp3", grenade.previousX, grenade.previousY, grenade.previousZ);
+						Sound.playFromPath(Sound.getOriginalPath("desnoguns/fire-explosion.mp3"), grenade.previousX, grenade.previousY, grenade.previousZ);
 
 						Entity.remove(grenade.entity);
 						allGuns[i].bulletsArray.splice(j, 1);
@@ -2842,7 +2842,7 @@ var ModTickFunctions = {
 					}
 				}
 
-				Sound.playFromFileName("MolotovExplosion.mp3", grenade.previousX, grenade.previousY, grenade.previousZ);
+				Sound.playFromPath(Sound.getOriginalPath("desnoguns/MolotovExplosion.mp3"), grenade.previousX, grenade.previousY, grenade.previousZ);
 
 				//clientMessage("x: " + Math.floor(grenade.previousX ) + "y: " + Math.floor(grenade.previousY) + "z: " + Math.floor(grenade.previousZ));
 				Entity.remove(grenade.entity);
@@ -2932,7 +2932,7 @@ var ModTickFunctions = {
 			if(Entity.getVelY(Player.getEntity()) <= -0.5)
 			{
 				// START parachuting
-				Sound.playFromFileName("benboncan_parachute.mp3");
+				Sound.playFromPath(Sound.getOriginalPath("desnoguns/benboncan_parachute.mp3"));
 				isParachuting = true;
 
 				if(Level.getGameMode() == GameMode.SURVIVAL)
@@ -3716,7 +3716,7 @@ function shootGrenadeHand(grenadeObject)
 				}
 			}), 1);
 
-			Sound.playFromFileName("smoke-grenade.mp3");
+			Sound.playFromPath(Sound.getOriginalPath("desnoguns/smoke-grenade.mp3"));
 		}
 	}
 }
@@ -3910,7 +3910,7 @@ function shootSingleBullet(gun)
 
 	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 	{
-		Sound.playFromFileName("explosion-countdown.wav");
+		Sound.playFromPath(Sound.getOriginalPath("desnoguns/explosion-countdown.wav"));
 
 		new android.os.Handler().postDelayed(new java.lang.Runnable(
 		{
@@ -3964,7 +3964,7 @@ function shootShotgun(gun)
 	}
 
 	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
-		Sound.playFromFileName("explosion-countdown.wav");
+		Sound.playFromPath(Sound.getOriginalPath("desnoguns/explosion-countdown.wav"));
 }
 
 function shootSingleShotgunBullet(gun)
@@ -4173,7 +4173,7 @@ function onClickShootWithReload(gun)
 {
 	if(Player.getCarriedItemData() >= gun.ammo)
 	{
-		Sound.playFromFileName("EmptyGun.ogg");
+		Sound.playFromPath(Sound.getOriginalPath("desnoguns/EmptyGun.ogg"));
 		ModPE.showTipMessage("Press the ammo text to reload.");
 	} else
 	{
@@ -4230,7 +4230,7 @@ function onTouchShootingRunnableWithReload(gun)
 			{
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
-					Sound.playFromFileName("EmptyGun.ogg");
+					Sound.playFromPath(Sound.getOriginalPath("desnoguns/EmptyGun.ogg"));
 					ModPE.showTipMessage("Press the ammo text to reload.");
 				} else
 				{
@@ -4288,7 +4288,7 @@ function onTouchWithWaitWeaponShoot(event, gun, reload)
 
 				isTouchingFireButtonGunsWithWait = true;
 				gunWarmupSound.reset();
-				gunWarmupSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + warmupSoundString);
+				gunWarmupSound.setDataSource(Sound.getOriginalPath(warmupSoundString));
 				gunWarmupSound.setVolume(generalVolume, generalVolume);
 				gunWarmupSound.prepare();
 				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
@@ -4336,7 +4336,7 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 		ModPE.log(getLogText() + "Error in onTouchWithWaitWeaponButtonReleased(): " + e);
 		try {
 			gunSpinSound.reset();
-			gunSpinSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + gun.spinSound);
+			gunSpinSound.setDataSource(Sound.getOriginalPath(gun.spinSound));
 			gunSpinSound.setLooping(true);
 			gunSpinSound.setVolume(generalVolume, generalVolume);
 			gunSpinSound.prepareAsync();
@@ -4344,7 +4344,7 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 	}
 
 	if(!gun.hasntCooldownSound)
-		Sound.playFromFileName(gun.cooldownSound);
+		Sound.playFromPath(Sound.getOriginalPath(gun.cooldownSound));
 }
 
 function onTouchWithWaitShootingRunnableWithReload(gun)
@@ -4357,7 +4357,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 			{
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
-					Sound.playFromFileName("EmptyGun.ogg");
+					Sound.playFromPath(Sound.getOriginalPath("desnoguns/EmptyGun.ogg"));
 					ModPE.showTipMessage("Press the ammo text to reload.");
 				} else
 				{
@@ -4403,7 +4403,38 @@ var sound3;
 
 var Sound = {
 
-	playFromFileName: function(fileName, x, y, z)
+	isDefault: function(simplePath)
+	{
+		//
+		return simplePath.substring(0, 10) == "desnoguns/";
+	},
+
+	isCustom: function(simplePath)
+	{
+		//
+		return simplePath.substring(0, 7) == "custom/";
+	},
+
+	getOriginalPath: function(simplePath)
+	{
+		if(Sound.isDefault(simplePath))
+		{
+			// sound in form: desnoguns/path-in-default-desnoguns-folder
+			var pathInDefaultDesnoGunsFolder = simplePath.substring(10); // keep only after desnoguns/
+			return sdcard + "/games/com.mojang/desnoguns-sounds/" + pathInDefaultDesnoGunsFolder;
+		}
+
+		if(Sound.isCustom(simplePath))
+		{
+			// sound in form: custom/path-in-texture-pack and it has been saved in ...com.mojang/desnoguns-temp/path-in-texture-pack
+			var pathInTexturePack = simplePath.substring(7); // keep only after custom/
+			return sdcard + "/games/com.mojang/desnoguns-temp/" + pathInTexturePack;
+		}
+
+		throw getLogText() + "problem in path: " + simplePath;
+	},
+
+	playFromPath: function(path, x, y, z)
 	{
 		var volume = 1.0;
 
@@ -4433,7 +4464,7 @@ var Sound = {
 				if(sound1 == null)
 					sound1 = new android.media.MediaPlayer();
 				sound1.reset();
-				sound1.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound1.setDataSource(path);
 				sound1.setVolume(volume, volume);
 				sound1.prepare();
 				sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
@@ -4457,7 +4488,7 @@ var Sound = {
 				if(sound2 == null)
 					sound2 = new android.media.MediaPlayer();
 				sound2.reset();
-				sound2.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound2.setDataSource(path);
 				sound2.setVolume(volume, volume);
 				sound2.prepare();
 				sound2.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
@@ -4481,7 +4512,7 @@ var Sound = {
 				if(sound3 == null)
 					sound3 = new android.media.MediaPlayer();
 				sound3.reset();
-				sound3.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound3.setDataSource(path);
 				sound3.setVolume(volume, volume);
 				sound3.prepare();
 				sound3.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
@@ -4504,7 +4535,7 @@ var Sound = {
 				if(sound1 == null)
 					sound1 = new android.media.MediaPlayer();
 				sound1.reset();
-				sound1.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/" + fileName);
+				sound1.setDataSource(path);
 				sound1.setVolume(volume, volume);
 				sound1.prepare();
 				sound1.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
@@ -4526,7 +4557,7 @@ var Sound = {
 			{
 				ModPE.showTipMessage(getLogText() + "Sounds not installed!");
 				displayedMessageNoSound = true;
-				ModPE.log(getLogText() + "Error in playSoundFromFile: " + err);
+				ModPE.log(getLogText() + "Error in playFromPath: " + err);
 			}
 		}
 	},
@@ -5216,7 +5247,7 @@ function reloadAmmo(gun)
 					reloadingGun = gun;
 
 					reloadSound.reset();
-					reloadSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.reloadSound);
+					reloadSound.setDataSource(Sound.getOriginalPath(gun.reloadSound));
 					reloadSound.setVolume(generalVolume, generalVolume);
 					reloadSound.prepare();
 					reloadSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
@@ -5281,7 +5312,7 @@ function reloadAmmo(gun)
 					reloadingGun = gun;
 
 					reloadSound.reset();
-					reloadSound.setDataSource(sdcard + "/games/com.mojang/desnoguns-sounds/reload/" + gun.reloadSound);
+					reloadSound.setDataSource(Sound.getOriginalPath(gun.reloadSound));
 					reloadSound.setVolume(generalVolume, generalVolume);
 					reloadSound.prepare();
 					reloadSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
