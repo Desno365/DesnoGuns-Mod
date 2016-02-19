@@ -1937,6 +1937,7 @@ Item.addShapedRecipe(JUGGERNAUT_HELMET_ID, 1, 0, [
 	"cic",
 	"c c",
 	"   "], ["c", 351, 2, "i", 265, 0]);
+Player.addItemCreativeInv(JUGGERNAUT_HELMET_ID, 1);
 
 const JUGGERNAUT_BODY_ID = 3286;
 Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 362, ArmorType.chestplate);
@@ -1944,6 +1945,7 @@ Item.addShapedRecipe(JUGGERNAUT_BODY_ID, 1, 0, [
 	"i i",
 	"cic",
 	"cic"], ["c", 351, 2, "i", 265, 0]);
+Player.addItemCreativeInv(JUGGERNAUT_BODY_ID, 1);
 
 const JUGGERNAUT_PANTS_ID = 3287;
 Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 339, ArmorType.leggings);
@@ -1951,6 +1953,7 @@ Item.addShapedRecipe(JUGGERNAUT_PANTS_ID, 1, 0, [
 	"ccc",
 	"i i",
 	"i i"], ["c", 351, 2, "i", 265, 0]);
+Player.addItemCreativeInv(JUGGERNAUT_PANTS_ID, 1);
 
 const JUGGERNAUT_BOOTS_ID = 3288;
 Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 294, ArmorType.boots);
@@ -1958,6 +1961,7 @@ Item.addShapedRecipe(JUGGERNAUT_BOOTS_ID, 1, 0, [
 	"   ",
 	"c c",
 	"i i"], ["c", 351, 2, "i", 265, 0]);
+Player.addItemCreativeInv(JUGGERNAUT_BOOTS_ID, 1);
 
 
 function selectLevelHook()
