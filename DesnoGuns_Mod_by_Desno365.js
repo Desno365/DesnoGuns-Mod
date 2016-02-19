@@ -4689,6 +4689,9 @@ function displaySight()
 
 					popupSightImage = new android.widget.PopupWindow(sightImageView, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 					popupSightImage.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+					popupSightImage.setOutsideTouchable(false);
+					popupSightImage.setFocusable(false);
+					popupSightImage.setTouchable(false);
 					popupSightImage.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, -convertDpToPixel(1), -convertDpToPixel(1));
 				} catch(err)
 				{
