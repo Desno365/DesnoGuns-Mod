@@ -2165,7 +2165,7 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 
 	if(itemId == KNIFE_ID)
 	{
-		Sound.playFromPath(Sound.getOriginalPath("desnoguns/knife_on_blocks.mp3"));
+		Sound.playFromSimplePath("desnoguns/knife_on_blocks.mp3");
 	}
 
 	// easter egg
@@ -2195,7 +2195,7 @@ function attackHook(attacker, victim)
 		// knife
 		if(Player.getCarriedItem() == KNIFE_ID && Entity.getHealth(victim) != 0)
 		{
-			Sound.playFromPath(Sound.getOriginalPath(createRandomString(KNIFE_SOUND_STAB)));
+			Sound.playFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
 
 			var health = Entity.getHealth(victim) - KNIFE_MOB_DAMAGE;
 			if(health < 1)
@@ -2209,7 +2209,7 @@ function attackHook(attacker, victim)
 		// riot shield
 		if(Player.getCarriedItem() == RIOT_SHIELD_ID && Entity.getHealth(victim) != 0)
 		{
-			Sound.playFromPath(Sound.getOriginalPath("desnoguns/riot_shield_attack.mp3"));
+			Sound.playFromSimplePath("desnoguns/riot_shield_attack.mp3");
 
 			var health = Entity.getHealth(victim) - RIOT_SHIELD_MOB_DAMAGE;
 			if(health < 1)
@@ -2737,7 +2737,7 @@ var ModTickFunctions = {
 							}
 						}
 
-						Sound.playFromPath(Sound.getOriginalPath("desnoguns/fire-explosion.mp3"), grenade.previousX, grenade.previousY, grenade.previousZ);
+						Sound.playFromSimplePath("desnoguns/fire-explosion.mp3", grenade.previousX, grenade.previousY, grenade.previousZ);
 
 						Entity.remove(grenade.entity);
 						allGuns[i].bulletsArray.splice(j, 1);
@@ -2842,7 +2842,7 @@ var ModTickFunctions = {
 					}
 				}
 
-				Sound.playFromPath(Sound.getOriginalPath("desnoguns/MolotovExplosion.mp3"), grenade.previousX, grenade.previousY, grenade.previousZ);
+				Sound.playFromSimplePath("desnoguns/MolotovExplosion.mp3", grenade.previousX, grenade.previousY, grenade.previousZ);
 
 				//clientMessage("x: " + Math.floor(grenade.previousX ) + "y: " + Math.floor(grenade.previousY) + "z: " + Math.floor(grenade.previousZ));
 				Entity.remove(grenade.entity);
@@ -2932,7 +2932,7 @@ var ModTickFunctions = {
 			if(Entity.getVelY(Player.getEntity()) <= -0.5)
 			{
 				// START parachuting
-				Sound.playFromPath(Sound.getOriginalPath("desnoguns/benboncan_parachute.mp3"));
+				Sound.playFromSimplePath("desnoguns/benboncan_parachute.mp3");
 				isParachuting = true;
 
 				if(Level.getGameMode() == GameMode.SURVIVAL)
@@ -3716,7 +3716,7 @@ function shootGrenadeHand(grenadeObject)
 				}
 			}), 1);
 
-			Sound.playFromPath(Sound.getOriginalPath("desnoguns/smoke-grenade.mp3"));
+			Sound.playFromSimplePath("desnoguns/smoke-grenade.mp3");
 		}
 	}
 }
@@ -3910,7 +3910,7 @@ function shootSingleBullet(gun)
 
 	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 	{
-		Sound.playFromPath(Sound.getOriginalPath("desnoguns/explosion-countdown.wav"));
+		Sound.playFromSimplePath("desnoguns/explosion-countdown.wav");
 
 		new android.os.Handler().postDelayed(new java.lang.Runnable(
 		{
@@ -3964,7 +3964,7 @@ function shootShotgun(gun)
 	}
 
 	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
-		Sound.playFromPath(Sound.getOriginalPath("desnoguns/explosion-countdown.wav"));
+		Sound.playFromSimplePath("desnoguns/explosion-countdown.wav");
 }
 
 function shootSingleShotgunBullet(gun)
@@ -4173,7 +4173,7 @@ function onClickShootWithReload(gun)
 {
 	if(Player.getCarriedItemData() >= gun.ammo)
 	{
-		Sound.playFromPath(Sound.getOriginalPath("desnoguns/EmptyGun.ogg"));
+		Sound.playFromSimplePath("desnoguns/EmptyGun.ogg");
 		ModPE.showTipMessage("Press the ammo text to reload.");
 	} else
 	{
@@ -4230,7 +4230,7 @@ function onTouchShootingRunnableWithReload(gun)
 			{
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
-					Sound.playFromPath(Sound.getOriginalPath("desnoguns/EmptyGun.ogg"));
+					Sound.playFromSimplePath("desnoguns/EmptyGun.ogg");
 					ModPE.showTipMessage("Press the ammo text to reload.");
 				} else
 				{
@@ -4344,7 +4344,7 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 	}
 
 	if(!gun.hasntCooldownSound)
-		Sound.playFromPath(Sound.getOriginalPath(gun.cooldownSound));
+		Sound.playFromSimplePath(gun.cooldownSound);
 }
 
 function onTouchWithWaitShootingRunnableWithReload(gun)
@@ -4357,7 +4357,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 			{
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
-					Sound.playFromPath(Sound.getOriginalPath("desnoguns/EmptyGun.ogg"));
+					Sound.playFromSimplePath("desnoguns/EmptyGun.ogg");
 					ModPE.showTipMessage("Press the ammo text to reload.");
 				} else
 				{
@@ -4432,6 +4432,12 @@ var Sound = {
 		}
 
 		throw getLogText() + "problem in path: " + simplePath;
+	},
+
+	playFromSimplePath: function(simplePath, x, y, z)
+	{
+		//
+		Sound.playFromPath(getOriginalPath(simplePath), x, y, z);
 	},
 
 	playFromPath: function(path, x, y, z)
