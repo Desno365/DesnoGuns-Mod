@@ -8189,7 +8189,7 @@ Entity.setGrenadeRender = function(entity)
 var SoundsInstaller = {
 	sounds:
 	{
-		version: 4,
+		version: 5,
 		soundArray: [
 			// { fileName: "", file: "" },
 			// { fileName: "", fileDirectory: "", file: "" },
@@ -8698,7 +8698,7 @@ var SoundsInstaller = {
 		{
 			run: function()
 			{
-				var githubUrl = "https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/version" + SoundsInstaller.sounds.version + "/desnoguns-sounds/";
+				var githubUrl = "https://raw.githubusercontent.com/Desno365/DesnoGuns-Mod/master/sounds/version" + SoundsInstaller.sounds.version + "/desnoguns-sounds/";
 				var tmpPath = sdcard + "/games/com.mojang/desnoguns-sounds/";
 
 				deleteFile(tmpPath); //delete previous files if present
@@ -8821,7 +8821,7 @@ var SoundsInstaller = {
 		var streamOutputVersion = new java.io.FileOutputStream(versionSaveFile);
 		var streamWriterVersion = new java.io.OutputStreamWriter(streamOutputVersion);
 
-		streamWriterVersion.append(SoundsInstaller.sounds.version + " what are you searching for? This text is private and you shouldn't see. No, I'm joking, do whatever you want here.");
+		streamWriterVersion.append(SoundsInstaller.sounds.version + " Hi! Did you enjoy playing with the DesnoGuns Mod? I hope you did. -Desno365");
 		streamWriterVersion.close();
 		streamOutputVersion.close();
 	}
