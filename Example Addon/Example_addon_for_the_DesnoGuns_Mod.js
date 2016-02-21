@@ -24,8 +24,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "44Magnum.mp3",
-		reloadSound: "GL6Reload.ogg",
+		sound: "custom/my-addon-name-sounds/44Magnum.mp3",
+		reloadSound: "custom/my-addon-name-sounds/reload/GL6Reload.ogg",
 	},
 
 	{
@@ -46,8 +46,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "AK47Shoot.ogg",
-		reloadSound: "MP44Reload.ogg",
+		sound: "custom/my-addon-name-sounds/AK47Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/MP44Reload.ogg",
 	},
 
 	{
@@ -70,8 +70,8 @@ var ADDON_WEAPONS = [
 		bulletType: "normal_explosive_on_touch",
 		bulletsExplosionRadius: 2,
 		// SOUNDS
-		sound: "BarrettShoot.ogg",
-		reloadSound: "BARReload.ogg",
+		sound: "custom/my-addon-name-sounds/BarrettShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BARReload.ogg",
 	},
 
 	{
@@ -93,8 +93,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "BarrettShoot.ogg",
-		reloadSound: "BARReload.ogg",
+		sound: "custom/my-addon-name-sounds/BarrettShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BARReload.ogg",
 	},
 
 	{
@@ -115,8 +115,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-		reloadSound: "MP40Reload.ogg",
+		sound: "custom/my-addon-name-sounds/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/MP40Reload.ogg",
 	},
 
 	{
@@ -146,8 +146,8 @@ var ADDON_WEAPONS = [
 		bulletsExplosionDelay: 3350,
 		bulletsExplosionRadius: 4,
 		// SOUNDS
-		sound: "CrossbowShoot.wav",
-		reloadSound: "CrossbowReload.wav",
+		sound: "custom/my-addon-name-sounds/CrossbowShoot.wav",
+		reloadSound: "custom/my-addon-name-sounds/reload/CrossbowReload.wav",
 	},
 
 	{
@@ -175,8 +175,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "CrossbowShoot.wav",
-		reloadSound: "CrossbowReload.wav",
+		sound: "custom/my-addon-name-sounds/CrossbowShoot.wav",
+		reloadSound: "custom/my-addon-name-sounds/reload/CrossbowReload.wav",
 	},
 
 	{
@@ -195,17 +195,11 @@ var ADDON_WEAPONS = [
 		// BEHAVIOR
 		shotType: "flamethrower",
 		// SOUNDS
-		hasRandomWarmupSound: true,
-		warmupSound: {
-			startingFrom: 1,
-			endingAt: 3,
-			startText: "ignite_flamethrower",
-			endText: ".ogg"
-		},
+		warmupSound: "custom/my-addon-name-sounds/ignite_flamethrower1.ogg",
 		hasntShootingSound: true,
-		spinSound: "flamethrower.mp3",
+		spinSound: "custom/my-addon-name-sounds/flamethrower.mp3",
 		hasntCooldownSound: true,
-		reloadSound: "BrowningReload.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BrowningReload.ogg",
 	},
 
 	{
@@ -226,8 +220,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-		reloadSound: "ThompsonReload.ogg",
+		sound: "custom/my-addon-name-sounds/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/ThompsonReload.ogg",
 	},
 
 	{
@@ -248,8 +242,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "tnt",
 		// SOUNDS
-		sound: "GrenadeLauncherShoot.ogg",
-		reloadSound: "GrenadeLauncherReload.ogg",
+		sound: "custom/my-addon-name-sounds/GrenadeLauncherShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/GrenadeLauncherReload.ogg",
 	},
 
 	{
@@ -270,8 +264,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "tnt",
 		// SOUNDS
-		sound: "GrenadeLauncherShoot.ogg",
-		reloadSound: "GL6Reload.ogg",
+		sound: "custom/my-addon-name-sounds/GrenadeLauncherShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/GL6Reload.ogg",
 	},
 
 	{
@@ -292,8 +286,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "GlockShoot.ogg",
-		reloadSound: "ColtReload.ogg",
+		sound: "custom/my-addon-name-sounds/GlockShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/ColtReload.ogg",
 	},
 
 	{
@@ -314,8 +308,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "M249_and_L86Shoot.ogg",
-		reloadSound: "BrowningReload.ogg",
+		sound: "custom/my-addon-name-sounds/M249_and_L86Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BrowningReload.ogg",
 	},
 
 	{
@@ -336,8 +330,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "M14_and_M16A4Shoot.ogg",
-		reloadSound: "BARReload.ogg",
+		sound: "custom/my-addon-name-sounds/M14_and_M16A4Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BARReload.ogg",
 	},
 
 	{
@@ -362,8 +356,8 @@ var ADDON_WEAPONS = [
 		bulletType: "normal_explosive_on_touch",
 		bulletsExplosionRadius: 4,
 		// SOUNDS
-		sound: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-		reloadSound: "BazookaReload.ogg",
+		sound: "custom/my-addon-name-sounds/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.ogg",
 	},
 
 	{
@@ -384,8 +378,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "M249_and_L86Shoot.ogg",
-		reloadSound: "BrowningReload.ogg",
+		sound: "custom/my-addon-name-sounds/M249_and_L86Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BrowningReload.ogg",
 	},
 
 	{
@@ -408,8 +402,8 @@ var ADDON_WEAPONS = [
 		shotgunDegreesSpread: 3,
 		bulletType: "normal",
 		// SOUNDS
-		sound: "M1014Shoot.ogg",
-		reloadSound: "M1014Reload.ogg",
+		sound: "custom/my-addon-name-sounds/M1014Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/M1014Reload.ogg",
 	},
 
 	{
@@ -432,8 +426,8 @@ var ADDON_WEAPONS = [
 		shotgunDegreesSpread: 5,
 		bulletType: "normal",
 		// SOUNDS
-		sound: "M1887Shoot.ogg",
-		reloadSound: "M1887Reload.ogg",
+		sound: "custom/my-addon-name-sounds/M1887Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/M1887Reload.ogg",
 	},
 
 	{
@@ -455,11 +449,11 @@ var ADDON_WEAPONS = [
 		bulletType: "normal_explosive_on_touch",
 		bulletsExplosionRadius: 2,
 		// SOUNDS
-		warmupSound: "MinigunWarmup.ogg",
-		sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-		spinSound: "MinigunSpin.ogg",
-		cooldownSound: "MinigunCooldown.ogg",
-		reloadSound: "BrowningReload.ogg",
+		warmupSound: "custom/my-addon-name-sounds/MinigunWarmup.ogg",
+		sound: "custom/my-addon-name-sounds/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+		spinSound: "custom/my-addon-name-sounds/MinigunSpin.ogg",
+		cooldownSound: "custom/my-addon-name-sounds/MinigunCooldown.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BrowningReload.ogg",
 	},
 
 	{
@@ -480,11 +474,11 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		warmupSound: "MinigunWarmup.ogg",
-		sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-		spinSound: "MinigunSpin.ogg",
-		cooldownSound: "MinigunCooldown.ogg",
-		reloadSound: "BrowningReload.ogg",
+		warmupSound: "custom/my-addon-name-sounds/MinigunWarmup.ogg",
+		sound: "custom/my-addon-name-sounds/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+		spinSound: "custom/my-addon-name-sounds/MinigunSpin.ogg",
+		cooldownSound: "custom/my-addon-name-sounds/MinigunCooldown.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BrowningReload.ogg",
 	},
 
 	{
@@ -512,8 +506,8 @@ var ADDON_WEAPONS = [
 		bulletType: "normal_explosive_on_touch",
 		bulletsExplosionRadius: 2,
 		// SOUNDS
-		sound: "MultipleRocketLauncherShoot.mp3",
-		reloadSound: "BazookaReload.ogg",
+		sound: "custom/my-addon-name-sounds/MultipleRocketLauncherShoot.mp3",
+		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.ogg",
 	},
 
 	{
@@ -534,8 +528,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-		reloadSound: "DP28Reload.ogg",
+		sound: "custom/my-addon-name-sounds/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/DP28Reload.ogg",
 	},
 
 	{
@@ -557,8 +551,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "R700_and_M40A3Shoot.ogg",
-		reloadSound: "SpringfieldReload.ogg",
+		sound: "custom/my-addon-name-sounds/R700_and_M40A3Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/SpringfieldReload.ogg",
 	},
 
 	{
@@ -584,8 +578,8 @@ var ADDON_WEAPONS = [
 		particleTrailId: ParticleType.redstone,
 		bulletType: "normal",
 		// SOUNDS
-		sound: "RayGunShoot.mp3",
-		reloadSound: "RayGunReload.mp3",
+		sound: "custom/my-addon-name-sounds/RayGunShoot.mp3",
+		reloadSound: "custom/my-addon-name-sounds/reload/RayGunReload.mp3",
 	},
 
 	{
@@ -610,8 +604,8 @@ var ADDON_WEAPONS = [
 		bulletType: "normal_explosive_on_touch",
 		bulletsExplosionRadius: 4,
 		// SOUNDS
-		sound: "RPGShoot.ogg",
-		reloadSound: "BazookaReload.ogg",
+		sound: "custom/my-addon-name-sounds/RPGShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.ogg",
 	},
 
 	{
@@ -632,8 +626,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "SG550Shoot.ogg",
-		reloadSound: "MP44Reload.ogg",
+		sound: "custom/my-addon-name-sounds/SG550Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/MP44Reload.ogg",
 	},
 
 	{
@@ -654,8 +648,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal",
 		// SOUNDS
-		sound: "SIGP226Shoot.ogg",
-		reloadSound: "LugerReload.ogg",
+		sound: "custom/my-addon-name-sounds/SIGP226Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/LugerReload.ogg",
 	},
 
 	{
@@ -678,8 +672,8 @@ var ADDON_WEAPONS = [
 		shotgunDegreesSpread: 2,
 		bulletType: "normal",
 		// SOUNDS
-		sound: "W1200_and_SPASShoot.ogg",
-		reloadSound: "W1200Reload.ogg",
+		sound: "custom/my-addon-name-sounds/W1200_and_SPASShoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/W1200Reload.ogg",
 	},
 
 	{
@@ -700,11 +694,11 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "snowball",
 		// SOUNDS
-		warmupSound: "MinigunWarmup.ogg",
-		sound: "bell.mp3",
-		spinSound: "MinigunSpin.ogg",
-		cooldownSound: "MinigunCooldown.ogg",
-		reloadSound: "BrowningReload.ogg",
+		warmupSound: "custom/my-addon-name-sounds/MinigunWarmup.ogg",
+		sound: "custom/my-addon-name-sounds/bell.mp3",
+		spinSound: "custom/my-addon-name-sounds/MinigunSpin.ogg",
+		cooldownSound: "custom/my-addon-name-sounds/MinigunCooldown.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BrowningReload.ogg",
 	},
 
 	{
@@ -725,8 +719,8 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "snowball",
 		// SOUNDS
-		sound: "bell.mp3",
-		reloadSound: "SpringfieldReload.ogg",
+		sound: "custom/my-addon-name-sounds/bell.mp3",
+		reloadSound: "custom/my-addon-name-sounds/reload/SpringfieldReload.ogg",
 	},
 ];
 
@@ -762,7 +756,7 @@ var ADDON_WEAPONS = [
 		// options with shotType = "normal" or "shotgun"
 		hasParticleTrail: boolean, // display a trail of particles behind the bullet
 		particleTrailDistance: int, // the higher this number is the less distance particles will have between them and the player
-		particleTrailId: int, // the id
+		particleTrailId: int, // the id of the particle
 
 		// options with shotType = "shotgun"
 		shotgunBullets: int, // number of bullets the gun will shoot. Must be > or = 0 when using shotType "shotgun".
@@ -782,13 +776,6 @@ var ADDON_WEAPONS = [
 		reloadSound: String, // sound when reloading
 
 		// SOUNDS only for type "on_touch_with_wait"
-		hasRandomWarmupSound: boolean, // true if there are multiple possible warm-up sounds
-		warmupSound: { // this form must be used only if hasRandomWarmupSound false, this random structure creates a string like this startText + number + endText
-			startingFrom: int,
-			endingAt: int,
-			startText: String,
-			endText: String
-		},
 		warmupSound: String,
 		spinSound: String,
 		hasntCooldownSound: boolean,

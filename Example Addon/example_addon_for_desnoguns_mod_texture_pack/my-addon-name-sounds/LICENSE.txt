@@ -1,0 +1,18 @@
+LICENSE:
+
+- The parachute sound is copyright of Benboncan (https://www.freesound.org/people/Benboncan/) and is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+
+
+- The Crossbow shoot sound is copyright of Erdie (https://www.freesound.org/people/Erdie/) and is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+
+
+- The Crossbow reload sound is copyright of S_Dij (https://www.freesound.org/people/S_Dij/) and is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+
+
+- The explosion-countdown sound is copyright of meatball4u (https://www.freesound.org/people/meatball4u/) and is licensed under the Creative Commons Sampling Plus 1.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/sampling+/1.0/
+
+
+- The smoke-grenade sound is copyright of Robinhood76 (https://www.freesound.org/people/Robinhood76/) and is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+
+
+- All the other sounds of the weapons in this folder are copyright of Flan (https://twitter.com/jamioflan), and are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/
