@@ -1839,7 +1839,7 @@ Item.defineItem(BINOCULARS.id, "binoculars", 0, "Binoculars");
 Item.addShapedRecipe(BINOCULARS.id, 1, 0, [
 	"g g",
 	"iii",
-	"i i"], ["g", 95, 0, "i", 265, 0]); // g = glass; i = iron;
+	"i i"], ["g", 20, 0, "i", 265, 0]); // g = glass; i = iron;
 Item.setCategory(BINOCULARS.id, ITEM_CATEGORY_TOOL);
 Player.addItemCreativeInv(BINOCULARS.id, 1);
 
@@ -1853,7 +1853,7 @@ Item.defineItem(ZOOM_BINOCULARS.id, "zoombinoculars", 0, "Zoom Binoculars");
 Item.addShapedRecipe(ZOOM_BINOCULARS.id, 1, 0, [
 	"g g",
 	"iri",
-	"i i"], ["g", 95, 0, "i", 265, 0, "r", 331, 0]); // g = glass; i = iron; r = redstone
+	"i i"], ["g", 20, 0, "i", 265, 0, "r", 331, 0]); // g = glass; i = iron; r = redstone
 Item.setCategory(ZOOM_BINOCULARS.id, ITEM_CATEGORY_TOOL);
 Player.addItemCreativeInv(ZOOM_BINOCULARS.id, 1);
 
