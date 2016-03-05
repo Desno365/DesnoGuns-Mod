@@ -3050,7 +3050,7 @@ function canGunBeLoaded(gun)
 	if(gun.accuracy == null)
 		return defaultError + "gun.accuracy is not specified.";
 	if(gun.accuracy <= 0 || gun.accuracy >= 45)
-		return defaultError + "gun.zoomLevel must be > 0 and < 45.";
+		return defaultError + "gun.accuracy must be > 0 and < 45.";
 
 	if(gun.texture == null)
 		return defaultError + "gun.texture is not specified.";
