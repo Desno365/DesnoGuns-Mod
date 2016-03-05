@@ -376,7 +376,82 @@ Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 	};
 */
 
-// weapons
+// pro weapons
+const AA12 = {
+	weaponType: "gun",
+	name: "AA-12",
+	gunType: GUN_TYPE_SHOTGUN,
+	buttonType: BUTTON_TYPE_ON_TOUCH,
+	id: 509,
+	fireRate: 5,
+	recoil: 10,
+	bulletSpeed: SHOTGUN_BULLET_SPEED + 0.9,
+	accuracy: 10,
+	zoomLevel: ZOOM_SHOTGUN,
+	texture: "aa12",
+	ammo: 8,
+	smoke: 1,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_SHOTGUN,
+	shotgunBullets: 6,
+	shotgunDegreesSpread: 3,
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "desnoguns/AA-12Shoot.ogg",
+	reloadSound: "desnoguns/reload/PPSHReload.ogg",
+};
+
+const INCENDIARY_GL = {
+	weaponType: "gun",
+	name: "Incendiary Grenade Launcher",
+	gunType: GUN_TYPE_LAUNCHER,
+	buttonType: BUTTON_TYPE_ON_CLICK,
+	id: 510,
+	fireRate: 5,
+	recoil: 10,
+	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED - 0.6,
+	accuracy: 15,
+	zoomLevel: ZOOM_GRENADE_LAUNCHER,
+	texture: "glincendiary",
+	ammo: 6,
+	smoke: 0,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_NORMAL,
+	hasParticleTrail: true,
+	particleTrailDistance: 99,
+	particleTrailId: ParticleType.flame,
+	bulletType: BULLET_TYPE_INCENDIARY_SNOWBALL,
+	grenadesExplosionDiameter: 4,
+	// SOUNDS
+	sound: "desnoguns/GrenadeLauncherShoot.ogg",
+	reloadSound: "desnoguns/reload/GL6Reload.ogg",
+};
+
+const MSR = {
+	weaponType: "gun",
+	name: "MSR",
+	gunType: GUN_TYPE_SNIPER_RIFLE,
+	buttonType: BUTTON_TYPE_ON_CLICK,
+	id: 3369,
+	fireRate: 12,
+	recoil: 22,
+	bulletSpeed: SNIPER_BULLET_SPEED,
+	zoomLevel: ZOOM_SNIPER,
+	accuracy: 2,
+	hasAimImageLayer: true,
+	hasManualZoom: true,
+	texture: "msr",
+	ammo: 5,
+	smoke: 1,
+	// BEHAVIOR
+	shotType: SHOT_TYPE_NORMAL,
+	bulletType: BULLET_TYPE_NORMAL,
+	// SOUNDS
+	sound: "desnoguns/MSRShoot.mp3",
+	reloadSound: "desnoguns/reload/BARReload.ogg",
+};
+
+// free weapons
 const MAGNUM44 = {
 	weaponType: "gun",
 	name: ".44 Magnum",
@@ -1663,84 +1738,9 @@ const XMAS_SNIPER = {
 	reloadSound: "desnoguns/reload/SpringfieldReload.ogg",
 };
 
-const AA12 = {
-	weaponType: "gun",
-	name: "AA-12",
-	gunType: GUN_TYPE_SHOTGUN,
-	buttonType: BUTTON_TYPE_ON_TOUCH,
-	id: 509,
-	fireRate: 5,
-	recoil: 10,
-	bulletSpeed: SHOTGUN_BULLET_SPEED + 0.9,
-	accuracy: 10,
-	zoomLevel: ZOOM_SHOTGUN,
-	texture: "aa12",
-	ammo: 8,
-	smoke: 1,
-	// BEHAVIOR
-	shotType: SHOT_TYPE_SHOTGUN,
-	shotgunBullets: 6,
-	shotgunDegreesSpread: 3,
-	bulletType: BULLET_TYPE_NORMAL,
-	// SOUNDS
-	sound: "desnoguns/AA-12Shoot.ogg",
-	reloadSound: "desnoguns/reload/PPSHReload.ogg",
-};
-
-const INCENDIARY_GL = {
-	weaponType: "gun",
-	name: "Incendiary Grenade Launcher",
-	gunType: GUN_TYPE_LAUNCHER,
-	buttonType: BUTTON_TYPE_ON_CLICK,
-	id: 510,
-	fireRate: 5,
-	recoil: 10,
-	bulletSpeed: GRENADE_LAUNCHER_BULLET_SPEED - 0.6,
-	accuracy: 15,
-	zoomLevel: ZOOM_GRENADE_LAUNCHER,
-	texture: "glincendiary",
-	ammo: 6,
-	smoke: 0,
-	// BEHAVIOR
-	shotType: SHOT_TYPE_NORMAL,
-	hasParticleTrail: true,
-	particleTrailDistance: 99,
-	particleTrailId: ParticleType.flame,
-	bulletType: BULLET_TYPE_INCENDIARY_SNOWBALL,
-	grenadesExplosionDiameter: 4,
-	// SOUNDS
-	sound: "desnoguns/GrenadeLauncherShoot.ogg",
-	reloadSound: "desnoguns/reload/GL6Reload.ogg",
-};
-
-const MSR = {
-	weaponType: "gun",
-	name: "MSR",
-	gunType: GUN_TYPE_SNIPER_RIFLE,
-	buttonType: BUTTON_TYPE_ON_CLICK,
-	id: 3369,
-	fireRate: 12,
-	recoil: 22,
-	bulletSpeed: SNIPER_BULLET_SPEED,
-	zoomLevel: ZOOM_SNIPER,
-	accuracy: 2,
-	hasAimImageLayer: true,
-	hasManualZoom: true,
-	texture: "msr",
-	ammo: 5,
-	smoke: 1,
-	// BEHAVIOR
-	shotType: SHOT_TYPE_NORMAL,
-	bulletType: BULLET_TYPE_NORMAL,
-	// SOUNDS
-	sound: "desnoguns/MSRShoot.mp3",
-	reloadSound: "desnoguns/reload/BARReload.ogg",
-};
-
 // all the guns in a single array.
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
 var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
-setUpGunsWithDate();
 var allGuns = [];
 
 // info item
@@ -8507,6 +8507,9 @@ function startup()
 
 	// check if is pro
 	refreshIsPro();
+
+	// add xmas guns if necessary
+	setUpGunsWithDate();
 
 	// add guns of the mod
 	for(var i in defaultGuns)
