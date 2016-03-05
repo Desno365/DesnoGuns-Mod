@@ -771,7 +771,7 @@ var ADDON_WEAPONS = [
 		bulletsExplosionRadius: int, // the radius of the explosion
 
 		// SOUNDS
-		hasntShootingSound: boolean,
+		hasntShootingSound: boolean, // true if this gun doesn't make any sound when shooting
 		sound: String, // sound when shooting
 		reloadSound: String, // sound when reloading
 
