@@ -3369,9 +3369,23 @@ function installSoundFromSimplePath(simplePath, gunName, addonName)
 {
 	try
 	{
-		// sound in form: custom/path-in-texture-pack and it will be saved in ...sdcard/games/com.mojang/desnoguns-temp/path-in-texture-pack
-		var pathInTexturePack = simplePath.substring(7);
-		File.writeInputStreamToFile(ModPE.openInputStreamFromTexturePack(pathInTexturePack), getOriginalPathOfSound(simplePath));
+		if(isCustomSound(simplePath))
+		{
+			// sound in form: custom/path-in-texture-pack and it will be saved in ...sdcard/games/com.mojang/desnoguns-temp/path-in-texture-pack
+			var pathInTexturePack = simplePath.substring(7);
+			File.writeInputStreamToFile(ModPE.openInputStreamFromTexturePack(pathInTexturePack), getOriginalPathOfSound(simplePath));
+			return;
+		}
+
+		if(isDefaultSound(simplePath))
+		{
+			// no need to install
+			// TODO maybe check if the sound exists and warning user if it doesn't
+			return;
+		}
+
+		print(Log.getLogPrefix() + "Error with " + addonName + " installation impossible. No /custom no /desnoguns");
+		
 	} catch(e)
 	{
 		texturePackNotIntsalledWarningUI("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gunName + ": the sound \"" + simplePath + "\" hasn't been found.");
