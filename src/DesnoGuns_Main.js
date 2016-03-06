@@ -7981,633 +7981,499 @@ Entity.setGrenadeRender = function(entity)
 // Sounds installation
 //########################################################################################################################################################
 
-var SoundsInstaller = {
-	sounds:
-	{
-		version: 5,
-		soundArray: [
-			// { fileName: "", file: "" },
-			// { fileName: "", fileDirectory: "", file: "" },
+var SoundsInstaller = {};
 
-			{
-				fileName: "44Magnum.mp3"
-			},
-			{
-				fileName: "AA-12Shoot.ogg"
-			},
-			{
-				fileName: "AK47Shoot.ogg"
-			},
-			{
-				fileName: "AK74Shoot.ogg"
-			},
-			{
-				fileName: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg"
-			},
-			{
-				fileName: "BarrettShoot.ogg"
-			},
-			{
-				fileName: "bell.mp3"
-			},
-			{
-				fileName: "benboncan_parachute.mp3"
-			},
-			{
-				fileName: "CrossbowShoot.wav"
-			},
-			{
-				fileName: "DesertEagleShoot.ogg"
-			},
-			{
-				fileName: "DragunovShoot.ogg"
-			},
-			{
-				fileName: "EmptyGun.ogg"
-			},
-			{
-				fileName: "explosion-countdown.wav"
-			},
-			{
-				fileName: "fire-explosion.mp3"
-			},
-			{
-				fileName: "flamethrower.mp3"
-			},
-			{
-				fileName: "FNSCAR_and_AUG_and_MTARShoot.ogg"
-			},
-			{
-				fileName: "G36Shoot.ogg"
-			},
-			{
-				fileName: "GlockShoot.ogg"
-			},
-			{
-				fileName: "GrenadeLauncherShoot.ogg"
-			},
-			{
-				fileName: "ignite_flamethrower1.ogg"
-			},
-			{
-				fileName: "ignite_flamethrower2.ogg"
-			},
-			{
-				fileName: "ignite_flamethrower3.ogg"
-			},
-			{
-				fileName: "knife_on_blocks.mp3"
-			},
-			{
-				fileName: "knife_stab1.mp3"
-			},
-			{
-				fileName: "knife_stab2.mp3"
-			},
-			{
-				fileName: "L96Shoot.ogg"
-			},
-			{
-				fileName: "LICENSE.txt"
-			},
-			{
-				fileName: "M9Shoot.ogg"
-			},
-			{
-				fileName: "M14_and_M16A4Shoot.ogg"
-			},
-			{
-				fileName: "M21Shoot.ogg"
-			},
-			{
-				fileName: "M249_and_L86Shoot.ogg"
-			},
-			{
-				fileName: "M1014Shoot.ogg"
-			},
-			{
-				fileName: "M1887Shoot.ogg"
-			},
-			{
-				fileName: "MakarovShoot.ogg"
-			},
-			{
-				fileName: "MinigunCooldown.ogg"
-			},
-			{
-				fileName: "MinigunSpin.ogg"
-			},
-			{
-				fileName: "MinigunWarmup.ogg"
-			},
-			{
-				fileName: "MiniUziShoot.ogg"
-			},
-			{
-				fileName: "MolotovExplosion.mp3"
-			},
-			{
-				fileName: "MP5Shoot.ogg"
-			},
-			{
-				fileName: "MSRShoot.mp3"
-			},
-			{
-				fileName: "MultipleRocketLauncherShoot.mp3"
-			},
-			{
-				fileName: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg"
-			},
-			{
-				fileName: "R700_and_M40A3Shoot.ogg"
-			},
-			{
-				fileName: "R870Shoot.ogg"
-			},
-			{
-				fileName: "RayGunShoot.mp3"
-			},
-			{
-				fileName: "BARReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "BazookaReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "BrenReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "BrowningReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "ColtReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "CrossbowReload.wav",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "DP28Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "GL6Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "GrenadeLauncherReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "Kar98kReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "LeeEnfieldReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "LugerReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "M1CarbineReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "M1014Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "M1887Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "MG42Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "MP40Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "MP44Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "PPSHReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "RayGunReload.mp3",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "Reload1.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "SpringfieldReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "StenReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "ThompsonReload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "TT33Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "W1200Reload.ogg",
-				fileDirectory: "reload"
-			},
-			{
-				fileName: "riot_shield_attack.mp3"
-			},
-			{
-				fileName: "RPD_and_M60E4_and_RPKShoot.ogg"
-			},
-			{
-				fileName: "RPGShoot.ogg"
-			},
-			{
-				fileName: "SG550Shoot.ogg"
-			},
-			{
-				fileName: "SIGP226Shoot.ogg"
-			},
-			{
-				fileName: "smoke-grenade.mp3"
-			},
-			{
-				fileName: "SkorpionShoot.ogg"
-			},
-			{
-				fileName: "USPShoot.ogg"
-			},
-			{
-				fileName: "W1200_and_SPASShoot.ogg"
-			}
-		]
-	},
+SoundsInstaller.sounds = {
 
-	progressDialog: null,
+	version: 6,
 
-	versionFileName: "version.txt",
+	soundArray: [
+		// { fileName: "", file: "" },
+		// { fileName: "", fileDirectory: "", file: "" },
 
-
-	checkAtStartup: function()
-	{
-		Log.log("checkAtStartup(): started check.");
-
-		if(SoundsInstaller.needsInstallation())
 		{
-			if(DEBUG1)
-				print("DesnoGuns Debug: checkAtStartup(): sounds NOT correctly installed!");
-
-			SoundsInstaller.installUI();
-		} else
+			fileName: "44Magnum.mp3"
+		},
 		{
-			if(DEBUG1)
-				print("DesnoGuns Debug: checkAtStartup(): sounds correctly installed.");
-			Log.log("checkAtStartup(): sounds correctly installed.");
+			fileName: "AA-12Shoot.ogg"
+		},
+		{
+			fileName: "AK47Shoot.ogg"
+		},
+		{
+			fileName: "AK74Shoot.ogg"
+		},
+		{
+			fileName: "AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg"
+		},
+		{
+			fileName: "BarrettShoot.ogg"
+		},
+		{
+			fileName: "bell.mp3"
+		},
+		{
+			fileName: "benboncan_parachute.mp3"
+		},
+		{
+			fileName: "CrossbowShoot.wav"
+		},
+		{
+			fileName: "DesertEagleShoot.ogg"
+		},
+		{
+			fileName: "DragunovShoot.ogg"
+		},
+		{
+			fileName: "EmptyGun.ogg"
+		},
+		{
+			fileName: "explosion-countdown.wav"
+		},
+		{
+			fileName: "fire-explosion.mp3"
+		},
+		{
+			fileName: "flamethrower.mp3"
+		},
+		{
+			fileName: "FNSCAR_and_AUG_and_MTARShoot.ogg"
+		},
+		{
+			fileName: "G36Shoot.ogg"
+		},
+		{
+			fileName: "GlockShoot.ogg"
+		},
+		{
+			fileName: "GrenadeLauncherShoot.ogg"
+		},
+		{
+			fileName: "ignite_flamethrower1.ogg"
+		},
+		{
+			fileName: "ignite_flamethrower2.ogg"
+		},
+		{
+			fileName: "ignite_flamethrower3.ogg"
+		},
+		{
+			fileName: "knife_on_blocks.mp3"
+		},
+		{
+			fileName: "knife_stab1.mp3"
+		},
+		{
+			fileName: "knife_stab2.mp3"
+		},
+		{
+			fileName: "L96Shoot.ogg"
+		},
+		{
+			fileName: "LICENSE.txt"
+		},
+		{
+			fileName: "M9Shoot.ogg"
+		},
+		{
+			fileName: "M14_and_M16A4Shoot.ogg"
+		},
+		{
+			fileName: "M21Shoot.ogg"
+		},
+		{
+			fileName: "M249_and_L86Shoot.ogg"
+		},
+		{
+			fileName: "M1014Shoot.ogg"
+		},
+		{
+			fileName: "M1887Shoot.ogg"
+		},
+		{
+			fileName: "MakarovShoot.ogg"
+		},
+		{
+			fileName: "MinigunCooldown.ogg"
+		},
+		{
+			fileName: "MinigunSpin.ogg"
+		},
+		{
+			fileName: "MinigunWarmup.ogg"
+		},
+		{
+			fileName: "MiniUziShoot.ogg"
+		},
+		{
+			fileName: "MolotovExplosion.mp3"
+		},
+		{
+			fileName: "MP5Shoot.ogg"
+		},
+		{
+			fileName: "MSRShoot.mp3"
+		},
+		{
+			fileName: "MultipleRocketLauncherShoot.mp3"
+		},
+		{
+			fileName: "P90_and_Bizon_and_G3Shoot_and_Minigun.ogg"
+		},
+		{
+			fileName: "R700_and_M40A3Shoot.ogg"
+		},
+		{
+			fileName: "R870Shoot.ogg"
+		},
+		{
+			fileName: "RayGunShoot.mp3"
+		},
+		{
+			fileName: "BARReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "BazookaReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "BrenReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "BrowningReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "ColtReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "CrossbowReload.wav",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "DP28Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "GL6Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "GrenadeLauncherReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "Kar98kReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "LeeEnfieldReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "LugerReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "M1CarbineReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "M1014Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "M1887Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "MG42Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "MP40Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "MP44Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "PPSHReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "RayGunReload.mp3",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "Reload1.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "SpringfieldReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "StenReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "ThompsonReload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "TT33Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "W1200Reload.ogg",
+			fileDirectory: "reload"
+		},
+		{
+			fileName: "riot_shield_attack.mp3"
+		},
+		{
+			fileName: "RPD_and_M60E4_and_RPKShoot.ogg"
+		},
+		{
+			fileName: "RPGShoot.ogg"
+		},
+		{
+			fileName: "SG550Shoot.ogg"
+		},
+		{
+			fileName: "SIGP226Shoot.ogg"
+		},
+		{
+			fileName: "smoke-grenade.mp3"
+		},
+		{
+			fileName: "SkorpionShoot.ogg"
+		},
+		{
+			fileName: "USPShoot.ogg"
+		},
+		{
+			fileName: "W1200_and_SPASShoot.ogg"
 		}
-	},
-
-
-	needsInstallation: function()
-	{
-		if(File.doesFileExist(sdcard + "/games/com.mojang/desnoguns-sounds/" + SoundsInstaller.versionFileName))
-		{
-			var versionOfSounds = SoundsInstaller.getInstalledVersion();
-			Log.log("needsInstallation(): version file found, version: " + versionOfSounds);
-
-			// check version
-			if(versionOfSounds == SoundsInstaller.sounds.version)
-			{
-				Log.log("needsInstallation(): version of the file matches saved version.");
-				return !SoundsInstaller.areSoundsPresent();
-			} else
-			{
-				Log.log("needsInstallation(): version of the file is different than saved version.");
-				return true;
-			}
-		} else
-		{
-			Log.log("needsInstallation(): version file not found.");
-			return true;
-		}
-	},
-
-	getInstalledVersion: function()
-	{
-		var versionFile = new java.io.File(sdcard + "/games/com.mojang/desnoguns-sounds/" + SoundsInstaller.versionFileName);
-		if(versionFile.exists())
-		{
-			var loadedVersion = "";
-			var streamVersionInput = new java.io.FileInputStream(versionFile);
-			var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(streamVersionInput));
-			var rowVersion = "";
-			while((rowVersion = bufferedVersionReader.readLine()) != null)
-			{
-				loadedVersion += rowVersion;
-			}
-			var loadedVersion = loadedVersion.split(" ");
-			bufferedVersionReader.close();
-
-			Log.log("getInstalledVersion(): text on the version file: " + loadedVersion);
-			return parseInt(loadedVersion);
-		} else
-		{
-			print("Bug found: remember that getInstalledVersion() should be used only when version file exists.");
-			return -1;
-		}
-	},
-
-	areSoundsPresent: function()
-	{
-		var arrayOfMissingSounds = SoundsInstaller.checkMissingSounds();
-
-		if(arrayOfMissingSounds.length == 0)
-		{
-			// yeah, all sounds needed have been found
-			Log.log("areSoundsPresent(): all sounds present.");
-			return true;
-		} else
-		{
-			// not correctly installed :(
-			Log.log("areSoundsPresent(): some sounds are missing.");
-			Log.log("areSoundsPresent(): missing: " + arrayOfMissingSounds.toString());
-			return false;
-		}
-	},
-
-	checkMissingSounds: function()
-	{
-		var tmpPath = sdcard + "/games/com.mojang/desnoguns-sounds/";
-		var arrayOfErrors = [];
-		for(var i in SoundsInstaller.sounds.soundArray)
-		{
-			if(SoundsInstaller.sounds.soundArray[i].fileDirectory == undefined || SoundsInstaller.sounds.soundArray[i].fileDirectory == null)
-			{
-				// file is inside the general sound folder
-				if(!File.doesFileExist(tmpPath + SoundsInstaller.sounds.soundArray[i].fileName))
-				{
-					if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
-						arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
-				} else
-				{
-					// file exists, maybe is empty?
-					if(File.isEmpty(tmpPath + SoundsInstaller.sounds.soundArray[i].fileName))
-					{
-						if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
-							arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
-					}
-				}
-			} else
-			{
-				// file is inside another folder
-				if(!File.doesFileExist(tmpPath + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName))
-				{
-					if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
-						arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
-				} else
-				{
-					// file exists, maybe is empty?
-					if(File.isEmpty(tmpPath + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName))
-					{
-						if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
-							arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
-					}
-				}
-			}
-		}
-
-		return arrayOfErrors;
-	},
-
-
-	installUI: function()
-	{
-		currentActivity.runOnUiThread(new java.lang.Runnable()
-		{
-			run: function()
-			{
-				try
-				{
-					Log.log("installUI(): displayed installation for sounds UI.");
-
-					var layout = new android.widget.LinearLayout(currentActivity);
-					layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-					var padding = Convert.convertDpToPixels(8);
-					layout.setPadding(padding, padding, padding, padding);
-
-					var scroll = new android.widget.ScrollView(currentActivity);
-					scroll.addView(layout);
-
-					var popup = new android.app.AlertDialog.Builder(currentActivity);
-					popup.setView(scroll);
-					popup.setTitle("Download sounds?");
-
-					var helpTextInstallation = new android.widget.TextView(currentActivity);
-					helpTextInstallation.setText(android.text.Html.fromHtml("<br>Would you like to download and install DesnoGuns Mod sounds now?<br><br>" +
-						"A total of approximately 3 MB of data will be saved on your internal storage.<br>" +
-						"The installation may take up to one minute.<br><br>" +
-						"An active Internet connection is needed to install sounds.<br>"));
-					layout.addView(helpTextInstallation);
-
-					popup.setPositiveButton("Install", new android.content.DialogInterface.OnClickListener() {
-						onClick: function(viewarg)
-						{
-							SoundsInstaller.installingUI();
-							Log.log("installUI(): Sounds installation started by the user.");
-						}
-					});
-
-					popup.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
-						onClick: function(viewarg)
-						{
-							currentActivity.runOnUiThread(new java.lang.Runnable() {
-								run: function() {
-									android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Some features may not work properly without sounds."), android.widget.Toast.LENGTH_LONG).show();
-								}
-							});
-							Log.log("installUI(): Sounds installation canceled.");
-						}
-					});
-
-
-					var alertDialog = popup.create();
-					alertDialog.setCanceledOnTouchOutside(false);
-					alertDialog.show();
-
-				} catch(err)
-				{
-					print("Error: " + err);
-				}
-			}
-		});
-	},
-
-	installingUI: function()
-	{
-		currentActivity.runOnUiThread(new java.lang.Runnable()
-		{
-			run: function()
-			{
-				try
-				{
-					SoundsInstaller.progressDialog = new android.app.ProgressDialog(currentActivity);
-					SoundsInstaller.progressDialog.setTitle("Downloading...");
-					SoundsInstaller.progressDialog.setMessage("Downloading sound 1 of " + SoundsInstaller.sounds.soundArray.length);
-					SoundsInstaller.progressDialog.setProgressStyle(android.app.ProgressDialog.STYLE_HORIZONTAL);
-					SoundsInstaller.progressDialog.setCancelable(false);
-					SoundsInstaller.progressDialog.setCanceledOnTouchOutside(false);
-					SoundsInstaller.progressDialog.setIndeterminate(false);
-					SoundsInstaller.progressDialog.setMax(SoundsInstaller.sounds.soundArray.length);
-					SoundsInstaller.progressDialog.setProgress(0);
-					SoundsInstaller.progressDialog.show();
-
-					SoundsInstaller.install();
-				} catch(err)
-				{
-					print("Error: " + err);
-				}
-			}
-		});
-	},
-
-	install: function()
-	{
-		new java.lang.Thread(new java.lang.Runnable()
-		{
-			run: function()
-			{
-				var githubUrl = "https://raw.githubusercontent.com/Desno365/DesnoGuns-Mod/master/sounds/version" + SoundsInstaller.sounds.version + "/desnoguns-sounds/";
-				var tmpPath = sdcard + "/games/com.mojang/desnoguns-sounds/";
-
-				File.delete(tmpPath); //delete previous files if present
-
-				for(var i in SoundsInstaller.sounds.soundArray)
-				{
-					// display progress
-					currentActivity.runOnUiThread(new java.lang.Runnable()
-					{
-						run: function()
-						{
-							var progress = parseInt(i) + 1;
-							SoundsInstaller.progressDialog.setMessage("Downloading sound " + (progress) + " of " + SoundsInstaller.sounds.soundArray.length);
-							SoundsInstaller.progressDialog.setProgress(progress);
-
-						}
-					});
-
-					// save file on the sdcard
-					if(SoundsInstaller.sounds.soundArray[i].fileDirectory == undefined || SoundsInstaller.sounds.soundArray[i].fileDirectory == null)
-					{
-						// file is inside the general sound folder
-						//File.writeByteArrayToFile(android.util.Base64.decode(SoundsInstaller.sounds.soundArray[i].file, 0), tmpPath + SoundsInstaller.sounds.soundArray[i].fileName);
-						SoundsInstaller.downloadFile(githubUrl + SoundsInstaller.sounds.soundArray[i].fileName, tmpPath + SoundsInstaller.sounds.soundArray[i].fileName);
-					} else
-					{
-						// file is inside another folder
-						//File.writeByteArrayToFile(android.util.Base64.decode(SoundsInstaller.sounds.soundArray[i].file, 0), tmpPath + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName);
-						SoundsInstaller.downloadFile(githubUrl + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName, tmpPath + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName);
-					}
-				}
-
-				var nomediaFile = new java.io.File(sdcard + "/games/com.mojang/desnoguns-sounds/.nomedia");
-				if(!nomediaFile.exists())
-					nomediaFile.createNewFile();
-
-				// put file version
-				SoundsInstaller.saveFileWithVersion();
-
-				// END INSTALLATION
-				SoundsInstaller.onFinishInstallation();
-			}
-		}).start();
-	},
-
-
-	downloadFile: function(url, savePath)
-	{
-		try
-		{
-			// download content
-			var url = new java.net.URL(url);
-			var connection = url.openConnection();
-	 
-			// get content
-			inputStream = connection.getInputStream();
-
-			// write content
-			File.writeInputStreamToFile(inputStream, savePath);
-		} catch(err)
-		{
-			Log.log("downloadFile(): caught an error: " + err);
-		}
-	},
-
-
-	onFinishInstallation: function()
-	{
-		SoundsInstaller.progressDialog.dismiss();
-
-		Log.log("Finished sounds installation. Re-checking sounds...");
-
-		var notSuccess = SoundsInstaller.needsInstallation();
-		if(notSuccess)
-		{
-			currentActivity.runOnUiThread(new java.lang.Runnable() {
-				run: function() {
-					android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: An error has happened during installation, so sounds aren't correctly installed, please check your Internet connection and try again."), android.widget.Toast.LENGTH_LONG).show();
-				}
-			});
-			Log.log("Sounds HAVEN'T been correctly installed!");
-		} else
-		{
-			currentActivity.runOnUiThread(new java.lang.Runnable() {
-				run: function() {
-					android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Congratulations, sounds are now correctly installed. You can start playing with the <i>DesnoGuns Mod</i>."), android.widget.Toast.LENGTH_LONG).show();
-				}
-			});
-			Log.log("Sounds have been correctly installed. Very good.");
-		}
-
-		removeSoundsInstaller();
-	},
-
-	saveFileWithVersion: function()
-	{
-		var versionSaveFile = new java.io.File(sdcard + "/games/com.mojang/desnoguns-sounds/" + SoundsInstaller.versionFileName);
-		if(versionSaveFile.exists())
-			versionSaveFile.delete();
-		versionSaveFile.createNewFile();
-
-		var streamOutputVersion = new java.io.FileOutputStream(versionSaveFile);
-		var streamWriterVersion = new java.io.OutputStreamWriter(streamOutputVersion);
-
-		streamWriterVersion.append(SoundsInstaller.sounds.version + " Hi! Did you enjoy playing with the DesnoGuns Mod? I hope you did. -Desno365");
-		streamWriterVersion.close();
-		streamOutputVersion.close();
-	}
+	]
 };
 
-function removeSoundsInstaller()
+SoundsInstaller.versionFileName = "version.txt";
+SoundsInstaller.pathInSdcard = sdcard + "/games/com.mojang/desnoguns-sounds/";
+SoundsInstaller.pathInTexturePack = "/desnoguns-sounds/";
+
+
+SoundsInstaller.checkAtStartup = function()
 {
-	// this should allow the GC to free the memory that all the sounds were using
-	SoundsInstaller = null;
+	Log.log("checkAtStartup(): started check.");
+
+	if(SoundsInstaller.needsInstallation())
+	{
+		Log.log("checkAtStartup(): sounds NOT correctly installed!");
+
+		SoundsInstaller.install();
+	} else
+	{
+		Log.log("checkAtStartup(): sounds correctly installed.");
+	}
+}
+
+SoundsInstaller.needsInstallation = function()
+{
+	if(File.doesFileExist(SoundsInstaller.pathInSdcard + SoundsInstaller.versionFileName))
+	{
+		var versionOfSounds = SoundsInstaller.getInstalledVersion();
+		Log.log("needsInstallation(): version file found, version: " + versionOfSounds);
+
+		// check version
+		if(versionOfSounds == SoundsInstaller.sounds.version)
+		{
+			Log.log("needsInstallation(): version of the file matches saved version.");
+			return !SoundsInstaller.areSoundsPresent();
+		} else
+		{
+			Log.log("needsInstallation(): version of the file is different than saved version.");
+			return true;
+		}
+	} else
+	{
+		Log.log("needsInstallation(): version file not found.");
+		return true;
+	}
+}
+
+SoundsInstaller.getInstalledVersion = function()
+{
+	var versionFile = new java.io.File(SoundsInstaller.pathInSdcard + SoundsInstaller.versionFileName);
+	if(versionFile.exists())
+	{
+		var loadedVersion = "";
+		var streamVersionInput = new java.io.FileInputStream(versionFile);
+		var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(streamVersionInput));
+		var rowVersion = "";
+		while((rowVersion = bufferedVersionReader.readLine()) != null)
+		{
+			loadedVersion += rowVersion;
+		}
+		var loadedVersion = loadedVersion.split(" ");
+		bufferedVersionReader.close();
+
+		Log.log("getInstalledVersion(): text on the version file: " + loadedVersion);
+		return parseInt(loadedVersion);
+	} else
+	{
+		print("Bug found: remember that getInstalledVersion() should be used only when version file exists.");
+		return -1;
+	}
+}
+
+SoundsInstaller.areSoundsPresent = function()
+{
+	var arrayOfMissingSounds = SoundsInstaller.checkMissingSounds();
+
+	if(arrayOfMissingSounds.length == 0)
+	{
+		// yeah, all sounds needed have been found
+		Log.log("areSoundsPresent(): all sounds present.");
+		return true;
+	} else
+	{
+		// not correctly installed :(
+		Log.log("areSoundsPresent(): some sounds are missing.");
+		Log.log("areSoundsPresent(): missing: " + arrayOfMissingSounds.toString());
+		return false;
+	}
+}
+
+SoundsInstaller.checkMissingSounds = function()
+{
+	var arrayOfErrors = [];
+	for(var i in SoundsInstaller.sounds.soundArray)
+	{
+		if(SoundsInstaller.sounds.soundArray[i].fileDirectory == undefined || SoundsInstaller.sounds.soundArray[i].fileDirectory == null)
+		{
+			// file is inside the general sound folder
+			if(!File.doesFileExist(SoundsInstaller.pathInSdcard + SoundsInstaller.sounds.soundArray[i].fileName))
+			{
+				if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
+					arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+			} else
+			{
+				// file exists, maybe is empty?
+				if(File.isEmpty(SoundsInstaller.pathInSdcard + SoundsInstaller.sounds.soundArray[i].fileName))
+				{
+					if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
+						arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+				}
+			}
+		} else
+		{
+			// file is inside another folder
+			if(!File.doesFileExist(SoundsInstaller.pathInSdcard + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName))
+			{
+				if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
+					arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+			} else
+			{
+				// file exists, maybe is empty?
+				if(File.isEmpty(SoundsInstaller.pathInSdcard + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName))
+				{
+					if(arrayOfErrors.indexOf(SoundsInstaller.sounds.soundArray[i].fileName) == -1)
+						arrayOfErrors.push(SoundsInstaller.sounds.soundArray[i].fileName);
+				}
+			}
+		}
+	}
+
+	return arrayOfErrors;
+}
+
+SoundsInstaller.install = function()
+{
+	new java.lang.Thread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			File.delete(SoundsInstaller.pathInSdcard); //delete previous files if present
+
+			for(var i in SoundsInstaller.sounds.soundArray)
+			{
+				// save file on the sdcard
+				if(SoundsInstaller.sounds.soundArray[i].fileDirectory == undefined || SoundsInstaller.sounds.soundArray[i].fileDirectory == null)
+				{
+					// file is inside the general sound folder
+					try
+					{
+						File.writeInputStreamToFile(ModPE.openInputStreamFromTexturePack(SoundsInstaller.pathInTexturePack + SoundsInstaller.sounds.soundArray[i].fileName), SoundsInstaller.pathInSdcard + SoundsInstaller.sounds.soundArray[i].fileName);
+					} catch(e)
+					{
+						// probably texture pack not installed
+						Log.log("error while writing sound to sdcard (1): " + e);
+					}
+				} else
+				{
+					// file is inside another folder
+					try
+					{
+						File.writeInputStreamToFile(ModPE.openInputStreamFromTexturePack(SoundsInstaller.pathInTexturePack + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName), SoundsInstaller.pathInSdcard + SoundsInstaller.sounds.soundArray[i].fileDirectory + "/" + SoundsInstaller.sounds.soundArray[i].fileName);
+					} catch(e)
+					{
+						// probably texture pack not installed
+						Log.log("error while writing sound to sdcard (2): " + e);
+					}
+				}
+			}
+
+			var nomediaFile = new java.io.File(SoundsInstaller.pathInSdcard + ".nomedia");
+			if(!nomediaFile.exists())
+				nomediaFile.createNewFile();
+
+			// put file version
+			SoundsInstaller.saveFileWithVersion();
+
+			// END INSTALLATION
+			SoundsInstaller.onFinishInstallation();
+		}
+	}).start();
+}
+
+SoundsInstaller.saveFileWithVersion = function()
+{
+	var versionSaveFile = new java.io.File(SoundsInstaller.pathInSdcard + SoundsInstaller.versionFileName);
+	if(versionSaveFile.exists())
+		versionSaveFile.delete();
+	versionSaveFile.createNewFile();
+
+	var streamOutputVersion = new java.io.FileOutputStream(versionSaveFile);
+	var streamWriterVersion = new java.io.OutputStreamWriter(streamOutputVersion);
+
+	streamWriterVersion.append(SoundsInstaller.sounds.version + " Hi! Did you enjoy playing with the DesnoGuns Mod? I hope you did. -Desno365");
+	streamWriterVersion.close();
+	streamOutputVersion.close();
+}
+
+SoundsInstaller.onFinishInstallation = function()
+{
+	Log.log("Finished sounds installation. Re-checking sounds...");
+
+	var notSuccess = SoundsInstaller.needsInstallation();
+	if(notSuccess)
+	{
+		currentActivity.runOnUiThread(new java.lang.Runnable() {
+			run: function() {
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>Desnoguns Mod</b>: An error has happened during sounds installation of the DesnoGuns Mod, please check if the internal storage of your device is available."), android.widget.Toast.LENGTH_LONG).show();
+			}
+		});
+		Log.log("Sounds HAVEN'T been correctly installed!");
+	} else
+	{
+		Log.log("Sounds have been correctly installed. Very good.");
+	}
 }
 
 
