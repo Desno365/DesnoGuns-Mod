@@ -7174,6 +7174,21 @@ function addonsUI()
 				Ui.setMarginsToViewInLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 				var button = MinecraftButton();
+				button.setText("Featured addons");
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("http://desno365.github.io/minecraft/desnoguns-mod/addons/featured/"));
+						currentActivity.startActivity(intentBrowser);
+					}
+				});
+				layout.addView(button);
+				Ui.setMarginsToViewInLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var button = MinecraftButton();
 				button.setText("Enabled addons");
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
@@ -7254,7 +7269,9 @@ function enabledAddonsUI()
 				{
 					layout.addView(dividerText());
 
-					var textview = defaultContentTextView("You don't have any addon enabled.");
+					var textview = defaultContentTextView("You don't have any addon enabled.<br>" +
+						"Get one from here: <a href=\"http://desno365.github.io/minecraft/desnoguns-mod/addons/featured/\">featured addons</a>.");
+					textview.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 					layout.addView(textview);
 
 					layout.addView(dividerText());
