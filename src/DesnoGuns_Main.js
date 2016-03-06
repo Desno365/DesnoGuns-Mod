@@ -3233,7 +3233,11 @@ function addonClass(array, addonName, addonDescription)
 {
 	this.name = addonName;
 	this.description = addonDescription;
+
+	// passed by reference by addons, if changed the addon will be changed too
 	this.weaponsArray = array;
+
+	this.gunsArray = [];
 }
 //########## LOAD ADDONS functions - END ##########
 
@@ -3276,6 +3280,7 @@ function addLoadedAddonsInGame()
 				{
 					// this id isn't already used, we can add it safely to the game
 					var gun = convertGunsStringsInIds(weapon);
+					loadedAddons[i].gunsArray.push(gun);
 					installSoundsOfGun(gun, loadedAddons[i].name);
 					addNewGunFromAddon(gun, loadedAddons[i].name);
 				} else
@@ -6253,7 +6258,11 @@ function informationUI()
 				{
 					onClick: function()
 					{
-						informationGunsSpecifications();
+						if(loadedAddons.length > 0)
+							informationGunsSpecificationsArrays();
+						else
+							informationGunsSpecificationsForGunsArray(defaultGuns, "DesnoGuns");
+
 						popup.dismiss();
 					}
 				});
@@ -6310,7 +6319,7 @@ function informationUI()
 	});
 }
 
-function informationGunsSpecifications()
+function informationGunsSpecificationsArrays()
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
 	{
@@ -6322,12 +6331,92 @@ function informationGunsSpecifications()
 				layout = defaultLayout("Guns specifications");
 
 				var button = MinecraftButton();
+				button.setText("DesnoGuns");
+				button.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationGunsSpecificationsForGunsArray(defaultGuns, "DesnoGuns");
+						popup.dismiss();
+					}
+				});
+				layout.addView(button);
+				Ui.setMarginsToViewInLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				for(var i in loadedAddons)
+				{
+					var button = MinecraftButton();
+					button.setText(loadedAddons[i].name);
+					button.setHint(String(i)); // used as a setTag
+					button.setOnClickListener(new android.view.View.OnClickListener()
+					{
+						onClick: function(v)
+						{
+							var index = parseInt(v.getHint());
+							informationGunsSpecificationsForGunsArray(loadedAddons[index].gunsArray, loadedAddons[index].name);
+							popup.dismiss();
+						}
+					});
+					layout.addView(button);
+					Ui.setMarginsToViewInLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+				}
+				layout.addView(dividerText());
+
+
+				var backButton = MinecraftButton();
+				backButton.setText("Back");
+				backButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						informationUI();
+						popup.dismiss();
+					}
+				});
+				layout.addView(backButton);
+				Ui.setMarginsToViewInLinearLayout(backButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var exitButton = MinecraftButton();
+				exitButton.setText("Close");
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				});
+				layout.addView(exitButton);
+				Ui.setMarginsToViewInLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+
+				var popup = defaultPopup(layout);
+				Popup.showImmersivePopup(popup);
+			} catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
+
+function informationGunsSpecificationsForGunsArray(gunsArray, name)
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout;
+				layout = defaultLayout(name);
+
+				var button = MinecraftButton();
 				button.setText(getGunTypeName(GUN_TYPE_ASSAULT_RIFLE));
 				button.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_ASSAULT_RIFLE);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_ASSAULT_RIFLE);
 						popup.dismiss();
 					}
 				});
@@ -6340,7 +6429,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_SUB_MACHINE);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_SUB_MACHINE);
 						popup.dismiss();
 					}
 				});
@@ -6353,7 +6442,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_LIGHT_MACHINE);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_LIGHT_MACHINE);
 						popup.dismiss();
 					}
 				});
@@ -6366,7 +6455,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_SNIPER_RIFLE);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_SNIPER_RIFLE);
 						popup.dismiss();
 					}
 				});
@@ -6379,7 +6468,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_SHOTGUN);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_SHOTGUN);
 						popup.dismiss();
 					}
 				});
@@ -6392,7 +6481,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_MACHINE_PISTOL);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_MACHINE_PISTOL);
 						popup.dismiss();
 					}
 				});
@@ -6405,7 +6494,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_HANDGUN);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_HANDGUN);
 						popup.dismiss();
 					}
 				});
@@ -6418,7 +6507,7 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_LAUNCHER);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_LAUNCHER);
 						popup.dismiss();
 					}
 				});
@@ -6431,12 +6520,13 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationGunsSpecificationsForGunType(GUN_TYPE_MINIGUN);
+						informationGunsSpecificationsForGunType(gunsArray, GUN_TYPE_MINIGUN);
 						popup.dismiss();
 					}
 				});
 				layout.addView(button);
 				Ui.setMarginsToViewInLinearLayout(button, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+
 
 				var backButton = MinecraftButton();
 				backButton.setText("Back");
@@ -6444,7 +6534,11 @@ function informationGunsSpecifications()
 				{
 					onClick: function()
 					{
-						informationUI();
+						if(loadedAddons.length > 0)
+							informationGunsSpecificationsArrays();
+						else
+							informationUI();
+
 						popup.dismiss();
 					}
 				});
@@ -6475,7 +6569,7 @@ function informationGunsSpecifications()
 	});
 }
 
-function informationGunsSpecificationsForGunType(gunType)
+function informationGunsSpecificationsForGunType(gunsArray, gunType)
 {
 	currentActivity.runOnUiThread(new java.lang.Runnable()
 	{
@@ -6486,31 +6580,31 @@ function informationGunsSpecificationsForGunType(gunType)
 				var layout;
 				layout = defaultLayout(getGunTypeName(gunType) + " specifications");
 
-				for(var i in allGuns)
+				for(var i in gunsArray)
 				{
-					if(allGuns[i].gunType == gunType)
+					if(gunsArray[i].gunType == gunType)
 					{
 						var text = new android.widget.TextView(currentActivity);
-						text.setText(new android.text.Html.fromHtml("<b>" + allGuns[i].name + "</b> (ID: " + allGuns[i].id + ")"));
+						text.setText(new android.text.Html.fromHtml("<b>" + gunsArray[i].name + "</b> (ID: " + gunsArray[i].id + ")"));
 						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
 						var text = new android.widget.TextView(currentActivity);
-						text.setText(getGunTypeName(allGuns[i].gunType));
+						text.setText(getGunTypeName(gunsArray[i].gunType));
 						text.setGravity(android.view.Gravity.RIGHT);
 						text.setTextSize(12);
 						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
 
-						if(allGuns[i].ammo != 1)
+						if(gunsArray[i].ammo != 1)
 						{
 							var text = new android.widget.TextView(currentActivity);
 							text.setText("Fire rate");
 							text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 							layout.addView(text);
 
-							if(allGuns[i].fireRate == 1 && allGuns[i].buttonType == BUTTON_TYPE_ON_CLICK)
+							if(gunsArray[i].fireRate == 1 && gunsArray[i].buttonType == BUTTON_TYPE_ON_CLICK)
 							{
 								var text = new android.widget.TextView(currentActivity);
 								text.setText("Shoot one bullet every time the user clicks the \"fire\" button");
@@ -6519,7 +6613,7 @@ function informationGunsSpecificationsForGunType(gunType)
 								layout.addView(text);
 							} else
 							{
-								layout.addView(progressBarForInformation(allGuns[i].fireRate, 20, true, (allGuns[i].fireRate / 20) + " second(s)"));
+								layout.addView(progressBarForInformation(gunsArray[i].fireRate, 20, true, (gunsArray[i].fireRate / 20) + " second(s)"));
 							}
 						}
 
@@ -6529,7 +6623,7 @@ function informationGunsSpecificationsForGunType(gunType)
 						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
-						layout.addView(progressBarForInformation(allGuns[i].recoil, 30, true, (61 - (allGuns[i].recoil * 2)) + "/60"));
+						layout.addView(progressBarForInformation(gunsArray[i].recoil, 30, true, (61 - (gunsArray[i].recoil * 2)) + "/60"));
 
 
 						var text = new android.widget.TextView(currentActivity);
@@ -6537,7 +6631,7 @@ function informationGunsSpecificationsForGunType(gunType)
 						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
-						layout.addView(progressBarForInformation(allGuns[i].accuracy, SPAS.accuracy, true, (51 - allGuns[i].accuracy) + "/50"));
+						layout.addView(progressBarForInformation(gunsArray[i].accuracy, SPAS.accuracy, true, (51 - gunsArray[i].accuracy) + "/50"));
 
 
 						var text = new android.widget.TextView(currentActivity);
@@ -6545,17 +6639,17 @@ function informationGunsSpecificationsForGunType(gunType)
 						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
-						layout.addView(progressBarForInformation(allGuns[i].zoomLevel, ZOOM_SNIPER, false, allGuns[i].zoomLevel + " FOV"));
+						layout.addView(progressBarForInformation(gunsArray[i].zoomLevel, ZOOM_SNIPER, false, gunsArray[i].zoomLevel + " FOV"));
 
 
-						if(allGuns[i].shotType != SHOT_TYPE_FLAMETHROWER)
+						if(gunsArray[i].shotType != SHOT_TYPE_FLAMETHROWER)
 						{
 							var text = new android.widget.TextView(currentActivity);
 							text.setText("Bullet speed");
 							text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 							layout.addView(text);
 
-							layout.addView(progressBarForInformation(allGuns[i].bulletSpeed * 10, 100, false, allGuns[i].bulletSpeed * 10 + "/100"));
+							layout.addView(progressBarForInformation(gunsArray[i].bulletSpeed * 10, 100, false, gunsArray[i].bulletSpeed * 10 + "/100"));
 						}
 						
 
@@ -6564,17 +6658,17 @@ function informationGunsSpecificationsForGunType(gunType)
 						text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 						layout.addView(text);
 
-						layout.addView(progressBarForInformation(allGuns[i].ammo, 125, false, allGuns[i].ammo.toString()));
+						layout.addView(progressBarForInformation(gunsArray[i].ammo, 125, false, gunsArray[i].ammo.toString()));
 
 
-						if(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
+						if(gunsArray[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gunsArray[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 						{
 							var text = new android.widget.TextView(currentActivity);
 							text.setText("Explosion radius");
 							text.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
 							layout.addView(text);
 
-							layout.addView(progressBarForInformation(allGuns[i].bulletsExplosionRadius, 5, false, allGuns[i].bulletsExplosionRadius + "/10"));;
+							layout.addView(progressBarForInformation(gunsArray[i].bulletsExplosionRadius, 5, false, gunsArray[i].bulletsExplosionRadius + "/10"));;
 						}
 
 						layout.addView(dividerText());
@@ -6588,7 +6682,11 @@ function informationGunsSpecificationsForGunType(gunType)
 				{
 					onClick: function()
 					{
-						informationGunsSpecifications();
+						if(loadedAddons.length > 0)
+							informationGunsSpecificationsArrays();
+						else
+							informationGunsSpecificationsForGunsArray(defaultGuns, "DesnoGuns");
+
 						popup.dismiss();
 					}
 				});
