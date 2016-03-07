@@ -36,7 +36,8 @@ var isInGame = false;
 var players;
 
 // textures variables
-var textureUiShowed = false;
+var errorWithModResourcesShowed = false;
+var errorWithAddonResourcesShowed = false;
 
 // change carried item variables
 var previousCarriedItem = 0;
@@ -154,41 +155,6 @@ const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 // for flamethrower
 var flameTick = 2;
 
-// item functions needed on load
-Item.setVerticalRender = function(id)
-{
-	try {
-		Item.setHandEquipped(id, true);
-	} catch(e) { /* old version of BlockLauncher */ }
-}
-Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
-{
-	try
-	{
-		ModPE.setItem(id, textureName, textureNumber, name, stackLimit);
-	}catch(e)
-	{
-		// user hasn't installed the texture pack
-		texturePackNotIntsalledWarningUI();
-
-		ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
-	}
-}
-Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType)
-{
-	try
-	{
-		//Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
-		Item.defineArmor(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType);
-	}catch(e)
-	{
-		// user hasn't installed the texture pack
-		texturePackNotIntsalledWarningUI();
-
-		Item.defineArmor(id, "skull_zombie", 0, name, "armor/chain_2.png", damageReduceAmount, maxDamage, armorType);
-	}
-}
-
 // guns types
 const GUN_TYPE_ASSAULT_RIFLE = 1;
 const GUN_TYPE_SUB_MACHINE = 2;
@@ -245,74 +211,292 @@ const TABS_ENDING_ID = 3499;
 
 // ammo
 const AMMO_ASSAULT_RIFLE_ID = 3340;
-Item.defineItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
-Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
-	" i ",
-	" g ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_SUB_MACHINE_ID = 3341;
-Item.defineItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
-Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
-	" i ",
-	" g ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_LIGHT_MACHINE_ID = 3342;
-Item.defineItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
-Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
-	"i i",
-	"g g",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_SNIPER_RIFLE_ID = 3343;
-Item.defineItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
-Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
-	" i ",
-	" g ",
-	" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_SHOTGUN_ID = 3344;
-Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
-Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
-	"   ",
-	" i ",
-	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_MACHINE_PISTOL_ID = 3345;
-Item.defineItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
-Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
-	" i ",
-	" g ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_HANDGUN_ID = 3346;
-Item.defineItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
-Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
-	"   ",
-	" i ",
-	"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_LAUNCHER_ID = 3347;
-Item.defineItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
-Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
-	"g g",
-	" g ",
-	"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_MINIGUN_ID = 3348;
-Item.defineItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
-Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
-	"i i",
-	"grg",
-	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-
 const AMMO_ARROW_EXPLOSIVE_ID = 3349;
-Item.defineItem(AMMO_ARROW_EXPLOSIVE_ID, "ammoarrowexplosive", 0, "Explosive Arrow");
-Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
-	" g ",
-	" g ",
-	" a "], ["a", 262, 0, "g", 289, 0]); // a = arrow; g = gunpowder;
+
+function createAmmoItems()
+{
+	Item.defineItem(AMMO_ASSAULT_RIFLE_ID, "ammoassault", 0, "Assault Rifle Ammo");
+	Item.addShapedRecipe(AMMO_ASSAULT_RIFLE_ID, 1, 0, [
+		" i ",
+		" g ",
+		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
+	Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
+		" i ",
+		" g ",
+		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
+	Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
+		"i i",
+		"g g",
+		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
+	Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
+		" i ",
+		" g ",
+		" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
+	Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
+		"   ",
+		" i ",
+		"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
+	Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
+		" i ",
+		" g ",
+		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
+	Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
+		"   ",
+		" i ",
+		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
+	Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
+		"g g",
+		" g ",
+		"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
+	Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
+		"i i",
+		"grg",
+		"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+
+	Item.defineItem(AMMO_ARROW_EXPLOSIVE_ID, "ammoarrowexplosive", 0, "Explosive Arrow");
+	Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
+		" g ",
+		" g ",
+		" a "], ["a", 262, 0, "g", 289, 0]); // a = arrow; g = gunpowder;
+}
+
+// general items
+const INFO_ITEM_ID = 3365;
+
+const KNIFE_ID = 3320;
+const KNIFE_MAX_DAMAGE = 32;
+const KNIFE_SOUND_STAB = {
+	startingFrom: 1,
+	endingAt: 2,
+	startText: "desnoguns/knife_stab",
+	endText: ".mp3"
+};
+const KNIFE_MOB_DAMAGE = 20;
+
+const RIOT_SHIELD_ID = 3323;
+const RIOT_SHIELD_MAX_DAMAGE = 3072;
+const RIOT_SHIELD_MOB_DAMAGE = 1;
+
+var isParachuting = false;
+const PARACHUTE_ID = 3321;
+const PARACHUTE_MAX_DAMAGE = 10;
+
+const MEDICAL_KIT_ID = 3322;
+const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
+
+const BINOCULARS = {
+	id: 3324,
+	zoomLevel: 51,
+	hasAimImageLayer: true,
+};
+
+const ZOOM_BINOCULARS = {
+	id: 3325,
+	zoomLevel: 51,
+	hasAimImageLayer: true,
+	hasManualZoom: true,
+};
+
+function createGeneralItems()
+{
+	Item.defineItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
+	Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
+		"   ",
+		" w ",
+		"   "], ["w", 17, 0]);
+	Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(INFO_ITEM_ID, 1);
+
+	Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
+	Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
+	Item.addShapedRecipe(KNIFE_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(KNIFE_ID);
+	Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(KNIFE_ID, 1);
+
+	Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
+	Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
+	Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
+		" g ",
+		" i ",
+		" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
+	Item.setVerticalRender(RIOT_SHIELD_ID);
+	Item.setCategory(RIOT_SHIELD_ID, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
+
+	Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute");
+	Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
+	Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
+		"www",
+		"s s",
+		" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
+	Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(PARACHUTE_ID, 1);
+
+	Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
+	Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
+	Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
+		" m ",
+		"ama",
+		" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
+
+	Item.defineItem(BINOCULARS.id, "binoculars", 0, "Binoculars");
+	Item.addShapedRecipe(BINOCULARS.id, 1, 0, [
+		"g g",
+		"iii",
+		"i i"], ["g", 20, 0, "i", 265, 0]); // g = glass; i = iron;
+	Item.setCategory(BINOCULARS.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(BINOCULARS.id, 1);
+
+	Item.defineItem(ZOOM_BINOCULARS.id, "zoombinoculars", 0, "Zoom Binoculars");
+	Item.addShapedRecipe(ZOOM_BINOCULARS.id, 1, 0, [
+		"g g",
+		"iri",
+		"i i"], ["g", 20, 0, "i", 265, 0, "r", 331, 0]); // g = glass; i = iron; r = redstone
+	Item.setCategory(ZOOM_BINOCULARS.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(ZOOM_BINOCULARS.id, 1);
+}
+
+// grenades
+const GRENADE = {
+	id: 3300,
+	grenadeSpeed: 2.1,
+	grenadesExplosionRadius: 4,
+	grenadesArray: [],
+	accuracy: 4,
+	delay: 4000
+};
+
+var infiniteGrenade = false;
+const FRAGMENT = {
+	id: 3301,
+	grenadeSpeed: 2.1,
+	grenadesExplosionRadius: 2,
+	grenadesArray: [],
+	fragmentArray: [],
+	howManyFragments: 3,
+	fragmentDelay: 1000,
+	accuracy: 4,
+	delay: 4000
+};
+
+const MOLOTOV = {
+	id: 3302,
+	grenadeSpeed: 1.5,
+	grenadesExplosionDiameter: 3,
+	explodeOnTouch: true,
+	isWithFire: true,
+	grenadesArray: [],
+	accuracy: 4
+};
+
+const SMOKE = {
+	id: 3303,
+	grenadeSpeed: 2.1,
+	grenadesArray: [],
+	accuracy: 4,
+	delay: 10000,
+	smokeParticle: 4
+};
+
+function createGrenadesItems()
+{
+	Item.defineItem(GRENADE.id, "grenade", 0, "Grenade");
+	Item.addShapedRecipe(GRENADE.id, 1, 0, [
+		"i i",
+		" g ",
+		"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(GRENADE.id, 1);
+
+	Item.defineItem(FRAGMENT.id, "grenadefragment", 0, "Fragment Grenade");
+	Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
+		"g g",
+		"   ",
+		"g g"], ["g", GRENADE.id, 0]);
+	Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(FRAGMENT.id, 1);
+
+	Item.defineItem(MOLOTOV.id, "molotov", 0, "Molotov");
+	Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
+		"ggg",
+		"gfg",
+		"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
+	Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(MOLOTOV.id, 1);
+
+	Item.defineItem(SMOKE.id, "grenadesmoke", 0, "Smoke Grenade");
+	Item.addShapedRecipe(SMOKE.id, 1, 0, [
+		" i ",
+		" z ",
+		" s "], ["z", 353, 0, "s", 12, 0, "i", 265, 0]); // z = sugar; s = sand; i = iron;
+	Item.setCategory(SMOKE.id, ITEM_CATEGORY_TOOL);
+	Player.addItemCreativeInv(SMOKE.id, 1);
+}
+
+// armors
+const JUGGERNAUT_HELMET_ID = 3285;
+const JUGGERNAUT_BODY_ID = 3286;
+const JUGGERNAUT_PANTS_ID = 3287;
+const JUGGERNAUT_BOOTS_ID = 3288;
+
+function createArmorItems()
+{
+	Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 2, 249, ArmorType.helmet);
+	Item.addShapedRecipe(JUGGERNAUT_HELMET_ID, 1, 0, [
+		"cic",
+		"c c",
+		"   "], ["c", 351, 2, "i", 265, 0]);
+	Player.addItemCreativeInv(JUGGERNAUT_HELMET_ID, 1);
+
+	Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 362, ArmorType.chestplate);
+	Item.addShapedRecipe(JUGGERNAUT_BODY_ID, 1, 0, [
+		"i i",
+		"cic",
+		"cic"], ["c", 351, 2, "i", 265, 0]);
+	Player.addItemCreativeInv(JUGGERNAUT_BODY_ID, 1);
+
+	Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 339, ArmorType.leggings);
+	Item.addShapedRecipe(JUGGERNAUT_PANTS_ID, 1, 0, [
+		"ccc",
+		"i i",
+		"i i"], ["c", 351, 2, "i", 265, 0]);
+	Player.addItemCreativeInv(JUGGERNAUT_PANTS_ID, 1);
+
+	Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 294, ArmorType.boots);
+	Item.addShapedRecipe(JUGGERNAUT_BOOTS_ID, 1, 0, [
+		"   ",
+		"c c",
+		"i i"], ["c", 351, 2, "i", 265, 0]);
+	Player.addItemCreativeInv(JUGGERNAUT_BOOTS_ID, 1);
+}
 
 
 // all possible gun variables
@@ -1743,203 +1927,10 @@ const XMAS_SNIPER = {
 var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 var allGuns = [];
 
-// info item
-const INFO_ITEM_ID = 3365;
-Item.defineItem(INFO_ITEM_ID, "desnogunsinfo", 0, "DesnoGuns Info");
-Item.addShapedRecipe(INFO_ITEM_ID, 1, 0, [
-	"   ",
-	" w ",
-	"   "], ["w", 17, 0]);
-Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(INFO_ITEM_ID, 1);
 
-// other items
-const KNIFE_ID = 3320;
-const KNIFE_MAX_DAMAGE = 32;
-const KNIFE_SOUND_STAB = {
-	startingFrom: 1,
-	endingAt: 2,
-	startText: "desnoguns/knife_stab",
-	endText: ".mp3"
-};
-const KNIFE_MOB_DAMAGE = 20;
-Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
-Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
-Item.addShapedRecipe(KNIFE_ID, 1, 0, [
-	" i ",
-	" i ",
-	" i "], ["i", 265, 0]);
-Item.setVerticalRender(KNIFE_ID);
-Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(KNIFE_ID, 1);
-
-const RIOT_SHIELD_ID = 3323;
-const RIOT_SHIELD_MAX_DAMAGE = 3072;
-const RIOT_SHIELD_MOB_DAMAGE = 1;
-Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
-Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
-Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
-	" g ",
-	" i ",
-	" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
-Item.setVerticalRender(RIOT_SHIELD_ID);
-Item.setCategory(RIOT_SHIELD_ID, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
-
-var isParachuting = false;
-const PARACHUTE_ID = 3321;
-const PARACHUTE_MAX_DAMAGE = 10;
-Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute");
-Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
-Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
-	"www",
-	"s s",
-	" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
-Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(PARACHUTE_ID, 1);
-
-const MEDICAL_KIT_ID = 3322;
-const MEDICAL_KIT_MAX_RESTORABLE_HEALTH = 50;
-Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
-Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
-Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
-	" m ",
-	"ama",
-	" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
-
-const BINOCULARS = {
-	id: 3324,
-	zoomLevel: 51,
-	hasAimImageLayer: true,
-};
-Item.defineItem(BINOCULARS.id, "binoculars", 0, "Binoculars");
-Item.addShapedRecipe(BINOCULARS.id, 1, 0, [
-	"g g",
-	"iii",
-	"i i"], ["g", 20, 0, "i", 265, 0]); // g = glass; i = iron;
-Item.setCategory(BINOCULARS.id, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(BINOCULARS.id, 1);
-
-const ZOOM_BINOCULARS = {
-	id: 3325,
-	zoomLevel: 51,
-	hasAimImageLayer: true,
-	hasManualZoom: true,
-};
-Item.defineItem(ZOOM_BINOCULARS.id, "zoombinoculars", 0, "Zoom Binoculars");
-Item.addShapedRecipe(ZOOM_BINOCULARS.id, 1, 0, [
-	"g g",
-	"iri",
-	"i i"], ["g", 20, 0, "i", 265, 0, "r", 331, 0]); // g = glass; i = iron; r = redstone
-Item.setCategory(ZOOM_BINOCULARS.id, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(ZOOM_BINOCULARS.id, 1);
-
-// grenades
-const GRENADE = {
-	id: 3300,
-	grenadeSpeed: 2.1,
-	grenadesExplosionRadius: 4,
-	grenadesArray: [],
-	accuracy: 4,
-	delay: 4000
-};
-Item.defineItem(GRENADE.id, "grenade", 0, "Grenade");
-Item.addShapedRecipe(GRENADE.id, 1, 0, [
-	"i i",
-	" g ",
-	"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(GRENADE.id, 1);
-
-var infiniteGrenade = false;
-const FRAGMENT = {
-	id: 3301,
-	grenadeSpeed: 2.1,
-	grenadesExplosionRadius: 2,
-	grenadesArray: [],
-	fragmentArray: [],
-	howManyFragments: 3,
-	fragmentDelay: 1000,
-	accuracy: 4,
-	delay: 4000
-};
-Item.defineItem(FRAGMENT.id, "grenadefragment", 0, "Fragment Grenade");
-Item.addShapedRecipe(FRAGMENT.id, 2, 0, [
-	"g g",
-	"   ",
-	"g g"], ["g", GRENADE.id, 0]);
-Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(FRAGMENT.id, 1);
-
-const MOLOTOV = {
-	id: 3302,
-	grenadeSpeed: 1.5,
-	grenadesExplosionDiameter: 3,
-	explodeOnTouch: true,
-	isWithFire: true,
-	grenadesArray: [],
-	accuracy: 4
-};
-Item.defineItem(MOLOTOV.id, "molotov", 0, "Molotov");
-Item.addShapedRecipe(MOLOTOV.id, 1, 0, [
-	"ggg",
-	"gfg",
-	"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
-Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(MOLOTOV.id, 1);
-
-const SMOKE = {
-	id: 3303,
-	grenadeSpeed: 2.1,
-	grenadesArray: [],
-	accuracy: 4,
-	delay: 10000,
-	smokeParticle: 4
-};
-Item.defineItem(SMOKE.id, "grenadesmoke", 0, "Smoke Grenade");
-Item.addShapedRecipe(SMOKE.id, 1, 0, [
-	" i ",
-	" z ",
-	" s "], ["z", 353, 0, "s", 12, 0, "i", 265, 0]); // z = sugar; s = sand; i = iron;
-Item.setCategory(SMOKE.id, ITEM_CATEGORY_TOOL);
-Player.addItemCreativeInv(SMOKE.id, 1);
-
-
-// armors
-//Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
-
-const JUGGERNAUT_HELMET_ID = 3285;
-Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 2, 249, ArmorType.helmet);
-Item.addShapedRecipe(JUGGERNAUT_HELMET_ID, 1, 0, [
-	"cic",
-	"c c",
-	"   "], ["c", 351, 2, "i", 265, 0]);
-Player.addItemCreativeInv(JUGGERNAUT_HELMET_ID, 1);
-
-const JUGGERNAUT_BODY_ID = 3286;
-Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 362, ArmorType.chestplate);
-Item.addShapedRecipe(JUGGERNAUT_BODY_ID, 1, 0, [
-	"i i",
-	"cic",
-	"cic"], ["c", 351, 2, "i", 265, 0]);
-Player.addItemCreativeInv(JUGGERNAUT_BODY_ID, 1);
-
-const JUGGERNAUT_PANTS_ID = 3287;
-Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 339, ArmorType.leggings);
-Item.addShapedRecipe(JUGGERNAUT_PANTS_ID, 1, 0, [
-	"ccc",
-	"i i",
-	"i i"], ["c", 351, 2, "i", 265, 0]);
-Player.addItemCreativeInv(JUGGERNAUT_PANTS_ID, 1);
-
-const JUGGERNAUT_BOOTS_ID = 3288;
-Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 294, ArmorType.boots);
-Item.addShapedRecipe(JUGGERNAUT_BOOTS_ID, 1, 0, [
-	"   ",
-	"c c",
-	"i i"], ["c", 351, 2, "i", 265, 0]);
-Player.addItemCreativeInv(JUGGERNAUT_BOOTS_ID, 1);
-
+//########################################################################################################################################################
+// Hooks and simulated hooks
+//########################################################################################################################################################
 
 function selectLevelHook()
 {
@@ -3393,7 +3384,7 @@ function installSoundFromSimplePath(simplePath, gunName, addonName)
 		
 	} catch(e)
 	{
-		texturePackNotIntsalledWarningUI("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gunName + ": the sound \"" + simplePath + "\" hasn't been found.");
+		errorWithAddonResources("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gunName + ": the sound \"" + simplePath + "\" hasn't been found.");
 		Log.log("installSoundFromSimplePath(): Error: " + e);
 	}
 }
@@ -3412,7 +3403,7 @@ function addNewGunFromAddon(gun, addonName)
 		} catch(e)
 		{
 			ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
-			texturePackNotIntsalledWarningUI("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
+			errorWithAddonResources("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
 		}	
 	}
 	else
@@ -3423,7 +3414,7 @@ function addNewGunFromAddon(gun, addonName)
 		} catch(e)
 		{
 			ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
-			texturePackNotIntsalledWarningUI("Seems that you haven't installed the \"" + addonName + "\" texture pack.<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
+			errorWithAddonResources("Seems that you haven't installed the \"" + addonName + "\" texture pack.<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
 		}	
 	}
 	addGunCraftingRecipe(gun);
@@ -5743,6 +5734,43 @@ Player.removeItemsFromInventory = function(slot, count)
 //########## PLAYER functions - END ##########
 
 
+//########## ITEM functions ##########
+Item.setVerticalRender = function(id)
+{
+	try {
+		Item.setHandEquipped(id, true);
+	} catch(e) { /* old version of BlockLauncher */ }
+}
+
+Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
+{
+	try
+	{
+		ModPE.setItem(id, textureName, textureNumber, name, stackLimit);
+	}catch(e)
+	{
+		errorWithModResources();
+
+		ModPE.setItem(id, "skull_zombie", 0, name, stackLimit);
+	}
+}
+
+Item.newArmor = function(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType)
+{
+	try
+	{
+		//Item.defineArmor(int id, String iconName, int iconIndex, String name, String texture, int damageReduceAmount, int maxDamage, int armorType)
+		Item.defineArmor(id, iconName, iconIndex, name, texture, damageReduceAmount, maxDamage, armorType);
+	}catch(e)
+	{
+		errorWithModResources();
+
+		Item.defineArmor(id, "skull_zombie", 0, name, "armor/chain_2.png", damageReduceAmount, maxDamage, armorType);
+	}
+}
+//########## ITEM functions - END ##########
+
+
 //########## IMAGE functions ##########
 function createImages()
 {
@@ -7873,15 +7901,11 @@ function addonErrorUI(addonName, error)
 }
 
 // No Minecraft Layout because this UI can be showed at startup
-function texturePackNotIntsalledWarningUI(customMessage)
+function errorWithModResources()
 {
-	if(!textureUiShowed)
+	if(!errorWithModResourcesShowed)
 	{
-		textureUiShowed = true;
-
-		// custom message (used with addons)
-		if(customMessage == null)
-			customMessage = "Seems that you haven't installed the DesnoGuns texture pack.<br><br>Please install the texture pack of the mod and <b>restart BlockLauncher</b> to enjoy all the features of the DesnoGuns Mod.";
+		errorWithModResourcesShowed = true;
 
 		currentActivity.runOnUiThread(new java.lang.Runnable()
 		{
@@ -7899,10 +7923,81 @@ function texturePackNotIntsalledWarningUI(customMessage)
 
 					var popup = new android.app.Dialog(currentActivity);
 					popup.setContentView(scroll);
-					popup.setTitle(new android.text.Html.fromHtml("Texture Pack not installed"));
+					popup.setTitle(new android.text.Html.fromHtml("Restart BlockLauncher"));
 					popup.setCanceledOnTouchOutside(false);
 
 					var text = new android.widget.TextView(currentActivity);
+					text.setText(new android.text.Html.fromHtml("Resources for the DesnoGuns Mod aren't available now, please <b>restart BlockLauncher</b> to load them."));
+					layout.addView(text);
+					Ui.setMarginsToViewInLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+
+
+					var nowButton = new android.widget.Button(currentActivity);
+					nowButton.setText("Restart now!");
+					nowButton.setOnClickListener(new android.view.View.OnClickListener()
+					{
+						onClick: function()
+						{
+							DesnoUtils.killBlockLauncher();
+							errorWithModResourcesShowed = false;
+							popup.dismiss();
+						}
+					});
+					layout.addView(nowButton);
+					Ui.setMarginsToViewInLinearLayout(nowButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+					var laterButton = new android.widget.Button(currentActivity);
+					laterButton.setText("Restart later");
+					laterButton.setOnClickListener(new android.view.View.OnClickListener()
+					{
+						onClick: function()
+						{
+							errorWithModResourcesShowed = false;
+							popup.dismiss();
+						}
+					});
+					layout.addView(laterButton);
+					Ui.setMarginsToViewInLinearLayout(laterButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+
+					Popup.showImmersivePopup(popup);
+
+				} catch(err)
+				{
+					print("Error: " + err);
+				}
+			}
+		});
+	}
+}
+
+// No Minecraft Layout because this UI can be showed at startup
+function errorWithAddonResources(customMessage)
+{
+	if(!errorWithAddonResourcesShowed)
+	{
+		errorWithAddonResourcesShowed = true;
+
+		currentActivity.runOnUiThread(new java.lang.Runnable()
+		{
+			run: function()
+			{
+				try
+				{
+					var layout = new android.widget.LinearLayout(currentActivity);
+					var padding = Convert.convertDpToPixels(8);
+					layout.setPadding(padding, padding, padding, padding);
+					layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+					var scroll = new android.widget.ScrollView(currentActivity);
+					scroll.addView(layout);
+
+					var popup = new android.app.Dialog(currentActivity);
+					popup.setContentView(scroll);
+					popup.setTitle(new android.text.Html.fromHtml("Addon resources not installed"));
+					popup.setCanceledOnTouchOutside(false);
+
+					var text = new android.widget.TextView(customMessage);
 					text.setText(new android.text.Html.fromHtml(customMessage));
 					layout.addView(text);
 
@@ -7914,7 +8009,7 @@ function texturePackNotIntsalledWarningUI(customMessage)
 					{
 						onClick: function()
 						{
-							textureUiShowed = false;
+							errorWithAddonResourcesShowed = false;
 							popup.dismiss();
 						}
 					});
@@ -8485,6 +8580,12 @@ function startup()
 {
 	// custom variables for DesnoUtils Library (must be set immediately or the default tag will remain)
 	DesnoUtils.MOD_NAME = "DesnoGuns";
+
+	// add all items
+	createAmmoItems();
+	createGeneralItems();
+	createGrenadesItems();
+	createArmorItems();
 
 	// check if is pro
 	refreshIsPro();
