@@ -7997,7 +7997,7 @@ function errorWithAddonResources(customMessage)
 					popup.setTitle(new android.text.Html.fromHtml("Addon resources not installed"));
 					popup.setCanceledOnTouchOutside(false);
 
-					var text = new android.widget.TextView(customMessage);
+					var text = new android.widget.TextView(currentActivity);
 					text.setText(new android.text.Html.fromHtml(customMessage));
 					layout.addView(text);
 
