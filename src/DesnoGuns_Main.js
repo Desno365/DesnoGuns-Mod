@@ -102,12 +102,14 @@ var displayGunNameInAmmo = false;
 var switchedButtonsPosition = false;
 var minecraftStyleForButtons = false;
 
-// workaround for returning arrows variable
-var deathWorkaround = false;
-
 // settings for reload in creative variables
 var reloadInCreative = false;
 var instantReloadInCreative = false;
+
+// fix returning arrows
+var latestShotEntity;
+var latestEntityHurtTime;
+const ENTITY_HURT_ANIMATION_DURATION = 2000;
 
 // settings for audio
 var generalVolume = 1;
@@ -1964,7 +1966,6 @@ function newLevel()
 
 	// load saved boolean settings
 	// getSavedBoolean(name, defaultValue, debug);
-	deathWorkaround = getSavedBoolean("dWorkaround", false, true);
 	shouldDisplaySight = getSavedBoolean("dSight", true);
 	displayGunNameInAmmo = getSavedBoolean("dNameAmmo", false);
 	reloadInCreative = getSavedBoolean("rCreative", false);
@@ -2138,6 +2139,25 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 	}
 }
 
+function entityHurtHook(attacker, victim, hearts)
+{
+	if(Entity.getEntityTypeId(attacker) == EntityType.ARROW)
+	{
+		if(victim == latestShotEntity)
+		{
+			if(latestEntityHurtTime == null || java.lang.System.currentTimeMillis() < (latestEntityHurtTime + ENTITY_HURT_ANIMATION_DURATION))
+			{
+				// if the entity has been recently hurt by an arrow remove that arrow (this may remove arrows that really damaged the entity, but it isn't a problem because when an arrow damages an entity the arrow is removed)
+				Entity.remove(attacker);
+			}
+		} else
+		{
+			latestEntityHurtTime = java.lang.System.currentTimeMillis();
+			latestShotEntity = victim;
+		}
+	}
+}
+
 function attackHook(attacker, victim)
 {
 	if(attacker = Player.getEntity())
@@ -2196,15 +2216,6 @@ function deathHook(murderer, victim)
 		if(index != -1)
 		{
 			pigmen.splice(index, 1);
-		}
-	}
-
-	// remove the mob after the death, this prevent returning arrows
-	if(deathWorkaround && victim != Player.getEntity())
-	{
-		if(isItemAGun(Player.getCarriedItem()))
-		{
-			Entity.remove(victim);
 		}
 	}
 }
@@ -7151,49 +7162,6 @@ function settingsUI()
 				layout.addView(title);
 
 				layout.addView(dividerText());
-
-				var switchWorkaround = new android.widget.Switch(currentActivity);
-				switchWorkaround.setChecked(deathWorkaround);
-				switchWorkaround.setText("Enable workaround to prevent returning arrows while shooting (experimental)");
-				switchWorkaround.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
-				switchWorkaround.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
-				{
-					onCheckedChanged: function()
-					{
-						deathWorkaround = !deathWorkaround;
-						ModPE.saveData("dWorkaround", deathWorkaround);
-
-						if(DEBUG1)
-						{
-							var dWorkaroundTest = ModPE.readData("dWorkaround");
-							if(typeof dWorkaroundTest == "boolean")
-							{
-								clientMessage("bool");
-							} else
-							{
-								if(typeof dWorkaroundTest == "string")
-								{
-									clientMessage("string");
-								} else
-								{
-									clientMessage(typeof dWorkaroundTest);
-								}
-							}
-							clientMessage(dWorkaroundTest);
-
-							if(deathWorkaround)
-								clientMessage("workaround");
-							else
-								clientMessage("keep everything");
-						}
-					}
-				});
-				switchWorkaround.setPadding(padding, 0, padding, 0);
-				layout.addView(switchWorkaround);
-
-				layout.addView(dividerText());
-
-
 
 				var switchReloadCreative = new android.widget.Switch(currentActivity);
 				switchReloadCreative.setChecked(reloadInCreative);
