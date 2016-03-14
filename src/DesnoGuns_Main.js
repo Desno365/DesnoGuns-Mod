@@ -1968,7 +1968,7 @@ function newLevel()
 	// getSavedBoolean(name, defaultValue, debug);
 	shouldDisplaySight = getSavedBoolean("dSight", true);
 	displayGunNameInAmmo = getSavedBoolean("dNameAmmo", false);
-	reloadInCreative = getSavedBoolean("rCreative", false);
+	reloadInCreative = getSavedBoolean("rCreative", true);
 	instantReloadInCreative = getSavedBoolean("instReload", false);
 	switchedButtonsPosition = getSavedBoolean("sBPosition", false);
 	minecraftStyleForButtons = getSavedBoolean("sBStyle", false);
@@ -2147,7 +2147,7 @@ function entityHurtHook(attacker, victim, hearts)
 		{
 			if(latestEntityHurtTime == null || java.lang.System.currentTimeMillis() < (latestEntityHurtTime + ENTITY_HURT_ANIMATION_DURATION))
 			{
-				// if the entity has been recently hurt by an arrow remove that arrow (this may remove arrows that really damaged the entity, but it isn't a problem because when an arrow damages an entity the arrow is removed)
+				// if the entity has been recently hurt by an arrow remove other arrows that hit the entity (this may remove arrows that really damaged the entity, but it isn't a problem because when an arrow damages an entity the arrow is removed)
 				Entity.remove(attacker);
 			}
 		} else
