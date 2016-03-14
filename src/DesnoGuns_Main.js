@@ -727,7 +727,7 @@ const AT4 = {
 	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-	reloadSound: "desnoguns/reload/BazookaReload.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.mp3",
 };
 
 const AUG = {
@@ -1334,7 +1334,7 @@ const M72LAW = {
 	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-	reloadSound: "desnoguns/reload/BazookaReload.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.mp3",
 };
 
 const M249 = {
@@ -1572,7 +1572,7 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	bulletsExplosionRadius: 2,
 	// SOUNDS
 	sound: "desnoguns/MultipleRocketLauncherShoot.mp3",
-	reloadSound: "desnoguns/reload/BazookaReload.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.mp3",
 };
 
 const P90 = {
@@ -1716,7 +1716,7 @@ const RPG = {
 	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/RPGShoot.ogg",
-	reloadSound: "desnoguns/reload/BazookaReload.ogg",
+	reloadSound: "desnoguns/reload/BazookaReload.mp3",
 };
 
 const RPK = {
@@ -8197,7 +8197,7 @@ SoundsInstaller.sounds = {
 			fileDirectory: "reload"
 		},
 		{
-			fileName: "BazookaReload.ogg",
+			fileName: "BazookaReload.mp3",
 			fileDirectory: "reload"
 		},
 		{
