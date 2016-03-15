@@ -18,7 +18,7 @@ const DEBUG1 = false; // debug: loading boolean saved at startup; sounds correct
 const DEBUG2 = false;
 
 // updates variables
-const CURRENT_VERSION = "r013";
+const CURRENT_VERSION = "r014";
 var latestVersion;
 
 //activity and other Android variables
@@ -5677,82 +5677,7 @@ function updateLatestVersionMod()
 //########## INTERNET functions - END ##########
 
 
-//########## PLAYER functions ##########
-Player.damageCarriedItem = function()
-{
-	var maxDamage;
-	if(Player.getCarriedItem() == KNIFE_ID)
-		maxDamage = KNIFE_MAX_DAMAGE;
-	if(Player.getCarriedItem() == PARACHUTE_ID)
-		maxDamage = PARACHUTE_MAX_DAMAGE;
-	if(Player.getCarriedItem() == MEDICAL_KIT_ID)
-		maxDamage = MEDICAL_KIT_MAX_RESTORABLE_HEALTH;
-	if(Player.getCarriedItem() == RIOT_SHIELD_ID)
-		maxDamage = RIOT_SHIELD_MAX_DAMAGE;
-
-	if(Player.getCarriedItemData() < maxDamage)
-		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), Player.getCarriedItemData() + 1);
-	else
-	{
-		Level.playSoundEnt(Player.getEntity(), "random.break", 100, 0);
-		if(Player.getCarriedItemCount() == 1)
-			Player.clearInventorySlot(Player.getSelectedSlotId());
-		else
-			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
-	}
-}
-
-Player.decreaseByOneCarriedItem = function()
-{
-	if(Player.getCarriedItemCount() == 1)
-		Player.clearInventorySlot(Player.getSelectedSlotId());
-	else
-		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount() - 1, 0);
-}
-
-Player.getSlotOfItem = function(item, count)
-{
-	if(count == null || count <= 0)
-		count = 1;
-	// return -1 if the item wasn't found otherwise returns the inventory slot
-	for(var i = 0; i <= 255; i++)
-	{
-		if(Player.getInventorySlot(i) == item)
-		{
-			if(Player.getInventorySlotCount(i) >= count)
-			{
-				return i;
-			}
-		}
-	}
-	return -1;
-}
-
-Player.removeItemsFromInventory = function(slot, count)
-{
-	if(Player.getInventorySlotCount(slot) > count)
-	{
-		var id = Player.getInventorySlot(slot);
-		var countBefore = Player.getInventorySlotCount(slot);
-
-		Player.clearInventorySlot(slot);
-		Player.addItemInventory(id, countBefore - count);
-	} else
-	{
-		Player.clearInventorySlot(slot);
-	}
-}
-//########## PLAYER functions - END ##########
-
-
 //########## ITEM functions ##########
-Item.setVerticalRender = function(id)
-{
-	try {
-		Item.setHandEquipped(id, true);
-	} catch(e) { /* old version of BlockLauncher */ }
-}
-
 Item.defineItem = function(id, textureName, textureNumber, name, stackLimit)
 {
 	try
