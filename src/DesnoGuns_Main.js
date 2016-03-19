@@ -5566,7 +5566,7 @@ function getRandomTip()
 		}
 		case 9:
 		{
-			return "This mod is compatible with the Portal 2 Mod by Desno365!";
+			return "This mod is compatible with the <a href=\"http://desno365.net/minecraft/portal2-mod/\">Portal 2 Mod by Desno365</a>!";
 		}
 		case 10:
 		{
@@ -5586,7 +5586,7 @@ function getRandomTip()
 		}
 		case 14:
 		{
-			return "@AntiModPe made the grenade renders and helped me with some other things. Thanks Anti!";
+			return "Do you already know you can <a href=\"http://desno365.net/minecraft/desnoguns-mod/addons/\">install addons</a> that add new guns?";
 		}
 		case 15:
 		{
@@ -5605,7 +5605,7 @@ function getRandomTip()
 		}
 		case 18:
 		{
-			return "There is an option in Settings that enables reload in creative.";
+			return "There is an option in Settings that disables reload in creative.";
 		}
 		case 19:
 		{
