@@ -357,7 +357,7 @@ var ADDON_WEAPONS = [
 		bulletsExplosionRadius: 4,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
-		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.mp3",
 	},
 
 	{
@@ -507,7 +507,7 @@ var ADDON_WEAPONS = [
 		bulletsExplosionRadius: 2,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/MultipleRocketLauncherShoot.mp3",
-		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.mp3",
 	},
 
 	{
@@ -605,7 +605,7 @@ var ADDON_WEAPONS = [
 		bulletsExplosionRadius: 4,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/RPGShoot.ogg",
-		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.mp3",
 	},
 
 	{
