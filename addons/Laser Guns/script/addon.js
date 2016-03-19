@@ -71,7 +71,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 40,
 		hasAimImageLayer: true,
 		texture: "laser_sniper_rifle",
-		ammo: 4,
+		ammo: 6,
 		smoke: 1,
 		// BEHAVIOR
 		shotType: "shotgun",
@@ -84,6 +84,32 @@ var ADDON_WEAPONS = [
 		// SOUNDS
 		sound: "custom/laser-guns-sounds/LaserSniperRifleShoot.mp3",
 		reloadSound: "custom/laser-guns-sounds/reload/LaserSniperRifleReload.mp3",
+	},
+
+	{
+		weaponType: "gun",
+		name: "Laser Rail Gun",
+		gunType: "minigun",
+		buttonType: "on_touch_with_wait",
+		id: 2430,
+		fireRate: 1,
+		recoil: 1.5,
+		bulletSpeed: 4.5,
+		accuracy: 7,
+		zoomLevel: 23,
+		texture: "laser_rail_gun",
+		ammo: 250,
+		smoke: 4,
+		// BEHAVIOR
+		shotType: "normal",
+		bulletType: "normal_explosive_on_touch",
+		bulletsExplosionRadius: 2,
+		// SOUNDS
+		warmupSound: "custom/laser-guns-sounds/LaserRailGunWarmup.mp3",
+		sound: "custom/laser-guns-sounds/LaserRailGunShoot.mp3",
+		spinSound: "custom/laser-guns-sounds/LaserRailGunSpin.mp3",
+		cooldownSound: "custom/laser-guns-sounds/LaserRailGunCooldown.mp3",
+		reloadSound: "custom/laser-guns-sounds/reload/LaserRailGunReload.ogg",
 	},
 ];
 
