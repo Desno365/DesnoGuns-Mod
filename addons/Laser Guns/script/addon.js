@@ -1,3 +1,8 @@
+/* ******* Laser Guns Addon by Desno365 ******* */
+
+//########################################################################################################################################################
+// Addon code
+//########################################################################################################################################################
 
 var ADDON_NAME = "Laser Guns Addon";
 
@@ -52,7 +57,7 @@ var ADDON_WEAPONS = [
 		particleTrailDistance: 9,
 		particleTrailId: ParticleType.redstone,
 		bulletType: "normal_explosive_on_touch",
-		bulletsExplosionRadius: 4,
+		bulletsExplosionRadius: 5,
 		// SOUNDS
 		sound: "custom/laser-guns-sounds/LaserBazookaShoot.mp3",
 		reloadSound: "custom/laser-guns-sounds/reload/LaserBazookaReload.mp3",
@@ -109,7 +114,7 @@ var ADDON_WEAPONS = [
 		sound: "custom/laser-guns-sounds/LaserRailGunShoot.mp3",
 		spinSound: "custom/laser-guns-sounds/LaserRailGunSpin.mp3",
 		cooldownSound: "custom/laser-guns-sounds/LaserRailGunCooldown.mp3",
-		reloadSound: "custom/laser-guns-sounds/reload/LaserRailGunReload.ogg",
+		reloadSound: "custom/laser-guns-sounds/reload/LaserRailGunReload.mp3",
 	},
 ];
 
@@ -177,4 +182,161 @@ var ADDON_WEAPONS = [
 
 // Don't delete or modify this function! It is called by the DesnoGuns Mod to load all your guns.
 function loadWeaponsHook() { var arrobject = [ADDON_WEAPONS, ADDON_NAME, ADDON_DESCRIPTION]; net.zhuoweizhang.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsCallback", arrobject); }
+
+
+//########################################################################################################################################################
+// Additional code, no addon
+//########################################################################################################################################################
+
+// updates variables
+const CURRENT_VERSION = "r004";
+var latestVersion;
+
+//activity and other Android variables
+var currentActivity = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
+
+//display size and density variables
+var metrics = new android.util.DisplayMetrics();
+currentActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+var deviceDensity = metrics.density;
+metrics = null;
+
+function newLevel()
+{
+	new java.lang.Thread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			updateLatestVersion();
+			if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
+				updateAvailableUI();
+		}
+	}).start();
+}
+
+//############################################################################
+// Added functions (No GUI and No render)
+//############################################################################
+
+function updateLatestVersion()
+{
+	try
+	{
+		// download content
+		var url = new java.net.URL("https://raw.githubusercontent.com/Desno365/MCPE-scripts/master/laserMOD-version");
+		var connection = url.openConnection();
+ 
+		// get content
+		inputStream = connection.getInputStream();
+ 
+		// read result
+		var loadedVersion = "";
+		var bufferedVersionReader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
+		var rowVersion = "";
+		while((rowVersion = bufferedVersionReader.readLine()) != null)
+		{
+			loadedVersion += rowVersion;
+		}
+		latestVersion = loadedVersion.split(" ")[0];
+ 
+		// close what needs to be closed
+		bufferedVersionReader.close();
+		inputStream.close();
+	} catch(err)
+	{
+		ModPE.log("updateLatestVersion(): caught an error: " + err);
+	}
+}
+
+function convertDpToPixel(dp)
+{
+	//
+	return Math.round(dp * deviceDensity);
+}
+
+
+//########################################################################################################################################################
+// Utils of UI functions
+//########################################################################################################################################################
+
+const MARGIN_HORIZONTAL_BIG = 16;
+const MARGIN_HORIZONTAL_SMALL = 4;
+
+function setMarginsLinearLayout(view, left, top, right, bottom)
+{
+	var originalParams = view.getLayoutParams();
+	var newParams = new android.widget.LinearLayout.LayoutParams(originalParams);
+	newParams.setMargins(convertDpToPixel(left), convertDpToPixel(top), convertDpToPixel(right), convertDpToPixel(bottom));
+	view.setLayoutParams(newParams);
+}
+
+
+//############################################################################
+// UI functions
+//############################################################################
+
+function updateAvailableUI()
+{
+	currentActivity.runOnUiThread(new java.lang.Runnable()
+	{
+		run: function()
+		{
+			try
+			{
+				var layout = new android.widget.LinearLayout(currentActivity);
+				var padding = convertDpToPixel(8);
+				layout.setPadding(padding, padding, padding, padding);
+				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+				var scroll = new android.widget.ScrollView(currentActivity);
+				scroll.addView(layout);
+			
+				var popup = new android.app.Dialog(currentActivity); 
+				popup.setContentView(scroll);
+				popup.setTitle(new android.text.Html.fromHtml("Laser Guns Addon: new version"));
+				
+				var updateText = new android.widget.TextView(currentActivity);
+				updateText.setText(new android.text.Html.fromHtml("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
+					"You can find a download link on Desno365's website (press the button to visit it)."));
+				layout.addView(updateText);
+				setMarginsLinearLayout(updateText, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+
+				var downloadButton = new android.widget.Button(currentActivity); 
+				downloadButton.setText("Visit website"); 
+				downloadButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("http://desno365.net/minecraft/laser-mod/"));
+						currentActivity.startActivity(intentBrowser);
+						popup.dismiss();
+					}
+				});
+				layout.addView(downloadButton);
+				setMarginsLinearLayout(downloadButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+	
+				var exitButton = new android.widget.Button(currentActivity); 
+				exitButton.setText("Close"); 
+				exitButton.setOnClickListener(new android.view.View.OnClickListener()
+				{
+					onClick: function()
+					{
+						popup.dismiss();
+					}
+				}); 
+				layout.addView(exitButton);
+				setMarginsLinearLayout(exitButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+				
+
+				popup.show();
+			
+			}catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	});
+}
 
