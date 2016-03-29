@@ -14,8 +14,8 @@ SOFTWARE.
 
 /* ******* DesnoGuns Mod by Desno365 ******* */
 
-const DEBUG1 = false; // debug: loading boolean saved at startup; sounds correctly installed;
-const DEBUG2 = false;
+const DEBUG1 = false; // debug: getSavedBoolean
+const DEBUG2 = false; // disable base64 code
 
 // updates variables
 const CURRENT_VERSION = "r014";
@@ -3961,7 +3961,7 @@ function shootSingleBullet(gun)
 
 	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 	{
-		playSoundFromSimplePath("desnoguns/explosion-countdown.wav");
+		playSoundFromSimplePath("desnoguns/explosion-countdown.mp3");
 
 		new android.os.Handler().postDelayed(new java.lang.Runnable(
 		{
@@ -4015,7 +4015,7 @@ function shootShotgun(gun)
 	}
 
 	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
-		playSoundFromSimplePath("desnoguns/explosion-countdown.wav");
+		playSoundFromSimplePath("desnoguns/explosion-countdown.mp3");
 }
 
 function shootSingleShotgunBullet(gun)
@@ -4224,7 +4224,7 @@ function onClickShootWithReload(gun)
 {
 	if(Player.getCarriedItemData() >= gun.ammo)
 	{
-		playSoundFromSimplePath("desnoguns/EmptyGun.ogg");
+		playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
 		ModPE.showTipMessage("Press the ammo text to reload.");
 	} else
 	{
@@ -4281,7 +4281,7 @@ function onTouchShootingRunnableWithReload(gun)
 			{
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
-					playSoundFromSimplePath("desnoguns/EmptyGun.ogg");
+					playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
 					ModPE.showTipMessage("Press the ammo text to reload.");
 				} else
 				{
@@ -4408,7 +4408,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 			{
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
-					playSoundFromSimplePath("desnoguns/EmptyGun.ogg");
+					playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
 					ModPE.showTipMessage("Press the ammo text to reload.");
 				} else
 				{
@@ -8013,10 +8013,10 @@ SoundsInstaller.sounds = {
 			fileName: "DragunovShoot.ogg"
 		},
 		{
-			fileName: "EmptyGun.ogg"
+			fileName: "EmptyGun.mp3"
 		},
 		{
-			fileName: "explosion-countdown.wav"
+			fileName: "explosion-countdown.mp3"
 		},
 		{
 			fileName: "fire-explosion.mp3"
