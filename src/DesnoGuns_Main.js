@@ -119,13 +119,6 @@ var ammoText;
 var isReloading = false;
 var reloadingGun;
 
-// sounds
-var reloadSound = new android.media.MediaPlayer();
-
-// load on touch with wait gun sounds
-var gunWarmupSound = new android.media.MediaPlayer();
-var gunSpinSound = new android.media.MediaPlayer();
-
 // general value for the weapons accuracy, the more this value is the less accuracy weapons have
 const RANDOMNESS = 0.55;
 
@@ -2249,17 +2242,10 @@ function changeCarriedItemHook(currentItem, previousItem)
 	stopReloading();
 
 	// release the resources for sounds
-	Sound.stopSoundPool();
+	Sound.stopOneShot();
 
 	// reset sounds for on touch with wait guns spin
-	try {
-		gunSpinSound.stop();
-		gunSpinSound.release();
-		gunSpinSound = null;
-		gunSpinSound = new android.media.MediaPlayer();
-	} catch(e) {
-		clientMessage(e);
-	}
+	Sound.stopLoop();
 
 	// remove shooting UI of grenades and molotov
 	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id || previousItem == SMOKE.id || previousItem == BINOCULARS.id || previousItem == ZOOM_BINOCULARS.id)
@@ -2315,7 +2301,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 
 		// load sounds for the gun
 		if(!currentGun.hasntShootingSound)
-			Sound.loadSoundPoolFromPath(getOriginalPathOfSound(currentGun.sound));
+			Sound.loadRepetitiveFromPath(getOriginalPathOfSound(currentGun.sound));
 
 		// assault rifles, sub machine guns and light machine guns
 		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH)
@@ -2378,64 +2364,23 @@ function changeCarriedItemHook(currentItem, previousItem)
 		// guns with warmup
 		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
 		{
-			// load spin sound
-			try {
-				gunSpinSound.reset();
-				gunSpinSound.setDataSource(getOriginalPathOfSound(currentGun.spinSound));
-				gunSpinSound.setLooping(true);
-				gunSpinSound.setVolume(generalVolume, generalVolume);
-				gunSpinSound.prepareAsync();
-			} catch(e) {
-				try {
-					// try again, maybe we had a weird sound error
-					gunSpinSound.reset();
-					gunSpinSound.setDataSource(getOriginalPathOfSound(currentGun.spinSound));
-					gunSpinSound.setLooping(true);
-					gunSpinSound.setVolume(generalVolume, generalVolume);
-					gunSpinSound.prepareAsync();
-				} catch(e) { /* sounds not installed */ }
-			}
-
 			// load touch events
-			if(shouldReload())
+			currentActivity.runOnUiThread(new java.lang.Runnable(
 			{
-				// survival or creative with reload option enabled
-				currentActivity.runOnUiThread(new java.lang.Runnable(
+				run: function()
 				{
-					run: function()
+					shotText.setOnTouchListener(new android.view.View.OnTouchListener()
 					{
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+						onTouch: function(v, event)
 						{
-							onTouch: function(v, event)
-							{
-								if(minecraftStyleForButtons)
-									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-								onTouchWithWaitWeaponShoot(event, currentGun, true);
-								return false;
-							}
-						});
-					}
-				}));
-			} else
-			{
-				// creative with reload option disabled
-				currentActivity.runOnUiThread(new java.lang.Runnable(
-				{
-					run: function()
-					{
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-						{
-							onTouch: function(v, event)
-							{
-								if(minecraftStyleForButtons)
-									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-								onTouchWithWaitWeaponShoot(event, currentGun, false);
-								return false;
-							}
-						});
-					}
-				}));
-			}
+							if(minecraftStyleForButtons)
+								MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+							onTouchWithWaitWeaponShoot(event, currentGun);
+							return false;
+						}
+					});
+				}
+			}));
 		}
 
 		// set ammo text
@@ -4229,7 +4174,7 @@ function onClickShootWithReload(gun)
 	} else
 	{
 		stopReloading();
-		Sound.playLoadedSoundPool(null, generalVolume);
+		Sound.playLoadedRepetitiveFromPath(generalVolume);
 		shoot(gun);
 		damageCarriedGun(gun);
 		latestShotTime = java.lang.System.currentTimeMillis();
@@ -4240,7 +4185,7 @@ function onClickShootWithReload(gun)
 
 function onClickShootWithoutReload(gun)
 {
-	Sound.playLoadedSoundPool(null, generalVolume);
+	Sound.playLoadedRepetitiveFromPath(generalVolume);
 	shoot(gun);
 	latestShotTime = java.lang.System.currentTimeMillis();
 	showCloudParticle(gun.smoke);
@@ -4287,7 +4232,7 @@ function onTouchShootingRunnableWithReload(gun)
 				{
 					stopReloading();
 					currentShotTicks = 0;
-					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME, generalVolume);
+					Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_SHOOT_VOLUME * generalVolume);
 					shoot(gun);
 					damageCarriedGun(gun);
 					Recoil.makeRecoil(gun);
@@ -4307,7 +4252,7 @@ function onTouchShootingRunnableWithoutReload(gun)
 			if(currentShotTicks == gun.fireRate)
 			{
 				currentShotTicks = 0;
-				Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME, generalVolume);
+				Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_SHOOT_VOLUME * generalVolume);
 				shoot(gun);
 				Recoil.makeRecoil(gun);
 			}
@@ -4318,8 +4263,9 @@ function onTouchShootingRunnableWithoutReload(gun)
 //########## ON TOUCH GUNS functions - END ##########
 
 
+
 //########## ON TOUCH WITH WAIT GUNS functions ##########
-function onTouchWithWaitWeaponShoot(event, gun, reload)
+function onTouchWithWaitWeaponShoot(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -4338,32 +4284,32 @@ function onTouchWithWaitWeaponShoot(event, gun, reload)
 					warmupSoundString = gun.warmupSound;
 
 				isTouchingFireButtonGunsWithWait = true;
-				gunWarmupSound.reset();
-				gunWarmupSound.setDataSource(getOriginalPathOfSound(warmupSoundString));
-				gunWarmupSound.setVolume(generalVolume, generalVolume);
-				gunWarmupSound.prepare();
-				gunWarmupSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
-				{
-					onCompletion: function(mp)
-					{
-						if(isTouchingFireButtonGunsWithWait)
-						{
-							isShooting = true;
-							gunSpinSound.start();
-							currentShotTicks = gun.fireRate;
-							if(reload)
-								onTouchWithWaitShootingRunnableWithReload(gun);
-							else
-								onTouchWithWaitShootingRunnableWithoutReload(gun);
-						}
-					}
-				});
-				gunWarmupSound.start();
+
+				Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(warmupSoundString), onGunWarmupCompletion, generalVolume);
 			} catch(e) {
 				Log.log("Error in onTouchWithWaitWeaponShoot(): " + e);
 				clientMessage("The minigun needs sounds to work properly.");
 			}
 		}
+	}
+}
+
+function onGunWarmupCompletion()
+{
+	var gun = getGun(Player.getCarriedItem());
+
+	if(isTouchingFireButtonGunsWithWait)
+	{
+		isShooting = true;
+		
+		// start loop sound
+		Sound.playLoopFromPath(getOriginalPathOfSound(gun.spinSound));
+
+		currentShotTicks = gun.fireRate;
+		if(shouldReload())
+			onTouchWithWaitShootingRunnableWithReload(gun);
+		else
+			onTouchWithWaitShootingRunnableWithoutReload(gun);
 	}
 }
 
@@ -4373,26 +4319,14 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 		flameTick = 2;
 
 	isTouchingFireButtonGunsWithWait = false;
-	if(gunWarmupSound.isPlaying())
-		gunWarmupSound.stop();
 	if(isShooting)
 		showCloudParticle(gun.smoke);
 	isShooting = false;
-	try {
-		gunSpinSound.stop();
-		gunSpinSound.prepareAsync();
-	} catch(e) {
-		// sometimes an error happens also if you have sounds installed correctly and I didn't find why
-		clientMessage("A wild error appeared. See log.");
-		Log.log("Error in onTouchWithWaitWeaponButtonReleased(): " + e);
-		try {
-			gunSpinSound.reset();
-			gunSpinSound.setDataSource(getOriginalPathOfSound(gun.spinSound));
-			gunSpinSound.setLooping(true);
-			gunSpinSound.setVolume(generalVolume, generalVolume);
-			gunSpinSound.prepareAsync();
-		} catch(e) { /* sounds not installed */ }
-	}
+
+	// sounds
+	Sound.stopSoundWithOnCompletion();
+
+	Sound.stopLoop();
 
 	if(!gun.hasntCooldownSound)
 		playSoundFromSimplePath(gun.cooldownSound);
@@ -4415,7 +4349,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 					stopReloading();
 					currentShotTicks = 0;
 					if(!gun.hasntShootingSound)
-						Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME, generalVolume);
+						Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME * generalVolume);
 					shoot(gun);
 					damageCarriedGun(gun);
 					Recoil.makeRecoil(gun);
@@ -4436,7 +4370,7 @@ function onTouchWithWaitShootingRunnableWithoutReload(gun)
 			{
 				currentShotTicks = 0;
 				if(!gun.hasntShootingSound)
-					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME, generalVolume);
+					Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME * generalVolume);
 				shoot(gun);
 				Recoil.makeRecoil(gun);
 			}
@@ -5146,37 +5080,8 @@ function reloadAmmo(gun)
 					isReloading = true;
 					reloadingGun = gun;
 
-					reloadSound.reset();
-					reloadSound.setDataSource(getOriginalPathOfSound(gun.reloadSound));
-					reloadSound.setVolume(generalVolume, generalVolume);
-					reloadSound.prepare();
-					reloadSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
-					{
-						onCompletion: function(mp)
-						{
-							isReloading = false;
+					Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(gun.reloadSound), doReloadInSurvival, generalVolume);
 
-							// let's do again a check to see if the player hasn't changed his carried item
-							if(Player.getCarriedItem() == reloadingGun.id)
-							{
-								var ammoSlot = Player.getSlotOfItem(getAmmoId(reloadingGun));
-								if(ammoSlot == -1)
-									clientMessage("You don't have one " + Item.getName(getAmmoId(gun), 0, false) + " ammo in your inventory.");
-								else
-								{
-									Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
-									setAmmoTextFromGun(gun);
-									Player.removeItemsFromInventory(ammoSlot, 1);
-								}
-							}
-
-							// reset sound
-							reloadSound.release();
-							reloadSound = null;
-							reloadSound = new android.media.MediaPlayer();
-						}
-					});
-					reloadSound.start();
 					ModPE.showTipMessage("Reloading");
 				} catch(e)
 				{
@@ -5211,30 +5116,8 @@ function reloadAmmo(gun)
 					isReloading = true;
 					reloadingGun = gun;
 
-					reloadSound.reset();
-					reloadSound.setDataSource(getOriginalPathOfSound(gun.reloadSound));
-					reloadSound.setVolume(generalVolume, generalVolume);
-					reloadSound.prepare();
-					reloadSound.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener()
-					{
-						onCompletion: function(mp)
-						{
-							isReloading = false;
+					Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(gun.reloadSound), doReloadInCreative, generalVolume);
 
-							// let's do a re-check to see if the player hasn't changed his carried item
-							if(Player.getCarriedItem() == reloadingGun.id)
-							{
-								Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
-								setAmmoTextFromGun(reloadingGun);
-							}
-
-							// reset sound
-							reloadSound.release();
-							reloadSound = null;
-							reloadSound = new android.media.MediaPlayer();
-						}
-					});
-					reloadSound.start();
 					ModPE.showTipMessage("Reloading");
 				} catch(e)
 				{
@@ -5256,15 +5139,42 @@ function reloadAmmo(gun)
 	}
 }
 
+function doReloadInCreative()
+{
+	isReloading = false;
+
+	// let's do a re-check to see if the player hasn't changed his carried item
+	if(Player.getCarriedItem() == reloadingGun.id)
+	{
+		Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
+		setAmmoTextFromGun(reloadingGun);
+	}
+}
+
+function doReloadInSurvival()
+{
+	isReloading = false;
+
+	// let's do again a check to see if the player hasn't changed his carried item
+	if(Player.getCarriedItem() == reloadingGun.id)
+	{
+		var ammoSlot = Player.getSlotOfItem(getAmmoId(reloadingGun));
+		if(ammoSlot == -1)
+			clientMessage("You don't have one " + Item.getName(getAmmoId(reloadingGun), 0, false) + " ammo in your inventory.");
+		else
+		{
+			Entity.setCarriedItem(Player.getEntity(), Player.getCarriedItem(), Player.getCarriedItemCount(), 0);
+			setAmmoTextFromGun(reloadingGun);
+			Player.removeItemsFromInventory(ammoSlot, 1);
+		}
+	}
+}
+
 function stopReloading()
 {
 	if(isReloading)
 	{
-		try {
-			reloadSound.stop();
-		} catch(e) {
-			Log.log("error while stopping reloadSound: " + e);
-		}
+		Sound.stopSoundWithOnCompletion();
 		isReloading = false;
 		ModPE.showTipMessage("Ammo reload interrupted.");
 	}
@@ -8473,6 +8383,7 @@ function startup()
 {
 	// custom variables for DesnoUtils Library (must be set immediately or the default tag will remain)
 	DesnoUtils.MOD_NAME = "DesnoGuns";
+	DesnoUtils.DEBUG_SOUNDS = true;
 
 	// add all items
 	createAmmoItems();
