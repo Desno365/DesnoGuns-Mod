@@ -842,7 +842,7 @@ const CROSSBOW_EXPLOSIVE = {
 	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/CrossbowShoot.wav",
-	reloadSound: "desnoguns/reload/CrossbowReload.wav",
+	reloadSound: "desnoguns/reload/CrossbowReload.mp3",
 };
 
 const CROSSBOW = {
@@ -871,7 +871,7 @@ const CROSSBOW = {
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
 	sound: "desnoguns/CrossbowShoot.wav",
-	reloadSound: "desnoguns/reload/CrossbowReload.wav",
+	reloadSound: "desnoguns/reload/CrossbowReload.mp3",
 };
 
 const DESERT_EAGLE = {
@@ -1441,10 +1441,10 @@ const MINIGUN_EXPLOSIVE = {
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 2,
 	// SOUNDS
-	warmupSound: "desnoguns/MinigunWarmup.ogg",
+	warmupSound: "desnoguns/MinigunWarmup.mp3",
 	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	spinSound: "desnoguns/MinigunSpin.ogg",
-	cooldownSound: "desnoguns/MinigunCooldown.ogg",
+	spinSound: "desnoguns/MinigunSpin.mp3",
+	cooldownSound: "desnoguns/MinigunCooldown.mp3",
 	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
@@ -1466,10 +1466,10 @@ const MINIGUN = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL,
 	// SOUNDS
-	warmupSound: "desnoguns/MinigunWarmup.ogg",
+	warmupSound: "desnoguns/MinigunWarmup.mp3",
 	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
-	spinSound: "desnoguns/MinigunSpin.ogg",
-	cooldownSound: "desnoguns/MinigunCooldown.ogg",
+	spinSound: "desnoguns/MinigunSpin.mp3",
+	cooldownSound: "desnoguns/MinigunCooldown.mp3",
 	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
@@ -1643,7 +1643,7 @@ const RAYGUN = {
 	gunType: GUN_TYPE_HANDGUN,
 	buttonType: BUTTON_TYPE_ON_CLICK,
 	id: 3376,
-	fireRate: 5,
+	fireRate: 6,
 	recoil: 12,
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2,
@@ -1888,10 +1888,10 @@ const XMAS_MINIGUN = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_SNOWBALL,
 	// SOUNDS
-	warmupSound: "desnoguns/MinigunWarmup.ogg",
+	warmupSound: "desnoguns/MinigunWarmup.mp3",
 	sound: "desnoguns/bell.mp3",
-	spinSound: "desnoguns/MinigunSpin.ogg",
-	cooldownSound: "desnoguns/MinigunCooldown.ogg",
+	spinSound: "desnoguns/MinigunSpin.mp3",
+	cooldownSound: "desnoguns/MinigunCooldown.mp3",
 	reloadSound: "desnoguns/reload/BrowningReload.ogg",
 };
 
@@ -7993,13 +7993,13 @@ SoundsInstaller.sounds = {
 			fileName: "MakarovShoot.ogg"
 		},
 		{
-			fileName: "MinigunCooldown.ogg"
+			fileName: "MinigunCooldown.mp3"
 		},
 		{
-			fileName: "MinigunSpin.ogg"
+			fileName: "MinigunSpin.mp3"
 		},
 		{
-			fileName: "MinigunWarmup.ogg"
+			fileName: "MinigunWarmup.mp3"
 		},
 		{
 			fileName: "MiniUziShoot.ogg"
@@ -8049,7 +8049,7 @@ SoundsInstaller.sounds = {
 			fileDirectory: "reload"
 		},
 		{
-			fileName: "CrossbowReload.wav",
+			fileName: "CrossbowReload.mp3",
 			fileDirectory: "reload"
 		},
 		{
@@ -8384,7 +8384,7 @@ function startup()
 {
 	// custom variables for DesnoUtils Library (must be set immediately or the default tag will remain)
 	DesnoUtils.MOD_NAME = "DesnoGuns";
-	DesnoUtils.DEBUG_SOUNDS = true;
+	DesnoUtils.DEBUG_SOUNDS = false;
 
 	// add all items
 	createAmmoItems();
