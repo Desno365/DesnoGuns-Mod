@@ -5065,14 +5065,17 @@ var Recoil = {
 //########## RELOAD GUN functions ##########
 function reloadAmmo(gun)
 {
-	if(Level.getGameMode() == GameMode.SURVIVAL)
+	if(Player.getCarriedItemData() != 0 && !isShooting)
 	{
-		// gamemode survival
-		var slot = Player.getSlotOfItem(getAmmoId(gun));
-		if(Player.getCarriedItemData() != 0)
+		if(Level.getGameMode() == GameMode.SURVIVAL)
 		{
+			// gamemode survival
+
+			var slot = Player.getSlotOfItem(getAmmoId(gun));
 			if(slot == -1)
+			{
 				clientMessage("You don't have one " + Item.getName(getAmmoId(gun), 0, false) + " in your inventory.");
+			}
 			else
 			{
 				try
@@ -5090,13 +5093,11 @@ function reloadAmmo(gun)
 				}
 			}
 		}
-	}
 
-	if(Level.getGameMode() == GameMode.CREATIVE)
-	{
-		// gamemode creative
-		if(Player.getCarriedItemData() != 0)
+		if(Level.getGameMode() == GameMode.CREATIVE)
 		{
+			// gamemode creative
+
 			if(instantReloadInCreative)
 			{
 				// instant reload enabled
