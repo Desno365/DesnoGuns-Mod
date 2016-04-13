@@ -144,6 +144,7 @@ var latestShotTime;
 
 // for guns with warmup
 var isTouchingFireButtonGunsWithWait = false;
+var hasGunWithWaitStoppedShooting = false;
 const GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME = 0.50;
 
 // for flamethrower
@@ -4152,18 +4153,24 @@ function showCloudParticle(amount)
 {
 	if(amount > 0)
 	{
-		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		currentActivity.runOnUiThread(new java.lang.Runnable()
 		{
 			run: function()
 			{
-				if(isInGame)
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
 				{
-					var gunDir = DesnoUtils.getVector(getYaw() + 30, getPitch());
-					for(var i = 0; i < amount; i++)
-						Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
-				}
+					run: function()
+					{
+						if(isInGame)
+						{
+							var gunDir = DesnoUtils.getVector(getYaw() + 30, getPitch());
+							for(var i = 0; i < amount; i++)
+								Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
+						}
+					}
+				}), 250);
 			}
-		}), 250);
+		});
 	}
 }
 //########## SHOOT WITH GUNS functions - END ##########
@@ -4305,6 +4312,7 @@ function onTouchWithWaitWeaponShoot(event, gun)
 					warmupSoundString = gun.warmupSound;
 
 				isTouchingFireButtonGunsWithWait = true;
+				hasGunWithWaitStoppedShooting = false;
 
 				Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(warmupSoundString), onGunWarmupCompletion, generalVolume);
 			} catch(e) {
@@ -4336,10 +4344,17 @@ function onGunWarmupCompletion()
 
 function onTouchWithWaitWeaponButtonReleased(gun)
 {
-	if(gun.isFlamethrower)
-		flameTick = 2;
+	if(!hasGunWithWaitStoppedShooting)
+		onTouchWithWaitWeaponEndShooting(gun);
 
-	isTouchingFireButtonGunsWithWait = false;
+	onTouchWithWaitWeaponButtonEndTouching(gun);
+}
+
+function onTouchWithWaitWeaponEndShooting(gun)
+{
+	// variable that says if the gun has already stopped shooting, used when ammo finishes
+	hasGunWithWaitStoppedShooting = true;
+
 	if(isShooting)
 		showCloudParticle(gun.smoke);
 	isShooting = false;
@@ -4351,6 +4366,14 @@ function onTouchWithWaitWeaponButtonReleased(gun)
 
 	if(!gun.hasntCooldownSound)
 		playSoundFromSimplePath(gun.cooldownSound);
+}
+
+function onTouchWithWaitWeaponButtonEndTouching(gun)
+{
+	if(gun.isFlamethrower)
+		flameTick = 2;
+
+	isTouchingFireButtonGunsWithWait = false;
 }
 
 function onTouchWithWaitShootingRunnableWithReload(gun)
@@ -4365,6 +4388,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 				{
 					playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
 					ModPE.showTipMessage("Press the ammo text to reload.");
+					onTouchWithWaitWeaponEndShooting(gun);
 				} else
 				{
 					stopReloading();
