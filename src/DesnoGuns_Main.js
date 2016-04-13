@@ -30,7 +30,6 @@ const GameMode = {
 	SURVIVAL: 0,
 	CREATIVE: 1
 };
-const ITEM_CATEGORY_TOOL = 3; // 3 seems to be the category of the tools
 const VEL_Y_OFFSET = -0.07840000092983246;
 var isInGame = false;
 var players;
@@ -223,60 +222,80 @@ function createAmmoItems()
 		" i ",
 		" g ",
 		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_ASSAULT_RIFLE_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_ASSAULT_RIFLE_ID, 1);
 
 	Item.defineItem(AMMO_SUB_MACHINE_ID, "ammosubmachine", 0, "Sub Machine Ammo");
 	Item.addShapedRecipe(AMMO_SUB_MACHINE_ID, 1, 0, [
 		" i ",
 		" g ",
 		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_SUB_MACHINE_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_SUB_MACHINE_ID, 1);
 
 	Item.defineItem(AMMO_LIGHT_MACHINE_ID, "ammolightmachine", 0, "Light Machine Ammo");
 	Item.addShapedRecipe(AMMO_LIGHT_MACHINE_ID, 1, 0, [
 		"i i",
 		"g g",
 		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_LIGHT_MACHINE_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_LIGHT_MACHINE_ID, 1);
 
 	Item.defineItem(AMMO_SNIPER_RIFLE_ID, "ammosniper", 0, "Sniper Rifle Ammo");
 	Item.addShapedRecipe(AMMO_SNIPER_RIFLE_ID, 2, 0, [
 		" i ",
 		" g ",
 		" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_SNIPER_RIFLE_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_ASSAULT_RIFLE_ID, 1);
 
 	Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
 	Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
 		"   ",
 		" i ",
 		"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_SHOTGUN_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_SHOTGUN_ID, 1);
 
 	Item.defineItem(AMMO_MACHINE_PISTOL_ID, "ammomachinepistol", 0, "Machine Pistol Ammo");
 	Item.addShapedRecipe(AMMO_MACHINE_PISTOL_ID, 1, 0, [
 		" i ",
 		" g ",
 		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_MACHINE_PISTOL_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_MACHINE_PISTOL_ID, 1);
 
 	Item.defineItem(AMMO_HANDGUN_ID, "ammohandgun", 0, "Handgun Ammo");
 	Item.addShapedRecipe(AMMO_HANDGUN_ID, 1, 0, [
 		"   ",
 		" i ",
 		"   "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_HANDGUN_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_HANDGUN_ID, 1);
 
 	Item.defineItem(AMMO_LAUNCHER_ID, "ammolauncher", 0, "Launcher Ammo");
 	Item.addShapedRecipe(AMMO_LAUNCHER_ID, 1, 0, [
 		"g g",
 		" g ",
 		"g g"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_LAUNCHER_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_LAUNCHER_ID, 1);
 
 	Item.defineItem(AMMO_MINIGUN_ID, "ammominigun", 0, "Minigun Ammo");
 	Item.addShapedRecipe(AMMO_MINIGUN_ID, 1, 0, [
 		"i i",
 		"grg",
 		"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
+	Item.setCategory(AMMO_MINIGUN_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_MINIGUN_ID, 1);
 
 	Item.defineItem(AMMO_ARROW_EXPLOSIVE_ID, "ammoarrowexplosive", 0, "Explosive Arrow");
 	Item.addShapedRecipe(AMMO_ARROW_EXPLOSIVE_ID, 1, 0, [
 		" g ",
 		" g ",
 		" a "], ["a", 262, 0, "g", 289, 0]); // a = arrow; g = gunpowder;
+	Item.setCategory(AMMO_ARROW_EXPLOSIVE_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(AMMO_ARROW_EXPLOSIVE_ID, 1);
 }
 
 // general items
@@ -323,7 +342,7 @@ function createGeneralItems()
 		"   ",
 		" w ",
 		"   "], ["w", 17, 0]);
-	Item.setCategory(INFO_ITEM_ID, ITEM_CATEGORY_TOOL);
+	Item.setCategory(INFO_ITEM_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(INFO_ITEM_ID, 1);
 
 	Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
@@ -333,7 +352,7 @@ function createGeneralItems()
 		" i ",
 		" i "], ["i", 265, 0]);
 	Item.setVerticalRender(KNIFE_ID);
-	Item.setCategory(KNIFE_ID, ITEM_CATEGORY_TOOL);
+	Item.setCategory(KNIFE_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(KNIFE_ID, 1);
 
 	Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
@@ -343,7 +362,7 @@ function createGeneralItems()
 		" i ",
 		" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
 	Item.setVerticalRender(RIOT_SHIELD_ID);
-	Item.setCategory(RIOT_SHIELD_ID, ITEM_CATEGORY_TOOL);
+	Item.setCategory(RIOT_SHIELD_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
 
 	Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute");
@@ -352,7 +371,7 @@ function createGeneralItems()
 		"www",
 		"s s",
 		" s "], ["s", 287, 0, "w", 35, 0]); // w = wool; s = string;
-	Item.setCategory(PARACHUTE_ID, ITEM_CATEGORY_TOOL);
+	Item.setCategory(PARACHUTE_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(PARACHUTE_ID, 1);
 
 	Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
@@ -361,13 +380,15 @@ function createGeneralItems()
 		" m ",
 		"ama",
 		" m "], ["a", 260, 0, "m", 40, 0]); // a = apple; m = mushroom;
+	Item.setCategory(MEDICAL_KIT_ID, ItemCategory.FOOD);
+	Player.addItemCreativeInv(MEDICAL_KIT_ID, 1);
 
 	Item.defineItem(BINOCULARS.id, "binoculars", 0, "Binoculars");
 	Item.addShapedRecipe(BINOCULARS.id, 1, 0, [
 		"g g",
 		"iii",
 		"i i"], ["g", 20, 0, "i", 265, 0]); // g = glass; i = iron;
-	Item.setCategory(BINOCULARS.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(BINOCULARS.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(BINOCULARS.id, 1);
 
 	Item.defineItem(ZOOM_BINOCULARS.id, "zoombinoculars", 0, "Zoom Binoculars");
@@ -375,7 +396,7 @@ function createGeneralItems()
 		"g g",
 		"iri",
 		"i i"], ["g", 20, 0, "i", 265, 0, "r", 331, 0]); // g = glass; i = iron; r = redstone
-	Item.setCategory(ZOOM_BINOCULARS.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(ZOOM_BINOCULARS.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(ZOOM_BINOCULARS.id, 1);
 }
 
@@ -428,7 +449,7 @@ function createGrenadesItems()
 		"i i",
 		" g ",
 		"i i"], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
-	Item.setCategory(GRENADE.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(GRENADE.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(GRENADE.id, 1);
 
 	Item.defineItem(FRAGMENT.id, "grenadefragment", 0, "Fragment Grenade");
@@ -436,7 +457,7 @@ function createGrenadesItems()
 		"g g",
 		"   ",
 		"g g"], ["g", GRENADE.id, 0]);
-	Item.setCategory(FRAGMENT.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(FRAGMENT.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(FRAGMENT.id, 1);
 
 	Item.defineItem(MOLOTOV.id, "molotov", 0, "Molotov");
@@ -444,7 +465,7 @@ function createGrenadesItems()
 		"ggg",
 		"gfg",
 		"ggg"], ["f", 289, 0, "g", 102, 0]); // g = glass pane; f = flint and steel;
-	Item.setCategory(MOLOTOV.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(MOLOTOV.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(MOLOTOV.id, 1);
 
 	Item.defineItem(SMOKE.id, "grenadesmoke", 0, "Smoke Grenade");
@@ -452,7 +473,7 @@ function createGrenadesItems()
 		" i ",
 		" z ",
 		" s "], ["z", 353, 0, "s", 12, 0, "i", 265, 0]); // z = sugar; s = sand; i = iron;
-	Item.setCategory(SMOKE.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(SMOKE.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(SMOKE.id, 1);
 }
 
@@ -3295,7 +3316,7 @@ function addNewTab(index)
 	var id = (TABS_STARTING_ID + parseInt(index));
 
 	Item.defineItem(id, "transparent", 0, loadedAddons[index].name + " Divider", 1);
-	Item.setCategory(id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(id, 1);
 }
 
@@ -3376,7 +3397,7 @@ function addNewGunFromAddon(gun, addonName)
 	addGunCraftingRecipe(gun);
 	Item.setMaxDamage(gun.id, gun.ammo);
 	Item.setVerticalRender(gun.id);
-	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(gun.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(gun.id, 1);
 }
 //########## LOADED ADDONS MANAGING functions - END ##########
@@ -3396,7 +3417,7 @@ function addNewGun(gun)
 	addGunCraftingRecipe(gun);
 	Item.setMaxDamage(gun.id, gun.ammo);
 	Item.setVerticalRender(gun.id);
-	Item.setCategory(gun.id, ITEM_CATEGORY_TOOL);
+	Item.setCategory(gun.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(gun.id, 1);
 }
 
@@ -5308,26 +5329,33 @@ function displayHealButton()
 					{
 						if(Player.getCarriedItem() == MEDICAL_KIT_ID) // one more check before removing items
 						{
-							var currentHealth = Entity.getHealth(Player.getEntity());
-							if(currentHealth >= 20)
+							if(Level.getGameMode() == GameMode.CREATIVE)
 							{
-								ModPE.showTipMessage("Your health is full.");
+								ModPE.showTipMessage("Not necessary in creative.");
 								return;
-							}
-							var healthToBeRestored = 20 - currentHealth;
-							var healthMedicalKitCanRestore = MEDICAL_KIT_MAX_RESTORABLE_HEALTH - Player.getCarriedItemData() + 1;
-							if(healthToBeRestored > healthMedicalKitCanRestore)
-							{
-								Player.setHealth(currentHealth + healthMedicalKitCanRestore);
-								for(var i = 0; i < healthMedicalKitCanRestore; i++)
-									Player.damageCarriedItem();
-								ModPE.showTipMessage("Medical Kit broke before restoring all health.");
 							} else
 							{
-								Player.setHealth(20);
-								for(var i = 0; i < healthToBeRestored; i++)
-									Player.damageCarriedItem();
-								ModPE.showTipMessage("Restored " + (healthToBeRestored / 2) + " hearts.");
+								var currentHealth = Entity.getHealth(Player.getEntity());
+								if(currentHealth >= 20)
+								{
+									ModPE.showTipMessage("Your health is full.");
+									return;
+								}
+								var healthToBeRestored = 20 - currentHealth;
+								var healthMedicalKitCanRestore = MEDICAL_KIT_MAX_RESTORABLE_HEALTH - Player.getCarriedItemData() + 1;
+								if(healthToBeRestored > healthMedicalKitCanRestore)
+								{
+									Player.setHealth(currentHealth + healthMedicalKitCanRestore);
+									for(var i = 0; i < healthMedicalKitCanRestore; i++)
+										Player.damageCarriedItem();
+									ModPE.showTipMessage("Medical Kit broke before restoring all health.");
+								} else
+								{
+									Player.setHealth(20);
+									for(var i = 0; i < healthToBeRestored; i++)
+										Player.damageCarriedItem();
+									ModPE.showTipMessage("Restored " + (healthToBeRestored / 2) + " hearts.");
+								}
 							}
 						} else
 						{
