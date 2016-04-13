@@ -973,7 +973,7 @@ const FLAMETHROWER = {
 	accuracy: 5.5,
 	zoomLevel: ZOOM_GRENADE_LAUNCHER,
 	texture: "flamethrower",
-	ammo: 750,
+	ammo: 500,
 	smoke: 3,
 	// BEHAVIOR
 	shotType: SHOT_TYPE_FLAMETHROWER,
