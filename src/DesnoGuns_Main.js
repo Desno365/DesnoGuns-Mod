@@ -8452,6 +8452,9 @@ function startup()
 	DesnoUtils.MOD_NAME = "DesnoGuns";
 	DesnoUtils.DEBUG_SOUNDS = false;
 	DesnoUtils.CHECK_LAUNCHER_AT_START = true;
+	DesnoUtils.CHECK_LAUNCHER_AT_START_CUSTOM_MESSAGE = "The Launcher you're using is not supported!<br>" +
+			"The DesnoGuns Mod may still work but you may find bugs.<br>" +
+			"Please <b>use BlockLauncher</b> (free or pro) to enjoy all the features of the mod.";
 	DesnoUtils.CHECK_LAUNCHER_AT_START_INSTRUCTIONS_LINK = "http://desno365.net/minecraft/desnoguns-mod/#installation-instructions";
 
 	// add all items
