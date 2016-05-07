@@ -2925,11 +2925,18 @@ function loadWeaponsFromAddons()
 {
 	try
 	{
-		var arrobject = [];
-		net.zhuoweizhang.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsHook", arrobject);
+		if(Launcher.isBlockLauncher() || Launcher.isToolbox())
+		{
+			var arrobject = [];
+			net.zhuoweizhang.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsHook", arrobject);
+		}
+		if(Launcher.isMcpeMaster())
+		{
+			var arrobject = [];
+			com.mcbox.pesdkb.mcpelauncher.ScriptManager.callScriptMethod("loadWeaponsHook", arrobject);
+		}
 	} catch(e)
 	{
-		unsupportedLauncherUI();
 		Log.log("Error in loadWeaponsFromAddons: " + e);
 	}
 }
@@ -7890,81 +7897,6 @@ function errorWithAddonResources(customMessage)
 	}
 }
 
-// No Minecraft Layout because this UI can be showed at startup
-function unsupportedLauncherUI()
-{
-	currentActivity.runOnUiThread(new java.lang.Runnable()
-	{
-		run: function()
-		{
-			try
-			{
-				var layout = new android.widget.LinearLayout(currentActivity);
-				var padding = Convert.convertDpToPixels(8);
-				layout.setPadding(padding, padding, padding, padding);
-				layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-
-				var scroll = new android.widget.ScrollView(currentActivity);
-				scroll.addView(layout);
-
-				var popup = new android.app.Dialog(currentActivity);
-				popup.setContentView(scroll);
-				popup.setTitle(new android.text.Html.fromHtml("Launcher not supported"));
-				popup.setCanceledOnTouchOutside(false);
-
-				var text = new android.widget.TextView(currentActivity);
-				text.setText(new android.text.Html.fromHtml("The Launcher you're using is not supported!<br>" +
-					"The mod may still work but you may find bugs, while addons won't work at all.<br>" +
-					"Please <b>use BlockLauncher</b> (free or pro) to enjoy all the features of the mod."));
-				layout.addView(text);
-				Ui.setMarginsToViewInLinearLayout(text, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
-
-
-				var nowButton = new android.widget.Button(currentActivity);
-				nowButton.setText("Get BlockLauncher");
-				nowButton.setOnClickListener(new android.view.View.OnClickListener()
-				{
-					onClick: function()
-					{
-						try
-						{
-							var intentMarket = new android.content.Intent(currentActivity);
-							intentMarket.setAction(android.content.Intent.ACTION_VIEW);
-							intentMarket.setData(android.net.Uri.parse("market://details?id=" + "net.zhuoweizhang.mcpelauncher"));
-							currentActivity.startActivity(intentMarket);
-						} catch(e)
-						{
-							Log.log("Error in unsupportedLauncherUI: " + e);
-						}
-						popup.dismiss();
-					}
-				});
-				layout.addView(nowButton);
-				Ui.setMarginsToViewInLinearLayout(nowButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
-
-				var laterButton = new android.widget.Button(currentActivity);
-				laterButton.setText("Continue");
-				laterButton.setOnClickListener(new android.view.View.OnClickListener()
-				{
-					onClick: function()
-					{
-						popup.dismiss();
-					}
-				});
-				layout.addView(laterButton);
-				Ui.setMarginsToViewInLinearLayout(laterButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
-
-
-				Popup.showImmersivePopup(popup);
-
-			} catch(err)
-			{
-				print("Error: " + err);
-			}
-		}
-	});
-}
-
 
 //########################################################################################################################################################
 // Renders
@@ -8519,6 +8451,8 @@ function startup()
 	// custom variables for DesnoUtils Library (must be set immediately or the default tag will remain)
 	DesnoUtils.MOD_NAME = "DesnoGuns";
 	DesnoUtils.DEBUG_SOUNDS = false;
+	DesnoUtils.CHECK_LAUNCHER_AT_START = true;
+	DesnoUtils.CHECK_LAUNCHER_AT_START_INSTRUCTIONS_LINK = "http://desno365.net/minecraft/desnoguns-mod/#installation-instructions";
 
 	// add all items
 	createAmmoItems();
