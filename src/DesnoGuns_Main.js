@@ -2264,7 +2264,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	stopReloading();
 
 	// release the resources for sounds
-	Sound.stopRepetitive();
+	Sound.stopSoundPool();
 
 	// reset sounds for on touch with wait guns spin
 	Sound.stopLoop();
@@ -2323,7 +2323,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 
 		// load sounds for the gun
 		if(!currentGun.hasntShootingSound)
-			Sound.loadRepetitiveFromPath(getOriginalPathOfSound(currentGun.sound));
+			Sound.loadSoundPoolFromPath(getOriginalPathOfSound(currentGun.sound));
 
 		// assault rifles, sub machine guns and light machine guns
 		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH)
@@ -4216,7 +4216,7 @@ function onClickShootWithReload(gun)
 	} else
 	{
 		stopReloading();
-		Sound.playLoadedRepetitiveFromPath(generalVolume);
+		Sound.playLoadedSoundPool(generalVolume);
 		shoot(gun);
 		damageCarriedGun(gun);
 		latestShotTime = java.lang.System.currentTimeMillis();
@@ -4227,7 +4227,7 @@ function onClickShootWithReload(gun)
 
 function onClickShootWithoutReload(gun)
 {
-	Sound.playLoadedRepetitiveFromPath(generalVolume);
+	Sound.playLoadedSoundPool(generalVolume);
 	shoot(gun);
 	latestShotTime = java.lang.System.currentTimeMillis();
 	showCloudParticle(gun.smoke);
@@ -4274,7 +4274,7 @@ function onTouchShootingRunnableWithReload(gun)
 				{
 					stopReloading();
 					currentShotTicks = 0;
-					Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_SHOOT_VOLUME * generalVolume);
+					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME * generalVolume);
 					shoot(gun);
 					damageCarriedGun(gun);
 					Recoil.makeRecoil(gun);
@@ -4294,7 +4294,7 @@ function onTouchShootingRunnableWithoutReload(gun)
 			if(currentShotTicks == gun.fireRate)
 			{
 				currentShotTicks = 0;
-				Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_SHOOT_VOLUME * generalVolume);
+				Sound.playLoadedSoundPool(GUNS_ON_TOUCH_SHOOT_VOLUME * generalVolume);
 				shoot(gun);
 				Recoil.makeRecoil(gun);
 			}
@@ -4408,7 +4408,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 					stopReloading();
 					currentShotTicks = 0;
 					if(!gun.hasntShootingSound)
-						Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME * generalVolume);
+						Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME * generalVolume);
 					shoot(gun);
 					damageCarriedGun(gun);
 					Recoil.makeRecoil(gun);
@@ -4429,7 +4429,7 @@ function onTouchWithWaitShootingRunnableWithoutReload(gun)
 			{
 				currentShotTicks = 0;
 				if(!gun.hasntShootingSound)
-					Sound.playLoadedRepetitiveFromPath(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME * generalVolume);
+					Sound.playLoadedSoundPool(GUNS_ON_TOUCH_WITH_WAIT_SHOOT_VOLUME * generalVolume);
 				shoot(gun);
 				Recoil.makeRecoil(gun);
 			}
