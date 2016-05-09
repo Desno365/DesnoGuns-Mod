@@ -7808,7 +7808,7 @@ function errorWithModResources()
 					{
 						onClick: function()
 						{
-							DesnoUtils.killBlockLauncher();
+							Launcher.killLauncher();
 							errorWithModResourcesShowed = false;
 							popup.dismiss();
 						}
