@@ -2264,7 +2264,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 	stopReloading();
 
 	// release the resources for sounds
-	Sound.stopOneShot();
+	Sound.stopRepetitive();
 
 	// reset sounds for on touch with wait guns spin
 	Sound.stopLoop();
@@ -8448,7 +8448,7 @@ SoundsInstaller.onFinishInstallation = function()
 
 function startup()
 {
-	// custom variables for DesnoUtils Library (must be set immediately or the default tag will remain)
+	// custom variables for DesnoUtils Library (must be set immediately or the default values will remain)
 	DesnoUtils.MOD_NAME = "DesnoGuns";
 	DesnoUtils.DEBUG_SOUNDS = false;
 	DesnoUtils.CHECK_LAUNCHER_AT_START = true;
