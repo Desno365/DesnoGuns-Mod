@@ -6003,7 +6003,7 @@ function basicMinecraftTextView(text, textSize) // TextView with just the Minecr
 	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
 	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
 	textview.setLineSpacing(lineSpacing, 1);
-	if(android.os.Build.VERSION.SDK_INT > 19) // KITKAT
+	if(android.os.Build.VERSION.SDK_INT >= 21) // 5.0 and up
 		textview.setShadowLayer(1, Math.round((textview.getLineHeight() - lineSpacing) / 8), Math.round((textview.getLineHeight() - lineSpacing) / 8), android.graphics.Color.parseColor("#FF333333"));
 	else
 		textview.setShadowLayer(0.001, Math.round((textview.getLineHeight() - lineSpacing) / 8), Math.round((textview.getLineHeight() - lineSpacing) / 8), android.graphics.Color.parseColor("#FF333333"));
@@ -8448,7 +8448,7 @@ SoundsInstaller.install = function()
 	{
 		run: function()
 		{
-			File.delete(SoundsInstaller.pathInSdcard); //delete previous files if present
+			File.deleteFile(SoundsInstaller.pathInSdcard); //delete previous files if present
 
 			for(var i in SoundsInstaller.sounds.soundArray)
 			{
@@ -8495,7 +8495,7 @@ SoundsInstaller.saveFileWithVersion = function()
 {
 	var versionSaveFile = new java.io.File(SoundsInstaller.pathInSdcard + SoundsInstaller.versionFileName);
 	if(versionSaveFile.exists())
-		versionSaveFile.delete();
+		versionSaveFile['delete']();
 	versionSaveFile.createNewFile();
 
 	var streamOutputVersion = new java.io.FileOutputStream(versionSaveFile);
@@ -8586,7 +8586,7 @@ function startup()
 				run: function()
 				{
 					// remove old sounds of addons
-					File.delete(sdcard + "/games/com.mojang/desnoguns-temp/");
+					File.deleteFile(sdcard + "/games/com.mojang/desnoguns-temp/");
 
 					// load the weapons saved in addons in the memory
 					loadWeaponsFromAddons();
