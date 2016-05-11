@@ -4,3 +4,4 @@ rm build/DesnoGuns_Mod_r000_Desno365.modpkg
 zip -rq build/DesnoGuns_Mod_r000_Desno365.modpkg images
 zip -rq build/DesnoGuns_Mod_r000_Desno365.modpkg script
 zip -rq build/DesnoGuns_Mod_r000_Desno365.modpkg desnoguns-sounds
+zip -rq build/DesnoGuns_Mod_r000_Desno365.modpkg README.txt

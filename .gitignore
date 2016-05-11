@@ -1,3 +1,4 @@
 output.js
+output-not-compressed.js
 *.modpkg
 *.zip
