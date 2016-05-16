@@ -18,7 +18,7 @@ const DEBUG1 = false; // debug: getSavedBoolean
 const DEBUG2 = false; // disable base64 code
 
 // updates variables
-const CURRENT_VERSION = "r015";
+const CURRENT_VERSION = "r016";
 var latestVersion;
 
 //activity and other Android variables
@@ -95,8 +95,8 @@ var yCoalEE;
 var zCoalEE;
 
 // buttons UI settings variables
-const BUTTONS_SIZE_DEFAULT = 24;
-const AMMO_TEXT_SIZE_DEFAULT = 18;
+const BUTTONS_SIZE_DEFAULT = 26;
+const AMMO_TEXT_SIZE_DEFAULT = 20;
 var buttonsSize = BUTTONS_SIZE_DEFAULT;
 var ammoTextSize = AMMO_TEXT_SIZE_DEFAULT;
 var pixelsOffsetButtons = 0;
