@@ -2884,9 +2884,7 @@ var ModTickFunctions = {
 
 					if(Level.getGameMode() == GameMode.SURVIVAL)
 					{
-						// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
-						//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
-						Entity.removeAllEffects(Player.getEntity());
+						Entity.removeEffect(Player.getEntity(), MobEffect.jump);
 						Player.damageCarriedItem();
 					}
 				}
@@ -2911,9 +2909,7 @@ var ModTickFunctions = {
 
 				if(Level.getGameMode() == GameMode.SURVIVAL)
 				{
-					// Entity.removeEffect(entity, id) doesn't remove particles of the effect https://github.com/zhuowei/MCPELauncher/issues/241
-					//Entity.removeEffect(Player.getEntity(), MobEffect.jump);
-					Entity.removeAllEffects(Player.getEntity());
+					Entity.removeEffect(Player.getEntity(), MobEffect.jump);
 
 					//Player.damageCarriedItem(); // TODO fix: the item is not carried
 					//Player.damageItemInInventory(item)
