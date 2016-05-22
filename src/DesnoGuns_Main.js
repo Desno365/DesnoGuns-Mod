@@ -403,13 +403,13 @@ function createGeneralItems()
 	Item.setCategory(BINOCULARS.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(BINOCULARS.id, 1);
 
-	Item.defineItem(NIGHT_BINOCULARS.id, "nightbinoculars", 0, "Night Vision Binoculars");
+	/*Item.defineItem(NIGHT_BINOCULARS.id, "nightbinoculars", 0, "Night Vision Binoculars");
 	Item.addShapedRecipe(NIGHT_BINOCULARS.id, 1, 0, [
 		"g g",
 		"isi",
 		"i i"], ["g", 20, 0, "i", 265, 0, "s", 341, 0]); // g = glass; i = iron; s = slimeball;
 	Item.setCategory(NIGHT_BINOCULARS.id, ItemCategory.TOOL);
-	Player.addItemCreativeInv(NIGHT_BINOCULARS.id, 1);
+	Player.addItemCreativeInv(NIGHT_BINOCULARS.id, 1);*/
 
 	Item.defineItem(ZOOM_BINOCULARS.id, "zoombinoculars", 0, "Zoom Binoculars");
 	Item.addShapedRecipe(ZOOM_BINOCULARS.id, 1, 0, [
@@ -1984,7 +1984,7 @@ const XMAS_SNIPER = {
 
 // all the guns in a single array.
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
-var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M40A3_NIGHT, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
+var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, /*M40A3_NIGHT,*/ M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 var allGuns = [];
 
 
@@ -4257,7 +4257,7 @@ function onClickShootWithReload(gun)
 	if(Player.getCarriedItemData() >= gun.ammo)
 	{
 		playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
-		ModPE.showTipMessage("Press the ammo text to reload.");
+		setAmmoText("Reload");
 	} else
 	{
 		stopReloading();
@@ -4314,7 +4314,7 @@ function onTouchShootingRunnableWithReload(gun)
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
 					playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
-					ModPE.showTipMessage("Press the ammo text to reload.");
+					setAmmoText("Reload");
 				} else
 				{
 					stopReloading();
@@ -4446,7 +4446,7 @@ function onTouchWithWaitShootingRunnableWithReload(gun)
 				if(Player.getCarriedItemData() >= gun.ammo)
 				{
 					playSoundFromSimplePath("desnoguns/EmptyGun.mp3");
-					ModPE.showTipMessage("Press the ammo text to reload.");
+					setAmmoText("Reload");
 					onTouchWithWaitWeaponEndShooting(gun);
 				} else
 				{
@@ -5219,7 +5219,7 @@ function reloadAmmo(gun)
 
 					Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(gun.reloadSound), doReloadInSurvival, generalVolume);
 
-					ModPE.showTipMessage("Reloading");
+					setAmmoText("Reloading...");
 				} catch(e)
 				{
 					ModPE.showTipMessage("Sounds not installed.");
@@ -5253,7 +5253,7 @@ function reloadAmmo(gun)
 
 					Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(gun.reloadSound), doReloadInCreative, generalVolume);
 
-					ModPE.showTipMessage("Reloading");
+					setAmmoText("Reloading...");
 				} catch(e)
 				{
 					ModPE.showTipMessage("Sounds not installed.");
@@ -7710,6 +7710,8 @@ function easterEggUI()
 
 								if(Player.getCarriedItem() == BARRETT_EXPLOSIVE.id)
 									changeCarriedItemHook(BARRETT_EXPLOSIVE.id, BARRETT.id);
+
+								clientMessage("§eBarret Explosive upgraded");
 
 								currentActivity.runOnUiThread(new java.lang.Runnable(
 								{
