@@ -386,13 +386,13 @@ function createGeneralItems()
 	Item.setCategory(BINOCULARS.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(BINOCULARS.id, 1);
 
-	/*Item.defineItem(NIGHT_BINOCULARS.id, "nightbinoculars", 0, "Night Vision Binoculars");
+	Item.defineItem(NIGHT_BINOCULARS.id, "nightbinoculars", 0, "Night Vision Binoculars");
 	Item.addShapedRecipe(NIGHT_BINOCULARS.id, 1, 0, [
 		"g g",
 		"isi",
 		"i i"], ["g", 20, 0, "i", 265, 0, "s", 341, 0]); // g = glass; i = iron; s = slimeball;
 	Item.setCategory(NIGHT_BINOCULARS.id, ItemCategory.TOOL);
-	Player.addItemCreativeInv(NIGHT_BINOCULARS.id, 1);*/
+	Player.addItemCreativeInv(NIGHT_BINOCULARS.id, 1);
 
 	Item.defineItem(ZOOM_BINOCULARS.id, "zoombinoculars", 0, "Zoom Binoculars");
 	Item.addShapedRecipe(ZOOM_BINOCULARS.id, 1, 0, [
@@ -1977,7 +1977,7 @@ const XMAS_SNIPER = {
 
 // all the guns in a single array.
 // sequence: first pro items, then other items in alphabetic order, and last the items that are added with the Date system
-var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, /*M40A3_NIGHT,*/ M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
+var defaultGuns = [AA12, INCENDIARY_GL, MSR, MAGNUM44, AK47, AK74, AT4, AUG, BARRETT_EXPLOSIVE, BARRETT, BIZON, CROSSBOW_EXPLOSIVE, CROSSBOW, DESERT_EAGLE, DESERT_EAGLE_GOLD, DRAGUNOV, FLAMETHROWER, FNSCAR, G3, G36, GL1, GL6, GLOCK, L86, L96, M9, M14, M16A4, M21, M40A3_ICE, M40A3, M40A3_NIGHT, M60E4, M72LAW, M249, M1014, M1887, MAKAROV, MINIGUN_EXPLOSIVE, MINIGUN, MINI_UZI, MP5, MTAR, MULTIPLE_ROCKET_LAUNCHER, P90, R700, R870, RAYGUN, RPD, RPG, RPK, SG550, SIGP226, SKORPION, SPAS, USP, W1200];
 var allGuns = [];
 
 
@@ -4972,11 +4972,8 @@ function getAimImageFromGun(gun)
 		// textures not accessible
 		Log.log("Error in getAimImageFromGun: " + e);
 
-		if(!isItemADefaultGun(gun.id)) // if it is an addon display a message
-		{
-			clientMessage("The aim image layer used by the addon wasn't found");
-			clientMessage("Path: " + gun.customAimImageLayerPath);
-		}
+		clientMessage("The aim image layer used wasn't found");
+		clientMessage("Path: " + gun.customAimImageLayerPath);
 
 		return barrettUIDecoded; // return default image
 	}
