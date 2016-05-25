@@ -131,6 +131,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 23,
 		accuracy: 5,
 		hasAimImageLayer: true,
+		customAimImageLayerPath: "/images/my-addon-name-scopes/crossbow.png",
 		texture: "custom_crossbowexplosive",
 		ammo: 1,
 		ammunitionID: 3349 /* ammo arrow explosive */,
@@ -162,6 +163,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 23,
 		accuracy: 5,
 		hasAimImageLayer: true,
+		customAimImageLayerPath: "/images/my-addon-name-scopes/crossbow.png",
 		texture: "custom_crossbow",
 		ammo: 1,
 		ammunitionID: 262, // 262 = arrow
@@ -332,6 +334,31 @@ var ADDON_WEAPONS = [
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/M14_and_M16A4Shoot.ogg",
 		reloadSound: "custom/my-addon-name-sounds/reload/BARReload.ogg",
+	},
+
+	{
+		weaponType: "gun",
+		name: "Custom M40A3 Night Vision",
+		gunType: "sniper_rifle",
+		buttonType: "on_click",
+		id: 3530,
+		fireRate: 10,
+		recoil: 23,
+		bulletSpeed: 9.9,
+		zoomLevel: 40,
+		accuracy: 2,
+		hasAimImageLayer: true,
+		customAimImageLayerPath: "/images/my-addon-name-scopes/m40a3-night.png",
+		hasNightVision: true,
+		texture: "custom_m40a3night",
+		ammo: 5,
+		smoke: 1,
+		// BEHAVIOR
+		shotType: "normal",
+		bulletType: "normal",
+		// SOUNDS
+		sound: "custom/my-addon-name-sounds/R700_and_M40A3Shoot.ogg",
+		reloadSound: "custom/my-addon-name-sounds/reload/SpringfieldReload.ogg",
 	},
 
 	{
@@ -544,6 +571,7 @@ var ADDON_WEAPONS = [
 		zoomLevel: 40,
 		accuracy: 2,
 		hasAimImageLayer: true,
+		customAimImageLayerPath: "/images/my-addon-name-scopes/r700.png",
 		texture: "custom_r700",
 		ammo: 4,
 		smoke: 1,
@@ -740,6 +768,8 @@ var ADDON_WEAPONS = [
 		accuracy: int, // a number > 0 and < 45, the higher this number is the less accuracy the gun will have.
 		zoomLevel: int, // an integer number > 0 and < 68, the higher this number is the more zoom the gun will have when aiming.
 		hasAimImageLayer: boolean, // show image when aiming, usually sniper rifles has this image.
+		customAimImageLayerPath: string, // path of the image in the texture pack, if not set the mod will use the default image
+		hasNightVision: boolean, // if true when aiming the night vision effect is applied to the player
 		texture: String, // the name of the texture this gun uses.
 		textureNumber: int, // the texture number of the texture, if you are using a custom texture you can delete this variable since this variable is only useful when using textures already present in Minecraft.
 		ammo: int, // an integer number > 0, it represents the number of bullets in the ammo.

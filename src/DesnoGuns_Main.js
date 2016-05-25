@@ -532,6 +532,7 @@ function createArmorItems()
 		accuracy: int,
 		hasAimImageLayer: boolean, // show image when aiming
 		customAimImageLayerPath: string, // path of the image in the texture pack, if not set the mod will use the default image
+		hasNightVision: boolean, // if true when aiming the night vision effect is applied to the player
 		texture: String,
 		textureNumber: String, // if 0 can be omitted
 		ammo: int, // number of bullets in the ammo
