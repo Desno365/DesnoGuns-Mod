@@ -2923,7 +2923,7 @@ var ModTickFunctions = {
 	{
 		if(Player.getCarriedItem() == RIOT_SHIELD_ID)
 		{
-			Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 3, false, false);
+			Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 2, false, false);
 			Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, 4, 0, false, false);
 
 			if(Level.getGameMode() == GameMode.SURVIVAL)
