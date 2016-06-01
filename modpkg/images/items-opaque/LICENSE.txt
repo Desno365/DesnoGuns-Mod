@@ -10,6 +10,10 @@ http://creativecommons.org/licenses/by-nc/4.0/
 - flamethrower
 - grenadesmoke
 - glincendiary
+- junglecamohelmet
+- junglecamochestplate
+- junglecamoleggings
+- junglecamoboots
 - multiplerocketlauncher
 - raygun
 - xmasminigun

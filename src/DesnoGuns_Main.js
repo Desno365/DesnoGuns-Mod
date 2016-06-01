@@ -486,6 +486,11 @@ const JUGGERNAUT_BODY_ID = 3286;
 const JUGGERNAUT_PANTS_ID = 3287;
 const JUGGERNAUT_BOOTS_ID = 3288;
 
+const JUNGLE_CAMO_HELMET_ID = 3289;
+const JUNGLE_CAMO_BODY_ID = 3290;
+const JUNGLE_CAMO_PANTS_ID = 3291;
+const JUNGLE_CAMO_BOOTS_ID = 3292;
+
 function createArmorItems()
 {
 	Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 3, 249, ArmorType.helmet);
@@ -515,6 +520,35 @@ function createArmorItems()
 		"c c",
 		"i i"], ["c", 351, 2, "g", 351, 8, "i", 265, 0]); // c = cactus green; g = gray dye; i = iron;
 	Player.addItemCreativeInv(JUGGERNAUT_BOOTS_ID, 1);
+
+
+	Item.newArmor(JUNGLE_CAMO_HELMET_ID, "junglecamohelmet", 0, "Jungle Camo Helmet", "armor/junglecamo_1.png", 1, 166, ArmorType.helmet);
+	Item.addShapedRecipe(JUNGLE_CAMO_HELMET_ID, 1, 0, [
+		"glg",
+		"c c",
+		"   "], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+	Player.addItemCreativeInv(JUNGLE_CAMO_HELMET_ID, 1);
+
+	Item.newArmor(JUNGLE_CAMO_BODY_ID, "junglecamochestplate", 0, "Jungle Camo Body", "armor/junglecamo_1.png", 3, 241, ArmorType.chestplate);
+	Item.addShapedRecipe(JUNGLE_CAMO_BODY_ID, 1, 0, [
+		"l l",
+		"glg",
+		"clc"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+	Player.addItemCreativeInv(JUNGLE_CAMO_BODY_ID, 1);
+
+	Item.newArmor(JUNGLE_CAMO_PANTS_ID, "junglecamoleggings", 0, "Jungle Camo Pants", "armor/junglecamo_2.png", 2, 226, ArmorType.leggings);
+	Item.addShapedRecipe(JUNGLE_CAMO_PANTS_ID, 1, 0, [
+		"cgc",
+		"l l",
+		"l l"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+	Player.addItemCreativeInv(JUNGLE_CAMO_PANTS_ID, 1);
+
+	Item.newArmor(JUNGLE_CAMO_BOOTS_ID, "junglecamoboots", 0, "Jungle Camo Boots", "armor/junglecamo_1.png", 1, 196, ArmorType.boots);
+	Item.addShapedRecipe(JUNGLE_CAMO_BOOTS_ID, 1, 0, [
+		"   ",
+		"c c",
+		"l l"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+	Player.addItemCreativeInv(JUNGLE_CAMO_BOOTS_ID, 1);
 }
 
 
@@ -3656,6 +3690,18 @@ function isItemAnIdTheModAlreadyUse(itemId)
 	if(itemId == JUGGERNAUT_BOOTS_ID)
 		return true;
 
+	if(itemId == JUNGLE_CAMO_HELMET_ID)
+		return true;
+
+	if(itemId == JUNGLE_CAMO_BODY_ID)
+		return true;
+
+	if(itemId == JUNGLE_CAMO_PANTS_ID)
+		return true;
+
+	if(itemId == JUNGLE_CAMO_BOOTS_ID)
+		return true;
+
 	return false;
 }
 
@@ -5944,19 +5990,11 @@ function dumpFlagStateToLog(uiFlags)
 //########## UTILS OF UIs functions ##########
 function basicMinecraftTextView(text, textSize) // TextView with just the Minecraft font
 {
-	var lineSpacing = Convert.convertDpToPixels(4);
-
 	var textview = new android.widget.TextView(currentActivity);
 	textview.setText(new android.text.Html.fromHtml(text));
 	if(textSize != null)
 		textview.setTextSize(textSize);
-	textview.setTypeface(MinecraftButtonLibrary.ProcessedResources.font);
-	textview.setPaintFlags(textview.getPaintFlags() | android.graphics.Paint.SUBPIXEL_TEXT_FLAG);
-	textview.setLineSpacing(lineSpacing, 1);
-	if(android.os.Build.VERSION.SDK_INT >= 21) // 5.0 and up
-		textview.setShadowLayer(1, Math.round((textview.getLineHeight() - lineSpacing) / 8), Math.round((textview.getLineHeight() - lineSpacing) / 8), android.graphics.Color.parseColor("#FF333333"));
-	else
-		textview.setShadowLayer(0.001, Math.round((textview.getLineHeight() - lineSpacing) / 8), Math.round((textview.getLineHeight() - lineSpacing) / 8), android.graphics.Color.parseColor("#FF333333"));
+	MinecraftButtonLibrary.addMinecraftStyleToTextView(textview);
 
 	return textview;
 }
@@ -6723,6 +6761,21 @@ function informationOtherItems()
 
 				layout.addView(dividerText());
 
+				var textview = defaultContentTextView("<i>Binoculars</i>: ID: " + BINOCULARS.id);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Night Binoculars</i>: ID: " + NIGHT_BINOCULARS.id);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Zoom Binoculars</i>: ID: " + ZOOM_BINOCULARS.id);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
 				var textview = defaultContentTextView("<i>Grenade</i>: ID: " + GRENADE.id);
 				layout.addView(textview);
 
@@ -6807,6 +6860,27 @@ function informationOtherItems()
 				layout.addView(textview);
 
 				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Jungle Camo Helmet</i>: ID: " + JUNGLE_CAMO_HELMET_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Jungle Camo Body</i>: ID: " + JUNGLE_CAMO_BODY_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Jungle Camo Pants</i>: ID: " + JUNGLE_CAMO_PANTS_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Jungle Camo Boots</i>: ID: " + JUNGLE_CAMO_BOOTS_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
 
 
 				var backButton = MinecraftButton();
