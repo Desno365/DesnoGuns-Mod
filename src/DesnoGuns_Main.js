@@ -488,32 +488,32 @@ const JUGGERNAUT_BOOTS_ID = 3288;
 
 function createArmorItems()
 {
-	Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 2, 249, ArmorType.helmet);
+	Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 3, 249, ArmorType.helmet);
 	Item.addShapedRecipe(JUGGERNAUT_HELMET_ID, 1, 0, [
-		"cic",
+		"gig",
 		"c c",
-		"   "], ["c", 351, 2, "i", 265, 0]);
+		"   "], ["c", 351, 2, "g", 351, 8, "i", 265, 0]); // c = cactus green; g = gray dye; i = iron;
 	Player.addItemCreativeInv(JUGGERNAUT_HELMET_ID, 1);
 
-	Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 7, 362, ArmorType.chestplate);
+	Item.newArmor(JUGGERNAUT_BODY_ID, "juggernautchestplate", 0, "Juggernaut Body", "armor/juggernaut_1.png", 8, 362, ArmorType.chestplate);
 	Item.addShapedRecipe(JUGGERNAUT_BODY_ID, 1, 0, [
 		"i i",
-		"cic",
-		"cic"], ["c", 351, 2, "i", 265, 0]);
+		"gig",
+		"cic"], ["c", 351, 2, "g", 351, 8, "i", 265, 0]); // c = cactus green; g = gray dye; i = iron;
 	Player.addItemCreativeInv(JUGGERNAUT_BODY_ID, 1);
 
-	Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_1.png", 5, 339, ArmorType.leggings);
+	Item.newArmor(JUGGERNAUT_PANTS_ID, "juggernautleggings", 0, "Juggernaut Pants", "armor/juggernaut_2.png", 6, 339, ArmorType.leggings);
 	Item.addShapedRecipe(JUGGERNAUT_PANTS_ID, 1, 0, [
-		"ccc",
+		"cgc",
 		"i i",
-		"i i"], ["c", 351, 2, "i", 265, 0]);
+		"i i"], ["c", 351, 2, "g", 351, 8, "i", 265, 0]); // c = cactus green; g = gray dye; i = iron;
 	Player.addItemCreativeInv(JUGGERNAUT_PANTS_ID, 1);
 
-	Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_2.png", 2, 294, ArmorType.boots);
+	Item.newArmor(JUGGERNAUT_BOOTS_ID, "juggernautboots", 0, "Juggernaut Boots", "armor/juggernaut_1.png", 3, 294, ArmorType.boots);
 	Item.addShapedRecipe(JUGGERNAUT_BOOTS_ID, 1, 0, [
 		"   ",
 		"c c",
-		"i i"], ["c", 351, 2, "i", 265, 0]);
+		"i i"], ["c", 351, 2, "g", 351, 8, "i", 265, 0]); // c = cactus green; g = gray dye; i = iron;
 	Player.addItemCreativeInv(JUGGERNAUT_BOOTS_ID, 1);
 }
 
@@ -2568,6 +2568,8 @@ function modTick()
 	ModTickFunctions.parachute();
 
 	ModTickFunctions.riotShield();
+
+	ModTickFunctions.armorsEffects();
 	
 	ModTickFunctions.unstuckPigmenEE();
 
@@ -2926,6 +2928,18 @@ var ModTickFunctions = {
 
 			if(Level.getGameMode() == GameMode.SURVIVAL)
 				Player.damageCarriedItem();
+		}
+	},
+
+	armorsEffects: function()
+	{
+		if(Player.getArmorSlot(ArmorType.boots) == JUGGERNAUT_BOOTS_ID)
+		{
+			if(Player.getArmorSlot(ArmorType.helmet) == JUGGERNAUT_HELMET_ID && Player.getArmorSlot(ArmorType.chestplate) == JUGGERNAUT_BODY_ID && Player.getArmorSlot(ArmorType.leggings) == JUGGERNAUT_PANTS_ID)
+			{
+				Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 0, false, false);
+				Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, 4, 0, false, false);
+			}
 		}
 	},
 
