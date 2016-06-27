@@ -1,8 +1,8 @@
 // example addon for the DesnoGuns Mod
 
-var ADDON_NAME = "Example Addon";
+var ADDON_NAME = "Example Addon"; // change the name
 
-var ADDON_DESCRIPTION = "More and more guns example addon by Desno365. WOW.";
+var ADDON_DESCRIPTION = "More and more guns example addon by Desno365."; // change the description
 
 var ADDON_WEAPONS = [
 

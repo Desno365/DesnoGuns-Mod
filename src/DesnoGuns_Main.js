@@ -232,7 +232,7 @@ function createAmmoItems()
 		" g ",
 		" i "], ["i", 265, 0, "r", 331, 0, "g", 289, 0]); // i = iron; r = redstone; g = gunpowder;
 	Item.setCategory(AMMO_SNIPER_RIFLE_ID, ItemCategory.FOOD);
-	Player.addItemCreativeInv(AMMO_ASSAULT_RIFLE_ID, 1);
+	Player.addItemCreativeInv(AMMO_SNIPER_RIFLE_ID, 1);
 
 	Item.defineItem(AMMO_SHOTGUN_ID, "ammoshotgun", 0, "Shotgun Ammo");
 	Item.addShapedRecipe(AMMO_SHOTGUN_ID, 2, 0, [
