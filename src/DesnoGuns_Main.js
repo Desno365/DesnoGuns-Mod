@@ -2146,6 +2146,40 @@ function leaveGame()
 	removeHealButton();
 }
 
+function screenChangeHook(screenName)
+{
+	switch(screenName)
+	{
+		case "hud_screen":
+		{
+			previousCarriedItem = 0;
+			break;
+		}
+		case "creative_inventory_screen":
+		{
+			resetGunsVariables();
+
+			removeShootAndAimButtons();
+			removeInfoItemUI();
+			removeHealButton();
+			removeShootAndAimButtons();
+			
+			break;
+		}
+		case "pause_screen":
+		{
+			resetGunsVariables();
+
+			removeShootAndAimButtons();
+			removeInfoItemUI();
+			removeHealButton();
+			removeShootAndAimButtons();
+
+			break;
+		}
+	}
+}
+
 function procCmd(text)
 {
 	var command = text.toLowerCase().split(" ");
@@ -2324,21 +2358,7 @@ function entityRemovedHook(entity)
 
 function changeCarriedItemHook(currentItem, previousItem)
 {
-	// prevent infinite shooting
-	currentShotTicks = 0;
-	isShooting = false;
-
-	// remove aiming if the user was aiming
-	removeZoomAndAimImageLayer();
-
-	// stop reloading if necessary
-	stopReloading();
-
-	// release the resources for sounds
-	Sound.stopSoundPool();
-
-	// reset sounds for on touch with wait guns spin
-	Sound.stopLoop();
+	resetGunsVariables();
 
 	// remove shooting UI of grenades and molotov
 	if(previousItem == MOLOTOV.id || previousItem == GRENADE.id || previousItem == FRAGMENT.id || previousItem == SMOKE.id || previousItem == BINOCULARS.id || previousItem == NIGHT_BINOCULARS.id || previousItem == ZOOM_BINOCULARS.id)
@@ -3703,6 +3723,27 @@ function isItemAnIdTheModAlreadyUse(itemId)
 		return true;
 
 	return false;
+}
+
+function resetGunsVariables()
+{
+	// should be called when switching between a gun and a item or another gun
+
+	// prevent infinite shooting
+	currentShotTicks = 0;
+	isShooting = false;
+
+	// remove aiming if the user was aiming
+	removeZoomAndAimImageLayer();
+
+	// stop reloading if necessary
+	stopReloading();
+
+	// release the resources for sounds
+	Sound.stopSoundPool();
+
+	// reset sounds for on touch with wait guns spin
+	Sound.stopLoop();
 }
 
 function shootGrenadeHand(grenadeObject)
