@@ -32,6 +32,7 @@ const GameMode = {
 };
 const VEL_Y_OFFSET = -0.07840000092983246;
 var isInGame = false;
+var isPlayingOnServer = false;
 var players;
 
 // textures variables
@@ -2089,6 +2090,16 @@ function newLevel()
 			}
 		}
 	}).start();
+
+	if(Server.getAddress() == null)
+	{
+		isPlayingOnServer = false;
+	} else
+	{
+		print("Playing on server");
+		isPlayingOnServer = true;
+		print(Server.getAddress());
+	}
 }
 
 function leaveGame()
@@ -2609,23 +2620,37 @@ function changeCarriedItemHook(currentItem, previousItem)
 
 function modTick()
 {
+	if(!isInGame)
+	{
+		// workaround: newLevel sometimes is not called when in server
+		print("server debug: was not in game");
+		newLevel();
+	}
+
 	ModTickFunctions.checkChangedCarriedItem();
 
 	ModTickFunctions.onTouchShooting();
 
-	ModTickFunctions.bulletsControl();
+	if(!isPlayingOnServer)
+		ModTickFunctions.bulletsControl();
 
-	ModTickFunctions.molotov();
+	if(!isPlayingOnServer)
+		ModTickFunctions.molotov();
 
-	ModTickFunctions.smokeGrenade();
+	if(!isPlayingOnServer)
+		ModTickFunctions.smokeGrenade();
 	
-	ModTickFunctions.parachute();
+	if(!isPlayingOnServer)
+		ModTickFunctions.parachute();
 
-	ModTickFunctions.riotShield();
+	if(!isPlayingOnServer)
+		ModTickFunctions.riotShield();
 
-	ModTickFunctions.armorsEffects();
+	if(!isPlayingOnServer)
+		ModTickFunctions.armorsEffects();
 	
-	ModTickFunctions.unstuckPigmenEE();
+	if(!isPlayingOnServer)
+		ModTickFunctions.unstuckPigmenEE();
 
 	/*if(DEBUG1)
 	{
@@ -4048,13 +4073,19 @@ function shoot(gun)
 
 	if(gun.shotType == SHOT_TYPE_SHOTGUN)
 	{
-		shootShotgun(gun);
+		if(isPlayingOnServer)
+			print("WIP");
+		else
+			shootShotgun(gun);
 		return;
 	}
 
 	if(gun.shotType == SHOT_TYPE_FLAMETHROWER)
 	{
-		shootFlamethrower(gun);
+		if(isPlayingOnServer)
+			print("WIP");
+		else
+			shootFlamethrower(gun);
 		return;
 	}
 
@@ -4063,51 +4094,69 @@ function shoot(gun)
 
 function shootSingleBullet(gun)
 {
-	// a single bullet
-
-	var gunAccuracy = getDefaultAccuracy(gun);
-
-	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-	var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
-
-	var gunShootDir = DesnoUtils.getVector(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
-
-	var bullet = shootEntity(gun, getEntityIdForBulletType(gun), gunShootDir);
-
-	if(gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
-		Entity.setFireTicks(bullet, 1000);
-
-	if(gun.hasParticleTrail || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
-		gun.bulletsArray.push(new entityClass(bullet));
-
-	if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
+	if(isPlayingOnServer)
 	{
-		playSoundFromSimplePath("desnoguns/explosion-countdown.mp3");
+		// send message
 
-		new android.os.Handler().postDelayed(new java.lang.Runnable(
+		var gunAccuracy = getDefaultAccuracy(gun);
+
+		var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+		var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+
+		var gunShootDir = DesnoUtils.getVector(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+		// name 
+		Server.sendChat("::DG%" + gun.name + "%" + (gunShootDir.x * 2) + "%" + (gunShootDir.y * 2.5) + "%" + (gunShootDir.z * 2) + "%" + (gunShootDir.x * gun.bulletSpeed) + "%" + (gunShootDir.y * gun.bulletSpeed) + "%" + (gunShootDir.z * gun.bulletSpeed));
+		print("sent " + "::DG%" + "name" + "%" + "dirX" + "%" + "dirY" + "%" + "dirZ" + "%" + "speedX" + "%" + "speedY" + "%" + "speedZ");
+	} else
+	{
+		// a single bullet
+
+		var gunAccuracy = getDefaultAccuracy(gun);
+
+		var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+		var pitchAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * gunAccuracy;
+
+		var gunShootDir = DesnoUtils.getVector(getYaw() + yawAccuracyValue, getPitch() + pitchAccuracyValue);
+
+		var bullet = shootEntity(gun, getEntityIdForBulletType(gun), gunShootDir);
+
+
+		if(gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+			Entity.setFireTicks(bullet, 1000);
+
+		if(gun.hasParticleTrail || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || gun.bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
+			gun.bulletsArray.push(new entityClass(bullet));
+
+		if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 		{
-			run: function()
-			{
-				if(isInGame && gun.bulletsArray.length > 0) // gun.bulletsArray.length > 0 fix a crash that happens when the player shoot an explosive bullet, exit the world and re-enter in the world
-				{
-					var explosionX = Entity.getX(gun.bulletsArray[0].entity);
-					var explosionY = Entity.getY(gun.bulletsArray[0].entity);
-					var explosionZ = Entity.getZ(gun.bulletsArray[0].entity);
+			playSoundFromSimplePath("desnoguns/explosion-countdown.mp3");
 
-					if(explosionX == 0 && explosionY == 0 && explosionZ == 0)
+			new android.os.Handler().postDelayed(new java.lang.Runnable(
+			{
+				run: function()
+				{
+					if(isInGame && gun.bulletsArray.length > 0) // gun.bulletsArray.length > 0 fix a crash that happens when the player shoot an explosive bullet, exit the world and re-enter in the world
 					{
-						// arrow hit an entity
-						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
-					} else
-					{
-						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+						var explosionX = Entity.getX(gun.bulletsArray[0].entity);
+						var explosionY = Entity.getY(gun.bulletsArray[0].entity);
+						var explosionZ = Entity.getZ(gun.bulletsArray[0].entity);
+
+						if(explosionX == 0 && explosionY == 0 && explosionZ == 0)
+						{
+							// arrow hit an entity
+							Entity.remove(gun.bulletsArray[0].entity);
+							Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+						} else
+						{
+							Entity.remove(gun.bulletsArray[0].entity);
+							Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+						}
+						gun.bulletsArray.splice(0, 1);
 					}
-					gun.bulletsArray.splice(0, 1);
 				}
-			}
-		}), gun.bulletsExplosionDelay);
+			}), gun.bulletsExplosionDelay);
+		}
 	}
 }
 
@@ -4931,13 +4980,15 @@ function removeZoomAndAimImageLayer()
 
 							isDisplayingAimingAnimation = false;
 
-							Entity.removeEffect(Player.getEntity(), MobEffect.nightVision); // removing night vision two times to avoid bug if the user stop aiming during the 200 milliseconds of the animation
+							if(!isPlayingOnServer)
+								Entity.removeEffect(Player.getEntity(), MobEffect.nightVision); // removing night vision two times to avoid bug if the user stop aiming during the 200 milliseconds of the animation
 						}
 					}), (72 - removeAiming) * 12);
 				}
 
 				// remove night vision
-				Entity.removeEffect(Player.getEntity(), MobEffect.nightVision);
+				if(!isPlayingOnServer)
+					Entity.removeEffect(Player.getEntity(), MobEffect.nightVision);
 
 				// remove image layers
 				try {
