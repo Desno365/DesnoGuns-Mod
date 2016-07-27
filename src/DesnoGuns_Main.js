@@ -2105,6 +2105,7 @@ function newLevel()
 function leaveGame()
 {
 	isInGame = false;
+	currentScreen = "not_in_game";
 	players = [];
 
 	removeShootAndAimButtons();
@@ -2157,13 +2158,19 @@ function leaveGame()
 	removeHealButton();
 }
 
+var currentScreen = "not_in_game";
 function screenChangeHook(screenName)
 {
 	switch(screenName)
 	{
 		case "hud_screen":
 		{
-			previousCarriedItem = 0;
+			if(currentScreen != "not_in_game")
+			{
+				previousCarriedItem = 0;
+			}
+
+			currentScreen = "hud_screen";
 			break;
 		}
 		case "creative_inventory_screen":
@@ -2173,8 +2180,19 @@ function screenChangeHook(screenName)
 			removeShootAndAimButtons();
 			removeInfoItemUI();
 			removeHealButton();
-			removeShootAndAimButtons();
 			
+			currentScreen = "creative_inventory_screen";
+			break;
+		}
+		case "survival_inventory_screen":
+		{
+			resetGunsVariables();
+
+			removeShootAndAimButtons();
+			removeInfoItemUI();
+			removeHealButton();
+			
+			currentScreen = "survival_inventory_screen";
 			break;
 		}
 		case "pause_screen":
@@ -2184,8 +2202,19 @@ function screenChangeHook(screenName)
 			removeShootAndAimButtons();
 			removeInfoItemUI();
 			removeHealButton();
-			removeShootAndAimButtons();
 
+			currentScreen = "pause_screen";
+			break;
+		}
+		case "chat_screen":
+		{
+			resetGunsVariables();
+
+			removeShootAndAimButtons();
+			removeInfoItemUI();
+			removeHealButton();
+
+			currentScreen = "chat_screen";
 			break;
 		}
 	}
@@ -2662,18 +2691,21 @@ var ModTickFunctions = {
 
 	checkChangedCarriedItem: function()
 	{
-		if(Player.getCarriedItem() != previousCarriedItem)
-			changeCarriedItemHook(Player.getCarriedItem(), previousCarriedItem);
-		else
+		if(currentScreen == "hud_screen")
 		{
-			// switching between items with same id but different damage for example
-			if(Player.getSelectedSlotId() != previousSlotId)
+			if(Player.getCarriedItem() != previousCarriedItem)
+				changeCarriedItemHook(Player.getCarriedItem(), previousCarriedItem);
+			else
 			{
-				changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
+				// switching between items with same id but different damage for example
+				if(Player.getSelectedSlotId() != previousSlotId)
+				{
+						changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
+				}
 			}
+			previousCarriedItem = Player.getCarriedItem();
+			previousSlotId = Player.getSelectedSlotId();
 		}
-		previousCarriedItem = Player.getCarriedItem();
-		previousSlotId = Player.getSelectedSlotId();
 	},
 
 	onTouchShooting: function()
@@ -3968,6 +4000,8 @@ function getWeaponObject(id)
 
 	if(id == ZOOM_BINOCULARS.id)
 		return ZOOM_BINOCULARS;
+
+	return null;
 }
 
 function getGun(id)
@@ -5019,22 +5053,39 @@ function showAimImageLayerFromWeapon(weapon)
 				// display actual layer
 				displayAimImageLayerPopup(getAimImageFromGun(weapon));
 
-
 				if(weapon.hasManualZoom)
 					displayManualZoom(weapon);
 
-				if(isItemAGun(weapon.id))
+				restoreRemovedUiOfWeapon(weapon);
+
+				// remove sight image, we already have the image layer but we need to restore it later
+				try {
+					popupSightImage.dismiss();
+				} catch(e) {}
+			} catch(err)
+			{
+				clientMessage("Error: " + err);
+			}
+		}
+	}));
+}
+
+function restoreRemovedUiOfWeapon(weapon)
+{
+	// used with aim image layer and pause screens
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			try
+			{
+				if(isItemAGun(weapon.id) && needsToLoadTheUI(weapon.id, true))
 				{
 					// display both fire and aim buttons
 					displayShootAndAimButtons();
 
 					// restore ammo text
 					updateAmmoText(weapon);
-
-					// remove sight image, we already have the image layer but we need to restore it later
-					try {
-						popupSightImage.dismiss();
-					} catch(e) {}
 
 					if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
 					{
