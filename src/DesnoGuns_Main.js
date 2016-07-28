@@ -18,7 +18,7 @@ const DEBUG1 = false; // debug: getSavedBoolean
 const DEBUG2 = false; // disable base64 code
 
 // updates variables
-const CURRENT_VERSION = "r017";
+const CURRENT_VERSION = "r018";
 var latestVersion;
 
 //activity and other Android variables
