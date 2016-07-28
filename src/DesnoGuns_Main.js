@@ -613,6 +613,10 @@ function createArmorItems()
 		spinSound: String,
 		hasntCooldownSound: boolean,
 		cooldownSound: String,
+
+		// SOUNDS only for bullet type "normal_explosive_on_time"
+		countdownSoundExplosiveOnTime: String, // sound that start when shooting, usually the duration of the sound matches bulletExplosionDelay
+
 	};
 */
 
@@ -906,6 +910,7 @@ const CROSSBOW_EXPLOSIVE = {
 	// SOUNDS
 	sound: "desnoguns/CrossbowShoot.wav",
 	reloadSound: "desnoguns/reload/CrossbowReload.mp3",
+	countdownSoundExplosiveOnTime: "desnoguns/explosion-countdown.mp3",
 };
 
 const CROSSBOW = {
@@ -3280,6 +3285,13 @@ function canGunBeLoaded(gun)
 		}
 	}
 
+	if(getBulletTypeIdFromString(gun.bulletType) == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME && gun.countdownSoundExplosiveOnTime != null)
+	{
+		// the countdown sounds for the explosive bullet on time will be changed, check if it is correctly formatted
+		if(!(isCustomSound(gun.countdownSoundExplosiveOnTime) || isDefaultSound(gun.countdownSoundExplosiveOnTime)))
+			return defaultError + "gun.countdownSoundExplosiveOnTime must be a string starting with custom/ if a custom sound from a texture pack is used, or desnoguns/ if a pre-installed sound is used.";
+	}
+
 
 	return "yes";
 }
@@ -3509,6 +3521,9 @@ function installSoundsOfGun(gun, addonName)
 
 	if((!gun.hasntCooldownSound) && gun.cooldownSound != null)
 		installSoundFromSimplePath(gun.cooldownSound, gun.name, addonName);
+
+	if(gun.countdownSoundExplosiveOnTime != null)
+		installSoundFromSimplePath(gun.countdownSoundExplosiveOnTime, gun.name, addonName);
 }
 
 function installSoundFromSimplePath(simplePath, gunName, addonName)
@@ -4164,7 +4179,8 @@ function shootSingleBullet(gun)
 
 		if(gun.bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 		{
-			playSoundFromSimplePath("desnoguns/explosion-countdown.mp3");
+			if(gun.countdownSoundExplosiveOnTime != null)
+				playSoundFromSimplePath(gun.countdownSoundExplosiveOnTime);
 
 			new android.os.Handler().postDelayed(new java.lang.Runnable(
 			{
@@ -5607,7 +5623,7 @@ function displayHealButton()
 						{
 							if(Level.getGameMode() == GameMode.CREATIVE)
 							{
-								ModPE.showTipMessage("Not necessary in creative.");
+								ModPE.showTipMessage("Not available in creative.");
 								return;
 							} else
 							{

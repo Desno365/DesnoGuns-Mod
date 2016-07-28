@@ -149,6 +149,7 @@ var ADDON_WEAPONS = [
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/CrossbowShoot.wav",
 		reloadSound: "custom/my-addon-name-sounds/reload/CrossbowReload.wav",
+		countdownSoundExplosiveOnTime: "custom/my-addon-name-sounds/flamethrower.mp3",
 	},
 
 	{
@@ -804,6 +805,9 @@ var ADDON_WEAPONS = [
 		hasntShootingSound: boolean, // true if this gun doesn't make any sound when shooting
 		sound: String, // sound when shooting
 		reloadSound: String, // sound when reloading
+
+		// SOUNDS only for bullet type "normal_explosive_on_time"
+		countdownSoundExplosiveOnTime: String, // sound that start when shooting, usually the duration of the sound matches bulletExplosionDelay
 
 		// SOUNDS only for type "on_touch_with_wait"
 		warmupSound: String,
