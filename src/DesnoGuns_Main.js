@@ -2110,8 +2110,7 @@ function newLevel()
 function leaveGame()
 {
 	isInGame = false;
-	currentScreen = "not_in_game";
-	players = [];
+	currentScreen = "null"
 
 	removeShootAndAimButtons();
 
