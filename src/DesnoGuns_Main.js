@@ -2163,11 +2163,16 @@ function leaveGame()
 	removeHealButton();
 }
 
-var currentScreen = "not_in_game";
+var currentScreen = "null"; // will remain to null if screenChangeHook doesn't work or is not called (for example with BL for MCPE 0.14)
 function screenChangeHook(screenName)
 {
 	switch(screenName)
 	{
+		case "play_screen - worlds":
+		{
+			currentScreen = "not_in_game";
+			break;
+		}
 		case "hud_screen":
 		{
 			if(currentScreen != "not_in_game")
@@ -2696,7 +2701,7 @@ var ModTickFunctions = {
 
 	checkChangedCarriedItem: function()
 	{
-		if(currentScreen == "hud_screen")
+		if(currentScreen == "hud_screen" || currentScreen == "null")
 		{
 			if(Player.getCarriedItem() != previousCarriedItem)
 				changeCarriedItemHook(Player.getCarriedItem(), previousCarriedItem);

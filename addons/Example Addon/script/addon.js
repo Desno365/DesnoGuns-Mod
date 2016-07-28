@@ -807,7 +807,7 @@ var ADDON_WEAPONS = [
 		reloadSound: String, // sound when reloading
 
 		// SOUNDS only for bullet type "normal_explosive_on_time"
-		countdownSoundExplosiveOnTime: String, // sound that start when shooting, usually the duration of the sound matches bulletExplosionDelay
+		countdownSoundExplosiveOnTime: String, // sound that start when shooting, usually the duration of the sound matches bulletExplosionDelay. Set to null for default sound
 
 		// SOUNDS only for type "on_touch_with_wait"
 		warmupSound: String,
