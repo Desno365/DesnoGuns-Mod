@@ -525,30 +525,30 @@ function createArmorItems()
 
 	Item.newArmor(JUNGLE_CAMO_HELMET_ID, "junglecamohelmet", 0, "Jungle Camo Helmet", "armor/junglecamo_1.png", 1, 166, ArmorType.helmet);
 	Item.addShapedRecipe(JUNGLE_CAMO_HELMET_ID, 1, 0, [
-		"glg",
+		"clc",
 		"c c",
-		"   "], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+		"   "], ["c", 351, 2, "l", 334, 0]); // c = cactus green; l = leather;
 	Player.addItemCreativeInv(JUNGLE_CAMO_HELMET_ID, 1);
 
 	Item.newArmor(JUNGLE_CAMO_BODY_ID, "junglecamochestplate", 0, "Jungle Camo Body", "armor/junglecamo_1.png", 3, 241, ArmorType.chestplate);
 	Item.addShapedRecipe(JUNGLE_CAMO_BODY_ID, 1, 0, [
 		"l l",
-		"glg",
-		"clc"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+		"clc",
+		"clc"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; l = leather;
 	Player.addItemCreativeInv(JUNGLE_CAMO_BODY_ID, 1);
 
 	Item.newArmor(JUNGLE_CAMO_PANTS_ID, "junglecamoleggings", 0, "Jungle Camo Pants", "armor/junglecamo_2.png", 2, 226, ArmorType.leggings);
 	Item.addShapedRecipe(JUNGLE_CAMO_PANTS_ID, 1, 0, [
-		"cgc",
+		"ccc",
 		"l l",
-		"l l"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+		"l l"], ["c", 351, 2, "l", 334, 0]); // c = cactus green; l = leather;
 	Player.addItemCreativeInv(JUNGLE_CAMO_PANTS_ID, 1);
 
 	Item.newArmor(JUNGLE_CAMO_BOOTS_ID, "junglecamoboots", 0, "Jungle Camo Boots", "armor/junglecamo_1.png", 1, 196, ArmorType.boots);
 	Item.addShapedRecipe(JUNGLE_CAMO_BOOTS_ID, 1, 0, [
 		"   ",
 		"c c",
-		"l l"], ["c", 351, 2, "g", 351, 10, "l", 334, 0]); // c = cactus green; g = lime dye; l = leather;
+		"l l"], ["c", 351, 2, "l", 334, 0]); // c = cactus green; l = leather;
 	Player.addItemCreativeInv(JUNGLE_CAMO_BOOTS_ID, 1);
 }
 
