@@ -149,7 +149,7 @@ var ADDON_WEAPONS = [
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/CrossbowShoot.wav",
 		reloadSound: "custom/my-addon-name-sounds/reload/CrossbowReload.wav",
-		countdownSoundExplosiveOnTime: "custom/my-addon-name-sounds/flamethrower.mp3",
+		countdownSoundExplosiveOnTime: "custom/my-addon-name-sounds/explosion-countdown.wav",
 	},
 
 	{

@@ -2174,7 +2174,7 @@ function screenChangeHook(screenName)
 		}
 		case "hud_screen":
 		{
-			if(currentScreen != "not_in_game")
+			if(currentScreen != "not_in_game" && currentScreen != "hud_screen")
 			{
 				previousCarriedItem = 0;
 			}
@@ -2183,17 +2183,18 @@ function screenChangeHook(screenName)
 			break;
 		}
 		case "creative_inventory_screen":
-		{
-			resetGunsVariables();
-
-			removeShootAndAimButtons();
-			removeInfoItemUI();
-			removeHealButton();
-			
-			currentScreen = "creative_inventory_screen";
-			break;
-		}
 		case "survival_inventory_screen":
+		case "pause_screen":
+		case "chat_screen":
+		case "hopper_screen":
+		case "small_chest_screen":
+		case "large_chest_screen":
+		case "dropper_screen":
+		case "dispenser_screen":
+		case "furnace_screen":
+		case "brewing_stand_screen":
+		case "anvil_screen":
+		case "horse_screen":
 		{
 			resetGunsVariables();
 
@@ -2201,29 +2202,7 @@ function screenChangeHook(screenName)
 			removeInfoItemUI();
 			removeHealButton();
 			
-			currentScreen = "survival_inventory_screen";
-			break;
-		}
-		case "pause_screen":
-		{
-			resetGunsVariables();
-
-			removeShootAndAimButtons();
-			removeInfoItemUI();
-			removeHealButton();
-
-			currentScreen = "pause_screen";
-			break;
-		}
-		case "chat_screen":
-		{
-			resetGunsVariables();
-
-			removeShootAndAimButtons();
-			removeInfoItemUI();
-			removeHealButton();
-
-			currentScreen = "chat_screen";
+			currentScreen = screenName;
 			break;
 		}
 	}
