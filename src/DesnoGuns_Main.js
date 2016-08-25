@@ -5137,6 +5137,27 @@ function restoreRemovedUiOfWeapon(weapon)
 							}));
 						}
 					}
+
+					if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+					{
+						// load touch events
+						currentActivity.runOnUiThread(new java.lang.Runnable(
+						{
+							run: function()
+							{
+								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+								{
+									onTouch: function(v, event)
+									{
+										if(minecraftStyleForButtons)
+											MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+										onTouchWithWaitWeaponShoot(event, weapon);
+										return false;
+									}
+								});
+							}
+						}));
+					}
 				} else
 				{
 					// is not a gun, we don't want to display the fire button and related things (sight, ammo)
