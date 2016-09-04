@@ -1614,6 +1614,8 @@ const MP5 = {
 	bulletSpeed: ASSAULT_BULLET_SPEED,
 	accuracy: 2.5,
 	zoomLevel: ZOOM_MACHINE,
+	hasAimImageLayer: true,
+	customAimImageLayerPath: "/images/desnoguns-scopes/mp5.png",
 	texture: "mp5",
 	ammo: 30,
 	smoke: 1,
