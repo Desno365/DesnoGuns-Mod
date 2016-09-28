@@ -85,6 +85,7 @@ var shouldDisplaySight = true;
 var displayGunNameInAmmo = false;
 var switchedButtonsPosition = false;
 var minecraftStyleForButtons = false;
+var shouldDisplayNotFullscreenAimImages = true;
 
 // settings for reload in creative variables
 var reloadInCreative = false;
@@ -566,6 +567,7 @@ function createArmorItems()
 		zoomLevel: int,
 		accuracy: int,
 		hasAimImageLayer: boolean, // show image when aiming
+		isIronSightAndNotFullscreen: boolean, // when true and the "Disable not fullscreen aim images" is enabled the aim image layer will not be displayed
 		customAimImageLayerPath: string, // path of the image in the texture pack, if not set the mod will use the default image
 		hasNightVision: boolean, // if true when aiming the night vision effect is applied to the player
 		texture: String,
@@ -731,6 +733,7 @@ const AK47 = {
 	accuracy: 5,
 	zoomLevel: ZOOM_ASSAULT,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/ak47.png",
 	texture: "ak47",
 	ammo: 30,
@@ -803,6 +806,7 @@ const AUG = {
 	accuracy: 3,
 	zoomLevel: ZOOM_ASSAULT,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/aug.png",
 	texture: "aug",
 	ammo: 42,
@@ -959,6 +963,7 @@ const DESERT_EAGLE = {
 	accuracy: 6,
 	zoomLevel: ZOOM_PISTOL,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/desert-eagle.png",
 	texture: "deserteagle",
 	ammo: 7,
@@ -983,6 +988,7 @@ const DESERT_EAGLE_GOLD = {
 	accuracy: 5,
 	zoomLevel: ZOOM_PISTOL,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/desert-eagle-gold.png",
 	texture: "deserteaglegold",
 	ammo: 7,
@@ -1060,6 +1066,7 @@ const FNSCAR = {
 	accuracy: 3,
 	zoomLevel: ZOOM_ASSAULT,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/fnscar.png",
 	texture: "fnscar",
 	ammo: 20,
@@ -1593,6 +1600,7 @@ const MINI_UZI = {
 	accuracy: 3,
 	zoomLevel: ZOOM_PISTOL,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/miniuzi.png",
 	texture: "miniuzi",
 	ammo: 32,
@@ -1617,6 +1625,7 @@ const MP5 = {
 	accuracy: 2.5,
 	zoomLevel: ZOOM_MACHINE,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/mp5.png",
 	texture: "mp5",
 	ammo: 30,
@@ -1692,6 +1701,7 @@ const P90 = {
 	accuracy: 2.5,
 	zoomLevel: ZOOM_MACHINE,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/p90.png",
 	texture: "p90",
 	ammo: 50,
@@ -1905,6 +1915,7 @@ const SKORPION = {
 	accuracy: 5,
 	zoomLevel: ZOOM_PISTOL,
 	hasAimImageLayer: true,
+	isIronSightAndNotFullscreen: true,
 	customAimImageLayerPath: "/images/desnoguns-scopes/skorpion.png",
 	texture: "skorpion",
 	ammo: 20,
@@ -2082,6 +2093,7 @@ function newLevel()
 	instantReloadInCreative = getSavedBoolean("instReload", false);
 	switchedButtonsPosition = getSavedBoolean("sBPosition", false);
 	minecraftStyleForButtons = getSavedBoolean("sBStyle", false);
+	shouldDisplayNotFullscreenAimImages = getSavedBoolean("dNotFullImages", true);
 
 	new java.lang.Thread(new java.lang.Runnable()
 	{
@@ -4946,7 +4958,10 @@ function onAimClick()
 					{
 						// show image layer
 						if(weapon.hasAimImageLayer)
-							showAimImageLayerFromWeapon(weapon);
+						{
+							if(shouldDisplayNotFullscreenAimImages || (!weapon.isIronSightAndNotFullscreen)) // if first is true display all aim images, if only the second one is true display only fullscreen aim images
+								showAimImageLayerFromWeapon(weapon);
+						}
 
 						// enable night vision
 						if(weapon.hasNightVision)
@@ -7305,6 +7320,28 @@ function settingsUI()
 				});
 				switchGunName.setPadding(padding, 0, padding, 0);
 				layout.addView(switchGunName);
+
+				layout.addView(dividerText());
+
+
+
+				var switchFullscreenAimImages = new android.widget.Switch(currentActivity);
+				switchFullscreenAimImages.setChecked(shouldDisplayNotFullscreenAimImages);
+				switchFullscreenAimImages.setText("Display not full-screen iron sights when aiming");
+				switchFullscreenAimImages.setTextColor(android.graphics.Color.parseColor("#FFFFFFFF"));
+				switchFullscreenAimImages.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener()
+				{
+					onCheckedChanged: function()
+					{
+						shouldDisplayNotFullscreenAimImages = !shouldDisplayNotFullscreenAimImages;
+						ModPE.saveData("dNotFullImages", shouldDisplayNotFullscreenAimImages);
+						try {
+							popupSightImage.dismiss();
+						} catch(e) {}
+					}
+				});
+				switchFullscreenAimImages.setPadding(padding, 0, padding, 0);
+				layout.addView(switchFullscreenAimImages);
 
 				layout.addView(dividerText());
 
