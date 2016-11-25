@@ -582,7 +582,7 @@ function createArmorItems()
 		zoomLevel: int,
 		accuracy: int,
 		hasAimImageLayer: boolean, // show image when aiming
-		isIronSight: boolean, // set to true when the custom aim image is an iron sight and not a full-screen scope
+		isIronSight: boolean, // set to true when the custom aim image is an iron sight and not a full-screen scope (when true if iron sights are disabled in options, the iron sight of the gun won't be displayed)
 		customAimImageLayerPath: string, // path of the image in the texture pack, if not set the mod will use the default image
 		hasNightVision: boolean, // if true when aiming the night vision effect is applied to the player
 		texture: String,
@@ -2754,7 +2754,7 @@ var ModTickFunctions = {
 						if(xArrow == 0 && yArrow == 0 && zArrow == 0)
 						{
 							// arrow hit an entity, the previous position may be near the player, we need to check it
-							if(!checkProximityOfPoints(arrow.previousX, arrow.previousY, arrow.previousZ, Player.getX(), Player.getY(), Player.getZ(), 5))
+							if(!Level.checkProximityOfPoints(arrow.previousX, arrow.previousY, arrow.previousZ, Player.getX(), Player.getY(), Player.getZ(), 5))
 								Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, allGuns[i].bulletsExplosionRadius);
 
 							allGuns[i].bulletsArray.splice(j, 1);
@@ -2973,7 +2973,7 @@ var ModTickFunctions = {
 				{
 					for(var j in players)
 					{
-						if(checkProximity(SMOKE.grenadesArray[i].entity, players[j], 5))
+						if(Level.checkEntityProximity(SMOKE.grenadesArray[i].entity, players[j], 5))
 						{
 							Entity.addEffect(players[j], MobEffect.movementSlowdown, 100, 1, false, false);
 							Entity.addEffect(players[j], MobEffect.weakness, 100, 1, false, false);
@@ -6039,36 +6039,6 @@ function entityClass(entity)
 	this.previousX = 0;
 	this.previousY = 0;
 	this.previousZ = 0;
-}
-
-function checkProximity(entity1, entity2, distanceXZ, distanceY)
-{
-	if(distanceY == null)
-		distanceY = distanceXZ;
-
-	if(!(Math.abs(Entity.getX(entity1) - Entity.getX(entity2)) <= distanceXZ))
-		return false;
-	if(!(Math.abs(Entity.getY(entity1) - Entity.getY(entity2)) <= distanceY))
-		return false;
-	if(!(Math.abs(Entity.getZ(entity1) - Entity.getZ(entity2)) <= distanceXZ))
-		return false;
-
-	return true;
-}
-
-function checkProximityOfPoints(x1, y1, z1, x2, y2, z2, distanceXZ, distanceY)
-{
-	if(distanceY == null)
-		distanceY = distanceXZ;
-
-	if(!(Math.abs(x1 - x2) <= distanceXZ))
-		return false;
-	if(!(Math.abs(y1 - y2) <= distanceY))
-		return false;
-	if(!(Math.abs(z1 - z2) <= distanceXZ))
-		return false;
-
-	return true;
 }
 
 function dumpFlagStateToLog(uiFlags)

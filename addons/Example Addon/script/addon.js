@@ -775,7 +775,7 @@ var ADDON_WEAPONS = [
 		accuracy: int, // a number > 0 and < 45, the higher this number is the less accuracy the gun will have.
 		zoomLevel: int, // an integer number > 0 and < 68, the higher this number is the more zoom the gun will have when aiming.
 		hasAimImageLayer: boolean, // show image when aiming, usually sniper rifles has this image.
-		isIronSight: boolean, // set to true when the custom aim image is an iron sight and not a full-screen scope
+		isIronSight: boolean, // set to true when the custom aim image is an iron sight and not a full-screen scope (when true if iron sights are disabled in options, the iron sight of the gun won't be displayed)
 		customAimImageLayerPath: string, // path of the image in the texture pack, if not set the mod will use the default image
 		hasNightVision: boolean, // if true when aiming the night vision effect is applied to the player
 		texture: String, // the name of the texture this gun uses.
