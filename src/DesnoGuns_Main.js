@@ -2745,7 +2745,7 @@ var ModTickFunctions = {
 					if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow && Entity.getVelY(arrow.entity) == 0)
 					{
 						// arrow touched the ground
-						Level.explode(xArrow, yArrow, zArrow, allGuns[i].bulletsExplosionRadius);
+						Level.explode(xArrow, yArrow, zArrow, allGuns[i].bulletsExplosionRadius, false, true);
 
 						Entity.remove(arrow.entity);
 						allGuns[i].bulletsArray.splice(j, 1);
@@ -2754,8 +2754,8 @@ var ModTickFunctions = {
 						if(xArrow == 0 && yArrow == 0 && zArrow == 0)
 						{
 							// arrow hit an entity, the previous position may be near the player, we need to check it
-							if(!Level.checkProximityOfPoints(arrow.previousX, arrow.previousY, arrow.previousZ, Player.getX(), Player.getY(), Player.getZ(), 5))
-								Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, allGuns[i].bulletsExplosionRadius);
+							if(!Level.checkProximityOfPoints(arrow.previousX, arrow.previousY, arrow.previousZ, Player.getX(), Player.getY(), Player.getZ(), 4))
+								Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, allGuns[i].bulletsExplosionRadius, false, true);
 
 							allGuns[i].bulletsArray.splice(j, 1);
 						} else
@@ -3901,14 +3901,14 @@ function shootGrenadeHand(grenadeObject)
 											Entity.remove(FRAGMENT.fragmentArray[0].entity);
 											FRAGMENT.fragmentArray.splice(0, 1);
 
-											Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius);
+											Level.explode(fragmentX, fragmentY, fragmentZ, FRAGMENT.grenadesExplosionRadius, false, true);
 										}
 									}
 								}
 							}), FRAGMENT.fragmentDelay);
 						}
 
-						Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
+						Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius, false, true);
 					}
 				}
 			}), grenadeObject.delay);
@@ -3929,7 +3929,7 @@ function shootGrenadeHand(grenadeObject)
 						Entity.remove(GRENADE.grenadesArray[0].entity);
 						GRENADE.grenadesArray.splice(0, 1);
 
-						Level.explode(explosionX, explosionY, explosionZ, GRENADE.grenadesExplosionRadius);
+						Level.explode(explosionX, explosionY, explosionZ, GRENADE.grenadesExplosionRadius, false, true);
 					}
 				}
 			}), grenadeObject.delay);
@@ -3996,7 +3996,7 @@ function fragmentShit()
 		}), FRAGMENT.fragmentDelay * 2);
 	}
 
-	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius);
+	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius, false, true);
 }
 
 function smokeGrenadeClass(entity)
@@ -4200,11 +4200,11 @@ function shootSingleBullet(gun)
 						{
 							// arrow hit an entity
 							Entity.remove(gun.bulletsArray[0].entity);
-							Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+							Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius, false, true); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
 						} else
 						{
 							Entity.remove(gun.bulletsArray[0].entity);
-							Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+							Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius, false, true);
 						}
 						gun.bulletsArray.splice(0, 1);
 					}
@@ -4280,11 +4280,11 @@ function shootSingleShotgunBullet(gun)
 					{
 						// arrow hit an entity
 						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius, false, true); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
 					} else
 					{
 						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius);
+						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius, false, true);
 					}
 					gun.bulletsArray.splice(0, 1);
 				}
