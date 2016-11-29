@@ -18,7 +18,7 @@ const DEBUG_PRO_CODE = false; // disable pro code
 const DEBUG_PRO_KEY_STATUS = false; // show a message with status of pro key
 
 // updates variables
-const CURRENT_VERSION = "r018";
+const CURRENT_VERSION = "r019";
 var latestVersion;
 
 //activity and other Android variables
