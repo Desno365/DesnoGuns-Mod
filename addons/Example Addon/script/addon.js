@@ -71,7 +71,7 @@ var ADDON_WEAPONS = [
 		// BEHAVIOR
 		shotType: "normal",
 		bulletType: "normal_explosive_on_touch",
-		bulletsExplosionRadius: 2,
+		bulletsExplosionRadius: 4,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/BarrettShoot.ogg",
 		reloadSound: "custom/my-addon-name-sounds/reload/BARReload.ogg",
@@ -148,7 +148,7 @@ var ADDON_WEAPONS = [
 		shotType: "normal",
 		bulletType: "normal_explosive_on_time",
 		bulletsExplosionDelay: 3350,
-		bulletsExplosionRadius: 4,
+		bulletsExplosionRadius: 6,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/CrossbowShoot.wav",
 		reloadSound: "custom/my-addon-name-sounds/reload/CrossbowReload.wav",
@@ -385,7 +385,7 @@ var ADDON_WEAPONS = [
 		particleTrailDistance: 3,
 		particleTrailId: 4,
 		bulletType: "normal_explosive_on_touch",
-		bulletsExplosionRadius: 4,
+		bulletsExplosionRadius: 6,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.mp3",
@@ -478,7 +478,7 @@ var ADDON_WEAPONS = [
 		// BEHAVIOR
 		shotType: "normal",
 		bulletType: "normal_explosive_on_touch",
-		bulletsExplosionRadius: 2,
+		bulletsExplosionRadius: 4,
 		// SOUNDS
 		warmupSound: "custom/my-addon-name-sounds/MinigunWarmup.ogg",
 		sound: "custom/my-addon-name-sounds/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
@@ -535,7 +535,7 @@ var ADDON_WEAPONS = [
 		particleTrailDistance: 3,
 		particleTrailId: 4,
 		bulletType: "normal_explosive_on_touch",
-		bulletsExplosionRadius: 2,
+		bulletsExplosionRadius: 4,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/MultipleRocketLauncherShoot.mp3",
 		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.mp3",
@@ -637,7 +637,7 @@ var ADDON_WEAPONS = [
 		particleTrailDistance: 3,
 		particleTrailId: 4,
 		bulletType: "normal_explosive_on_touch",
-		bulletsExplosionRadius: 4,
+		bulletsExplosionRadius: 6,
 		// SOUNDS
 		sound: "custom/my-addon-name-sounds/RPGShoot.ogg",
 		reloadSound: "custom/my-addon-name-sounds/reload/BazookaReload.mp3",
