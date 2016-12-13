@@ -2242,7 +2242,7 @@ function screenChangeHook(screenName)
 	}
 }
 
-function procCmd(text)
+function chatHook(text)
 {
 	var command = text.toLowerCase().split(" ");
 	switch(command[0])
