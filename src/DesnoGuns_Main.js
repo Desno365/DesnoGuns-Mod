@@ -33,6 +33,7 @@ const GameMode = {
 	CREATIVE: 1
 };
 const VEL_Y_OFFSET = -0.07840000092983246;
+const ENTITY_HURT_ANIMATION_DURATION = 400;
 var isInGame = false;
 var isPlayingOnServer = false;
 var players;
@@ -110,11 +111,6 @@ const KEY_INSTANT_RELOAD_CREATIVE = "instReload";
 const KEY_SWITCH_BUTTONS_POSITION = "sBPosition";
 const KEY_MINECRAFT_STYLE_BUTTONS = "sBStyle";
 const KEY_DISPLAY_IRON_SIGHT_WHEN_AIMING = "dIronSight";
-
-// fix returning arrows
-var latestShotEntity;
-var latestEntityHurtTime;
-const ENTITY_HURT_ANIMATION_DURATION = 2000;
 
 // guns variables
 var ammoText;
@@ -2310,59 +2306,62 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 	}
 }
 
-function entityHurtHook(attacker, victim, hearts)
+function projectileHitEntityHook(projectile, victim)
 {
-	if(Entity.getEntityTypeId(attacker) == EntityType.ARROW)
+	// workaround for bouncing back arrows
+	// it removes also the arrows that damaged the victim, but this doesn't seem to be a problem
+	if(Entity.getEntityTypeId(projectile) == EntityType.ARROW)
+		Entity.remove(projectile); // note: entityRemovedHook will be called and will remove the arrow from the bulletsArray if present and if necessary
+}
+
+var latestAttackedEntity;
+var latestAttackedEntityTime = 0;
+function entityHurtHook(attacker, victim, halfhearts)
+{
+	clientMessage(Entity.getHealth(victim) + " " + halfhearts);
+
+	if(attacker == Player.getEntity() && Entity.getHealth(victim) != 0)
 	{
-		if(victim == latestShotEntity)
+		if(victim != latestAttackedEntity || java.lang.System.currentTimeMillis() > (latestAttackedEntityTime + ENTITY_HURT_ANIMATION_DURATION))
 		{
-			if(latestEntityHurtTime == null || java.lang.System.currentTimeMillis() < (latestEntityHurtTime + ENTITY_HURT_ANIMATION_DURATION))
-			{
-				// if the entity has been recently hurt by an arrow remove other arrows that hit the entity (this may remove arrows that really damaged the entity, but it isn't a problem because when an arrow damages an entity the arrow is removed)
-				Entity.remove(attacker);
-			}
-		} else
-		{
-			latestEntityHurtTime = java.lang.System.currentTimeMillis();
-			latestShotEntity = victim;
+			processHitByPlayer(Player.getCarriedItem(), victim);
+			latestAttackedEntityTime = java.lang.System.currentTimeMillis();
+			latestAttackedEntity = victim;
 		}
 	}
 }
 
-function attackHook(attacker, victim)
+function processHitByPlayer(item, victim)
 {
-	if(attacker = Player.getEntity())
+	// knife
+	if(item == KNIFE_ID)
 	{
-		// knife
-		if(Player.getCarriedItem() == KNIFE_ID && Entity.getHealth(victim) != 0)
+		playSoundFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
+
+		var health = Entity.getHealth(victim) - KNIFE_MOB_DAMAGE;
+		if(health < 1)
+			health = 1;
+		Entity.setHealth(victim, health);
+
+		if(Level.getGameMode() == GameMode.SURVIVAL)
+			Player.damageCarriedItem();
+	}
+
+	// riot shield
+	if(item == RIOT_SHIELD_ID)
+	{
+		playSoundFromSimplePath("desnoguns/riot_shield_attack.mp3");
+
+		var health = Entity.getHealth(victim) - RIOT_SHIELD_MOB_DAMAGE;
+		if(health < 1)
+			health = 1;
+		Entity.setHealth(victim, health);
+
+		if(Level.getGameMode() == GameMode.SURVIVAL)
 		{
-			playSoundFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
-
-			var health = Entity.getHealth(victim) - KNIFE_MOB_DAMAGE;
-			if(health < 1)
-				health = 1;
-			Entity.setHealth(victim, health);
-
-			if(Level.getGameMode() == GameMode.SURVIVAL)
-				Player.damageCarriedItem();
-		}
-
-		// riot shield
-		if(Player.getCarriedItem() == RIOT_SHIELD_ID && Entity.getHealth(victim) != 0)
-		{
-			playSoundFromSimplePath("desnoguns/riot_shield_attack.mp3");
-
-			var health = Entity.getHealth(victim) - RIOT_SHIELD_MOB_DAMAGE;
-			if(health < 1)
-				health = 1;
-			Entity.setHealth(victim, health);
-
-			if(Level.getGameMode() == GameMode.SURVIVAL)
+			for(var i = 0; i < 20; i++)
 			{
-				for(var i = 0; i < 20; i++)
-				{
-					Player.damageCarriedItem();
-				}
+				Player.damageCarriedItem();
 			}
 		}
 	}
