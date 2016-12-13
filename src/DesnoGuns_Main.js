@@ -2306,6 +2306,25 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage)
 	}
 }
 
+function projectileHitBlockHook(projectile, blockX, blockY, blockZ, side)
+{
+	// workaround for lag caused by arrows on the ground
+	if(Entity.getEntityTypeId(projectile) == EntityType.ARROW)
+	{
+		var shouldRemoveArrow = true;
+		for(var i in allGuns)
+		{
+			for(var j in allGuns[i].bulletsArray)
+			{
+				if(projectile == allGuns[i].bulletsArray[j].entity)
+					shouldRemoveArrow = false; // if the arrow is in a bulletArray don't remove it and let the bulletsControl function manage it
+			}
+		}
+		if(shouldRemoveArrow)
+			Entity.remove(projectile); // removes only arrows that aren't in bulletsArray
+	}
+}
+
 function projectileHitEntityHook(projectile, victim)
 {
 	// workaround for bouncing back arrows
@@ -2318,8 +2337,6 @@ var latestAttackedEntity;
 var latestAttackedEntityTime = 0;
 function entityHurtHook(attacker, victim, halfhearts)
 {
-	clientMessage(Entity.getHealth(victim) + " " + halfhearts);
-
 	if(attacker == Player.getEntity() && Entity.getHealth(victim) != 0)
 	{
 		if(victim != latestAttackedEntity || java.lang.System.currentTimeMillis() > (latestAttackedEntityTime + ENTITY_HURT_ANIMATION_DURATION))
