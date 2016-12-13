@@ -16,6 +16,8 @@ SOFTWARE.
 
 const DEBUG_PRO_CODE = false; // disable pro code
 const DEBUG_PRO_KEY_STATUS = false; // show a message with status of pro key
+const DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK = true; // enable a tip message showing how many bullets there are in the bulletsArrays
+var latestDebugMessage;
 
 // updates variables
 const CURRENT_VERSION = "r019";
@@ -2369,7 +2371,7 @@ function attackHook(attacker, victim)
 function deathHook(murderer, victim)
 {
 	// easter egg
-	if(Entity.getEntityTypeId(victim) == 36) // 36 = pigman id
+	if(Entity.getEntityTypeId(victim) == EntityType.PIG_ZOMBIE)
 	{
 		if(Player.getCarriedItem() == BARRETT_EXPLOSIVE.id)
 		{
@@ -2709,7 +2711,7 @@ var ModTickFunctions = {
 				// switching between items with same id but different damage for example
 				if(Player.getSelectedSlotId() != previousSlotId)
 				{
-						changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
+					changeCarriedItemHook(previousCarriedItem, previousCarriedItem);
 				}
 			}
 			previousCarriedItem = Player.getCarriedItem();
@@ -2731,10 +2733,17 @@ var ModTickFunctions = {
 
 	bulletsControl: function()
 	{
+
+		if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+			var test = 0;
+
 		for(var i in allGuns)
 		{
 			for(var j in allGuns[i].bulletsArray)
 			{
+				if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+					test++;
+
 				if(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH)
 				{
 					var arrow = allGuns[i].bulletsArray[j];
@@ -2881,6 +2890,15 @@ var ModTickFunctions = {
 						}
 					}
 				}
+			}
+		}
+
+		if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+		{
+			if(test != latestDebugMessage)
+			{
+				clientMessage("tot bullets: " + test);
+				latestDebugMessage = test;
 			}
 		}
 	},
