@@ -2311,17 +2311,20 @@ function projectileHitBlockHook(projectile, blockX, blockY, blockZ, side)
 	// workaround for lag caused by arrows on the ground
 	if(Entity.getEntityTypeId(projectile) == EntityType.ARROW)
 	{
-		var shouldRemoveArrow = true;
-		for(var i in allGuns)
+		if(Level.getGameMode() == GameMode.CREATIVE || isItemAGun(Player.getCarriedItem())) // remove any arrow on the ground if in creative, in survival only if carrying a gun
 		{
-			for(var j in allGuns[i].bulletsArray)
+			var shouldRemoveArrow = true;
+			for(var i in allGuns)
 			{
-				if(projectile == allGuns[i].bulletsArray[j].entity)
-					shouldRemoveArrow = false; // if the arrow is in a bulletArray don't remove it and let the bulletsControl function manage it
+				for(var j in allGuns[i].bulletsArray)
+				{
+					if(projectile == allGuns[i].bulletsArray[j].entity)
+						shouldRemoveArrow = false; // if the arrow is in a bulletArray don't remove it and let the bulletsControl function manage it
+				}
 			}
+			if(shouldRemoveArrow)
+				Entity.remove(projectile); // removes only arrows that aren't in bulletsArray
 		}
-		if(shouldRemoveArrow)
-			Entity.remove(projectile); // removes only arrows that aren't in bulletsArray
 	}
 }
 
