@@ -2105,27 +2105,23 @@ function newLevel()
 		run: function()
 		{
 			updateLatestVersionMod();
-			if(latestVersion != CURRENT_VERSION && latestVersion != undefined)
-				updateAvailableUI();
-			else
+			if(latestVersion != undefined) // if == undefined there was an error
 			{
-				if(latestVersion != undefined) // if == undefined there was an error
+				if(latestVersion != CURRENT_VERSION)
+					updateAvailableUI();
+				else
 				{
-					if(!isPro())
-					{
-						currentActivity.runOnUiThread(new java.lang.Runnable() {
-							run: function() {
-								android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: You have the latest version."), 0).show();
-							}
-						});
-					} else
-					{
-						currentActivity.runOnUiThread(new java.lang.Runnable() {
-							run: function() {
-								android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns Pro</b>: You have the latest version."), 0).show();
-							}
-						});
-					}
+					var message;
+					if(isPro())
+						message = "<b>DesnoGuns Pro</b>: You have the latest version.";
+					else
+						message = "<b>DesnoGuns</b>: You have the latest version.";
+
+					currentActivity.runOnUiThread(new java.lang.Runnable() {
+						run: function() {
+							android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml(message), 0).show();
+						}
+					});
 				}
 			}
 		}
