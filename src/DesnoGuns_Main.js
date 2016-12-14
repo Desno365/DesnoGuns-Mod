@@ -16,7 +16,7 @@ SOFTWARE.
 
 const DEBUG_PRO_CODE = false; // disable pro code
 const DEBUG_PRO_KEY_STATUS = false; // show a message with status of pro key
-const DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK = true; // enable a tip message showing how many bullets there are in the bulletsArrays
+const DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK = false; // enable a tip message showing how many bullets there are in the bulletsArrays
 var latestDebugMessage;
 
 // updates variables
@@ -34,6 +34,7 @@ const GameMode = {
 };
 const VEL_Y_OFFSET = -0.07840000092983246;
 const ENTITY_HURT_ANIMATION_DURATION = 400;
+const ARROW_STUCK_IN_AIR_TICKS_WITH_SAME_POSITION = 5; // how many ticks with the same position must happen before considering an arrow stuck in air
 var isInGame = false;
 var isPlayingOnServer = false;
 var players;
@@ -2770,13 +2771,32 @@ var ModTickFunctions = {
 					var yArrow = Entity.getY(arrow.entity);
 					var zArrow = Entity.getZ(arrow.entity);
 
-					if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow && Entity.getVelY(arrow.entity) == 0)
+					if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow) // if true the arrow is stationary
 					{
-						// arrow touched the ground
-						Level.explode(xArrow, yArrow, zArrow, allGuns[i].bulletsExplosionRadius, false, true);
+						if(Entity.getVelY(arrow.entity) == 0)
+						{
+							// arrow is on the ground
+							Level.explode(xArrow, yArrow, zArrow, allGuns[i].bulletsExplosionRadius, false, true);
 
-						Entity.remove(arrow.entity);
-						allGuns[i].bulletsArray.splice(j, 1);
+							Entity.remove(arrow.entity);
+							allGuns[i].bulletsArray.splice(j, 1);
+
+							if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+								clientMessage("Arrow on ground");
+						} else
+						{
+							// arrow may be stuck in air
+							arrow.stuckInAirCounter++;
+							if(arrow.stuckInAirCounter >= ARROW_STUCK_IN_AIR_TICKS_WITH_SAME_POSITION)
+							{
+								// arrow stuck not on ground (shot in the air far away), we need to remove it to prevent lags
+								Entity.remove(arrow.entity);
+								allGuns[i].bulletsArray.splice(j, 1);
+
+								if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+									clientMessage("Arrow stuck not on ground");
+							}
+						}
 					} else
 					{
 						if(xArrow == 0 && yArrow == 0 && zArrow == 0)
@@ -2786,15 +2806,19 @@ var ModTickFunctions = {
 								Level.explode(arrow.previousX, arrow.previousY, arrow.previousZ, allGuns[i].bulletsExplosionRadius, false, true);
 
 							allGuns[i].bulletsArray.splice(j, 1);
+
+							if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+								clientMessage("Arrow hit an entity");
 						} else
 						{
 							arrow.previousX = xArrow;
 							arrow.previousY = yArrow;
 							arrow.previousZ = zArrow;
+							arrow.stuckInAirCounter = 0;
 						}
 					}
-				}
-
+				} else
+				
 				if(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME)
 				{
 					var arrow = allGuns[i].bulletsArray[j];
@@ -2809,7 +2833,7 @@ var ModTickFunctions = {
 						arrow.previousY = yArrow;
 						arrow.previousZ = zArrow;
 					}
-				}
+				} else
 
 				if(allGuns[i].bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL)
 				{
@@ -2859,7 +2883,7 @@ var ModTickFunctions = {
 
 				if(allGuns[i].hasParticleTrail)
 				{
-					// here the entity object may have been removed by bullet types
+					// here the entity object may have been removed by bullet types, if the gun for example is also EXPLOSIVE_ON_TOUCH
 					if(allGuns[i].bulletsArray[j] != null)
 					{
 						var arrow = allGuns[i].bulletsArray[j];
@@ -2867,14 +2891,38 @@ var ModTickFunctions = {
 						var yArrow = Entity.getY(arrow.entity);
 						var zArrow = Entity.getZ(arrow.entity);
 
-						if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow && Entity.getVelY(arrow.entity) == 0)
+						if(arrow.previousX == xArrow && arrow.previousY == yArrow && arrow.previousZ == zArrow) // if true the arrow is stationary
 						{
-							// arrow is on the ground
-							if(!(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || allGuns[i].bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL))
+							if(Entity.getVelY(arrow.entity) == 0)
 							{
-								// we can't remove the arrow if it is needed somewhere else in the code, for these bullet types the arrow is needed
-								Entity.remove(arrow.entity);
-								allGuns[i].bulletsArray.splice(j, 1);
+								// arrow is on the ground
+								if(!(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || allGuns[i].bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL))
+								{
+									// we can't remove the arrow if it is needed somewhere else in the code, for these bullet types the arrow is needed
+									Entity.remove(arrow.entity);
+									allGuns[i].bulletsArray.splice(j, 1);
+
+									if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+									clientMessage("Arrow on ground");
+								}
+							} else
+							{
+								// arrow may be stuck in air
+								if(allGuns[i].bulletType != BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH) // if bullets is EXPLOSIVE_ON_TOUCH, counter already incremented
+									arrow.stuckInAirCounter++;
+								if(arrow.stuckInAirCounter >= ARROW_STUCK_IN_AIR_TICKS_WITH_SAME_POSITION)
+								{
+									// arrow stuck not on ground (shot in the air far away), we need to remove it to prevent lags
+									if(!(allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH || allGuns[i].bulletType == BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME || allGuns[i].bulletType == BULLET_TYPE_INCENDIARY_SNOWBALL))
+									{
+										// we can't remove the entity object of the arrow if it is needed somewhere else in the code, for these bullet types it is needed
+										Entity.remove(arrow.entity);
+										allGuns[i].bulletsArray.splice(j, 1);
+
+										if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+											clientMessage("Arrow stuck not on ground");
+									}
+								}
 							}
 						} else
 						{
@@ -2885,12 +2933,18 @@ var ModTickFunctions = {
 								{
 									// we can't remove the entity object of the arrow if it is needed somewhere else in the code, for these bullet types it is needed
 									allGuns[i].bulletsArray.splice(j, 1);
+
+									if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
+										clientMessage("Arrow hit an entity");
 								}
 							} else
 							{
 								arrow.previousX = xArrow;
 								arrow.previousY = yArrow;
 								arrow.previousZ = zArrow;
+								arrow.stuckInAirCounter = 0;
+
+								// create particle trail
 
 								var particleId;
 								if(allGuns[i].particleTrailId != null)
@@ -6076,6 +6130,7 @@ function entityClass(entity)
 	this.previousX = 0;
 	this.previousY = 0;
 	this.previousZ = 0;
+	this.stuckInAirCounter = 0;
 }
 
 function dumpFlagStateToLog(uiFlags)
