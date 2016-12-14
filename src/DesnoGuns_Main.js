@@ -20,7 +20,7 @@ const DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK = false; // enable a tip message show
 var latestDebugMessage;
 
 // updates variables
-const CURRENT_VERSION = "r019";
+const CURRENT_VERSION = "r020";
 var latestVersion;
 
 //activity and other Android variables
@@ -2348,42 +2348,6 @@ function entityHurtHook(attacker, victim, halfhearts)
 			processHitByPlayer(Player.getCarriedItem(), victim);
 			latestAttackedEntityTime = java.lang.System.currentTimeMillis();
 			latestAttackedEntity = victim;
-		}
-	}
-}
-
-function processHitByPlayer(item, victim)
-{
-	// knife
-	if(item == KNIFE_ID)
-	{
-		playSoundFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
-
-		var health = Entity.getHealth(victim) - KNIFE_MOB_DAMAGE;
-		if(health < 1)
-			health = 1;
-		Entity.setHealth(victim, health);
-
-		if(Level.getGameMode() == GameMode.SURVIVAL)
-			Player.damageCarriedItem();
-	}
-
-	// riot shield
-	if(item == RIOT_SHIELD_ID)
-	{
-		playSoundFromSimplePath("desnoguns/riot_shield_attack.mp3");
-
-		var health = Entity.getHealth(victim) - RIOT_SHIELD_MOB_DAMAGE;
-		if(health < 1)
-			health = 1;
-		Entity.setHealth(victim, health);
-
-		if(Level.getGameMode() == GameMode.SURVIVAL)
-		{
-			for(var i = 0; i < 20; i++)
-			{
-				Player.damageCarriedItem();
-			}
 		}
 	}
 }
@@ -5714,6 +5678,49 @@ function shouldReload()
 	return reloadInCreative || Level.getGameMode() == GameMode.SURVIVAL;
 }
 //########## RELOAD GUN functions - END ##########
+
+
+//########## MELEE WEAPONS functions ##########
+function processHitByPlayer(item, victim) // the player successfully hit the victim, if he is carrying a custom item that does extra damage it should be processed here
+{
+	switch(item)
+	{
+		case KNIFE_ID:
+		{
+			playSoundFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
+
+			addExtraHealthDamage(victim, KNIFE_MOB_DAMAGE);
+
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+
+		case RIOT_SHIELD_ID:
+		{
+			playSoundFromSimplePath("desnoguns/riot_shield_attack.mp3");
+
+			addExtraHealthDamage(victim, RIOT_SHIELD_MOB_DAMAGE);
+
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+			{
+				Player.damageCarriedItem(20);
+			}
+
+			break;
+		}
+	}
+}
+
+function addExtraHealthDamage(victim, damage)
+{
+	var health = Entity.getHealth(victim) - damage;
+	if(health < 1)
+		health = 1;
+	Entity.setHealth(victim, health);
+}
+//########## MELEE WEAPONS functions - END ##########
 
 
 //########## MED KIT functions ##########
