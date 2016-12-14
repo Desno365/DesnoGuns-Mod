@@ -356,7 +356,7 @@ function createGeneralItems()
 	Item.setCategory(INFO_ITEM_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(INFO_ITEM_ID, 1);
 
-	Item.defineItem(KNIFE_ID, "knife", 0, "Knife");
+	Item.defineItem(KNIFE_ID, "knife", 0, "Knife", 1);
 	Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
 	Item.addShapedRecipe(KNIFE_ID, 1, 0, [
 		" i ",
@@ -366,7 +366,7 @@ function createGeneralItems()
 	Item.setCategory(KNIFE_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(KNIFE_ID, 1);
 
-	Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield");
+	Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield", 1);
 	Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
 	Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
 		" g ",
@@ -376,7 +376,7 @@ function createGeneralItems()
 	Item.setCategory(RIOT_SHIELD_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
 
-	Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute");
+	Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute", 1);
 	Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
 	Item.addShapedRecipe(PARACHUTE_ID, 1, 0, [
 		"www",
@@ -385,7 +385,7 @@ function createGeneralItems()
 	Item.setCategory(PARACHUTE_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(PARACHUTE_ID, 1);
 
-	Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit");
+	Item.defineItem(MEDICAL_KIT_ID, "medicalkit", 0, "Medical Kit", 1);
 	Item.setMaxDamage(MEDICAL_KIT_ID, MEDICAL_KIT_MAX_RESTORABLE_HEALTH);
 	Item.addShapedRecipe(MEDICAL_KIT_ID, 1, 0, [
 		" m ",
@@ -5688,9 +5688,7 @@ function processHitByPlayer(item, victim) // the player successfully hit the vic
 		case KNIFE_ID:
 		{
 			playSoundFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
-
 			addExtraHealthDamage(victim, KNIFE_MOB_DAMAGE);
-
 			if(Level.getGameMode() == GameMode.SURVIVAL)
 				Player.damageCarriedItem();
 
@@ -5700,13 +5698,9 @@ function processHitByPlayer(item, victim) // the player successfully hit the vic
 		case RIOT_SHIELD_ID:
 		{
 			playSoundFromSimplePath("desnoguns/riot_shield_attack.mp3");
-
 			addExtraHealthDamage(victim, RIOT_SHIELD_MOB_DAMAGE);
-
 			if(Level.getGameMode() == GameMode.SURVIVAL)
-			{
 				Player.damageCarriedItem(20);
-			}
 
 			break;
 		}
