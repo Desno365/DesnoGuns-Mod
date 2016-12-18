@@ -5325,47 +5325,34 @@ var Recoil = {
 
 	makeRecoil: function(gun)
 	{
-		if(gun.fireRate < 2)
+		if(gun.fireRate < 2 && gun.buttonType != BUTTON_TYPE_ON_CLICK)
 		{
-			if(gun.buttonType == BUTTON_TYPE_ON_CLICK)
-			{
-				Recoil.makeLessTimedRecoil(gun);
-				return;
-			} else
-			{
-				Recoil.makeInstantRecoil(gun);
-				return;
-			}
-		}
-
-		if(gun.fireRate >= 2 && gun.fireRate <= 5)
-		{
-			Recoil.makeLessTimedRecoil(gun);
-			return;
-		}
-
-		// fire rate > 5
-		if(gun.recoil >= 15)
-		{
-			Recoil.makeTimedRecoil(gun);
-			return;
+			Recoil.makeInstantRecoil(gun.recoil);
 		} else
 		{
-			Recoil.makeLessTimedRecoil(gun);
-			return;
+			if(gun.fireRate < 5 || gun.recoil < 15)
+				Recoil.makeLessTimedRecoil(gun.recoil);
+			else
+				Recoil.makeTimedRecoil(gun.recoil);
 		}
 	},
 
-	makeInstantRecoil: function(gun)
+	makeInstantRecoil: function(recoil)
 	{
-		var recoilDegree = gun.recoil / RECOIL;
+		var recoilDegree = recoil / RECOIL;
 		Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - recoilDegree);
 	},
 
-	makeLessTimedRecoil: function(gun)
+	makeLessTimedRecoil: function(recoil)
 	{
-		var recoilDegree = gun.recoil / RECOIL;
-		var timedRecoilVar = recoilDegree / 4;
+		// duration: 32 ms total, that's ≈3 Hz (1 Hz ≈ 16.6 ms)
+		// note: (1.15 + 1.05 + 0.80) / 3 = 1 so the recoilDegree doesn't change
+
+		var recoilDegree = recoil / RECOIL;
+		timedRecoilVar = recoilDegree / 3;
+
+		Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 1.15));
+
 		currentActivity.runOnUiThread(new java.lang.Runnable(
 		{
 			run: function()
@@ -5374,17 +5361,58 @@ var Recoil = {
 				{
 					run: function()
 					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar));
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 1.05));
 					}
-				}), 1 * 6);
+				}), 1 * 16);
 
 				new android.os.Handler().postDelayed(new java.lang.Runnable(
 				{
 					run: function()
 					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.80));
 					}
-				}), 2 * 6);
+				}), 2 * 16);
+			}
+		}));
+	},
+
+	makeTimedRecoil: function(recoil)
+	{
+		// duration: 96 ms total, that's ≈6 Hz (1 Hz ≈ 16 ms)
+		// note: (1.30 + 1.25 + 1.15 + 1.0 + 0.8 + 0.55) / 6 = (6.05)/6 = 1.0083 so the recoilDegree doesn't change very much
+
+		var recoilDegree = recoil / RECOIL;
+		timedRecoilVar = recoilDegree / 6;
+
+		Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 1.3));
+
+		currentActivity.runOnUiThread(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
+					run: function()
+					{
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 1.25));
+					}
+				}), 1 * 16);
+
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
+					run: function()
+					{
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 1.15));
+					}
+				}), 2 * 16);
+
+				new android.os.Handler().postDelayed(new java.lang.Runnable(
+				{
+					run: function()
+					{
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 1.0));
+					}
+				}), 3 * 16);
 
 				new android.os.Handler().postDelayed(new java.lang.Runnable(
 				{
@@ -5392,61 +5420,15 @@ var Recoil = {
 					{
 						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.8));
 					}
-				}), 3 * 6);
+				}), 4 * 16);
 
 				new android.os.Handler().postDelayed(new java.lang.Runnable(
 				{
 					run: function()
 					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.7));
+						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.55));
 					}
-				}), 4 * 6);
-			}
-		}));
-	},
-
-	makeTimedRecoil: function(gun)
-	{
-		var recoilDegree = gun.recoil / RECOIL;
-		var timedRecoilVar = recoilDegree / 8;
-		currentActivity.runOnUiThread(new java.lang.Runnable(
-		{
-			run: function()
-			{
-				for(var ms = 1; ms <= 5; ms++)
-				{
-					new android.os.Handler().postDelayed(new java.lang.Runnable(
-					{
-						run: function()
-						{
-							Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - timedRecoilVar);
-						}
-					}), ms * 7);
-				}
-
-				new android.os.Handler().postDelayed(new java.lang.Runnable(
-				{
-					run: function()
-					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.9));
-					}
-				}), 6 * 7);
-
-				new android.os.Handler().postDelayed(new java.lang.Runnable(
-				{
-					run: function()
-					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.75));
-					}
-				}), 7 * 7);
-
-				new android.os.Handler().postDelayed(new java.lang.Runnable(
-				{
-					run: function()
-					{
-						Entity.setRot(Player.getEntity(), Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()) - (timedRecoilVar * 0.5));
-					}
-				}), 8 * 7);
+				}), 5 * 16);
 			}
 		}));
 	}
