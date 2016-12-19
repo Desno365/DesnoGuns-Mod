@@ -2430,7 +2430,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		if(!currentGun.hasntShootingSound)
 			Sound.loadSoundPoolFromPath(getOriginalPathOfSound(currentGun.sound));
 
-		resetTouchEventsOfButtonsForWeapon(currentGun);
+		resetTouchEventsOfButtonsForGun(currentGun);
 
 		// set ammo text
 		updateAmmoText(currentGun)
@@ -3520,28 +3520,17 @@ function addNewGunFromAddon(gun, addonName)
 	allGuns.push(new gunClass(gun));
 
 	// create gun
-	if(gun.textureNumber > 0)
+	try
 	{
-		try
-		{
+		if(gun.textureNumber > 0)
 			ModPE.setItem(gun.id, gun.texture, gun.textureNumber, gun.name, 1);
-		} catch(e)
-		{
-			ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
-			errorWithAddonResources("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
-		}	
-	}
-	else
-	{
-		try
-		{
+		else
 			ModPE.setItem(gun.id, gun.texture, 0, gun.name, 1);
-		} catch(e)
-		{
-			ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
-			errorWithAddonResources("Seems that you haven't installed the \"" + addonName + "\" texture pack.<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
-		}	
-	}
+	} catch(e)
+	{
+		ModPE.setItem(gun.id, "skull_zombie", 0, gun.name, 1);
+		errorWithAddonResources("Seems that you haven't installed the texture pack of \"" + addonName + "\".<br><br>Please install the texture pack of the addon and <b>restart BlockLauncher</b>.<br><br>Error in " + gun.name + ": the texture \"" + gun.texture + "\" hasn't been found.");
+	}	
 	addGunCraftingRecipe(gun);
 	Item.setMaxDamage(gun.id, gun.ammo);
 	Item.setVerticalRender(gun.id);
@@ -3778,6 +3767,116 @@ function resetGunsVariables()
 	Sound.stopLoop();
 }
 
+function getWeaponObject(id)
+{
+	if(isItemAGun(id))
+		return getGun(id);
+
+	if(id == BINOCULARS.id)
+		return BINOCULARS;
+
+	if(id == NIGHT_BINOCULARS.id)
+		return NIGHT_BINOCULARS;
+
+	if(id == ZOOM_BINOCULARS.id)
+		return ZOOM_BINOCULARS;
+
+	return null;
+}
+
+function getGun(id)
+{
+	var currentGun = -1;
+
+	findTheGun:
+	for(var i in allGuns)
+	{
+		if(id == allGuns[i].id)
+		{
+			currentGun = allGuns[i];
+			break findTheGun;
+		}
+	}
+
+	// gun not found
+	if(currentGun == -1)
+	{
+		clientMessage("Error: gun not found in getGun(): " + id);
+		currentGun = gunClass(AK47);
+	}
+
+	return currentGun;
+}
+
+function getGunTypeName(gunType)
+{
+	switch(gunType)
+	{
+		case GUN_TYPE_ASSAULT_RIFLE:
+		{
+			return "Assault Rifle";
+		}
+		case GUN_TYPE_SUB_MACHINE:
+		{
+			return "Sub Machine";
+		}
+		case GUN_TYPE_LIGHT_MACHINE:
+		{
+			return "Light Machine";
+		}
+		case GUN_TYPE_SNIPER_RIFLE:
+		{
+			return "Sniper Rifle";
+		}
+		case GUN_TYPE_SHOTGUN:
+		{
+			return "Shotgun";
+		}
+		case GUN_TYPE_MACHINE_PISTOL:
+		{
+			return "Machine Pistol";
+		}
+		case GUN_TYPE_HANDGUN:
+		{
+			return "Handgun";
+		}
+		case GUN_TYPE_LAUNCHER:
+		{
+			return "Launcher";
+		}
+		case GUN_TYPE_MINIGUN:
+		{
+			return "Minigun";
+		}
+	}
+}
+
+function setUpGunsWithDate()
+{
+	var cal = java.util.Calendar.getInstance();
+	var day = cal.get(java.util.Calendar.DAY_OF_MONTH);
+	var month = cal.get(java.util.Calendar.MONTH);
+
+	if((day > 6 && month == java.util.Calendar.JANUARY) || month == java.util.Calendar.FEBRUARY || (day <= 21 && month == java.util.Calendar.MARCH))
+	{
+		// winter after Xmas period
+		XMAS_SNIPER.name = "Winter Sniper";
+		XMAS_MINIGUN.name = "Winter Minigun";
+		defaultGuns.push(XMAS_MINIGUN);
+		defaultGuns.push(XMAS_SNIPER);
+	}
+
+	if(month == java.util.Calendar.DECEMBER || (day <= 6 && month == java.util.Calendar.JANUARY))
+	{
+		// Xmas period
+		defaultGuns.push(XMAS_MINIGUN);
+		defaultGuns.push(XMAS_SNIPER);
+	}
+}
+//########## WEAPONS functions - END ##########
+
+
+//########## GRENADES functions ##########
 function shootGrenadeHand(grenadeObject)
 {
 	var yawAccuracyValue = ((Math.random() * RANDOMNESS) - (RANDOMNESS / 2)) * grenadeObject.accuracy;
@@ -3811,7 +3910,7 @@ function shootGrenadeHand(grenadeObject)
 		Entity.setFireTicks(grenade, 1000);
 
 	if(grenadeObject.id == SMOKE.id)
-		grenadeObject.grenadesArray.push(new smokeGrenadeClass(grenade));
+		grenadeObject.grenadesArray.push(new SmokeGrenadeClass(grenade));
 	else
 		grenadeObject.grenadesArray.push(new entityClass(grenade));
 
@@ -3955,120 +4054,13 @@ function fragmentShit()
 	Level.explode(explosionX, explosionY, explosionZ, FRAGMENT.grenadesExplosionRadius, false, true);
 }
 
-function smokeGrenadeClass(entity)
+function SmokeGrenadeClass(entity)
 {
 	var smokeObject = new entityClass(entity);
 	smokeObject.effectsTick = 0;
 	return smokeObject;
 }
-
-function getWeaponObject(id)
-{
-	if(isItemAGun(id))
-		return getGun(id);
-
-	if(id == BINOCULARS.id)
-		return BINOCULARS;
-
-	if(id == NIGHT_BINOCULARS.id)
-		return NIGHT_BINOCULARS;
-
-	if(id == ZOOM_BINOCULARS.id)
-		return ZOOM_BINOCULARS;
-
-	return null;
-}
-
-function getGun(id)
-{
-	var currentGun = -1;
-
-	findTheGun:
-	for(var i in allGuns)
-	{
-		if(id == allGuns[i].id)
-		{
-			currentGun = allGuns[i];
-			break findTheGun;
-		}
-	}
-
-	// gun not found
-	if(currentGun == -1)
-	{
-		clientMessage("Error: gun not found in getGun(): " + id);
-		currentGun = AK47;
-	}
-
-	return currentGun;
-}
-
-function getGunTypeName(gunType)
-{
-	switch(gunType)
-	{
-		case GUN_TYPE_ASSAULT_RIFLE:
-		{
-			return "Assault Rifle";
-		}
-		case GUN_TYPE_SUB_MACHINE:
-		{
-			return "Sub Machine";
-		}
-		case GUN_TYPE_LIGHT_MACHINE:
-		{
-			return "Light Machine";
-		}
-		case GUN_TYPE_SNIPER_RIFLE:
-		{
-			return "Sniper Rifle";
-		}
-		case GUN_TYPE_SHOTGUN:
-		{
-			return "Shotgun";
-		}
-		case GUN_TYPE_MACHINE_PISTOL:
-		{
-			return "Machine Pistol";
-		}
-		case GUN_TYPE_HANDGUN:
-		{
-			return "Handgun";
-		}
-		case GUN_TYPE_LAUNCHER:
-		{
-			return "Launcher";
-		}
-		case GUN_TYPE_MINIGUN:
-		{
-			return "Minigun";
-		}
-	}
-}
-
-function setUpGunsWithDate()
-{
-	var cal = java.util.Calendar.getInstance();
-	var day = cal.get(java.util.Calendar.DAY_OF_MONTH);
-	var month = cal.get(java.util.Calendar.MONTH);
-
-	if((day > 6 && month == java.util.Calendar.JANUARY) || month == java.util.Calendar.FEBRUARY || (day <= 21 && month == java.util.Calendar.MARCH))
-	{
-		// winter after Xmas period
-		XMAS_SNIPER.name = "Winter Sniper";
-		XMAS_MINIGUN.name = "Winter Minigun";
-		defaultGuns.push(XMAS_MINIGUN);
-		defaultGuns.push(XMAS_SNIPER);
-	}
-
-	if(month == java.util.Calendar.DECEMBER || (day <= 6 && month == java.util.Calendar.JANUARY))
-	{
-		// Xmas period
-		defaultGuns.push(XMAS_MINIGUN);
-		defaultGuns.push(XMAS_SNIPER);
-	}
-}
-//########## WEAPONS functions - END ##########
+//########## GRENADES functions - END ##########
 
 
 //########## SHOOT WITH GUNS functions ##########
@@ -4390,7 +4382,7 @@ function showCloudParticle(amount)
 
 
 //########## ON CLICK GUNS functions ##########
-function onClickWeaponShoot(gun)
+function onClickGunShoot(gun)
 {
 	if(latestShotTime == null || java.lang.System.currentTimeMillis() > (latestShotTime + (gun.fireRate * 50)))
 	{
@@ -4433,7 +4425,7 @@ function onClickShoot(gun)
 
 
 //########## ON TOUCH GUNS functions ##########
-function onTouchWeaponShoot(event, gun)
+function onTouchGunShoot(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -4504,7 +4496,7 @@ function onTouchShootingRunnableWithoutReload(gun)
 
 
 //########## ON TOUCH WITH WAIT GUNS functions ##########
-function onTouchWithWaitWeaponShoot(event, gun)
+function onTouchWithWaitGunShoot(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -4527,7 +4519,7 @@ function onTouchWithWaitWeaponShoot(event, gun)
 
 				Sound.playFromPathWithOnCompletion(getOriginalPathOfSound(warmupSoundString), onGunWarmupCompletion, generalVolume);
 			} catch(e) {
-				Log.log("Error in onTouchWithWaitWeaponShoot(): " + e);
+				Log.log("Error in onTouchWithWaitGunShoot(): " + e);
 				clientMessage("The minigun needs sounds to work properly.");
 			}
 		}
@@ -4792,8 +4784,6 @@ function displaySight()
 
 function displayAimButton()
 {
-	// weapon must be an object with zoomLevel and optional hasAimImageLayer
-
 	currentActivity.runOnUiThread(new java.lang.Runnable(
 	{
 		run: function()
@@ -4862,7 +4852,7 @@ function removeShootAndAimButtons()
 	currentShotTicks = 0;
 }
 
-function resetTouchEventsOfButtonsForWeapon(weapon)
+function resetTouchEventsOfButtonsForGun(gun)
 {
 	// reset clicks and touch events
 	resetRunnables();
@@ -4885,7 +4875,7 @@ function resetTouchEventsOfButtonsForWeapon(weapon)
 	// load touch or click events
 
 	// assault rifles, sub machine guns and light machine guns
-	if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
+	if(gun.buttonType == BUTTON_TYPE_ON_TOUCH)
 	{
 		// load touch events
 		currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -4898,7 +4888,7 @@ function resetTouchEventsOfButtonsForWeapon(weapon)
 					{
 						if(minecraftStyleForButtons)
 							MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-						onTouchWeaponShoot(event, weapon);
+						onTouchGunShoot(event, gun);
 						return false;
 					}
 				});
@@ -4907,20 +4897,20 @@ function resetTouchEventsOfButtonsForWeapon(weapon)
 	}
 
 	// single shot weapons
-	if(weapon.buttonType == BUTTON_TYPE_ON_CLICK)
+	if(gun.buttonType == BUTTON_TYPE_ON_CLICK)
 	{
 		// load click event
 		onClickRunnable = (new java.lang.Runnable(
 		{
 			run: function()
 			{
-				onClickWeaponShoot(weapon);
+				onClickGunShoot(gun);
 			}
 		}));
 	}
 
 	// guns with warmup
-	if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+	if(gun.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
 	{
 		// load touch events
 		currentActivity.runOnUiThread(new java.lang.Runnable(
@@ -4933,7 +4923,7 @@ function resetTouchEventsOfButtonsForWeapon(weapon)
 					{
 						if(minecraftStyleForButtons)
 							MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-						onTouchWithWaitWeaponShoot(event, weapon);
+						onTouchWithWaitGunShoot(event, gun);
 						return false;
 					}
 				});
@@ -5144,7 +5134,7 @@ var AimImageLayerUtils = {
 						updateAmmoText(weapon);
 
 						// restore touch events (click and touch)
-						resetTouchEventsOfButtonsForWeapon(weapon);
+						resetTouchEventsOfButtonsForGun(weapon);
 					} else
 					{
 						// is not a gun, we don't want to display the fire button and related things (sight, ammo)
