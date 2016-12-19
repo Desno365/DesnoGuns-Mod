@@ -423,7 +423,7 @@ function createGeneralItems()
 const GRENADE = {
 	id: 3300,
 	grenadeSpeed: 2.1,
-	grenadesExplosionRadius: 6,
+	grenadesExplosionRadius: 4,
 	grenadesArray: [],
 	accuracy: 4,
 	delay: 4000
@@ -433,7 +433,7 @@ var infiniteGrenade = false; // for swag-grenade
 const FRAGMENT = {
 	id: 3301,
 	grenadeSpeed: 2.1,
-	grenadesExplosionRadius: 4,
+	grenadesExplosionRadius: 2,
 	grenadesArray: [],
 	fragmentArray: [],
 	howManyFragments: 3,
@@ -802,7 +802,7 @@ const AT4 = {
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 6,
+	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 	reloadSound: "desnoguns/reload/BazookaReload.mp3",
@@ -851,7 +851,7 @@ const BARRETT_EXPLOSIVE = {
 	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 4,
+	bulletsExplosionRadius: 2,
 	// SOUNDS
 	sound: "desnoguns/BarrettShoot.ogg",
 	reloadSound: "desnoguns/reload/BARReload.ogg",
@@ -928,7 +928,7 @@ const CROSSBOW_EXPLOSIVE = {
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TIME,
 	bulletsExplosionDelay: 3350,
-	bulletsExplosionRadius: 6,
+	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/CrossbowShoot.wav",
 	reloadSound: "desnoguns/reload/CrossbowReload.mp3",
@@ -1453,7 +1453,7 @@ const M72LAW = {
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 6,
+	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/AT4_and_M72LAW_and_Panzerfaust3Shoot.ogg",
 	reloadSound: "desnoguns/reload/BazookaReload.mp3",
@@ -1568,7 +1568,7 @@ const MINIGUN_EXPLOSIVE = {
 	// BEHAVIOR
 	shotType: SHOT_TYPE_NORMAL,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 4,
+	bulletsExplosionRadius: 2,
 	// SOUNDS
 	warmupSound: "desnoguns/MinigunWarmup.mp3",
 	sound: "desnoguns/P90_and_Bizon_and_G3Shoot_and_Minigun.ogg",
@@ -1697,7 +1697,7 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 4,
+	bulletsExplosionRadius: 3,
 	// SOUNDS
 	sound: "desnoguns/MultipleRocketLauncherShoot.mp3",
 	reloadSound: "desnoguns/reload/BazookaReload.mp3",
@@ -1845,7 +1845,7 @@ const RPG = {
 	particleTrailDistance: 3,
 	particleTrailId: 4,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
-	bulletsExplosionRadius: 6,
+	bulletsExplosionRadius: 4,
 	// SOUNDS
 	sound: "desnoguns/RPGShoot.ogg",
 	reloadSound: "desnoguns/reload/BazookaReload.mp3",
