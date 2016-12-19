@@ -2137,6 +2137,10 @@ function newLevel()
 		isPlayingOnServer = true;
 		print(Server.getAddress());
 	}
+
+	// custom fov currently not supported (a getFov is needed)
+	zoomWithFov = DEFAULT_FOV;
+	ModPE.setFov(zoomWithFov);
 }
 
 function leaveGame()
@@ -2184,8 +2188,8 @@ function leaveGame()
 	isParachuting = false;
 
 	// reset fov
-	ModPE.resetFov();
 	zoomWithFov = DEFAULT_FOV;
+	ModPE.setFov(zoomWithFov);
 
 	// info item UIs
 	removeInfoItemUI();
@@ -5055,7 +5059,7 @@ function removeZoomAndAimImageLayer()
 						run: function()
 						{
 							zoomWithFov++;
-							ModPE.resetFov(); // if using setFov we would set the default fov but instead we call reset so the user fov options (in Minecraft settings) isn't overridden
+							ModPE.setFov(zoomWithFov);
 
 							isDisplayingAimingAnimation = false;
 
