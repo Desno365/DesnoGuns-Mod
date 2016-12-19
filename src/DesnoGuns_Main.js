@@ -2422,24 +2422,6 @@ function changeCarriedItemHook(currentItem, previousItem)
 		if(!isItemAGun(previousItem) || !needsToLoadTheUI(previousItem, false)) // load fire and aim buttons if necessary
 			displayShootAndAimButtons();
 
-		// reset clicks and long clicks
-		resetRunnables();
-		currentActivity.runOnUiThread(new java.lang.Runnable(
-		{
-			run: function()
-			{
-				shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-				{
-					onTouch: function(v, event)
-					{
-						if(minecraftStyleForButtons)
-							MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-						return false;
-					}
-				});
-			}
-		}));
-
 		// reset flamethrower tick
 		if(currentGun.isFlamethrower)
 			flameTick = 2;
@@ -2448,85 +2430,7 @@ function changeCarriedItemHook(currentItem, previousItem)
 		if(!currentGun.hasntShootingSound)
 			Sound.loadSoundPoolFromPath(getOriginalPathOfSound(currentGun.sound));
 
-		// assault rifles, sub machine guns and light machine guns
-		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH)
-		{
-			// load touch events
-			if(shouldReload())
-			{
-				// survival or creative with reload option enabled
-				currentActivity.runOnUiThread(new java.lang.Runnable(
-				{
-					run: function()
-					{
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-						{
-							onTouch: function(v, event)
-							{
-								if(minecraftStyleForButtons)
-									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-								onTouchWeaponShoot(event, currentGun, true);
-								return false;
-							}
-						});
-					}
-				}));
-			} else
-			{
-				// creative with reload option disabled
-				currentActivity.runOnUiThread(new java.lang.Runnable(
-				{
-					run: function()
-					{
-						shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-						{
-							onTouch: function(v, event)
-							{
-								if(minecraftStyleForButtons)
-									MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-								onTouchWeaponShoot(event, currentGun, false);
-								return false;
-							}
-						});
-					}
-				}));
-			}
-		}
-
-		// single shot weapons
-		if(currentGun.buttonType == BUTTON_TYPE_ON_CLICK)
-		{
-			// load click event
-			onClickRunnable = (new java.lang.Runnable(
-			{
-				run: function()
-				{
-					onClickWeaponShoot(currentGun);
-				}
-			}));
-		}
-
-		// guns with warmup
-		if(currentGun.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
-		{
-			// load touch events
-			currentActivity.runOnUiThread(new java.lang.Runnable(
-			{
-				run: function()
-				{
-					shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-					{
-						onTouch: function(v, event)
-						{
-							if(minecraftStyleForButtons)
-								MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-							onTouchWithWaitWeaponShoot(event, currentGun);
-							return false;
-						}
-					});
-				}
-			}));
-		}
+		resetTouchEventsOfButtonsForWeapon(currentGun);
 
 		// set ammo text
 		updateAmmoText(currentGun)
@@ -4497,7 +4401,7 @@ function onClickWeaponShoot(gun)
 		} else
 		{
 			// creative with reload option disabled
-			onClickShootWithoutReload(gun);
+			onClickShoot(gun);
 		}
 	}
 }
@@ -4512,16 +4416,12 @@ function onClickShootWithReload(gun)
 	} else
 	{
 		stopReloading();
-		Sound.playLoadedSoundPool(generalVolume);
-		shoot(gun);
+		onClickShoot(gun);
 		damageCarriedGun(gun);
-		latestShotTime = java.lang.System.currentTimeMillis();
-		showCloudParticle(gun.smoke);
-		Recoil.makeRecoil(gun);
 	}
 }
 
-function onClickShootWithoutReload(gun)
+function onClickShoot(gun)
 {
 	Sound.playLoadedSoundPool(generalVolume);
 	shoot(gun);
@@ -4533,7 +4433,7 @@ function onClickShootWithoutReload(gun)
 
 
 //########## ON TOUCH GUNS functions ##########
-function onTouchWeaponShoot(event, gun, reload)
+function onTouchWeaponShoot(event, gun)
 {
 	var action = event.getActionMasked();
 	if(action == android.view.MotionEvent.ACTION_CANCEL || action == android.view.MotionEvent.ACTION_UP)
@@ -4546,7 +4446,7 @@ function onTouchWeaponShoot(event, gun, reload)
 		{
 			isShooting = true;
 			currentShotTicks = gun.fireRate;
-			if(reload)
+			if(shouldReload())
 				onTouchShootingRunnableWithReload(gun);
 			else
 				onTouchShootingRunnableWithoutReload(gun);
@@ -4962,6 +4862,86 @@ function removeShootAndAimButtons()
 	currentShotTicks = 0;
 }
 
+function resetTouchEventsOfButtonsForWeapon(weapon)
+{
+	// reset clicks and touch events
+	resetRunnables();
+	currentActivity.runOnUiThread(new java.lang.Runnable(
+	{
+		run: function()
+		{
+			shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+			{
+				onTouch: function(v, event)
+				{
+					if(minecraftStyleForButtons)
+						MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+					return false;
+				}
+			});
+		}
+	}));
+
+	// load touch or click events
+
+	// assault rifles, sub machine guns and light machine guns
+	if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
+	{
+		// load touch events
+		currentActivity.runOnUiThread(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+				{
+					onTouch: function(v, event)
+					{
+						if(minecraftStyleForButtons)
+							MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+						onTouchWeaponShoot(event, weapon);
+						return false;
+					}
+				});
+			}
+		}));
+	}
+
+	// single shot weapons
+	if(weapon.buttonType == BUTTON_TYPE_ON_CLICK)
+	{
+		// load click event
+		onClickRunnable = (new java.lang.Runnable(
+		{
+			run: function()
+			{
+				onClickWeaponShoot(weapon);
+			}
+		}));
+	}
+
+	// guns with warmup
+	if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+	{
+		// load touch events
+		currentActivity.runOnUiThread(new java.lang.Runnable(
+		{
+			run: function()
+			{
+				shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+				{
+					onTouch: function(v, event)
+					{
+						if(minecraftStyleForButtons)
+							MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+						onTouchWithWaitWeaponShoot(event, weapon);
+						return false;
+					}
+				});
+			}
+		}));
+	}
+}
+
 function resetRunnables()
 {
 	if(shootingRunnable != null)
@@ -5163,70 +5143,8 @@ var AimImageLayerUtils = {
 						// restore ammo text
 						updateAmmoText(weapon);
 
-						if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
-						{
-							// load touch events
-							if(shouldReload())
-							{
-								// survival or creative with reload option enabled
-								currentActivity.runOnUiThread(new java.lang.Runnable(
-								{
-									run: function()
-									{
-										shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-										{
-											onTouch: function(v, event)
-											{
-												if(minecraftStyleForButtons)
-													MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-												onTouchWeaponShoot(event, weapon, true);
-												return false;
-											}
-										});
-									}
-								}));
-							} else
-							{
-								// creative with reload option disabled
-								currentActivity.runOnUiThread(new java.lang.Runnable(
-								{
-									run: function()
-									{
-										shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-										{
-											onTouch: function(v, event)
-											{
-												if(minecraftStyleForButtons)
-													MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-												onTouchWeaponShoot(event, weapon, false);
-												return false;
-											}
-										});
-									}
-								}));
-							}
-						}
-
-						if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
-						{
-							// load touch events
-							currentActivity.runOnUiThread(new java.lang.Runnable(
-							{
-								run: function()
-								{
-									shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-									{
-										onTouch: function(v, event)
-										{
-											if(minecraftStyleForButtons)
-												MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-											onTouchWithWaitWeaponShoot(event, weapon);
-											return false;
-										}
-									});
-								}
-							}));
-						}
+						// restore touch events (click and touch)
+						resetTouchEventsOfButtonsForWeapon(weapon);
 					} else
 					{
 						// is not a gun, we don't want to display the fire button and related things (sight, ammo)
