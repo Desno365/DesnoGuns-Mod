@@ -4642,7 +4642,7 @@ function onGunWarmupCompletion()
 		isShooting = true;
 		
 		// start loop sound
-		Sound.playLoopFromPath(getOriginalPathOfSound(gun.spinSound));
+		Sound.playLoopFromPath(getOriginalPathOfSound(gun.spinSound), generalVolume);
 
 		currentShotTicks = gun.fireRate;
 		if(shouldReload())
