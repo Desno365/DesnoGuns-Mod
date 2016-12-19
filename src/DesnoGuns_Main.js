@@ -35,6 +35,7 @@ const GameMode = {
 const VEL_Y_OFFSET = -0.07840000092983246;
 const ENTITY_HURT_ANIMATION_DURATION = 400;
 const ARROW_STUCK_IN_AIR_TICKS_WITH_SAME_POSITION = 5; // how many ticks with the same position must happen before considering an arrow stuck in air
+const DEFAULT_FOV = 77; // default fov for minecraft but when using ModPE.setFov (isn't the same as the value saved in the options of MCPE)
 var isInGame = false;
 var isPlayingOnServer = false;
 var players;
@@ -127,7 +128,7 @@ const RECOIL = 3;
 // aiming variables
 var isAiming = false;
 var isDisplayingAimingAnimation = false;
-var zoomWithFov = 72;
+var zoomWithFov = DEFAULT_FOV;
 
 // fire button variables
 var shotText;
@@ -2184,7 +2185,7 @@ function leaveGame()
 
 	// reset fov
 	ModPE.resetFov();
-	zoomWithFov = 72;
+	zoomWithFov = DEFAULT_FOV;
 
 	// info item UIs
 	removeInfoItemUI();
@@ -5067,7 +5068,7 @@ function removeZoomAndAimImageLayer()
 					isDisplayingAimingAnimation = true;
 					var removeAiming = zoomWithFov;
 
-					for(var ms = 1; ms < (72 - removeAiming); ms++)
+					for(var ms = 1; ms < (DEFAULT_FOV - removeAiming); ms++)
 					{
 						new android.os.Handler().postDelayed(new java.lang.Runnable(
 						{
@@ -5084,14 +5085,14 @@ function removeZoomAndAimImageLayer()
 						run: function()
 						{
 							zoomWithFov++;
-							ModPE.setFov(zoomWithFov);
+							ModPE.resetFov(); // if using setFov we would set the default fov but instead we call reset so the user fov options (in Minecraft settings) isn't overridden
 
 							isDisplayingAimingAnimation = false;
 
 							if(!isPlayingOnServer)
 								Entity.removeEffect(Player.getEntity(), MobEffect.nightVision); // removing night vision two times to avoid bug if the user stop aiming during the 200 milliseconds of the animation
 						}
-					}), (72 - removeAiming) * 12);
+					}), (DEFAULT_FOV - removeAiming) * 12);
 				}
 
 				// remove night vision
@@ -5125,12 +5126,12 @@ function showAimImageLayerFromWeapon(weapon)
 				removeShootAndAimButtons();
 
 				// display actual layer
-				displayAimImageLayerPopup(getAimImageFromGun(weapon));
+				AimImageLayerUtils.displayAimImageLayerPopup(AimImageLayerUtils.getAimImageFromWeapon(weapon));
 
 				if(weapon.hasManualZoom)
-					displayManualZoom(weapon);
+					AimImageLayerUtils.displayManualZoom(weapon);
 
-				restoreRemovedUiOfWeapon(weapon);
+				AimImageLayerUtils.restoreRemovedUiOfWeapon(weapon);
 
 				// remove sight image, we already have the image layer but we need to restore it later
 				try {
@@ -5144,29 +5145,71 @@ function showAimImageLayerFromWeapon(weapon)
 	}));
 }
 
-function restoreRemovedUiOfWeapon(weapon)
-{
-	// used with aim image layer and pause screens
-	currentActivity.runOnUiThread(new java.lang.Runnable(
+var AimImageLayerUtils = {
+
+	restoreRemovedUiOfWeapon: function(weapon)
 	{
-		run: function()
+		currentActivity.runOnUiThread(new java.lang.Runnable(
 		{
-			try
+			run: function()
 			{
-				if(isItemAGun(weapon.id) && needsToLoadTheUI(weapon.id, true))
+				try
 				{
-					// display both fire and aim buttons
-					displayShootAndAimButtons();
-
-					// restore ammo text
-					updateAmmoText(weapon);
-
-					if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
+					if(isItemAGun(weapon.id) && needsToLoadTheUI(weapon.id, true))
 					{
-						// load touch events
-						if(shouldReload())
+						// display both fire and aim buttons
+						displayShootAndAimButtons();
+
+						// restore ammo text
+						updateAmmoText(weapon);
+
+						if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH)
 						{
-							// survival or creative with reload option enabled
+							// load touch events
+							if(shouldReload())
+							{
+								// survival or creative with reload option enabled
+								currentActivity.runOnUiThread(new java.lang.Runnable(
+								{
+									run: function()
+									{
+										shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+										{
+											onTouch: function(v, event)
+											{
+												if(minecraftStyleForButtons)
+													MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+												onTouchWeaponShoot(event, weapon, true);
+												return false;
+											}
+										});
+									}
+								}));
+							} else
+							{
+								// creative with reload option disabled
+								currentActivity.runOnUiThread(new java.lang.Runnable(
+								{
+									run: function()
+									{
+										shotText.setOnTouchListener(new android.view.View.OnTouchListener()
+										{
+											onTouch: function(v, event)
+											{
+												if(minecraftStyleForButtons)
+													MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
+												onTouchWeaponShoot(event, weapon, false);
+												return false;
+											}
+										});
+									}
+								}));
+							}
+						}
+
+						if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+						{
+							// load touch events
 							currentActivity.runOnUiThread(new java.lang.Runnable(
 							{
 								run: function()
@@ -5177,144 +5220,84 @@ function restoreRemovedUiOfWeapon(weapon)
 										{
 											if(minecraftStyleForButtons)
 												MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-											onTouchWeaponShoot(event, weapon, true);
-											return false;
-										}
-									});
-								}
-							}));
-						} else
-						{
-							// creative with reload option disabled
-							currentActivity.runOnUiThread(new java.lang.Runnable(
-							{
-								run: function()
-								{
-									shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-									{
-										onTouch: function(v, event)
-										{
-											if(minecraftStyleForButtons)
-												MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-											onTouchWeaponShoot(event, weapon, false);
+											onTouchWithWaitWeaponShoot(event, weapon);
 											return false;
 										}
 									});
 								}
 							}));
 						}
-					}
-
-					if(weapon.buttonType == BUTTON_TYPE_ON_TOUCH_WITH_WAIT)
+					} else
 					{
-						// load touch events
-						currentActivity.runOnUiThread(new java.lang.Runnable(
-						{
-							run: function()
-							{
-								shotText.setOnTouchListener(new android.view.View.OnTouchListener()
-								{
-									onTouch: function(v, event)
-									{
-										if(minecraftStyleForButtons)
-											MinecraftButtonLibrary.onTouch(v, event, false); // make touch effect
-										onTouchWithWaitWeaponShoot(event, weapon);
-										return false;
-									}
-								});
-							}
-						}));
+						// is not a gun, we don't want to display the fire button and related things (sight, ammo)
+						displayAimButton();
 					}
-				} else
+				} catch(err)
 				{
-					// is not a gun, we don't want to display the fire button and related things (sight, ammo)
-					displayAimButton();
+					clientMessage("Error: " + err);
 				}
-			} catch(err)
-			{
-				clientMessage("Error: " + err);
 			}
-		}
-	}));
-}
+		}));
+	},
 
-function displayAimImageLayerPopup(image)
-{
-	// must be called in a runOnUiThread
-
-	var backgroundAimImageView = new android.widget.ImageView(currentActivity);
-	backgroundAimImageView.setImageBitmap(image);
-	backgroundAimImageView.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
-	backgroundAimImageView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-
-	popupAiming = new android.widget.PopupWindow();
-	popupAiming.setContentView(backgroundAimImageView);
-	popupAiming.setOutsideTouchable(false);
-	popupAiming.setFocusable(false);
-	popupAiming.setTouchable(false);
-	popupAiming.setAnimationStyle(android.R.style.Animation_Translucent); // Animation_Activity, Animation_Dialog, Animation_Translucent, 
-	popupAiming.setWidth(Screen.getWidth());
-	popupAiming.setHeight(Screen.getHeight());
-	popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
-}
-
-function getAimImageFromGun(gun)
-{
-	try
+	displayAimImageLayerPopup: function(image) // must be called in a runOnUiThread!
 	{
-		if(gun.customAimImageLayerPath != null)
-			return Image.getImageFromTexturePack(gun.customAimImageLayerPath);
-		else
-			return barrettUIDecoded; // return default image
-	} catch(e)
+		var backgroundAimImageView = new android.widget.ImageView(currentActivity);
+		backgroundAimImageView.setImageBitmap(image);
+		backgroundAimImageView.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+		backgroundAimImageView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+
+		popupAiming = new android.widget.PopupWindow();
+		popupAiming.setContentView(backgroundAimImageView);
+		popupAiming.setOutsideTouchable(false);
+		popupAiming.setFocusable(false);
+		popupAiming.setTouchable(false);
+		popupAiming.setAnimationStyle(android.R.style.Animation_Translucent); // Animation_Activity, Animation_Dialog, Animation_Translucent, 
+		popupAiming.setWidth(Screen.getWidth());
+		popupAiming.setHeight(Screen.getHeight());
+		popupAiming.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.CENTER | android.view.Gravity.CENTER, 0, 0);
+	},
+
+	getAimImageFromWeapon: function(weapon)
 	{
-		// textures not accessible
-		Log.log("Error in getAimImageFromGun: " + e);
-
-		clientMessage("The aim image layer used wasn't found");
-		clientMessage("Path: " + gun.customAimImageLayerPath);
-
-		return barrettUIDecoded; // return default image
-	}
-}
-
-function displayManualZoom(weapon)
-{
-	currentActivity.runOnUiThread(new java.lang.Runnable(
-	{
-		run: function()
+		try
 		{
-			try
-			{
-				var zoomChooser = new android.widget.SeekBar(currentActivity);
-				zoomChooser.setMax(68);
-				zoomChooser.setProgress(72 - zoomWithFov);
-				zoomChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
-				{
-					onProgressChanged: function()
-					{
-						zoomWithFov = 72 - zoomChooser.getProgress();
-						weapon.zoomLevel = zoomChooser.getProgress();
-						if(zoomWithFov == 72)
-							ModPE.resetFov();
-						else
-							ModPE.setFov(zoomWithFov);
-					}
-				});
-
-				popupZoom = new android.widget.PopupWindow();
-				popupZoom.setContentView(zoomChooser);
-				popupZoom.setWidth(Math.floor(Screen.getWidth() * 0.4));
-				popupZoom.setHeight(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-				popupZoom.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-				popupZoom.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.TOP | android.view.Gravity.CENTER, 0, Convert.convertDpToPixels(8));
-			} catch(err)
-			{
-				clientMessage("Error: " + err);
-			}
+			if(weapon.customAimImageLayerPath != null)
+				return Image.getImageFromTexturePack(weapon.customAimImageLayerPath);
+			else
+				return barrettUIDecoded; // return default image
+		} catch(e)
+		{
+			Log.log("Error in getAimImageFromWeapon: " + e);
+			clientMessage("The aim image layer used wasn't found");
+			clientMessage("Path: " + weapon.customAimImageLayerPath);
+			return barrettUIDecoded; // return default image
 		}
-	}));
-}
+	},
+
+	displayManualZoom: function(weapon) // must be called in a runOnUiThread!
+	{
+		var zoomChooser = new android.widget.SeekBar(currentActivity);
+		zoomChooser.setMax(DEFAULT_FOV - 4);
+		zoomChooser.setProgress(DEFAULT_FOV - zoomWithFov);
+		zoomChooser.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener()
+		{
+			onProgressChanged: function()
+			{
+				zoomWithFov = DEFAULT_FOV - zoomChooser.getProgress();
+				weapon.zoomLevel = zoomChooser.getProgress();
+				ModPE.setFov(zoomWithFov);
+			}
+		});
+
+		popupZoom = new android.widget.PopupWindow();
+		popupZoom.setContentView(zoomChooser);
+		popupZoom.setWidth(Math.floor(Screen.getWidth() * 0.4));
+		popupZoom.setHeight(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+		popupZoom.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+		popupZoom.showAtLocation(currentActivity.getWindow().getDecorView(), android.view.Gravity.TOP | android.view.Gravity.CENTER, 0, Convert.convertDpToPixels(8));
+	},
+};
 //########## IMAGE LAYER FOR AIM functions - END ##########
 
 
