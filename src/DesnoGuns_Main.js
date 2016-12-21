@@ -4968,8 +4968,11 @@ function onAimClick()
 			{
 				run: function()
 				{
-					zoomWithFov--;
-					ModPE.setFov(zoomWithFov);
+					if(zoomWithFov != DEFAULT_FOV) // fix when zoomWithFov was already at default it did a zoom anyway (example when using binoculars and going to the lowest zoom)
+					{
+						zoomWithFov--;
+						ModPE.setFov(zoomWithFov);
+					}
 
 					if(weapon.id == Player.getCarriedItem()) // check if the player hasn't changed is item while zooming
 					{
@@ -5058,8 +5061,11 @@ function removeZoomAndAimImageLayer()
 					{
 						run: function()
 						{
-							zoomWithFov++;
-							ModPE.setFov(zoomWithFov);
+							if(zoomWithFov != DEFAULT_FOV) // fix when zoomWithFov was already at default (zoomWithFov == DEFAULT_FOV) it did a zoom anyway (example when using binoculars and going to the lowest zoom)
+							{
+								zoomWithFov++;
+								ModPE.setFov(zoomWithFov);
+							}
 
 							isDisplayingAimingAnimation = false;
 
