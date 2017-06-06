@@ -35,7 +35,7 @@ const GameMode = {
 const VEL_Y_OFFSET = -0.07840000092983246;
 const ENTITY_HURT_ANIMATION_DURATION = 400;
 const ARROW_STUCK_IN_AIR_TICKS_WITH_SAME_POSITION = 5; // how many ticks with the same position must happen before considering an arrow stuck in air
-const DEFAULT_FOV = 77; // default fov for minecraft but when using ModPE.setFov (isn't the same as the value saved in the options of MCPE)
+const DEFAULT_FOV = 77; // default fov for minecraft when using ModPE.setFov (isn't the same as the value saved in the options of MCPE)
 var isInGame = false;
 var isPlayingOnServer = false;
 var players;
@@ -303,20 +303,6 @@ function createAmmoItems()
 // general items
 const INFO_ITEM_ID = 3365;
 
-const KNIFE_ID = 3320;
-const KNIFE_MAX_DAMAGE = 32;
-const KNIFE_SOUND_STAB = {
-	startingFrom: 1,
-	endingAt: 2,
-	startText: "desnoguns/knife_stab",
-	endText: ".mp3"
-};
-const KNIFE_MOB_DAMAGE = 20;
-
-const RIOT_SHIELD_ID = 3323;
-const RIOT_SHIELD_MAX_DAMAGE = 3072;
-const RIOT_SHIELD_MOB_DAMAGE = 1;
-
 var isParachuting = false;
 const PARACHUTE_ID = 3321;
 const PARACHUTE_MAX_DAMAGE = 10;
@@ -356,26 +342,6 @@ function createGeneralItems()
 		"   "], ["w", 17, 0]);
 	Item.setCategory(INFO_ITEM_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(INFO_ITEM_ID, 1);
-
-	Item.defineItem(KNIFE_ID, "knife", 0, "Knife", 1);
-	Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
-	Item.addShapedRecipe(KNIFE_ID, 1, 0, [
-		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
-	Item.setVerticalRender(KNIFE_ID);
-	Item.setCategory(KNIFE_ID, ItemCategory.TOOL);
-	Player.addItemCreativeInv(KNIFE_ID, 1);
-
-	Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield", 1);
-	Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
-	Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
-		" g ",
-		" i ",
-		" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
-	Item.setVerticalRender(RIOT_SHIELD_ID);
-	Item.setCategory(RIOT_SHIELD_ID, ItemCategory.TOOL);
-	Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
 
 	Item.defineItem(PARACHUTE_ID, "parachute", 0, "Parachute", 1);
 	Item.setMaxDamage(PARACHUTE_ID, PARACHUTE_MAX_DAMAGE);
@@ -418,6 +384,136 @@ function createGeneralItems()
 		"i i"], ["g", 20, 0, "i", 265, 0, "r", 331, 0]); // g = glass; i = iron; r = redstone
 	Item.setCategory(ZOOM_BINOCULARS.id, ItemCategory.TOOL);
 	Player.addItemCreativeInv(ZOOM_BINOCULARS.id, 1);
+}
+
+// melee weapons
+const KNIFE_ID = 3320;
+const KNIFE_MAX_DAMAGE = 32;
+const KNIFE_MOB_DAMAGE = 20;
+
+const RIOT_SHIELD_ID = 3323;
+const RIOT_SHIELD_MAX_DAMAGE = 3072;
+const RIOT_SHIELD_MOB_DAMAGE = 1;
+
+const BASEBALL_BAT_ID = 3327;
+const BASEBALL_BAT_MAX_DAMAGE = 78;
+const BASEBALL_BAT_MOB_DAMAGE = 3;
+
+const CHAINSAW_ID = 3328;
+const CHAINSAW_MAX_DAMAGE = 374;
+const CHAINSAW_MOB_DAMAGE = 9;
+
+const CLEAVER_ID = 3329;
+const CLEAVER_MAX_DAMAGE = 140;
+const CLEAVER_MOB_DAMAGE = 5;
+
+const CROWBAR_ID = 3330;
+const CROWBAR_MAX_DAMAGE = 400;
+const CROWBAR_MOB_DAMAGE = 5;
+
+const GOLFCLUB_ID = 3331;
+const GOLFCLUB_MAX_DAMAGE = 630;
+const GOLFCLUB_MOB_DAMAGE = 4;
+
+const HAMMER_ID = 3332;
+const HAMMER_MAX_DAMAGE = 180;
+const HAMMER_MOB_DAMAGE = 6;
+
+const MACHETE_ID = 3333;
+const MACHETE_MAX_DAMAGE = 333;
+const MACHETE_MOB_DAMAGE = 3;
+
+function createMeleeWeaponsItems()
+{
+	Item.defineItem(KNIFE_ID, "knife", 0, "Knife", 1);
+	Item.setMaxDamage(KNIFE_ID, KNIFE_MAX_DAMAGE);
+	Item.addShapedRecipe(KNIFE_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(KNIFE_ID);
+	Item.setCategory(KNIFE_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(KNIFE_ID, 1);
+
+	Item.defineItem(RIOT_SHIELD_ID, "riotshield", 0, "Riot Shield", 1);
+	Item.setMaxDamage(RIOT_SHIELD_ID, RIOT_SHIELD_MAX_DAMAGE);
+	Item.addShapedRecipe(RIOT_SHIELD_ID, 1, 0, [
+		" g ",
+		" i ",
+		" g "], ["i", 265, 0, "g", 102, 0]); // i = iron; g = glass pane;
+	Item.setVerticalRender(RIOT_SHIELD_ID);
+	Item.setCategory(RIOT_SHIELD_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(RIOT_SHIELD_ID, 1);
+
+	Item.defineItem(BASEBALL_BAT_ID, "baseballbat", 0, "Baseball Bat", 1);
+	Item.setMaxDamage(BASEBALL_BAT_ID, BASEBALL_BAT_MAX_DAMAGE);
+	Item.addShapedRecipe(BASEBALL_BAT_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(BASEBALL_BAT_ID);
+	Item.setCategory(BASEBALL_BAT_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(BASEBALL_BAT_ID, 1);
+
+	Item.defineItem(CHAINSAW_ID, "chainsaw", 0, "Chainsaw", 1);
+	Item.setMaxDamage(CHAINSAW_ID, CHAINSAW_MAX_DAMAGE);
+	Item.addShapedRecipe(CHAINSAW_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(CHAINSAW_ID);
+	Item.setCategory(CHAINSAW_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(CHAINSAW_ID, 1);
+
+	Item.defineItem(CLEAVER_ID, "cleaver", 0, "Cleaver", 1);
+	Item.setMaxDamage(CLEAVER_ID, CLEAVER_MAX_DAMAGE);
+	Item.addShapedRecipe(CLEAVER_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(CLEAVER_ID);
+	Item.setCategory(CLEAVER_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(CLEAVER_ID, 1);
+
+	Item.defineItem(CROWBAR_ID, "crowbar", 0, "Crowbar", 1);
+	Item.setMaxDamage(CROWBAR_ID, CROWBAR_MAX_DAMAGE);
+	Item.addShapedRecipe(CROWBAR_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(CROWBAR_ID);
+	Item.setCategory(CROWBAR_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(CROWBAR_ID, 1);
+
+	Item.defineItem(GOLFCLUB_ID, "golfclub", 0, "Golf-Club", 1);
+	Item.setMaxDamage(GOLFCLUB_ID, GOLFCLUB_MAX_DAMAGE);
+	Item.addShapedRecipe(GOLFCLUB_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(GOLFCLUB_ID);
+	Item.setCategory(GOLFCLUB_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(GOLFCLUB_ID, 1);
+
+	Item.defineItem(HAMMER_ID, "hammer", 0, "Hammer", 1);
+	Item.setMaxDamage(HAMMER_ID, HAMMER_MAX_DAMAGE);
+	Item.addShapedRecipe(HAMMER_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(HAMMER_ID);
+	Item.setCategory(HAMMER_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(HAMMER_ID, 1);
+
+	Item.defineItem(MACHETE_ID, "machete", 0, "Machete", 1);
+	Item.setMaxDamage(MACHETE_ID, MACHETE_MAX_DAMAGE);
+	Item.addShapedRecipe(MACHETE_ID, 1, 0, [
+		" i ",
+		" i ",
+		" i "], ["i", 265, 0]);
+	Item.setVerticalRender(MACHETE_ID);
+	Item.setCategory(MACHETE_ID, ItemCategory.TOOL);
+	Player.addItemCreativeInv(MACHETE_ID, 1);
 }
 
 // grenades
@@ -2283,9 +2379,13 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage, blockDamage)
 		return;
 	}
 
-	if(itemId == KNIFE_ID)
+	if(itemId == KNIFE_ID || itemId == MACHETE_ID || itemId == CLEAVER_ID)
 	{
 		playSoundFromSimplePath("desnoguns/knife_on_blocks.mp3");
+	}
+	if(itemId == CHAINSAW_ID)
+	{
+		playSoundFromSimplePath("desnoguns/chainsaw-idle.mp3");
 	}
 
 	// easter egg
@@ -3688,12 +3788,6 @@ function isItemAnIdTheModAlreadyUse(itemId)
 	if(itemId == INFO_ITEM_ID)
 		return true;
 
-	if(itemId == KNIFE_ID)
-		return true;
-
-	if(itemId == RIOT_SHIELD_ID)
-		return true;
-
 	if(itemId == PARACHUTE_ID)
 		return true;
 
@@ -3707,6 +3801,10 @@ function isItemAnIdTheModAlreadyUse(itemId)
 		return true;
 
 	if(itemId == ZOOM_BINOCULARS.id)
+		return true;
+
+
+	if(itemId == KNIFE_ID || itemId == RIOT_SHIELD_ID || itemId == BASEBALL_BAT_ID || itemId == CHAINSAW_ID || itemId == CLEAVER_ID || itemId == CROWBAR_ID || itemId == GOLFCLUB_ID || itemId == HAMMER_ID || itemId == MACHETE_ID)
 		return true;
 
 
@@ -5566,20 +5664,82 @@ function processHitByPlayer(item, victim) // the player successfully hit the vic
 	{
 		case KNIFE_ID:
 		{
-			playSoundFromSimplePath(createRandomString(KNIFE_SOUND_STAB));
+			playSoundFromSimplePath("desnoguns/knife_stab1.mp3");
 			addExtraHealthDamage(victim, KNIFE_MOB_DAMAGE);
 			if(Level.getGameMode() == GameMode.SURVIVAL)
 				Player.damageCarriedItem();
 
 			break;
 		}
-
 		case RIOT_SHIELD_ID:
 		{
 			playSoundFromSimplePath("desnoguns/riot_shield_attack.mp3");
 			addExtraHealthDamage(victim, RIOT_SHIELD_MOB_DAMAGE);
 			if(Level.getGameMode() == GameMode.SURVIVAL)
 				Player.damageCarriedItem(20);
+
+			break;
+		}
+		case BASEBALL_BAT_ID:
+		{
+			playSoundFromSimplePath("desnoguns/baseball-hit.mp3");
+			addExtraHealthDamage(victim, BASEBALL_BAT_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+		case CHAINSAW_ID:
+		{
+			playSoundFromSimplePath("desnoguns/chainsaw-hit.mp3");
+			addExtraHealthDamage(victim, CHAINSAW_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+		case CLEAVER_ID:
+		{
+			playSoundFromSimplePath("desnoguns/knife_stab2.mp3");
+			addExtraHealthDamage(victim, CLEAVER_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+		case CROWBAR_ID:
+		{
+			playSoundFromSimplePath("desnoguns/crowbar-hit.mp3");
+			addExtraHealthDamage(victim, CROWBAR_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+		case GOLFCLUB_ID:
+		{
+			playSoundFromSimplePath("desnoguns/golfclub-hit.mp3");
+			addExtraHealthDamage(victim, GOLFCLUB_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+		case HAMMER_ID:
+		{
+			playSoundFromSimplePath("desnoguns/hammer-hit.mp3");
+			addExtraHealthDamage(victim, HAMMER_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+
+			break;
+		}
+		case MACHETE_ID:
+		{
+			playSoundFromSimplePath("desnoguns/machete-hit.mp3");
+			addExtraHealthDamage(victim, MACHETE_MOB_DAMAGE);
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
 
 			break;
 		}
@@ -6803,22 +6963,12 @@ function informationOtherItems()
 				var layout;
 				layout = defaultLayout("Other items");
 
-				var textview = defaultContentTextView("<i>Knife</i>: ID: " + KNIFE_ID);
-				layout.addView(textview);
-
-				layout.addView(dividerText());
-
 				var textview = defaultContentTextView("<i>Parachute</i>: ID: " + PARACHUTE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
 
 				var textview = defaultContentTextView("<i>Medical Kit</i>: ID: " + MEDICAL_KIT_ID);
-				layout.addView(textview);
-
-				layout.addView(dividerText());
-
-				var textview = defaultContentTextView("<i>Riot Shield</i>: ID: " + RIOT_SHIELD_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
@@ -6834,6 +6984,51 @@ function informationOtherItems()
 				layout.addView(dividerText());
 
 				var textview = defaultContentTextView("<i>Zoom Binoculars</i>: ID: " + ZOOM_BINOCULARS.id);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Knife</i>: ID: " + KNIFE_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Riot Shield</i>: ID: " + RIOT_SHIELD_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Baseball Bat</i>: ID: " + BASEBALL_BAT_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Chainsaw</i>: ID: " + CHAINSAW_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Cleaver</i>: ID: " + CLEAVER_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Crowbar</i>: ID: " + CROWBAR_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Golf-Club</i>: ID: " + GOLFCLUB_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Hammer</i>: ID: " + HAMMER_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Machete</i>: ID: " + MACHETE_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
@@ -8144,7 +8339,7 @@ var SoundsInstaller = {};
 
 SoundsInstaller.sounds = {
 
-	version: 7,
+	version: 12,
 
 	soundArray: [
 		// { fileName: "", file: "" },
@@ -8169,13 +8364,28 @@ SoundsInstaller.sounds = {
 			fileName: "BarrettShoot.ogg"
 		},
 		{
+			fileName: "baseball-hit.mp3"
+		},
+		{
 			fileName: "bell.mp3"
 		},
 		{
 			fileName: "benboncan_parachute.mp3"
 		},
 		{
+			fileName: "chainsaw-cut.mp3"
+		},
+		{
+			fileName: "chainsaw-hit.mp3"
+		},
+		{
+			fileName: "chainsaw-idle.mp3"
+		},
+		{
 			fileName: "CrossbowShoot.wav"
+		},
+		{
+			fileName: "crowbar-hit.mp3"
 		},
 		{
 			fileName: "DesertEagleShoot.ogg"
@@ -8205,7 +8415,13 @@ SoundsInstaller.sounds = {
 			fileName: "GlockShoot.ogg"
 		},
 		{
+			fileName: "golfclub-hit.mp3"
+		},
+		{
 			fileName: "GrenadeLauncherShoot.ogg"
+		},
+		{
+			fileName: "hammer-hit.mp3"
 		},
 		{
 			fileName: "ignite_flamethrower1.ogg"
@@ -8248,6 +8464,9 @@ SoundsInstaller.sounds = {
 		},
 		{
 			fileName: "M1887Shoot.ogg"
+		},
+		{
+			fileName: "machete-hit.mp3"
 		},
 		{
 			fileName: "MakarovShoot.ogg"
@@ -8654,6 +8873,7 @@ function startup()
 	// add all items
 	createAmmoItems();
 	createGeneralItems();
+	createMeleeWeaponsItems();
 	createGrenadesItems();
 	createArmorItems();
 
