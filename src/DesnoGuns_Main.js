@@ -7681,7 +7681,7 @@ function enabledAddonsUI()
 					layout.addView(dividerText());
 
 					var textview = defaultContentTextView("You don't have any addon enabled.<br>" +
-						"Get one from here: <a href=\"http://desno365.github.io/minecraft/desnoguns-mod/addons/featured/\">featured addons</a>.");
+						"Get one from here: <a href=\"http://desno365.net/minecraft/desnoguns-mod/addons/featured/\">featured addons</a>.");
 					textview.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 					layout.addView(textview);
 
@@ -7826,21 +7826,21 @@ function updateAvailableUI()
 				layout.addView(updatesText);
 				Ui.setMarginsToViewInLinearLayout(updatesText, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var threadButton = MinecraftButton();
-				threadButton.setText("Visit website");
-				threadButton.setOnClickListener(new android.view.View.OnClickListener()
+				var websiteButton = MinecraftButton();
+				websiteButton.setText("Visit website");
+				websiteButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function()
 					{
 						var intentBrowser = new android.content.Intent(currentActivity);
 						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
-						intentBrowser.setData(android.net.Uri.parse("http://desno365.github.io/minecraft/desnoguns-mod/"));
+						intentBrowser.setData(android.net.Uri.parse("http://desno365.net/minecraft/desnoguns-mod/"));
 						currentActivity.startActivity(intentBrowser);
 						popup.dismiss();
 					}
 				});
-				layout.addView(threadButton);
-				Ui.setMarginsToViewInLinearLayout(threadButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
+				layout.addView(websiteButton);
+				Ui.setMarginsToViewInLinearLayout(websiteButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_BIG);
 
 				var exitButton = MinecraftButton();
 				exitButton.setText("Close");
