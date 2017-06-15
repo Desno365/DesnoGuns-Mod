@@ -2296,7 +2296,7 @@ function leaveGame()
 }
 
 var currentScreen = "null"; // will remain to null if screenChangeHook doesn't work or is not called (for example with BL for MCPE 0.14)
-function screenChangeHook(screenName)
+/*function screenChangeHook(screenName)
 {
 	switch(screenName)
 	{
@@ -2339,7 +2339,7 @@ function screenChangeHook(screenName)
 			break;
 		}
 	}
-}
+}*/
 
 function procCmd(text)
 {
@@ -2493,7 +2493,7 @@ function entityRemovedHook(entity)
 	}
 }
 
-function startDestroyBlock(x, y, z, side)
+/*function startDestroyBlock(x, y, z, side)
 {
 	if(Player.getCarriedItem() == CHAINSAW_ID)
 	{
@@ -2504,7 +2504,7 @@ function startDestroyBlock(x, y, z, side)
 			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
 		}
 	}
-}
+}*/
 
 function changeCarriedItemHook(currentItem, previousItem)
 {
@@ -3530,6 +3530,11 @@ function addLoadedAddonsInGame()
 	// show the user how many addons have been enabled
 	if(loadedAddons.length > 0)
 	{
+		currentActivity.runOnUiThread(new java.lang.Runnable() {
+			run: function() {
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Unfortunately this version of BlockLauncher has problems with DesnoGuns Addons. If you experience crashes disable them."), 1).show();
+			}
+		});
 		currentActivity.runOnUiThread(new java.lang.Runnable() {
 			run: function() {
 				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: " + loadedAddons.length + " addon" + ((loadedAddons.length > 1) ? "s" : "") + " enabled!"), 0).show();
@@ -5338,7 +5343,7 @@ var Recoil = {
 
 	makeRecoil: function(gun)
 	{
-		if(gun.fireRate < 2 && gun.buttonType != BUTTON_TYPE_ON_CLICK)
+		/*if(gun.fireRate < 2 && gun.buttonType != BUTTON_TYPE_ON_CLICK)
 		{
 			Recoil.makeInstantRecoil(gun.recoil);
 		} else
@@ -5347,7 +5352,7 @@ var Recoil = {
 				Recoil.makeLessTimedRecoil(gun.recoil);
 			else
 				Recoil.makeTimedRecoil(gun.recoil);
-		}
+		}*/
 	},
 
 	makeInstantRecoil: function(recoil)
@@ -9066,9 +9071,9 @@ function startup()
 							// add loaded weapons to the game
 							addLoadedAddonsInGame();
 						}
-					}), 250); // this time should be enough for the mod to load all the addons 
+					}), 1); // this time should be enough for the mod to load all the addons 
 				}
-			}), 750); // this time should be enough for BlockLuancher to load all the other scripts
+			}), 1); // this time should be enough for BlockLuancher to load all the other scripts
 		}
 	}));
 }
