@@ -6569,6 +6569,7 @@ function informationUI()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -6650,6 +6651,7 @@ function informationGunsSpecificationsArrays()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -6819,6 +6821,7 @@ function informationGunsSpecificationsForGunsArray(gunsArray, name)
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -6967,6 +6970,7 @@ function informationGunsSpecificationsForGunType(gunsArray, gunType)
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -7192,6 +7196,7 @@ function informationOtherItems()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -7545,6 +7550,7 @@ function settingsUI()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -7636,6 +7642,7 @@ function addonsUI()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -7722,6 +7729,7 @@ function enabledAddonsUI()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -7797,6 +7805,7 @@ function latestVersionUI()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
@@ -8002,6 +8011,7 @@ function supportUI()
 				{
 					onClick: function()
 					{
+						gameAdUI();
 						popup.dismiss();
 					}
 				});
