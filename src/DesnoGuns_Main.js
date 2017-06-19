@@ -6478,18 +6478,22 @@ function infoDesnoGunsMod()
 				layout.addView(updatesButton);
 				Ui.setMarginsToViewInLinearLayout(updatesButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
-				var modThreadButton = MinecraftButton();
-				modThreadButton.setText("Visit the mod thread");
-				modThreadButton.setOnClickListener(new android.view.View.OnClickListener()
+				var modWebsiteButton = MinecraftButton();
+				modWebsiteButton.setText("Visit the mod's website");
+				modWebsiteButton.setOnClickListener(new android.view.View.OnClickListener()
 				{
 					onClick: function()
 					{
-						visitThread();
+						var intentBrowser = new android.content.Intent(currentActivity);
+						intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
+						intentBrowser.setData(android.net.Uri.parse("http://desno365.net/minecraft/desnoguns-mod/"));
+						currentActivity.startActivity(intentBrowser);
+						popup.dismiss();
 						popup.dismiss();
 					}
 				});
-				layout.addView(modThreadButton);
-				Ui.setMarginsToViewInLinearLayout(modThreadButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
+				layout.addView(modWebsiteButton);
+				Ui.setMarginsToViewInLinearLayout(modWebsiteButton, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
 				var supportButton = MinecraftButton();
 				supportButton.setText("Support the developer");
@@ -7857,7 +7861,7 @@ function updateAvailableUI()
 				layout = defaultLayout("DesnoGuns Mod: new version");
 
 				var updatesText = defaultContentTextView("New version available, you have the " + CURRENT_VERSION + " version and the latest version is " + latestVersion + ".<br>" +
-					"You can find a download link on Desno365's website (press the button to visit it).");
+					"Get the latest version on Desno365's website:");
 				layout.addView(updatesText);
 				Ui.setMarginsToViewInLinearLayout(updatesText, 0, MARGIN_HORIZONTAL_SMALL, 0, MARGIN_HORIZONTAL_SMALL);
 
@@ -7894,26 +7898,6 @@ function updateAvailableUI()
 				popup.setCanceledOnTouchOutside(false);
 				Popup.showImmersivePopup(popup);
 
-			} catch(err)
-			{
-				clientMessage("Error: " + err);
-			}
-		}
-	});
-}
-
-function visitThread()
-{
-	currentActivity.runOnUiThread(new java.lang.Runnable()
-	{
-		run: function()
-		{
-			try
-			{
-				var intentBrowser = new android.content.Intent(currentActivity);
-				intentBrowser.setAction(android.content.Intent.ACTION_VIEW);
-				intentBrowser.setData(android.net.Uri.parse("http://www.minecraftforum.net/forums/minecraft-pocket-edition/mcpe-mods-tools/2299721-mod-desnoguns-mod-more-than-50-weapons-r001-by"));
-				currentActivity.startActivity(intentBrowser);
 			} catch(err)
 			{
 				clientMessage("Error: " + err);
