@@ -2,6 +2,13 @@ This list of images are copyright of Dennis Motta (Desno365) and are licensed un
 Commons Attribution- NonCommercial 4.0 International License. To view a copy of this license, visit
 http://creativecommons.org/licenses/by-nc/4.0/
 
+- baseballbat
+- chainsaw
+- cleaver
+- crowbar
+- golfclub
+- hammer
+- machete
 - 44magnum
 - aa12
 - ammoarrowexplosive
