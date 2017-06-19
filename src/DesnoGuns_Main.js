@@ -447,9 +447,9 @@ function createMeleeWeaponsItems()
 	Item.defineItem(BASEBALL_BAT_ID, "baseballbat", 0, "Baseball Bat", 1);
 	Item.setMaxDamage(BASEBALL_BAT_ID, BASEBALL_BAT_MAX_DAMAGE);
 	Item.addShapedRecipe(BASEBALL_BAT_ID, 1, 0, [
-		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
+		" w ",
+		" w ",
+		" s "], ["w", 5, 0, "s", 280, 0]); // w wood plank, s stick
 	Item.setVerticalRender(BASEBALL_BAT_ID);
 	Item.setCategory(BASEBALL_BAT_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(BASEBALL_BAT_ID, 1);
@@ -458,8 +458,8 @@ function createMeleeWeaponsItems()
 	Item.setMaxDamage(CHAINSAW_ID, CHAINSAW_MAX_DAMAGE);
 	Item.addShapedRecipe(CHAINSAW_ID, 1, 0, [
 		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
+		"iii",
+		"iri"], ["i", 265, 0, "r", 331, 0]); // i iron, r redstone
 	Item.setVerticalRender(CHAINSAW_ID);
 	Item.setCategory(CHAINSAW_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(CHAINSAW_ID, 1);
@@ -467,9 +467,9 @@ function createMeleeWeaponsItems()
 	Item.defineItem(CLEAVER_ID, "cleaver", 0, "Cleaver", 1);
 	Item.setMaxDamage(CLEAVER_ID, CLEAVER_MAX_DAMAGE);
 	Item.addShapedRecipe(CLEAVER_ID, 1, 0, [
-		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
+		" ii",
+		" ii",
+		"  s"], ["i", 265, 0, "s", 280, 0]); // i iron, s stick
 	Item.setVerticalRender(CLEAVER_ID);
 	Item.setCategory(CLEAVER_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(CLEAVER_ID, 1);
@@ -477,9 +477,9 @@ function createMeleeWeaponsItems()
 	Item.defineItem(CROWBAR_ID, "crowbar", 0, "Crowbar", 1);
 	Item.setMaxDamage(CROWBAR_ID, CROWBAR_MAX_DAMAGE);
 	Item.addShapedRecipe(CROWBAR_ID, 1, 0, [
+		"i  ",
 		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
+		"  i"], ["i", 265, 0]);
 	Item.setVerticalRender(CROWBAR_ID);
 	Item.setCategory(CROWBAR_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(CROWBAR_ID, 1);
@@ -487,9 +487,9 @@ function createMeleeWeaponsItems()
 	Item.defineItem(GOLFCLUB_ID, "golfclub", 0, "Golf-Club", 1);
 	Item.setMaxDamage(GOLFCLUB_ID, GOLFCLUB_MAX_DAMAGE);
 	Item.addShapedRecipe(GOLFCLUB_ID, 1, 0, [
-		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
+		" ii",
+		"  i",
+		"  i"], ["i", 265, 0]);
 	Item.setVerticalRender(GOLFCLUB_ID);
 	Item.setCategory(GOLFCLUB_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(GOLFCLUB_ID, 1);
@@ -497,9 +497,9 @@ function createMeleeWeaponsItems()
 	Item.defineItem(HAMMER_ID, "hammer", 0, "Hammer", 1);
 	Item.setMaxDamage(HAMMER_ID, HAMMER_MAX_DAMAGE);
 	Item.addShapedRecipe(HAMMER_ID, 1, 0, [
-		" i ",
-		" i ",
-		" i "], ["i", 265, 0]);
+		"iii",
+		" s ",
+		" s "], ["i", 265, 0, "s", 280, 0]); // i iron, s stick
 	Item.setVerticalRender(HAMMER_ID);
 	Item.setCategory(HAMMER_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(HAMMER_ID, 1);
@@ -509,7 +509,7 @@ function createMeleeWeaponsItems()
 	Item.addShapedRecipe(MACHETE_ID, 1, 0, [
 		" i ",
 		" i ",
-		" i "], ["i", 265, 0]);
+		" i "], ["i", 265, 0]); // i iron
 	Item.setVerticalRender(MACHETE_ID);
 	Item.setCategory(MACHETE_ID, ItemCategory.TOOL);
 	Player.addItemCreativeInv(MACHETE_ID, 1);
@@ -2380,13 +2380,42 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage, blockDamage)
 		return;
 	}
 
-	if(itemId == KNIFE_ID || itemId == MACHETE_ID || itemId == CLEAVER_ID)
+	if(itemId == KNIFE_ID || itemId == CLEAVER_ID)
 	{
 		playSoundFromSimplePath("desnoguns/knife_on_blocks.mp3");
 	}
 	if(itemId == CHAINSAW_ID)
 	{
-		playSoundFromSimplePath("desnoguns/chainsaw-idle.mp3");
+		if(blockId == 5 || blockId == 17 || blockId == 162 || blockId == 125)
+		{
+			Level.destroyBlock(x, y, z, true);
+			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+		} else if(blockId == 18)
+		{
+			Level.destroyBlock(x, y, z, false);
+			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+		} else
+		{
+			playSoundFromSimplePath("desnoguns/chainsaw-idle.mp3");
+		}
+	}
+
+	if(itemId == MACHETE_ID)
+	{
+		if(blockId == 31 || blockId == 32 || blockId == 106 || blockId == 175)
+		{
+			Level.destroyBlock(x, y, z, false);
+			playSoundFromSimplePath("desnoguns/machete-hit.mp3");
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+		} else
+		{
+			playSoundFromSimplePath("desnoguns/knife_on_blocks.mp3");
+		}
 	}
 
 	// easter egg
@@ -2495,15 +2524,7 @@ function entityRemovedHook(entity)
 
 /*function startDestroyBlock(x, y, z, side)
 {
-	if(Player.getCarriedItem() == CHAINSAW_ID)
-	{
-		var tile = Level.getTile(Math.floor(x), Math.floor(y) - 1, Math.floor(z));
-		if(tile == 5 || tile == 17 || tile == 162 || tile == 125)
-		{
-			Level.destroyBlock(x, y, z, true);
-			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
-		}
-	}
+	// implement machete and chainsaw functionalities when fixed
 }*/
 
 function changeCarriedItemHook(currentItem, previousItem)
