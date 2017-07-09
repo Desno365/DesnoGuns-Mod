@@ -2296,7 +2296,7 @@ function leaveGame()
 }
 
 var currentScreen = "null"; // will remain to null if screenChangeHook doesn't work or is not called (for example with BL for MCPE 0.14)
-/*function screenChangeHook(screenName)
+function screenChangeHook(screenName)
 {
 	switch(screenName)
 	{
@@ -2339,7 +2339,7 @@ var currentScreen = "null"; // will remain to null if screenChangeHook doesn't w
 			break;
 		}
 	}
-}*/
+}
 
 function procCmd(text)
 {
@@ -2386,15 +2386,9 @@ function useItem(x, y, z, itemId, blockId, side, itemDamage, blockDamage)
 	}
 	if(itemId == CHAINSAW_ID)
 	{
-		if(blockId == 5 || blockId == 17 || blockId == 162 || blockId == 125)
+		if(blockId == 5 || blockId == 17 || blockId == 162)
 		{
 			Level.destroyBlock(x, y, z, true);
-			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
-			if(Level.getGameMode() == GameMode.SURVIVAL)
-				Player.damageCarriedItem();
-		} else if(blockId == 18)
-		{
-			Level.destroyBlock(x, y, z, false);
 			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
 			if(Level.getGameMode() == GameMode.SURVIVAL)
 				Player.damageCarriedItem();
@@ -2522,10 +2516,31 @@ function entityRemovedHook(entity)
 	}
 }
 
-/*function startDestroyBlock(x, y, z, side)
+function startDestroyBlock(x, y, z, side)
 {
-	// implement machete and chainsaw functionalities when fixed
-}*/
+	var blockId = Level.getTile(x, y, z);
+	if(Player.getCarriedItem() == CHAINSAW_ID)
+	{
+		if(blockId == 5 || blockId == 17 || blockId == 162 || blockId == 125)
+		{
+			Level.destroyBlock(x, y, z, true);
+			playSoundFromSimplePath("desnoguns/chainsaw-cut.mp3");
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+		}
+	}
+
+	if(Player.getCarriedItem() == MACHETE_ID)
+	{
+		if(blockId == 31 || blockId == 32 || blockId == 106 || blockId == 175)
+		{
+			Level.destroyBlock(x, y, z, false);
+			playSoundFromSimplePath("desnoguns/machete-hit.mp3");
+			if(Level.getGameMode() == GameMode.SURVIVAL)
+				Player.damageCarriedItem();
+		}
+	}
+}
 
 function changeCarriedItemHook(currentItem, previousItem)
 {
@@ -5364,7 +5379,7 @@ var Recoil = {
 
 	makeRecoil: function(gun)
 	{
-		/*if(gun.fireRate < 2 && gun.buttonType != BUTTON_TYPE_ON_CLICK)
+		if(gun.fireRate < 2 && gun.buttonType != BUTTON_TYPE_ON_CLICK)
 		{
 			Recoil.makeInstantRecoil(gun.recoil);
 		} else
@@ -5373,7 +5388,7 @@ var Recoil = {
 				Recoil.makeLessTimedRecoil(gun.recoil);
 			else
 				Recoil.makeTimedRecoil(gun.recoil);
-		}*/
+		}
 	},
 
 	makeInstantRecoil: function(recoil)
