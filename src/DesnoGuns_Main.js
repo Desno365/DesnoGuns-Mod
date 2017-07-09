@@ -87,7 +87,7 @@ var ammoTextSize = DEFAULT_VALUE_AMMO_TEXT_SIZE;
 const DEFAULT_VALUE_PIXELS_OFFSET_BUTTONS = 0;
 var pixelsOffsetButtons = DEFAULT_VALUE_PIXELS_OFFSET_BUTTONS;
 var shouldDisplaySight = true;
-var displayGunNameInAmmo = false;
+var displayGunNameInAmmo = true;
 var switchedButtonsPosition = false;
 var minecraftStyleForButtons = false;
 var shouldDisplayIronSightWhenAiming = true;
@@ -554,7 +554,7 @@ const SMOKE = {
 	grenadesArray: [],
 	accuracy: 4,
 	delay: 10000,
-	smokeParticle: 4
+	smokeParticle: ParticleType.cloud
 };
 
 function createGrenadesItems()
@@ -896,7 +896,7 @@ const AT4 = {
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
-	particleTrailId: 4,
+	particleTrailId: ParticleType.cloud,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
@@ -1547,7 +1547,7 @@ const M72LAW = {
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
-	particleTrailId: 4,
+	particleTrailId: ParticleType.cloud,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
@@ -1791,7 +1791,7 @@ const MULTIPLE_ROCKET_LAUNCHER = {
 	shotgunWait: 20,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
-	particleTrailId: 4,
+	particleTrailId: ParticleType.cloud,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 3,
 	// SOUNDS
@@ -1939,7 +1939,7 @@ const RPG = {
 	shotType: SHOT_TYPE_NORMAL,
 	hasParticleTrail: true,
 	particleTrailDistance: 3,
-	particleTrailId: 4,
+	particleTrailId: ParticleType.cloud,
 	bulletType: BULLET_TYPE_NORMAL_EXPLOSIVE_ON_TOUCH,
 	bulletsExplosionRadius: 4,
 	// SOUNDS
@@ -2189,7 +2189,7 @@ function newLevel()
 	// load saved boolean settings
 	// ModPE.readBooleanFromData(key, defaultValue)
 	shouldDisplaySight = ModPE.readBooleanFromData(KEY_DISPLAY_SIGHT, true);
-	displayGunNameInAmmo = ModPE.readBooleanFromData(KEY_DISPLAY_GUN_NAME_AMMO, false);
+	displayGunNameInAmmo = ModPE.readBooleanFromData(KEY_DISPLAY_GUN_NAME_AMMO, true);
 	reloadInCreative = ModPE.readBooleanFromData(KEY_RELOAD_CREATIVE, true);
 	instantReloadInCreative = ModPE.readBooleanFromData(KEY_INSTANT_RELOAD_CREATIVE, false);
 	switchedButtonsPosition = ModPE.readBooleanFromData(KEY_SWITCH_BUTTONS_POSITION, false);
@@ -4527,7 +4527,7 @@ function showCloudParticle(amount)
 						{
 							var gunDir = DesnoUtils.getVector(getYaw() + 30, getPitch());
 							for(var i = 0; i < amount; i++)
-								Level.addParticle(4, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
+								Level.addParticle(ParticleType.cloud, getPlayerX() + (gunDir.x * 1.5), getPlayerY() + (gunDir.y * 1.5), getPlayerZ() + (gunDir.z * 1.5), 0, 0, 0, 1);
 						}
 					}
 				}), 250);
