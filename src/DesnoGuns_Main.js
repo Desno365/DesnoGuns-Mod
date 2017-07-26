@@ -603,6 +603,9 @@ const JUNGLE_CAMO_BODY_ID = 3290;
 const JUNGLE_CAMO_PANTS_ID = 3291;
 const JUNGLE_CAMO_BOOTS_ID = 3292;
 
+const EXOSKELETON_UPPER_ID = 3293;
+const EXOSKELETON_LOWER_ID = 3294;
+
 function createArmorItems()
 {
 	Item.newArmor(JUGGERNAUT_HELMET_ID, "juggernauthelmet", 0, "Juggernaut Helmet", "armor/juggernaut_1.png", 3, 249, ArmorType.helmet);
@@ -661,6 +664,23 @@ function createArmorItems()
 		"c c",
 		"l l"], ["c", 351, 2, "l", 334, 0]); // c = cactus green; l = leather;
 	Player.addItemCreativeInv(JUNGLE_CAMO_BOOTS_ID, 1);
+
+
+	Item.newArmor(EXOSKELETON_UPPER_ID, "exoskeletonupper", 0, "Exoskeleton Upper", "armor/exoskeleton_1.png", 3, 120, ArmorType.chestplate);
+	Item.addShapedRecipe(EXOSKELETON_UPPER_ID, 1, 0, [
+		"i i",
+		"iri",
+		"iri"], ["i", 265, 0, "r", 331, 0]); // i = iron; r = redstone;
+	Player.addItemCreativeInv(EXOSKELETON_UPPER_ID, 1);
+
+	Item.newArmor(EXOSKELETON_LOWER_ID
+	, "exoskeletonlower", 0, "Exoskeleton Lower", "armor/exoskeleton_1.png", 2, 110, ArmorType.leggings);
+	Item.addShapedRecipe(EXOSKELETON_LOWER_ID
+	, 1, 0, [
+		"iri",
+		"r r",
+		"i i"], ["i", 265, 0, "r", 331, 0]); // i = iron; r = redstone;
+	Player.addItemCreativeInv(EXOSKELETON_LOWER_ID, 1);
 }
 
 
@@ -3163,13 +3183,16 @@ var ModTickFunctions = {
 
 	armorsEffects: function()
 	{
-		if(Player.getArmorSlot(ArmorType.boots) == JUGGERNAUT_BOOTS_ID)
+		if(Player.getArmorSlot(ArmorType.boots) == JUGGERNAUT_BOOTS_ID && Player.getArmorSlot(ArmorType.helmet) == JUGGERNAUT_HELMET_ID && Player.getArmorSlot(ArmorType.chestplate) == JUGGERNAUT_BODY_ID && Player.getArmorSlot(ArmorType.leggings) == JUGGERNAUT_PANTS_ID)
 		{
-			if(Player.getArmorSlot(ArmorType.helmet) == JUGGERNAUT_HELMET_ID && Player.getArmorSlot(ArmorType.chestplate) == JUGGERNAUT_BODY_ID && Player.getArmorSlot(ArmorType.leggings) == JUGGERNAUT_PANTS_ID)
-			{
-				Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 0, false, false);
-				Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, 4, 0, false, false);
-			}
+			Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, 4, 0, false, false);
+			Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, 4, 0, false, false);
+		}
+
+		if(Player.getArmorSlot(ArmorType.chestplate) == EXOSKELETON_UPPER_ID && Player.getArmorSlot(ArmorType.leggings) == EXOSKELETON_LOWER_ID)
+		{
+			Entity.addEffect(Player.getEntity(), MobEffect.jump, 4, 0, false, false);
+			Entity.addEffect(Player.getEntity(), MobEffect.movementSpeed, 4, 0, false, false);
 		}
 	},
 
@@ -3898,6 +3921,12 @@ function isItemAnIdTheModAlreadyUse(itemId)
 		return true;
 
 	if(itemId == JUNGLE_CAMO_BOOTS_ID)
+		return true;
+
+	if(itemId == EXOSKELETON_UPPER_ID)
+		return true;
+
+	if(itemId == EXOSKELETON_LOWER_ID)
 		return true;
 
 	return false;
@@ -7211,6 +7240,16 @@ function informationOtherItems()
 				layout.addView(dividerText());
 
 				var textview = defaultContentTextView("<i>Jungle Camo Boots</i>: ID: " + JUNGLE_CAMO_BOOTS_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Exoskeleton Upper</i>: ID: " + EXOSKELETON_UPPER_ID);
+				layout.addView(textview);
+
+				layout.addView(dividerText());
+
+				var textview = defaultContentTextView("<i>Exoskeleton Lower</i>: ID: " + EXOSKELETON_LOWER_ID);
 				layout.addView(textview);
 
 				layout.addView(dividerText());
