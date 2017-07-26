@@ -20,7 +20,7 @@ const DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK = false; // enable a tip message show
 var latestDebugMessage;
 
 // updates variables
-const CURRENT_VERSION = "r023";
+const CURRENT_VERSION = "r024";
 var latestVersion;
 
 //activity and other Android variables
