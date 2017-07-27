@@ -14,6 +14,8 @@ http://creativecommons.org/licenses/by-nc/4.0/
 - ammoarrowexplosive
 - crossbow
 - crossbowexplosive
+- exoskeletonlower
+- exoskeletonupper
 - flamethrower
 - grenadesmoke
 - glincendiary
