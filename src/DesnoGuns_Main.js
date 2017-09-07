@@ -2334,6 +2334,8 @@ function screenChangeHook(screenName)
 			break;
 		}
 		case "creative_inventory_screen":
+		case "inventory_screen_pocket":
+		case "inventory_screen":
 		case "survival_inventory_screen":
 		case "pause_screen":
 		case "chat_screen":
