@@ -673,10 +673,8 @@ function createArmorItems()
 		"iri"], ["i", 265, 0, "r", 331, 0]); // i = iron; r = redstone;
 	Player.addItemCreativeInv(EXOSKELETON_UPPER_ID, 1);
 
-	Item.newArmor(EXOSKELETON_LOWER_ID
-	, "exoskeletonlower", 0, "Exoskeleton Lower", "armor/exoskeleton_1.png", 2, 110, ArmorType.leggings);
-	Item.addShapedRecipe(EXOSKELETON_LOWER_ID
-	, 1, 0, [
+	Item.newArmor(EXOSKELETON_LOWER_ID, "exoskeletonlower", 0, "Exoskeleton Lower", "armor/exoskeleton_1.png", 2, 110, ArmorType.leggings);
+	Item.addShapedRecipe(EXOSKELETON_LOWER_ID, 1, 0, [
 		"iri",
 		"r r",
 		"i i"], ["i", 265, 0, "r", 331, 0]); // i = iron; r = redstone;
@@ -2942,7 +2940,7 @@ var ModTickFunctions = {
 									allGuns[i].bulletsArray.splice(j, 1);
 
 									if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
-									clientMessage("Arrow on ground");
+										clientMessage("Arrow on ground");
 								}
 							} else
 							{
@@ -3003,6 +3001,13 @@ var ModTickFunctions = {
 					}
 				}
 			}
+		}
+
+		// to prevent crash when calling Level.explode in a different thread
+		if(doExplosionAtNextTick)
+		{
+			doExplosionAtNextTick = false;
+			Level.explode(tickExplosionX, tickExplosionY, tickExplosionZ, tickExplosionRadius, false, true);
 		}
 
 		if(DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK)
@@ -4279,6 +4284,11 @@ function shoot(gun)
 	clientMessage("Something went wrong in shoot() with " + gun.name);
 }
 
+var doExplosionAtNextTick = false;
+var tickExplosionX;
+var tickExplosionY;
+var tickExplosionZ;
+var tickExplosionRadius;
 function shootSingleBullet(gun)
 {
 	if(isPlayingOnServer)
@@ -4334,11 +4344,25 @@ function shootSingleBullet(gun)
 						{
 							// arrow hit an entity
 							Entity.remove(gun.bulletsArray[0].entity);
-							Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius, false, true); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+
+							// prevent thread crash
+							tickExplosionX = gun.bulletsArray[0].previousX;
+							tickExplosionY = gun.bulletsArray[0].previousY - 1;
+							tickExplosionZ = gun.bulletsArray[0].previousZ;
+							tickExplosionRadius = gun.bulletsExplosionRadius;
+							doExplosionAtNextTick = true;
+							//Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius, false, true); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
 						} else
 						{
 							Entity.remove(gun.bulletsArray[0].entity);
-							Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius, false, true);
+
+							// prevent thread crash
+							tickExplosionX = explosionX;
+							tickExplosionY = explosionY;
+							tickExplosionZ = explosionZ;
+							tickExplosionRadius = gun.bulletsExplosionRadius;
+							doExplosionAtNextTick = true;
+							//Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius, false, true);
 						}
 						gun.bulletsArray.splice(0, 1);
 					}
@@ -4414,11 +4438,25 @@ function shootSingleShotgunBullet(gun)
 					{
 						// arrow hit an entity
 						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius, false, true); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
+
+						// prevent thread crash
+						tickExplosionX = gun.bulletsArray[0].previousX;
+						tickExplosionY = gun.bulletsArray[0].previousY - 1;
+						tickExplosionZ = gun.bulletsArray[0].previousZ;
+						tickExplosionRadius = gun.bulletsExplosionRadius;
+						doExplosionAtNextTick = true;
+						//Level.explode(gun.bulletsArray[0].previousX, gun.bulletsArray[0].previousY - 1, gun.bulletsArray[0].previousZ, gun.bulletsExplosionRadius, false, true); // y - 1 because usually the arrow is removed when it hits an entity and the explosion happens on a previous position that is not on the ground.
 					} else
 					{
 						Entity.remove(gun.bulletsArray[0].entity);
-						Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius, false, true);
+
+						// prevent thread crash
+						tickExplosionX = explosionX;
+						tickExplosionY = explosionY;
+						tickExplosionZ = explosionZ;
+						tickExplosionRadius = gun.bulletsExplosionRadius;
+						doExplosionAtNextTick = true;
+						//Level.explode(explosionX, explosionY, explosionZ, gun.bulletsExplosionRadius, false, true);
 					}
 					gun.bulletsArray.splice(0, 1);
 				}
