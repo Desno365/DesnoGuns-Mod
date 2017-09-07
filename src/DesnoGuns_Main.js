@@ -2721,8 +2721,7 @@ function modTick()
 {
 	if(!isInGame)
 	{
-		// workaround: newLevel sometimes is not called when in server
-		print("server debug: was not in game");
+		// workaround when newLevel is not called
 		newLevel();
 	}
 
@@ -3596,11 +3595,6 @@ function addLoadedAddonsInGame()
 	// show the user how many addons have been enabled
 	if(loadedAddons.length > 0)
 	{
-		currentActivity.runOnUiThread(new java.lang.Runnable() {
-			run: function() {
-				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Unfortunately this version of BlockLauncher has problems with DesnoGuns Addons. If you experience crashes disable them."), 1).show();
-			}
-		});
 		currentActivity.runOnUiThread(new java.lang.Runnable() {
 			run: function() {
 				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: " + loadedAddons.length + " addon" + ((loadedAddons.length > 1) ? "s" : "") + " enabled!"), 0).show();
