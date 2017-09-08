@@ -20,7 +20,7 @@ const DEBUG_BULLETS_MANAGEMENT_IN_MOD_TICK = false; // enable a tip message show
 var latestDebugMessage;
 
 // updates variables
-const CURRENT_VERSION = "r024";
+const CURRENT_VERSION = "r025";
 var latestVersion;
 
 //activity and other Android variables
@@ -3613,6 +3613,16 @@ function addLoadedAddonsInGame()
 	// show the user how many addons have been enabled
 	if(loadedAddons.length > 0)
 	{
+		var fullVersionString = ModPE.getMinecraftVersion();
+		var mainVersionString = fullVersionString.substring(0, 3);
+		if(mainVersionString == "1.1")
+		{
+			currentActivity.runOnUiThread(new java.lang.Runnable() {
+				run: function() {
+					android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Unfortunately this version of Minecraft has problems with DesnoGuns Addons. If you experience crashes disable them."), 1).show();
+				}
+			});
+		}
 		currentActivity.runOnUiThread(new java.lang.Runnable() {
 			run: function() {
 				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: " + loadedAddons.length + " addon" + ((loadedAddons.length > 1) ? "s" : "") + " enabled!"), 0).show();
