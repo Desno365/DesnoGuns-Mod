@@ -2627,6 +2627,12 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// grenade
 	if(currentItem == GRENADE.id)
 	{
+		currentActivity.runOnUiThread(new java.lang.Runnable() {
+			run: function() {
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Grenades may not work with this version of BlockLauncher."), 1).show();
+			}
+		});
+
 		displayShootButton();
 
 		// load click event
@@ -2645,6 +2651,12 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// fragment
 	if(currentItem == FRAGMENT.id)
 	{
+		currentActivity.runOnUiThread(new java.lang.Runnable() {
+			run: function() {
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Grenades may not work with this version of BlockLauncher."), 1).show();
+			}
+		});
+
 		displayShootButton();
 
 		// load click event
@@ -2681,6 +2693,12 @@ function changeCarriedItemHook(currentItem, previousItem)
 	// smoke grenade
 	if(currentItem == SMOKE.id)
 	{
+		currentActivity.runOnUiThread(new java.lang.Runnable() {
+			run: function() {
+				android.widget.Toast.makeText(currentActivity, new android.text.Html.fromHtml("<b>DesnoGuns</b>: Grenades may not work with this version of BlockLauncher."), 1).show();
+			}
+		});
+
 		displayShootButton();
 
 		// load click event
